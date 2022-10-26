@@ -56,15 +56,63 @@
 		7A1074732908C01900C13362 /* SwiftCodeBook */ = {
 			isa = PBXGroup;
 			children = (
-				7A1074742908C01900C13362 /* AppDelegate.swift */,
-				7A1074762908C01900C13362 /* SceneDelegate.swift */,
 				7A1074782908C01900C13362 /* ViewController.swift */,
+				7A1074892908C05C00C13362 /* Source */,
+				7A1074882908C04A00C13362 /* Support */,
+			);
+			path = SwiftCodeBook;
+			sourceTree = "<group>";
+		};
+		7A1074882908C04A00C13362 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				7A1074762908C01900C13362 /* SceneDelegate.swift */,
+				7A1074742908C01900C13362 /* AppDelegate.swift */,
 				7A10747A2908C01900C13362 /* Main.storyboard */,
 				7A10747D2908C01B00C13362 /* Assets.xcassets */,
 				7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */,
 				7A1074822908C01B00C13362 /* Info.plist */,
 			);
-			path = SwiftCodeBook;
+			path = Support;
+			sourceTree = "<group>";
+		};
+		7A1074892908C05C00C13362 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7A10748C2908C08A00C13362 /* Foundation */,
+				7A10748B2908C08500C13362 /* View */,
+				7A10748A2908C07D00C13362 /* Extension */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		7A10748A2908C07D00C13362 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		7A10748B2908C08500C13362 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7A10748C2908C08A00C13362 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				7A10748D2908C0B300C13362 /* Lock */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		7A10748D2908C0B300C13362 /* Lock */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Lock;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
