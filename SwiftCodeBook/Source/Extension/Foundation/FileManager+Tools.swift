@@ -28,10 +28,16 @@ extension FileManager {
         NSTemporaryDirectory()
     }
     
-    func folderSizeAt(path: String) -> UInt64 {
-        guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else { return 0 }
-        return contents.reduce(into: UInt64.zero) {
-            $0 += ((try? FileManager.default.attributesOfItem(atPath: path + "/\($1)"))?[.size] as? UInt64) ?? 0
+    func folderSizeAt(path: String) async -> UInt64 {
+        await withUnsafeContinuation { continuation in
+            Task.detached {
+                guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
+                    return continuation.resume(returning: 0)
+                }
+                continuation.resume(returning: contents.reduce(into: UInt64.zero) {
+                    $0 += ((try? FileManager.default.attributesOfItem(atPath: path + "/\($1)"))?[.size] as? UInt64) ?? 0
+                })
+            }
         }
     }
 }
