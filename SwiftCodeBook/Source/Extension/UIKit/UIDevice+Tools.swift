@@ -20,9 +20,10 @@ extension UIDevice {
         if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
-            var systemInfo = utsname()
-            uname(&systemInfo)
-            return String(cString: &systemInfo.machine.0)
+            var info = utsname()
+            uname(&info)
+            let chars = (Mirror(reflecting: info.machine).children.map { $0.value } as? [CChar]) ?? []
+            return String(cString: chars)
         }
     }
     
