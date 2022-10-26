@@ -30,6 +30,8 @@
 		7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AC290908F000C13362 /* Encodable+Tools.swift */; };
 		7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AE2909090000C13362 /* Decodable+Tools.swift */; };
 		7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */; };
+		7A1074B329091B1700C13362 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
+		7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B429091CAD00C13362 /* Result+Tools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		7A1074AC290908F000C13362 /* Encodable+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Tools.swift"; sourceTree = "<group>"; };
 		7A1074AE2909090000C13362 /* Decodable+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+Tools.swift"; sourceTree = "<group>"; };
 		7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Tools.swift"; sourceTree = "<group>"; };
+		7A1074B229091B1700C13362 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
+		7A1074B429091CAD00C13362 /* Result+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Tools.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				7A10748D2908C0B300C13362 /* Lock */,
+				7A1074B229091B1700C13362 /* WeakObject.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
+				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
 				7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */,
 				7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */,
+				7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */,
 				7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */,
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
@@ -267,6 +274,7 @@
 				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
+				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A1074AB2909073200C13362 /* DateFormatter+Tools.swift in Sources */,
