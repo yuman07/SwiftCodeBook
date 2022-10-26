@@ -8,10 +8,6 @@
 import Foundation
 
 extension String {
-    var isContainChinese: Bool {
-        first { "\u{4E00}" <= $0 && $0 <= "\u{9FA5}" } != nil
-    }
-    
     func allIndicesOf(string: String) -> [Int] {
         var indices = [Int]()
         var start = startIndex
@@ -22,5 +18,11 @@ extension String {
         return indices
     }
     
-    var containsEmoji: Bool { contains { $0.isEmoji } }
+    var containsChinese: Bool {
+        contains { "\u{4E00}" <= $0 && $0 <= "\u{9FA5}" }
+    }
+    
+    var containsEmoji: Bool {
+        contains { $0.isEmoji }
+    }
 }
