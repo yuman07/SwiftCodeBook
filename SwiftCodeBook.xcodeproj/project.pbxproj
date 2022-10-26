@@ -32,7 +32,7 @@
 		7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */; };
 		7A1074B329091B1700C13362 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
 		7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B429091CAD00C13362 /* Result+Tools.swift */; };
-		7A107B0929091E1400C13362 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A107B0829091E1400C13362 /* Publisher.swift */; };
+		7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A107B0829091E1400C13362 /* Publisher+Tools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,7 +63,7 @@
 		7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Tools.swift"; sourceTree = "<group>"; };
 		7A1074B229091B1700C13362 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
 		7A1074B429091CAD00C13362 /* Result+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Tools.swift"; sourceTree = "<group>"; };
-		7A107B0829091E1400C13362 /* Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publisher.swift; sourceTree = "<group>"; };
+		7A107B0829091E1400C13362 /* Publisher+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Tools.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,7 +174,7 @@
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
-				7A107B0829091E1400C13362 /* Publisher.swift */,
+				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -275,7 +275,7 @@
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
 				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
-				7A107B0929091E1400C13362 /* Publisher.swift in Sources */,
+				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
