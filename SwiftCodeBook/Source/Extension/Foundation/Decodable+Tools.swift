@@ -13,7 +13,7 @@ extension Decodable {
         self = value
     }
     
-    init?(JSONDictionary: [String: Any]) {
+    init?(JSONDictionary: [AnyHashable: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: JSONDictionary) else { return nil }
         self.init(JSONData: data)
     }
