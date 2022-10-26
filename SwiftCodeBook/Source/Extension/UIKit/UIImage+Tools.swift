@@ -25,9 +25,9 @@ extension UIImage {
         self.init(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: size))
     }
     
-    var byteSize: Int {
-        let bytesPerFrame = cgImage?.bytesPerRow ?? 0
-        let frameCount = images.flatMap { $0.count > 0 ? $0.count : 1 } ?? 1
+    var byteSize: UInt64 {
+        let bytesPerFrame = UInt64(cgImage?.bytesPerRow ?? 0)
+        let frameCount = UInt64(images.flatMap { $0.count > 0 ? $0.count : 1 } ?? 1)
         return bytesPerFrame * frameCount
     }
 }
