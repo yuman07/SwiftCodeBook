@@ -8,11 +8,11 @@
 import Foundation
 
 extension DispatchQueue {
-    var isMainQueue: Bool {
+    static var isMainQueue: Bool {
         String(cString: __dispatch_queue_get_label(nil)) == DispatchQueue.main.label
     }
     
-    func runInMainQueue(block: @escaping (() -> Void)) {
+    static func runInMainQueue(block: @escaping (() -> Void)) {
         if Thread.isMainThread && isMainQueue {
             block()
         } else {

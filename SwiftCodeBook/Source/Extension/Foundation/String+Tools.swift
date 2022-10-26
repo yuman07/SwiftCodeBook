@@ -19,7 +19,7 @@ extension String {
     }
     
     var containsChinese: Bool {
-        contains { "\u{4E00}" <= $0 && $0 <= "\u{9FA5}" }
+        contains { $0.isChinese }
     }
     
     var containsEmoji: Bool {
