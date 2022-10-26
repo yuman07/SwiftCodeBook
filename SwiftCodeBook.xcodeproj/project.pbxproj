@@ -13,6 +13,17 @@
 		7A10747C2908C01900C13362 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747A2908C01900C13362 /* Main.storyboard */; };
 		7A10747E2908C01B00C13362 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747D2908C01B00C13362 /* Assets.xcassets */; };
 		7A1074812908C01B00C13362 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */; };
+		7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
+		7A1074912908F88000C13362 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074902908F88000C13362 /* ReadWriteLock.swift */; };
+		7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074922908FABB00C13362 /* UIColor+Tools.swift */; };
+		7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074942908FAEF00C13362 /* String+Tools.swift */; };
+		7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074962908FB2100C13362 /* Character+Tools.swift */; };
+		7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */; };
+		7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */; };
+		7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */; };
+		7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */; };
+		7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */; };
+		7A1074A32909019300C13362 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A22909019300C13362 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +35,17 @@
 		7A10747D2908C01B00C13362 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A1074802908C01B00C13362 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A1074822908C01B00C13362 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A10748E2908F81000C13362 /* UnfairLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfairLock.swift; sourceTree = "<group>"; };
+		7A1074902908F88000C13362 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
+		7A1074922908FABB00C13362 /* UIColor+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tools.swift"; sourceTree = "<group>"; };
+		7A1074942908FAEF00C13362 /* String+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Tools.swift"; sourceTree = "<group>"; };
+		7A1074962908FB2100C13362 /* Character+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Tools.swift"; sourceTree = "<group>"; };
+		7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Tools.swift"; sourceTree = "<group>"; };
+		7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Tools.swift"; sourceTree = "<group>"; };
+		7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Tools.swift"; sourceTree = "<group>"; };
+		7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Tools.swift"; sourceTree = "<group>"; };
+		7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Tools.swift"; sourceTree = "<group>"; };
+		7A1074A22909019300C13362 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +81,7 @@
 				7A1074782908C01900C13362 /* ViewController.swift */,
 				7A1074892908C05C00C13362 /* Source */,
 				7A1074882908C04A00C13362 /* Support */,
+				7A1074822908C01B00C13362 /* Info.plist */,
 			);
 			path = SwiftCodeBook;
 			sourceTree = "<group>";
@@ -71,7 +94,6 @@
 				7A10747A2908C01900C13362 /* Main.storyboard */,
 				7A10747D2908C01B00C13362 /* Assets.xcassets */,
 				7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */,
-				7A1074822908C01B00C13362 /* Info.plist */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -89,6 +111,14 @@
 		7A10748A2908C07D00C13362 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				7A1074942908FAEF00C13362 /* String+Tools.swift */,
+				7A1074962908FB2100C13362 /* Character+Tools.swift */,
+				7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */,
+				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,
+				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
+				7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */,
+				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
+				7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -96,6 +126,7 @@
 		7A10748B2908C08500C13362 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7A1074A22909019300C13362 /* GradientView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -111,6 +142,8 @@
 		7A10748D2908C0B300C13362 /* Lock */ = {
 			isa = PBXGroup;
 			children = (
+				7A10748E2908F81000C13362 /* UnfairLock.swift */,
+				7A1074902908F88000C13362 /* ReadWriteLock.swift */,
 			);
 			path = Lock;
 			sourceTree = "<group>";
@@ -187,8 +220,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A1074792908C01900C13362 /* ViewController.swift in Sources */,
+				7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */,
+				7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */,
+				7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */,
+				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
+				7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */,
+				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
+				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
+				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
+				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
+				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
+				7A1074912908F88000C13362 /* ReadWriteLock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
