@@ -71,7 +71,7 @@ extension HashHelper {
         defer { try? handler.close() }
         
         var isEnd = false
-        var hasher = HashHelper.hasher(using: algorithm)
+        var hasher = hasher(using: algorithm)
         while !isEnd {
             autoreleasepool {
                 guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { isEnd = true; return }
