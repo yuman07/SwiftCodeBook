@@ -32,7 +32,7 @@ final class HashHelper {
         }
     }
     
-    func commit() -> String {
+    func finalize() -> String {
         queue.sync {
             hasher.finalize().toHashString()
         }
