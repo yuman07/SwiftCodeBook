@@ -34,6 +34,7 @@
 		7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B429091CAD00C13362 /* Result+Tools.swift */; };
 		7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A107B0829091E1400C13362 /* Publisher+Tools.swift */; };
 		7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1087B029097C2800C13362 /* UIView+Tools.swift */; };
+		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		7A1074B429091CAD00C13362 /* Result+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Tools.swift"; sourceTree = "<group>"; };
 		7A107B0829091E1400C13362 /* Publisher+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Tools.swift"; sourceTree = "<group>"; };
 		7A1087B029097C2800C13362 /* UIView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Tools.swift"; sourceTree = "<group>"; };
+		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 			children = (
 				7A10748D2908C0B300C13362 /* Lock */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
+				7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				7A1074AB2909073200C13362 /* DateFormatter+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A1074912908F88000C13362 /* ReadWriteLock.swift in Sources */,
+				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
