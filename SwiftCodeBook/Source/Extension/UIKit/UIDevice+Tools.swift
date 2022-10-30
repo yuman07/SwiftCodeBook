@@ -22,7 +22,7 @@ extension UIDevice {
         } else {
             var info = utsname()
             uname(&info)
-            let chars = (Mirror(reflecting: info.machine).children.map { $0.value } as? [CChar]) ?? []
+            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
             return String(cString: chars)
         }
     }
