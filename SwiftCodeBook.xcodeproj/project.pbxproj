@@ -35,6 +35,7 @@
 		7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A107B0829091E1400C13362 /* Publisher+Tools.swift */; };
 		7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1087B029097C2800C13362 /* UIView+Tools.swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
+		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		7A107B0829091E1400C13362 /* Publisher+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Tools.swift"; sourceTree = "<group>"; };
 		7A1087B029097C2800C13362 /* UIView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Tools.swift"; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
+		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
+				7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
 				7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */,
+				7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */,
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
