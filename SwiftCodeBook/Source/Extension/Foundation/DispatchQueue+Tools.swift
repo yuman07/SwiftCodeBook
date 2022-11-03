@@ -24,7 +24,8 @@ extension DispatchQueue {
     
     private static var onceSet = Set<String>()
     private static let onceLock = UnfairLock()
-    static func runOnce(token: String = "\(#file)+\(#function)+\(#line)", block: (() -> Void)) {
+    static func runOnce(file: String = #file, function: String = #function, line: Int = #line, block: (() -> Void)) {
+        let token = "\(file):\(function):\(line)"
         onceLock.lock()
         defer { onceLock.unlock() }
         
