@@ -9,26 +9,11 @@ import UIKit
 
 extension UIDevice {
     var isSimulator: Bool {
-    #if targetEnvironment(simulator)
-        true
-    #else
-        false
-    #endif
+        Self.isSimulator
     }
     
-    private static var DMStr = ""
     var deviceModel: String {
-        DispatchQueue.runOnce {
-            if isSimulator {
-                Self.DMStr = String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
-            } else {
-                var info = utsname()
-                uname(&info)
-                let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-                Self.DMStr = String(cString: chars)
-            }
-        }
-        return Self.DMStr
+        Self.deviceModel
     }
     
     var is64BitDevice: Bool {
@@ -42,4 +27,25 @@ extension UIDevice {
     var hasHomeIndicator: Bool {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
+}
+
+private extension UIDevice {
+    static let isSimulator = {
+    #if targetEnvironment(simulator)
+        true
+    #else
+        false
+    #endif
+    }()
+    
+    static let deviceModel = {
+        if isSimulator {
+            return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
+        } else {
+            var info = utsname()
+            uname(&info)
+            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
+            return String(cString: chars)
+        }
+    }()
 }
