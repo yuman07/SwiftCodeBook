@@ -16,15 +16,19 @@ extension UIDevice {
     #endif
     }
     
+    private static var DMStr = ""
     var deviceModel: String {
-        if isSimulator {
-            return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
-        } else {
-            var info = utsname()
-            uname(&info)
-            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            return String(cString: chars)
+        DispatchQueue.runOnce {
+            if isSimulator {
+                Self.DMStr = String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
+            } else {
+                var info = utsname()
+                uname(&info)
+                let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
+                Self.DMStr = String(cString: chars)
+            }
         }
+        return Self.DMStr
     }
     
     var is64BitDevice: Bool {

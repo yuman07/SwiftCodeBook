@@ -8,6 +8,12 @@
 import UIKit
 
 extension UIView {
+    func removeAllSubviews() {
+        while !subviews.isEmpty {
+            subviews.last?.removeFromSuperview()
+        }
+    }
+    
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = next
         while parentResponder != nil {

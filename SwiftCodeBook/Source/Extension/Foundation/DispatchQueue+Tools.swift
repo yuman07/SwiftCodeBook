@@ -21,4 +21,18 @@ extension DispatchQueue {
             }
         }
     }
+    
+    private static var onceSet = Set<String>()
+    private static let onceLock = UnfairLock()
+    static func runOnce(block: (() -> Void), token: String? = nil) {
+        let useToken = token ?? "\(#file)+\(#function)+\(#line)"
+        
+        onceLock.lock()
+        defer { onceLock.unlock() }
+        
+        if !onceSet.contains(useToken) {
+            onceSet.insert(useToken)
+            block()
+        }
+    }
 }
