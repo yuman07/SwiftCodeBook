@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F7482913A5260036A898 /* URL+Tools.swift */; };
 		7A1074752908C01900C13362 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074742908C01900C13362 /* AppDelegate.swift */; };
 		7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074762908C01900C13362 /* SceneDelegate.swift */; };
 		7A1074792908C01900C13362 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074782908C01900C13362 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7A02F7482913A5260036A898 /* URL+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Tools.swift"; sourceTree = "<group>"; };
 		7A1074712908C01900C13362 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A1074742908C01900C13362 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A1074762908C01900C13362 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
+				7A02F7482913A5260036A898 /* URL+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */,
@@ -289,6 +292,7 @@
 				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
+				7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
