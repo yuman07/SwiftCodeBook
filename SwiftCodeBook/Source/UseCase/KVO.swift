@@ -30,7 +30,7 @@ class KVOTest {
     }
 }
 
-// Must inherit from NSObject
+// must inherit from NSObject
 class KVOItem: NSObject {
     // must add '@objc dynamic'
     @objc dynamic var age: Int = 0
@@ -41,7 +41,7 @@ extension KVOItem {
         static var name = "name"
     }
     
-    // Works the same for associative properties, also add '@objc dynamic'
+    // works the same for associative properties, also add '@objc dynamic'
     @objc dynamic
     var name: String {
         get {
