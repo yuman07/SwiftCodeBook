@@ -5,37 +5,30 @@
 //  Created by yuman on 2022/11/4.
 //
 
+import Combine
 import Foundation
 
 class KVOTest {
     let item = KVOItem()
-    var ageToken: NSKeyValueObservation?
-    var nameToken: NSKeyValueObservation?
+    var cancelBag = Set<AnyCancellable>()
     
     init() {
-        ageToken = item.observe(\.age, options: [.initial, .old, .new], changeHandler: { obj, change in
-            print(change.oldValue ?? "NilAge")
-            print(change.newValue ?? "NilAge")
-            print("---age---")
-        })
+        item.publisher(for: \.age)
+            .sink { age in
+                print(age)
+            }.store(in: &cancelBag)
         
-        nameToken = item.observe(\.name, options: [.initial, .old, .new], changeHandler: { obj, change in
-            print(change.oldValue ?? "NilName")
-            print(change.newValue ?? "NilName")
-            print("---name---")
-        })
+        item.publisher(for: \.name)
+            .sink { name in
+                print(name)
+            }.store(in: &cancelBag)
         
         item.age = 1
         item.age = 2
         item.age = 3
-        item.name = "11"
-        item.name = "22"
-        item.name = "33"
-    }
-    
-    deinit {
-        ageToken?.invalidate()
-        nameToken?.invalidate()
+        item.name = "name1"
+        item.name = "name2"
+        item.name = "name3"
     }
 }
 
