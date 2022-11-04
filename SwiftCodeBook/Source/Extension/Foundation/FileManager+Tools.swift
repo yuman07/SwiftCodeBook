@@ -28,16 +28,20 @@ extension FileManager {
         NSTemporaryDirectory()
     }
     
+    func directoryExists(atPath: String) -> Bool {
+        var isDir = ObjCBool(false)
+        let exist = FileManager.default.fileExists(atPath: atPath, isDirectory: &isDir)
+        return exist && isDir.boolValue
+    }
+    
     func folderSizeAt(path: String) async -> UInt64 {
         await withUnsafeContinuation { continuation in
-            Task.detached {
-                guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
-                    return continuation.resume(returning: 0)
-                }
-                continuation.resume(returning: contents.reduce(into: UInt64.zero) {
-                    $0 += ((try? FileManager.default.attributesOfItem(atPath: path + "/\($1)"))?[.size] as? UInt64) ?? 0
-                })
+            guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
+                return continuation.resume(returning: 0)
             }
+            continuation.resume(returning: contents.reduce(into: UInt64.zero) {
+                $0 += ((try? FileManager.default.attributesOfItem(atPath: path + "/\($1)"))?[.size] as? UInt64) ?? 0
+            })
         }
     }
 }
