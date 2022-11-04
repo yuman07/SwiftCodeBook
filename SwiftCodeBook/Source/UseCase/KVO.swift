@@ -25,10 +25,8 @@ class KVOTest {
         
         item.age = 1
         item.age = 2
-        item.age = 3
         item.name = "name1"
         item.name = "name2"
-        item.name = "name3"
     }
 }
 
