@@ -7,6 +7,7 @@
 
 import Foundation
 
+// must be 'class', not 'struct'
 class AssociatedObjectTest {}
 
 extension AssociatedObjectTest {
