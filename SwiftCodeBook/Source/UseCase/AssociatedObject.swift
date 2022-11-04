@@ -8,9 +8,9 @@
 import Foundation
 
 // must be 'class', not 'struct'
-class AssociatedObjectTest {}
+class AssociatedObjectItem {}
 
-extension AssociatedObjectTest {
+extension AssociatedObjectItem {
     private struct AssociatedKeys {
         static var age = "age"
         static var name = "name"
