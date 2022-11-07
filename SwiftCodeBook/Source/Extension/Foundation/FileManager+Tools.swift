@@ -34,6 +34,12 @@ extension FileManager {
         return exist && isDir.boolValue
     }
     
+    func normalFileExists(atPath: String) -> Bool {
+        var isDir = ObjCBool(false)
+        let exist = FileManager.default.fileExists(atPath: atPath, isDirectory: &isDir)
+        return exist && !isDir.boolValue
+    }
+    
     func folderSizeAt(path: String) async -> UInt64 {
         await withUnsafeContinuation { continuation in
             guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
