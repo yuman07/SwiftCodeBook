@@ -62,6 +62,18 @@ extension Date {
         return y % 400 == 0 || (y % 4 == 0 && y % 100 != 0)
     }
     
+    var daysInThisMonth: Int {
+        switch month {
+        case 1, 3, 5, 7, 8, 10, 12: return 31
+        case 2: return isInLeapYear ? 29 : 28
+        default: return 30
+        }
+    }
+    
+    var daysInThisYear: Int {
+        isInLeapYear ? 366 : 365
+    }
+    
     var isToday: Bool {
         calendar.isDateInToday(self)
     }
@@ -72,24 +84,6 @@ extension Date {
     
     var isYesterday: Bool {
         calendar.isDateInYesterday(self)
-    }
-    
-    func seconds(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .second, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .second, in: .era, for: self) ?? 1
-        return to - from
-    }
-    
-    func minutes(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .minute, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .minute, in: .era, for: self) ?? 1
-        return to - from
-    }
-    
-    func hours(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .hour, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .hour, in: .era, for: self) ?? 1
-        return to - from
     }
     
     func days(from date: Date) -> Int {
@@ -116,18 +110,6 @@ extension Date {
         return to - from
     }
     
-    func isSameSecond(with date: Date) -> Bool {
-        seconds(from: date) == 0
-    }
-    
-    func isSameMinute(with date: Date) -> Bool {
-        minutes(from: date) == 0
-    }
-    
-    func isSameHour(with date: Date) -> Bool {
-        hours(from: date) == 0
-    }
-    
     func isSameDay(with date: Date) -> Bool {
         days(from: date) == 0
     }
@@ -142,5 +124,47 @@ extension Date {
     
     func isSameYear(with date: Date) -> Bool {
         years(from: date) == 0
+    }
+    
+    func adding(seconds: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.second = seconds
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(minutes: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.minute = minutes
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(hours: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.hour = hours
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(days: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.day = days
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(weeks: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.weekOfYear = weeks
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(months: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.month = months
+        return calendar.date(byAdding: dateComponent, to: self)
+    }
+    
+    func adding(years: Int) -> Date? {
+        var dateComponent = DateComponents()
+        dateComponent.year = years
+        return calendar.date(byAdding: dateComponent, to: self)
     }
 }
