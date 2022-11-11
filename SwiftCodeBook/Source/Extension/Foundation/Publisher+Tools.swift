@@ -9,14 +9,13 @@ import Combine
 
 extension Publisher {
     func sinkToResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
-        sink(receiveCompletion: { completion in
-            switch completion {
-            case let .failure(error):
-                result(.failure(error))
+        sink(receiveCompletion: {
+            switch $0 {
+            case let .failure(error): result(.failure(error))
             default: break
             }
-        }, receiveValue: { value in
-            result(.success(value))
+        }, receiveValue: {
+            result(.success($0))
         })
     }
 }
