@@ -15,7 +15,7 @@ final class GCDTimer {
         case stoped
     }
     
-    private let lock = UnfairLock()
+    private let lock = NSLock()
     private var state = State.inited
     private var count = 0
     private let timer: DispatchSourceTimer
