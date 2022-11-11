@@ -167,6 +167,7 @@
 		7A10748C2908C08A00C13362 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				7A9CBA09291E42C300046466 /* Codable */,
 				7A10748D2908C0B300C13362 /* Lock */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 				7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */,
@@ -227,6 +228,13 @@
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
 			);
 			path = UseCase;
+			sourceTree = "<group>";
+		};
+		7A9CBA09291E42C300046466 /* Codable */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Codable;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
