@@ -12,10 +12,6 @@ extension Date {
         Calendar.autoupdatingCurrent
     }
     
-    var era: Int {
-        calendar.component(.era, from: self)
-    }
-    
     var year: Int {
         calendar.component(.year, from: self)
     }
@@ -126,45 +122,15 @@ extension Date {
         years(from: date) == 0
     }
     
-    func adding(seconds: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.second = seconds
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(minutes: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.minute = minutes
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(hours: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.hour = hours
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(days: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.day = days
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(weeks: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.weekOfYear = weeks
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(months: Int) -> Date? {
-        var dateComponent = DateComponents()
-        dateComponent.month = months
-        return calendar.date(byAdding: dateComponent, to: self)
-    }
-    
-    func adding(years: Int) -> Date? {
+    func adding(years: Int = 0, months: Int = 0, weeks: Int = 0, days: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) -> Date? {
         var dateComponent = DateComponents()
         dateComponent.year = years
+        dateComponent.month = months
+        dateComponent.weekOfYear = weeks
+        dateComponent.day = days
+        dateComponent.hour = hours
+        dateComponent.minute = minutes
+        dateComponent.second = seconds
         return calendar.date(byAdding: dateComponent, to: self)
     }
 }
