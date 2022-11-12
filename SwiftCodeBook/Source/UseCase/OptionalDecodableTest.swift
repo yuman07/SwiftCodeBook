@@ -21,16 +21,17 @@ struct OptionalDecodableTest {
     init() {
         guard let data = try? JSONSerialization.data(withJSONObject: list) else { return }
         
-        // this is nil, because the first item in the list lacks name, the entire list decode fails
-        _ = try? JSONDecoder().decode([Item].self, from: data)
+        // array1 nil, because the first item in the list lacks name, the entire list decode fails
+        let array1 = try? JSONDecoder().decode([Item].self, from: data)
+        if array1 == nil { print("array1 is nil") }
         
         // array is not nil and has exactly two items
-        let array = try? JSONDecoder().decode([OptionalDecodable<Item>].self, from: data)
+        let array2 = try? JSONDecoder().decode([OptionalDecodable<Item>].self, from: data)
         
-        if let array {
+        if let array2 {
             // Ans has only one item, which is the second item in the list.
             // That is, when decoding an array, the failed items are successfully filtered, and only the decoded ones are left.
-            let ans = array.compactMap(\.value)
+            let ans = array2.compactMap(\.value)
             print(ans)
         }
     }
