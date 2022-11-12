@@ -25,7 +25,7 @@ struct OptionalDecodableTest {
         let array1 = try? JSONDecoder().decode([Item].self, from: data)
         if array1 == nil { print("array1 is nil") }
         
-        // array is not nil and has exactly two items
+        // array2 is not nil and has exactly two items
         let array2 = try? JSONDecoder().decode([OptionalDecodable<Item>].self, from: data)
         
         if let array2 {
