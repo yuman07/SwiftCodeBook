@@ -11,12 +11,12 @@ public struct JSONDictionaryCodable: Codable {
     public var value: [String: Any]
     
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: JSONCodingKeys.self)
+        let container = try decoder.container(keyedBy: JSONCodingKey.self)
         value = try container.decode([String: Any].self)
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: JSONCodingKeys.self)
+        var container = encoder.container(keyedBy: JSONCodingKey.self)
         try container.encode(value)
     }
 }
@@ -35,7 +35,7 @@ public struct JSONArrayCodable: Codable {
     }
 }
 
-private extension KeyedDecodingContainer where Key == JSONCodingKeys {
+private extension KeyedDecodingContainer where Key == JSONCodingKey {
     func decode(_ type: [String: Any].Type) throws -> [String: Any] {
         var result = [String: Any]()
         for key in allKeys {
@@ -61,7 +61,7 @@ private extension KeyedDecodingContainer where Key == JSONCodingKeys {
     }
     
     func decode(_ type: [String: Any].Type, forKey key: KeyedDecodingContainer<K>.Key) throws -> [String: Any] {
-        let container = try nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
+        let container = try nestedContainer(keyedBy: JSONCodingKey.self, forKey: key)
         return try container.decode([String: Any].self)
     }
     
@@ -73,7 +73,7 @@ private extension KeyedDecodingContainer where Key == JSONCodingKeys {
 
 private extension UnkeyedDecodingContainer {
     mutating func decode(_ type: [String: Any].Type) throws -> [String: Any] {
-        let container = try nestedContainer(keyedBy: JSONCodingKeys.self)
+        let container = try nestedContainer(keyedBy: JSONCodingKey.self)
         return try container.decode([String: Any].self)
     }
     
@@ -107,10 +107,10 @@ private extension UnkeyedDecodingContainer {
     }
 }
 
-private extension KeyedEncodingContainer where Key == JSONCodingKeys {
+private extension KeyedEncodingContainer where Key == JSONCodingKey {
     mutating func encode(_ value: [String: Any]) throws {
         try value.forEach { (key, value) in
-            let key = JSONCodingKeys(stringValue: key)
+            let key = JSONCodingKey(stringValue: key)
             switch value {
             case let value as Encodable:
                 try encode(value, forKey: key)
@@ -127,7 +127,7 @@ private extension KeyedEncodingContainer where Key == JSONCodingKeys {
     }
     
     mutating func encode(_ value: [String: Any], forKey key: KeyedEncodingContainer<K>.Key) throws {
-        var container = nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
+        var container = nestedContainer(keyedBy: JSONCodingKey.self, forKey: key)
         try container.encode(value)
     }
     
@@ -139,7 +139,7 @@ private extension KeyedEncodingContainer where Key == JSONCodingKeys {
 
 private extension UnkeyedEncodingContainer {
     mutating func encode(_ value: [String: Any]) throws {
-        var container = nestedContainer(keyedBy: JSONCodingKeys.self)
+        var container = nestedContainer(keyedBy: JSONCodingKey.self)
         try container.encode(value)
     }
     
@@ -166,7 +166,7 @@ private extension UnkeyedEncodingContainer {
     }
 }
 
-private struct JSONCodingKeys: CodingKey {
+private struct JSONCodingKey: CodingKey {
     var stringValue: String
     var intValue: Int?
     
