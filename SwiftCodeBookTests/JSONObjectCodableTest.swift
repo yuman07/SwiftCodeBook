@@ -18,7 +18,7 @@ private let json1 = """
         "name": "yuman",
         "length": "789.56",
         "some": null,
-        "array": ["1", 2, 3.3, ["4", {"A1": "哈哈"}]],
+        "array": ["1", 2, 3.3, ["4", {"A1": "哈哈"}, {}], []],
         "attribute": {
             "h1": "👌🏻",
             "h2": 111,
@@ -27,7 +27,9 @@ private let json1 = """
                 "p2": ["地球", "火星"],
                 "p3": null,
                 "p4": true,
-                "p5": []
+                "p5": [],
+                "p6": {},
+                "p7": {"22": false, "33": null, "44": 2}
             },
             "h4": {}
         }
@@ -49,10 +51,8 @@ private let json2 = """
 final class JSONObjectCodableTest: XCTestCase {
     func testDict() {
         let item = JSONDictItem(JSONString: json1)
-        XCTAssertNotNil(item)
-        
-        let dic = item!.toJSONDictionary()!
-        XCTAssertTrue((dic as NSDictionary).isEqual(to: json1.toJSONDictionary()!))
+        let target = (json1.toJSONDictionary()!)["ext"]! as! [String: Any]
+        XCTAssertTrue((item!.ext.value as NSDictionary).isEqual(to: target))
     }
     
     func testArray() {
