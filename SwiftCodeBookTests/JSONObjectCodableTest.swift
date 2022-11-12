@@ -53,11 +53,13 @@ final class JSONObjectCodableTest: XCTestCase {
         let item = JSONDictItem(JSONString: json1)
         let target = (json1.toJSONDictionary()!)["ext"]! as! [String: Any]
         XCTAssertTrue((item!.ext.value as NSDictionary).isEqual(to: target))
+        XCTAssertTrue((item!.ext.toJSONDictionary()! as NSDictionary).isEqual(to: target))
     }
     
     func testArray() {
         let item = JSONArrayCodable.init(JSONString: json2)
         XCTAssertNotNil(item)
         XCTAssertTrue((item!.value as NSArray).isEqual(to: json2.toJSONArray()!))
+        XCTAssertTrue((item!.toJSONArray()! as NSArray).isEqual(to: json2.toJSONArray()!))
     }
 }
