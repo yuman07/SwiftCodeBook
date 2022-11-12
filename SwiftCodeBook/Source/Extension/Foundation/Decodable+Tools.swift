@@ -13,6 +13,11 @@ extension Decodable {
         self = value
     }
     
+    init?(JSONArray: [Any]) {
+        guard let data = try? JSONSerialization.data(withJSONObject: JSONArray) else { return nil }
+        self.init(JSONData: data)
+    }
+    
     init?(JSONDictionary: [AnyHashable: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: JSONDictionary) else { return nil }
         self.init(JSONData: data)

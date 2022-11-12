@@ -8,6 +8,17 @@
 import Foundation
 
 extension Array {
+    func toJSONData() -> Data? {
+        try? JSONSerialization.data(withJSONObject: self)
+    }
+    
+    func toJSONString() -> String? {
+        guard let data = toJSONData() else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
+
+extension Array {
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])

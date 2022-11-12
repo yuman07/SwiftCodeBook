@@ -12,6 +12,11 @@ extension Encodable {
         try? JSONEncoder().encode(self)
     }
     
+    func toJSONArray() -> [Any]? {
+        guard let data = toJSONData() else { return nil }
+        return try? JSONSerialization.jsonObject(with: data) as? [Any]
+    }
+    
     func toJSONDictionary() -> [String: Any]? {
         guard let data = toJSONData() else { return nil }
         return try? JSONSerialization.jsonObject(with: data) as? [String: Any]

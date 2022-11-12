@@ -17,7 +17,9 @@ extension String {
         }
         return indices
     }
-    
+}
+
+extension String {
     var containsChinese: Bool {
         contains { $0.isChinese }
     }

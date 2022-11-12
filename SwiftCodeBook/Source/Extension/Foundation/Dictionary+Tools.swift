@@ -8,8 +8,12 @@
 import Foundation
 
 extension Dictionary {
+    func toJSONData() -> Data? {
+        try? JSONSerialization.data(withJSONObject: self)
+    }
+    
     func toJSONString() -> String? {
-        guard let data = try? JSONSerialization.data(withJSONObject: self) else { return nil }
+        guard let data = toJSONData() else { return nil }
         return String(data: data, encoding: .utf8)
     }
 }

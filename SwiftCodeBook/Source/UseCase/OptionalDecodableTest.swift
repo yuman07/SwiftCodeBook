@@ -19,7 +19,7 @@ let list = [
 
 struct OptionalDecodableTest {
     init() {
-        guard let data = try? JSONSerialization.data(withJSONObject: list) else { return }
+        guard let data = list.toJSONData() else { return }
         
         // array1 nil, because the first item in the list lacks name, the entire list decode fails
         let array1 = try? JSONDecoder().decode([Item].self, from: data)
