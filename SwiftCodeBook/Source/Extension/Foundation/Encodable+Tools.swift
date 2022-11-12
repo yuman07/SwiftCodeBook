@@ -9,7 +9,11 @@ import Foundation
 
 extension Encodable {
     func toJSONData() -> Data? {
-        try? JSONEncoder().encode(self)
+        if let string = self as? String {
+            return string.data(using: .utf8)
+        } else {
+            return try? JSONEncoder().encode(self)
+        }
     }
     
     func toJSONArray() -> [Any]? {
