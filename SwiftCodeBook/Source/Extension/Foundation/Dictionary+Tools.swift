@@ -9,7 +9,12 @@ import Foundation
 
 extension Dictionary {
     func toJSONData() -> Data? {
-        try? JSONSerialization.data(withJSONObject: self)
+        if JSONSerialization.isValidJSONObject(self) {
+            return try? JSONSerialization.data(withJSONObject: self)
+        } else if let encode = self as? Encodable {
+            return encode.toJSONData()
+        }
+        return nil
     }
     
     func toJSONString() -> String? {
