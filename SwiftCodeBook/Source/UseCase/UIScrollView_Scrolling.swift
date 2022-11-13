@@ -13,10 +13,13 @@ import UIKit
 // 2. When sliding is implemented by code. For example, "scrollView.setContentOffset(CGPoint(x: 10, y: 20), animated: true)", note that animated must be true here
 //
 // There is also a case, when using "scrollView.setContentOffset(CGPoint(x: 10, y: 20), animated: false)" to achieve sliding, isScrolling will become true at this time, but when the scrolling ends, it will not become false.
+// in this case, you must manually do:
+// scrollView.setContentOffset(CGPoint(x: 10, y: 20), animated: false)
+// isScrolling = false
 
 private final class TestViewController: UIViewController {
     @Published var isScrolling = false
-    private var cancelBag = Set<AnyCancellable>()
+    var cancelBag = Set<AnyCancellable>()
     
     lazy var scrollView = {
         let view = UIScrollView()
