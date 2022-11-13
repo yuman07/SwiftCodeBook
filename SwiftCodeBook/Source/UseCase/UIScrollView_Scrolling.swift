@@ -28,9 +28,11 @@ private final class TestViewController: UIViewController {
     }()
     
     func setupCombine() {
-        $isScrolling.sink {
-            print($0 ? "isScrolling" : "notScrolling")
-        }.store(in: &cancelBag)
+        $isScrolling
+            .removeDuplicates()
+            .sink {
+                print($0 ? "isScrolling" : "notScrolling")
+            }.store(in: &cancelBag)
     }
 }
 
