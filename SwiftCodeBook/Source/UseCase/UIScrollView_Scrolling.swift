@@ -29,7 +29,6 @@ private final class TestViewController: UIViewController {
     
     func setupCombine() {
         $isScrolling
-            .removeDuplicates()
             .sink {
                 print($0 ? "isScrolling" : "notScrolling")
             }.store(in: &cancelBag)
@@ -38,7 +37,7 @@ private final class TestViewController: UIViewController {
 
 extension TestViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        isScrolling = true
+        if !isScrolling { isScrolling = true }
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -47,7 +46,7 @@ extension TestViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let scrollToScrollStop = !scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
-        if isScrolling && scrollToScrollStop { isScrolling = false }
+        if scrollToScrollStop && isScrolling { isScrolling = false }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
