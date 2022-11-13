@@ -197,10 +197,9 @@
 		7A1074892908C05C00C13362 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7A9CC08D2920BFC500046466 /* Tips */,
 				7A501A2A2914EECB00512E32 /* UseCase */,
-				7A10748C2908C08A00C13362 /* Foundation */,
-				7A10748B2908C08500C13362 /* View */,
-				7A10748A2908C07D00C13362 /* Extension */,
+				7A9CC08E2920BFCB00046466 /* Tools */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -304,6 +303,23 @@
 				7A9CC08B291FE95200046466 /* JSONObjectCodableTest.swift */,
 			);
 			path = SwiftCodeBookTests;
+			sourceTree = "<group>";
+		};
+		7A9CC08D2920BFC500046466 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
+		7A9CC08E2920BFCB00046466 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				7A10748C2908C08A00C13362 /* Foundation */,
+				7A10748B2908C08500C13362 /* View */,
+				7A10748A2908C07D00C13362 /* Extension */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
