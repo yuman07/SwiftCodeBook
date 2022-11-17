@@ -20,4 +20,13 @@ extension UIColor {
         let a = CGFloat(hexNum & 0x000000ff) / 255
         self.init(red: r, green: g, blue: b, alpha: a)
     }
+    
+    var rgbaTuple: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var r = CGFloat.zero
+        var g = CGFloat.zero
+        var b = CGFloat.zero
+        var a = CGFloat.zero
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        return (r, g, b, a)
+    }
 }
