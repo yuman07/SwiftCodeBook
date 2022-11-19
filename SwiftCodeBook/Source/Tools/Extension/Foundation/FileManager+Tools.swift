@@ -42,7 +42,7 @@ extension FileManager {
     
     func folderSizeAt(path: String) async -> UInt64 {
         await withUnsafeContinuation { continuation in
-            guard let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
+            guard !path.isEmpty, let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
                 return continuation.resume(returning: 0)
             }
             continuation.resume(returning: contents.reduce(into: UInt64.zero) {
