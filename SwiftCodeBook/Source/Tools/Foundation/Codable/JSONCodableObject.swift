@@ -1,5 +1,5 @@
 //
-//  JSONObjectCodable.swift
+//  JSONCodableObject.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2022/11/12.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct JSONDictionaryCodable: Codable {
+public struct JSONCodableDictionary: Codable {
     public var value: [String: Any]
     
     public init(from decoder: Decoder) throws {
@@ -21,7 +21,7 @@ public struct JSONDictionaryCodable: Codable {
     }
 }
 
-public struct JSONArrayCodable: Codable {
+public struct JSONCodableArray: Codable {
     public var value: [Any]
     
     public init(from decoder: Decoder) throws {

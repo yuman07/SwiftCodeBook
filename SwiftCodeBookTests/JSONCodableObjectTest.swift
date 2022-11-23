@@ -8,7 +8,7 @@
 import XCTest
 
 private struct JSONDictItem: Codable {
-    let ext: JSONDictionaryCodable
+    let ext: JSONCodableDictionary
 }
 
 private let json1 = """
@@ -57,7 +57,7 @@ final class JSONObjectCodableTest: XCTestCase {
     }
     
     func testArray() {
-        let item = JSONArrayCodable.init(JSONString: json2)
+        let item = JSONCodableArray.init(JSONString: json2)
         XCTAssertNotNil(item)
         XCTAssertTrue((item!.value as NSArray).isEqual(to: json2.toJSONArray()!))
         XCTAssertTrue((item!.toJSONArray()! as NSArray).isEqual(to: json2.toJSONArray()!))

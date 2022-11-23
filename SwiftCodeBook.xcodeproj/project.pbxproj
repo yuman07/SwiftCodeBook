@@ -41,12 +41,12 @@
 		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
-		7A9CC059291FCB2500046466 /* JSONObjectCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONObjectCodable.swift */; };
+		7A9CC059291FCB2500046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
 		7A9CC06B291FE1C900046466 /* OptionalDecodableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC06A291FE1C900046466 /* OptionalDecodableTest.swift */; };
 		7A9CC06C291FE23E00046466 /* Encodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AC290908F000C13362 /* Encodable+Tools.swift */; };
 		7A9CC06D291FE24000046466 /* Decodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AE2909090000C13362 /* Decodable+Tools.swift */; };
 		7A9CC06F291FE25B00046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
-		7A9CC070291FE25D00046466 /* JSONObjectCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONObjectCodable.swift */; };
+		7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
 		7A9CC071291FE25F00046466 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
 		7A9CC072291FE26200046466 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074902908F88000C13362 /* ReadWriteLock.swift */; };
 		7A9CC073291FE26400046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
@@ -73,7 +73,7 @@
 		7A9CC088291FE27800046466 /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A42909041E00C13362 /* UIImage+Tools.swift */; };
 		7A9CC089291FE27800046466 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1087B029097C2800C13362 /* UIView+Tools.swift */; };
 		7A9CC08A291FE27800046466 /* UIDevice+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */; };
-		7A9CC08C291FE95200046466 /* JSONObjectCodableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC08B291FE95200046466 /* JSONObjectCodableTest.swift */; };
+		7A9CC08C291FE95200046466 /* JSONCodableObjectTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC08B291FE95200046466 /* JSONCodableObjectTest.swift */; };
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AAB773329261B1700059782 /* Data+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB773229261B1700059782 /* Data+Tools.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
@@ -130,10 +130,10 @@
 		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodable.swift; sourceTree = "<group>"; };
-		7A9CC058291FCB2500046466 /* JSONObjectCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectCodable.swift; sourceTree = "<group>"; };
+		7A9CC058291FCB2500046466 /* JSONCodableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCodableObject.swift; sourceTree = "<group>"; };
 		7A9CC061291FE1A700046466 /* SwiftCodeBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCodeBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A9CC06A291FE1C900046466 /* OptionalDecodableTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodableTest.swift; sourceTree = "<group>"; };
-		7A9CC08B291FE95200046466 /* JSONObjectCodableTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectCodableTest.swift; sourceTree = "<group>"; };
+		7A9CC08B291FE95200046466 /* JSONCodableObjectTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCodableObjectTest.swift; sourceTree = "<group>"; };
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AAB773229261B1700059782 /* Data+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Tools.swift"; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
@@ -302,7 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */,
-				7A9CC058291FCB2500046466 /* JSONObjectCodable.swift */,
+				7A9CC058291FCB2500046466 /* JSONCodableObject.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
@@ -311,7 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				7A9CC06A291FE1C900046466 /* OptionalDecodableTest.swift */,
-				7A9CC08B291FE95200046466 /* JSONObjectCodableTest.swift */,
+				7A9CC08B291FE95200046466 /* JSONCodableObjectTest.swift */,
 			);
 			path = SwiftCodeBookTests;
 			sourceTree = "<group>";
@@ -463,7 +463,7 @@
 				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
 				7AABCA8C2928B0FF00059782 /* addMask.swift in Sources */,
-				7A9CC059291FCB2500046466 /* JSONObjectCodable.swift in Sources */,
+				7A9CC059291FCB2500046466 /* JSONCodableObject.swift in Sources */,
 				7ACA60502918F3F9009B502A /* GCDTimer.swift in Sources */,
 				7A501A2E2914F43000512E32 /* KVO.swift in Sources */,
 			);
@@ -490,7 +490,7 @@
 				7A9CC084291FE27500046466 /* DispatchQueue+Tools.swift in Sources */,
 				7A9CC07F291FE27500046466 /* Character+Tools.swift in Sources */,
 				7A9CC088291FE27800046466 /* UIImage+Tools.swift in Sources */,
-				7A9CC08C291FE95200046466 /* JSONObjectCodableTest.swift in Sources */,
+				7A9CC08C291FE95200046466 /* JSONCodableObjectTest.swift in Sources */,
 				7A9CC07B291FE27500046466 /* Array+Tools.swift in Sources */,
 				7A9CC078291FE27500046466 /* DateFormatter+Tools.swift in Sources */,
 				7A9CC072291FE26200046466 /* ReadWriteLock.swift in Sources */,
@@ -501,7 +501,7 @@
 				7A9CC071291FE25F00046466 /* UnfairLock.swift in Sources */,
 				7A9CC076291FE26A00046466 /* GCDTimer.swift in Sources */,
 				7A9CC087291FE27800046466 /* UIBezierPath+Tools.swift in Sources */,
-				7A9CC070291FE25D00046466 /* JSONObjectCodable.swift in Sources */,
+				7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */,
 				7A9CC06F291FE25B00046466 /* OptionalDecodable.swift in Sources */,
 				7A9CC07E291FE27500046466 /* Publisher+Tools.swift in Sources */,
 				7A9CC085291FE27800046466 /* UIColor+Tools.swift in Sources */,
