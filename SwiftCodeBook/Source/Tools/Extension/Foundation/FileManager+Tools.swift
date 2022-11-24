@@ -30,13 +30,13 @@ extension FileManager {
     
     func directoryExists(atPath: String) -> Bool {
         var isDir = ObjCBool(false)
-        let exist = FileManager.default.fileExists(atPath: atPath, isDirectory: &isDir)
+        let exist = fileExists(atPath: atPath, isDirectory: &isDir)
         return exist && isDir.boolValue
     }
     
     func normalFileExists(atPath: String) -> Bool {
         var isDir = ObjCBool(false)
-        let exist = FileManager.default.fileExists(atPath: atPath, isDirectory: &isDir)
+        let exist = fileExists(atPath: atPath, isDirectory: &isDir)
         return exist && !isDir.boolValue
     }
     
