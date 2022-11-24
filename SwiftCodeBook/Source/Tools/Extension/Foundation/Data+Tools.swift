@@ -9,8 +9,7 @@ import Foundation
 
 extension Data {
     var isZipped: Bool {
-        guard count >= 2 else { return false }
-        return self[0] == 0x1f && self[1] == 0x8b
+        count >= 2 && self[0] == 0x1f && self[1] == 0x8b
     }
     
     func toZipped(zipAnyway: Bool = false) -> Data? {
