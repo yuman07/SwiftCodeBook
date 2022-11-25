@@ -23,15 +23,14 @@ class HitTest2View: UIView {
     // Hand over all click events of a view to a specific view for processing
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         // The assumption here is to handle it by yourself, or you can change it to other views as needed
-        let target = self
         if super.hitTest(point, with: event) != nil {
-            return target
+            return self
         }
         
         // If it is determined that no child view exceeds the display of the parent view, the following code is not required
         for subView in subviews.reversed() {
             if subView.hitTest(subView.convert(point, from: self), with: event) != nil {
-                return target
+                return self
             }
         }
         
