@@ -40,6 +40,7 @@
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A429308F5D001A3345 /* HitTest.swift */; };
+		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A9CAD70291DF02C00046466 /* NSLock+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD6F291DF02C00046466 /* NSLock+Tools.swift */; };
 		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
@@ -132,6 +133,7 @@
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A8A00A429308F5D001A3345 /* HitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTest.swift; sourceTree = "<group>"; };
+		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A9CAD6F291DF02C00046466 /* NSLock+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+Tools.swift"; sourceTree = "<group>"; };
 		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 			children = (
 				7A501A2D2914F43000512E32 /* KVO.swift */,
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
+				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
 				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
 				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
 				7AABCA8B2928B0FF00059782 /* AddMask.swift */,
@@ -460,6 +463,7 @@
 				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
 				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
+				7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */,
 				7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */,
