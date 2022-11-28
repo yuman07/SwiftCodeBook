@@ -9,12 +9,14 @@ import Foundation
 
 extension NSLock {
     func around(_ block: () throws -> Void) rethrows {
-        lock(); defer { unlock() }
+        lock()
+        defer { unlock() }
         try block()
     }
     
     func around<T>(_ block: () throws -> T) rethrows -> T {
-        lock(); defer { unlock() }
+        lock()
+        defer { unlock() }
         return try block()
     }
 }
