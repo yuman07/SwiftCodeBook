@@ -9,6 +9,5 @@ import Foundation
 
 final class WeakObject<T: AnyObject> {
     private(set) weak var value: T?
-    
     init(_ value: T) { self.value = value }
 }

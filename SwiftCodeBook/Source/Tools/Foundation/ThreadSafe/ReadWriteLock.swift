@@ -30,3 +30,17 @@ final class ReadWriteLock {
         pthread_rwlock_unlock(&lock)
     }
 }
+
+extension ReadWriteLock {
+    func readAround<T>(_ block: () throws -> T) rethrows -> T {
+        lockRead()
+        defer { unlock() }
+        return try block()
+    }
+    
+    func writeAround(_ block: () throws -> Void) rethrows {
+        lockWrite()
+        defer { unlock() }
+        try block()
+    }
+}
