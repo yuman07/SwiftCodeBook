@@ -9,22 +9,22 @@ import Combine
 import Foundation
 
 public final class CancelBag {
-    private var tokens = Set<AnyCancellable>()
     private let lock = NSRecursiveLock()
-
+    private var tokens = Set<AnyCancellable>()
+    
     public init() {}
-
+    
     deinit {
         cancel()
     }
-
+    
     public func cancel() {
         lock.lock()
         defer { lock.unlock() }
         for token in tokens { token.cancel() }
         tokens.removeAll()
     }
-
+    
     public func store(_ cancellable: AnyCancellable) {
         lock.lock()
         defer { lock.unlock() }
