@@ -27,17 +27,6 @@ extension UIDevice {
     var hasHomeIndicator: Bool {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
-    
-    var applicationUsedMemory: UInt64? {
-        var info = task_vm_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
-        let result = withUnsafeMutablePointer(to: &info) { infoPtr in
-            infoPtr.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { intPtr in
-                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), intPtr, &count)
-            }
-        }
-        return (result == KERN_SUCCESS) ? UInt64(info.phys_footprint) : nil
-    }
 }
 
 private extension UIDevice {
