@@ -32,15 +32,27 @@ final class ReadWriteLock {
 }
 
 extension ReadWriteLock {
-    func readAround<T>(_ block: () throws -> T) rethrows -> T {
+    func read(_ block: () throws -> Void) rethrows {
+        lockRead()
+        defer { unlock() }
+        try block()
+    }
+    
+    func read<T>(_ block: () throws -> T) rethrows -> T {
         lockRead()
         defer { unlock() }
         return try block()
     }
     
-    func writeAround(_ block: () throws -> Void) rethrows {
+    func write(_ block: () throws -> Void) rethrows {
         lockWrite()
         defer { unlock() }
         try block()
+    }
+    
+    func write<T>(_ block: () throws -> T) rethrows -> T {
+        lockWrite()
+        defer { unlock() }
+        return try block()
     }
 }

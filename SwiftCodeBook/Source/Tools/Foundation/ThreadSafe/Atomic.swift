@@ -17,8 +17,8 @@ final class Atomic<T> {
     }
     
     var wrappedValue: T {
-        get { lock.readAround { value } }
-        set { lock.writeAround { value = newValue } }
+        get { lock.read { value } }
+        set { lock.write { value = newValue } }
     }
     
     var projectedValue: Atomic<T> { self }
@@ -28,10 +28,10 @@ final class Atomic<T> {
     }
     
     func read<U>(_ closure: (T) throws -> U) rethrows -> U {
-        try lock.readAround { try closure(value) }
+        try lock.read { try closure(value) }
     }
     
     func write(_ closure: (inout T) throws -> Void) rethrows {
-        try lock.writeAround { try closure(&value) }
+        try lock.write { try closure(&value) }
     }
 }
