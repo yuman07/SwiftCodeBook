@@ -8,11 +8,11 @@
 import UIKit
 
 public extension UIApplication {
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
-    @available(watchOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
-    @available(tvOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
-    @available(macOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
-    @available(macCatalystApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(iOSApplicationExtension, unavailable, message: "Not available in app extensions.")
+    @available(watchOSApplicationExtension, unavailable, message: "Not available in app extensions.")
+    @available(tvOSApplicationExtension, unavailable, message: "Not available in app extensions.")
+    @available(macOSApplicationExtension, unavailable, message: "Not available in app extensions..")
+    @available(macCatalystApplicationExtension, unavailable, message: "Not available in app extensions..")
     var keyWindow: UIWindow? {
         let windows = connectedScenes.compactMap{ $0 as? UIWindowScene }.flatMap{ $0.windows }
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
