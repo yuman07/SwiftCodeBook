@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension DispatchQueue {
+public extension DispatchQueue {
     static var isMainQueue: Bool {
         String(cString: __dispatch_queue_get_label(nil)) == DispatchQueue.main.label
     }

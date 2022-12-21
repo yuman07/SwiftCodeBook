@@ -7,7 +7,7 @@
 
 import Combine
 
-extension Publisher {
+public extension Publisher {
     func sinkToResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
         sink(receiveCompletion: {
             switch $0 {

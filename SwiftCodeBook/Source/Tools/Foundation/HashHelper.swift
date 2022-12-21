@@ -8,8 +8,8 @@
 import CryptoKit
 import Foundation
 
-final class HashHelper {
-    enum Algorithm {
+public final class HashHelper {
+    public enum Algorithm {
         case md5
         case sha1
         case sha256
@@ -17,22 +17,22 @@ final class HashHelper {
         case sha512
     }
     
-    let algorithm: Algorithm
+    private let algorithm: Algorithm
     private var hasher: any HashFunction
     private let queue = DispatchQueue(label: String(format: "%@.HashHelper.SerialQueue", UUID().uuidString))
    
-    init(algorithm: Algorithm) {
+    public init(algorithm: Algorithm) {
         self.algorithm = algorithm
         hasher = Self.hasher(using: algorithm)
     }
     
-    func update(data: Data) {
+    public func update(data: Data) {
         queue.async { [weak self] in
             self?.hasher.update(data: data)
         }
     }
     
-    func finalize() -> String {
+    public func finalize() -> String {
         queue.sync {
             hasher.finalize().toHashString()
         }
@@ -54,7 +54,7 @@ final class HashHelper {
     }
 }
 
-extension HashHelper {
+public extension HashHelper {
     static func hash(data: Data, using algorithm: Algorithm) -> String {
         var hasher = hasher(using: algorithm)
         hasher.update(data: data)
@@ -82,13 +82,13 @@ extension HashHelper {
     }
 }
 
-extension String {
+public extension String {
     func hash(using algorithm: HashHelper.Algorithm) -> String? {
         HashHelper.hash(string: self, using: algorithm)
     }
 }
 
-extension Data {
+public extension Data {
     func hash(using algorithm: HashHelper.Algorithm) -> String {
         HashHelper.hash(data: self, using: algorithm)
     }

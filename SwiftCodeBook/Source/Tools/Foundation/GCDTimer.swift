@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class GCDTimer {
+public final class GCDTimer {
     private enum State {
         case inited
         case running
@@ -21,7 +21,7 @@ final class GCDTimer {
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
     
-    init(timeInterval: TimeInterval, repeats: Bool, queue: DispatchQueue = .main, block: @escaping ((_ count: Int) -> Void)) {
+    public init(timeInterval: TimeInterval, repeats: Bool, queue: DispatchQueue = .main, block: @escaping ((_ count: Int) -> Void)) {
         self.timeInterval = timeInterval
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         self.timer.setEventHandler { [weak self] in
@@ -36,7 +36,7 @@ final class GCDTimer {
         stop()
     }
     
-    func start() {
+    public func start() {
         lock.lock()
         defer { lock.unlock() }
         
@@ -48,7 +48,7 @@ final class GCDTimer {
         state = .running
     }
     
-    func pause() {
+    public func pause() {
         lock.lock()
         defer { lock.unlock() }
         
@@ -57,7 +57,7 @@ final class GCDTimer {
         state = .paused
     }
     
-    func stop() {
+    public func stop() {
         lock.lock()
         defer { lock.unlock() }
         

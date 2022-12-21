@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Dictionary {
+public extension Dictionary {
     func toJSONData() -> Data? {
         if JSONSerialization.isValidJSONObject(self) {
             return try? JSONSerialization.data(withJSONObject: self)

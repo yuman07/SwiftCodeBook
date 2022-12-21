@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
     func removeAllSubviews() {
         while !subviews.isEmpty {
             subviews.last?.removeFromSuperview()

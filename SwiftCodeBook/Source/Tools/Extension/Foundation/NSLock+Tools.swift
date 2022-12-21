@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NSLock {
+public extension NSLock {
     func around(_ block: () throws -> Void) rethrows {
         lock()
         defer { unlock() }

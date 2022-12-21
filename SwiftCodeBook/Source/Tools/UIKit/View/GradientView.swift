@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class GradientView: UIView {
-    override class var layerClass: AnyClass {
+public final class GradientView: UIView {
+    public override class var layerClass: AnyClass {
         CAGradientLayer.self
     }
     
-    func updateGradient(startPoint: CGPoint, endPoint: CGPoint, startColor: UIColor, endColor: UIColor) {
+    public func updateGradient(startPoint: CGPoint, endPoint: CGPoint, startColor: UIColor, endColor: UIColor) {
         guard let layer = self.layer as? CAGradientLayer else { return }
         layer.startPoint = startPoint
         layer.endPoint = endPoint

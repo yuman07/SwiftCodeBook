@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date {
+public extension Date {
     private var calendar: Calendar {
         Calendar.autoupdatingCurrent
     }

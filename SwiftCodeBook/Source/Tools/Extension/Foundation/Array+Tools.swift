@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array {
+public extension Array {
     func toJSONData() -> Data? {
         if JSONSerialization.isValidJSONObject(self) {
             return try? JSONSerialization.data(withJSONObject: self)
@@ -23,7 +23,7 @@ extension Array {
     }
 }
 
-extension Array {
+public extension Array {
     func chunked(into size: Int) -> [[Element]] {
         stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
@@ -31,7 +31,7 @@ extension Array {
     }
 }
 
-extension Array where Element: Hashable {
+public extension Array where Element: Hashable {
     func unique() -> [Element] {
         guard count > 1 else { return self }
         var set = Set<Element>(minimumCapacity: count)

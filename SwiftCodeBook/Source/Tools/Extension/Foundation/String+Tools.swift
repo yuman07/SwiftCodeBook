@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     func allIndicesOf(string: String) -> [Int] {
         var indices = [Int]()
         var start = startIndex
@@ -19,7 +19,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     var containsChinese: Bool {
         contains { $0.isChinese }
     }

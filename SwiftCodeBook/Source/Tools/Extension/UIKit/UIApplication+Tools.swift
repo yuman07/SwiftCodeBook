@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIApplication {
+public extension UIApplication {
     var keyWindow: UIWindow? {
         let windows = connectedScenes.compactMap{ $0 as? UIWindowScene }.flatMap{ $0.windows }
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })

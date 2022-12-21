@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIDevice {
+public extension UIDevice {
     var isSimulator: Bool {
         Self.isSimulator
     }

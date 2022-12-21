@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Encodable {
+public extension Encodable {
     func toJSONData() -> Data? {
         if let data = self as? Data {
             return data

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIBezierPath {
+public extension UIBezierPath {
     convenience init(size: CGSize, cornerRadius: (topLeft: CGFloat, bottomLeft: CGFloat, bottomRight: CGFloat, topRight: CGFloat)) {
         self.init()
         let rect = CGRect(origin: .zero, size: size)

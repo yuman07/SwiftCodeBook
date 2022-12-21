@@ -11,20 +11,20 @@ import UIKit
 // highlightColor为高亮色，textColor为底色，progress为进度
 // 1) 该Label只能支持一行文本的样式
 // 2) highlightColor和textColor不能设置相同的颜色，不然会有UIBug
-final class LyricHighlightingLabel: UILabel {
-    var highlightColor = UIColor.clear {
+public final class LyricHighlightingLabel: UILabel {
+    public var highlightColor = UIColor.clear {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    var progress = 0.0 {
+    public var progress = 0.0 {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         super.draw(rect)
         highlightColor.set()
         let fillRect = CGRect(origin: .zero, size: CGSize(width: rect.width * progress, height: rect.height))

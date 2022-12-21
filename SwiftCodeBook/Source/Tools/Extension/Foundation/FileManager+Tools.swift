@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension FileManager {
+public extension FileManager {
     var homePath: String {
         NSHomeDirectory()
     }

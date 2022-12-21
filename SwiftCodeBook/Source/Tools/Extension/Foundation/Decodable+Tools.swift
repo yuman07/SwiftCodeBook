@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Decodable {
+public extension Decodable {
     init?(JSONData: Data) {
         guard let value = try? JSONDecoder().decode(Self.self, from: JSONData) else { return nil }
         self = value

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Data {
+public extension Data {
     var isZipped: Bool {
         count >= 2 && self[0] == 0x1f && self[1] == 0x8b
     }

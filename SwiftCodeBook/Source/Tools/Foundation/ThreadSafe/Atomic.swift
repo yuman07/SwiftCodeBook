@@ -8,30 +8,26 @@
 import Foundation
 
 @propertyWrapper
-final class Atomic<T> {
+public final class Atomic<T> {
     private let lock = NSLock()
     private var value: T
     
-    init(_ value: T) {
+    public init(_ value: T) {
         self.value = value
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get { lock.around { value } }
         set { lock.around { value = newValue } }
     }
     
-    var projectedValue: Atomic<T> { self }
+    public var projectedValue: Atomic<T> { self }
     
-    init(wrappedValue: T) {
-        value = wrappedValue
-    }
-    
-    func lock(_ closure: (inout T) throws -> Void) rethrows {
+    public func lock(_ closure: (inout T) throws -> Void) rethrows {
         try lock.around { try closure(&value) }
     }
     
-    func lock<U>(_ closure: (T) throws -> U) rethrows -> U {
+    public func lock<U>(_ closure: (T) throws -> U) rethrows -> U {
         try lock.around { try closure(value) }
     }
 }

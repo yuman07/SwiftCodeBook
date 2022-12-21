@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
     convenience init?(RGBA: String) {
         guard RGBA[RGBA.startIndex] == "#" && (RGBA.count == 7 || RGBA.count == 9) else { return nil }
         

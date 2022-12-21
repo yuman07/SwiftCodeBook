@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
     var queryDictionary: [String: String] {
         (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) {
             if let value = $1.value { $0[$1.name] = value }

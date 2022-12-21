@@ -30,8 +30,8 @@ import UIKit
 //    [UIApplication sharedApplication].delegate.window.layer.filters = nil;
 //}
 
-struct GlobalGray {
-    static func openGray() {
+public struct GlobalGray {
+    public static func openGray() {
         let sel = #selector(CIFilterConstructor.filter(withName:))
         guard let cls = NSClassFromString(["C", "A", "Fi", "lt", "er"].joined(separator: "")) as AnyObject as? NSObjectProtocol, cls.responds(to: sel) else { return }
         let filter = cls.perform(sel, with: ["col", "or", "Sat", "ur", "ate"].joined(separator: "")).retain().takeRetainedValue()
@@ -39,7 +39,7 @@ struct GlobalGray {
         UIApplication.shared.keyWindow?.layer.filters = [filter]
     }
     
-    static func closeGray() {
+    public static func closeGray() {
         UIApplication.shared.keyWindow?.layer.filters = nil
     }
 }
