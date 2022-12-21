@@ -15,7 +15,6 @@
 		7A10747E2908C01B00C13362 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747D2908C01B00C13362 /* Assets.xcassets */; };
 		7A1074812908C01B00C13362 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */; };
 		7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
-		7A1074912908F88000C13362 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074902908F88000C13362 /* ReadWriteLock.swift */; };
 		7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074922908FABB00C13362 /* UIColor+Tools.swift */; };
 		7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074942908FAEF00C13362 /* String+Tools.swift */; };
 		7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074962908FB2100C13362 /* Character+Tools.swift */; };
@@ -56,7 +55,6 @@
 		7A9CC06F291FE25B00046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
 		7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
 		7A9CC071291FE25F00046466 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
-		7A9CC072291FE26200046466 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074902908F88000C13362 /* ReadWriteLock.swift */; };
 		7A9CC073291FE26400046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CC074291FE26600046466 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
 		7A9CC075291FE26800046466 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
@@ -119,7 +117,6 @@
 		7A1074802908C01B00C13362 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A1074822908C01B00C13362 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A10748E2908F81000C13362 /* UnfairLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfairLock.swift; sourceTree = "<group>"; };
-		7A1074902908F88000C13362 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		7A1074922908FABB00C13362 /* UIColor+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tools.swift"; sourceTree = "<group>"; };
 		7A1074942908FAEF00C13362 /* String+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Tools.swift"; sourceTree = "<group>"; };
 		7A1074962908FB2100C13362 /* Character+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Tools.swift"; sourceTree = "<group>"; };
@@ -276,7 +273,6 @@
 			isa = PBXGroup;
 			children = (
 				7A10748E2908F81000C13362 /* UnfairLock.swift */,
-				7A1074902908F88000C13362 /* ReadWriteLock.swift */,
 				7A9CAD71291DF07E00046466 /* Atomic.swift */,
 				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 			);
@@ -540,7 +536,6 @@
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A1074AB2909073200C13362 /* DateFormatter+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
-				7A1074912908F88000C13362 /* ReadWriteLock.swift in Sources */,
 				7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */,
 				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRange-SwiftRange.swift in Sources */,
@@ -577,7 +572,6 @@
 				7A9CC08C291FE95200046466 /* JSONCodableObjectTest.swift in Sources */,
 				7A9CC07B291FE27500046466 /* Array+Tools.swift in Sources */,
 				7A9CC078291FE27500046466 /* DateFormatter+Tools.swift in Sources */,
-				7A9CC072291FE26200046466 /* ReadWriteLock.swift in Sources */,
 				7A9CC06D291FE24000046466 /* Decodable+Tools.swift in Sources */,
 				7A9CC08A291FE27800046466 /* UIDevice+Tools.swift in Sources */,
 				7A9CC073291FE26400046466 /* Atomic.swift in Sources */,

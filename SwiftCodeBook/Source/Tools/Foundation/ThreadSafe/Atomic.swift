@@ -9,7 +9,7 @@ import Foundation
 
 @propertyWrapper
 final class Atomic<T> {
-    private let lock = ReadWriteLock()
+    private let lock = NSLock()
     private var value: T
     
     init(_ value: T) {
@@ -17,8 +17,8 @@ final class Atomic<T> {
     }
     
     var wrappedValue: T {
-        get { lock.read { value } }
-        set { lock.write { value = newValue } }
+        get { lock.around { value } }
+        set { lock.around { value = newValue } }
     }
     
     var projectedValue: Atomic<T> { self }
@@ -27,11 +27,11 @@ final class Atomic<T> {
         value = wrappedValue
     }
     
-    func read<U>(_ closure: (T) throws -> U) rethrows -> U {
-        try lock.read { try closure(value) }
+    func lock(_ closure: (inout T) throws -> Void) rethrows {
+        try lock.around { try closure(&value) }
     }
     
-    func write(_ closure: (inout T) throws -> Void) rethrows {
-        try lock.write { try closure(&value) }
+    func lock<U>(_ closure: (T) throws -> U) rethrows -> U {
+        try lock.around { try closure(value) }
     }
 }
