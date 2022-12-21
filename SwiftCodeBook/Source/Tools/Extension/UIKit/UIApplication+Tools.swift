@@ -8,12 +8,17 @@
 import UIKit
 
 public extension UIApplication {
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(watchOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(tvOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macCatalystApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
     var keyWindow: UIWindow? {
         let windows = connectedScenes.compactMap{ $0 as? UIWindowScene }.flatMap{ $0.windows }
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
     }
     
-    var APPIcon: UIImage? {
+    static var APPIcon: UIImage? {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
@@ -23,7 +28,7 @@ public extension UIApplication {
         return nil
     }
     
-    var usedMemory: UInt64? {
+    static var usedMemory: UInt64? {
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
         let result = withUnsafeMutablePointer(to: &info) { infoPtr in

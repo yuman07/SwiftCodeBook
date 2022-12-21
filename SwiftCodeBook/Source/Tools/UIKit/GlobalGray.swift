@@ -31,6 +31,11 @@ import UIKit
 //}
 
 public struct GlobalGray {
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(watchOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(tvOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macCatalystApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
     public static func openGray() {
         let sel = #selector(CIFilterConstructor.filter(withName:))
         guard let cls = NSClassFromString(["C", "A", "Fi", "lt", "er"].joined(separator: "")) as AnyObject as? NSObjectProtocol, cls.responds(to: sel) else { return }
@@ -39,6 +44,11 @@ public struct GlobalGray {
         UIApplication.shared.keyWindow?.layer.filters = [filter]
     }
     
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(watchOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(tvOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
+    @available(macCatalystApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
     public static func closeGray() {
         UIApplication.shared.keyWindow?.layer.filters = nil
     }
