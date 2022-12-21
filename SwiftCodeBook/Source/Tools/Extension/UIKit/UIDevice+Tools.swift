@@ -21,19 +21,11 @@ public extension UIDevice {
     }
     
     @available(iOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(watchOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(tvOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(macOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(macCatalystApplicationExtension, unavailable, message: "Not available in app extensions.")
     var isNotchScreen: Bool {
         userInterfaceIdiom == .phone && hasHomeIndicator
     }
     
     @available(iOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(watchOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(tvOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(macOSApplicationExtension, unavailable, message: "Not available in app extensions.")
-    @available(macCatalystApplicationExtension, unavailable, message: "Not available in app extensions.")
     var hasHomeIndicator: Bool {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
