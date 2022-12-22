@@ -19,7 +19,7 @@ public final class HashHelper {
     
     private let algorithm: Algorithm
     private var hasher: any HashFunction
-    private let queue = DispatchQueue(label: String(format: "%@.HashHelper.SerialQueue", UUID().uuidString))
+    private let queue = DispatchQueue(label: "SwiftCodeBook.HashHelper.SerialQueue")
    
     public init(algorithm: Algorithm) {
         self.algorithm = algorithm
