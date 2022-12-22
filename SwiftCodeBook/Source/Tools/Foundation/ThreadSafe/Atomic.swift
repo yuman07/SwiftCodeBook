@@ -12,8 +12,8 @@ public final class Atomic<T> {
     private let lock = NSLock()
     private var value: T
     
-    public init(_ value: T) {
-        self.value = value
+    public init(wrappedValue: T) {
+        self.value = wrappedValue
     }
     
     public var wrappedValue: T {
@@ -27,7 +27,7 @@ public final class Atomic<T> {
         try lock.around { try closure(&value) }
     }
     
-    public func lock<U>(_ closure: (T) throws -> U) rethrows -> U {
-        try lock.around { try closure(value) }
+    public func lock<U>(_ closure: (inout T) throws -> U) rethrows -> U {
+        try lock.around { try closure(&value) }
     }
 }
