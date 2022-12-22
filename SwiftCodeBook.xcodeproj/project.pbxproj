@@ -14,7 +14,6 @@
 		7A10747C2908C01900C13362 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747A2908C01900C13362 /* Main.storyboard */; };
 		7A10747E2908C01B00C13362 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747D2908C01B00C13362 /* Assets.xcassets */; };
 		7A1074812908C01B00C13362 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */; };
-		7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
 		7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074922908FABB00C13362 /* UIColor+Tools.swift */; };
 		7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074942908FAEF00C13362 /* String+Tools.swift */; };
 		7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074962908FB2100C13362 /* Character+Tools.swift */; };
@@ -54,7 +53,6 @@
 		7A9CC06D291FE24000046466 /* Decodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AE2909090000C13362 /* Decodable+Tools.swift */; };
 		7A9CC06F291FE25B00046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
 		7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
-		7A9CC071291FE25F00046466 /* UnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10748E2908F81000C13362 /* UnfairLock.swift */; };
 		7A9CC073291FE26400046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CC074291FE26600046466 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
 		7A9CC075291FE26800046466 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
@@ -116,7 +114,6 @@
 		7A10747D2908C01B00C13362 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A1074802908C01B00C13362 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A1074822908C01B00C13362 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7A10748E2908F81000C13362 /* UnfairLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfairLock.swift; sourceTree = "<group>"; };
 		7A1074922908FABB00C13362 /* UIColor+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tools.swift"; sourceTree = "<group>"; };
 		7A1074942908FAEF00C13362 /* String+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Tools.swift"; sourceTree = "<group>"; };
 		7A1074962908FB2100C13362 /* Character+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Tools.swift"; sourceTree = "<group>"; };
@@ -272,7 +269,6 @@
 		7A10748D2908C0B300C13362 /* ThreadSafe */ = {
 			isa = PBXGroup;
 			children = (
-				7A10748E2908F81000C13362 /* UnfairLock.swift */,
 				7A9CAD71291DF07E00046466 /* Atomic.swift */,
 				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 			);
@@ -509,7 +505,6 @@
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */,
 				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
-				7A10748F2908F81000C13362 /* UnfairLock.swift in Sources */,
 				7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */,
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
@@ -576,7 +571,6 @@
 				7A9CC08A291FE27800046466 /* UIDevice+Tools.swift in Sources */,
 				7A9CC073291FE26400046466 /* Atomic.swift in Sources */,
 				7A9CC080291FE27500046466 /* Dictionary+Tools.swift in Sources */,
-				7A9CC071291FE25F00046466 /* UnfairLock.swift in Sources */,
 				7A9CC076291FE26A00046466 /* GCDTimer.swift in Sources */,
 				7A9CC087291FE27800046466 /* UIBezierPath+Tools.swift in Sources */,
 				7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */,
