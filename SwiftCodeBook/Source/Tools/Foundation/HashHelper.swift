@@ -66,19 +66,24 @@ public extension HashHelper {
         return hash(data: data, using: function)
     }
     
-    static func hash(filePath: String, using function: Function) -> String? {
-        guard let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
-        defer { try? handler.close() }
-        
-        var isEnd = false
-        var hasher = hasher(using: function)
-        while !isEnd {
-            autoreleasepool {
-                guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
-                hasher.update(data: data)
+    static func hash(filePath: String, using function: Function) async -> String? {
+        await withUnsafeContinuation{ continuation in
+            Task.detached {
+                guard let handler = FileHandle(forReadingAtPath: filePath) else { return continuation.resume(returning: nil) }
+                defer { try? handler.close() }
+                
+                var isEnd = false
+                var hasher = hasher(using: function)
+                while !isEnd {
+                    autoreleasepool {
+                        guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
+                        hasher.update(data: data)
+                    }
+                }
+                
+                return continuation.resume(returning: hasher.finalize().toHashString())
             }
         }
-        return hasher.finalize().toHashString()
     }
 }
 
