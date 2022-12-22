@@ -9,7 +9,7 @@ import CryptoKit
 import Foundation
 
 public final class HashHelper {
-    public enum Algorithm {
+    public enum Function {
         case md5
         case sha1
         case sha256
@@ -17,13 +17,13 @@ public final class HashHelper {
         case sha512
     }
     
-    private let algorithm: Algorithm
+    private let function: Function
     private var hasher: any HashFunction
     private let queue = DispatchQueue(label: "SwiftCodeBook.HashHelper.SerialQueue")
    
-    public init(algorithm: Algorithm) {
-        self.algorithm = algorithm
-        hasher = Self.hasher(using: algorithm)
+    public init(function: Function) {
+        self.function = function
+        hasher = Self.hasher(using: function)
     }
     
     public func update(data: Data) {
@@ -38,8 +38,8 @@ public final class HashHelper {
         }
     }
     
-    private static func hasher(using algorithm: Algorithm) -> any HashFunction {
-        switch algorithm {
+    private static func hasher(using function: Function) -> any HashFunction {
+        switch function {
         case .md5:
             return Insecure.MD5()
         case .sha1:
@@ -55,23 +55,23 @@ public final class HashHelper {
 }
 
 public extension HashHelper {
-    static func hash(data: Data, using algorithm: Algorithm) -> String {
-        var hasher = hasher(using: algorithm)
+    static func hash(data: Data, using function: Function) -> String {
+        var hasher = hasher(using: function)
         hasher.update(data: data)
         return hasher.finalize().toHashString()
     }
     
-    static func hash(string: String, using algorithm: Algorithm) -> String? {
+    static func hash(string: String, using function: Function) -> String? {
         guard let data = string.data(using: .utf8) else { return nil }
-        return hash(data: data, using: algorithm)
+        return hash(data: data, using: function)
     }
     
-    static func hash(filePath: String, using algorithm: Algorithm) -> String? {
+    static func hash(filePath: String, using function: Function) -> String? {
         guard let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
         defer { try? handler.close() }
         
         var isEnd = false
-        var hasher = hasher(using: algorithm)
+        var hasher = hasher(using: function)
         while !isEnd {
             autoreleasepool {
                 guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
@@ -83,14 +83,14 @@ public extension HashHelper {
 }
 
 public extension String {
-    func hash(using algorithm: HashHelper.Algorithm) -> String? {
-        HashHelper.hash(string: self, using: algorithm)
+    func hash(using function: HashHelper.Function) -> String? {
+        HashHelper.hash(string: self, using: function)
     }
 }
 
 public extension Data {
-    func hash(using algorithm: HashHelper.Algorithm) -> String {
-        HashHelper.hash(data: self, using: algorithm)
+    func hash(using function: HashHelper.Function) -> String {
+        HashHelper.hash(data: self, using: function)
     }
 }
 
