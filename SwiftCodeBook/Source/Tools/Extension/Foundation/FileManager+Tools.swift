@@ -40,7 +40,7 @@ public extension FileManager {
         return exist && !isDir.boolValue
     }
     
-    func folderSizeAt(path: String) async -> UInt64 {
+    func folderSizeInByte(at path: String) async -> UInt64 {
         await withUnsafeContinuation { continuation in
             Task.detached {
                 guard !path.isEmpty, let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {

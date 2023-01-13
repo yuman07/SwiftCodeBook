@@ -24,7 +24,7 @@ public extension UIApplication {
         return nil
     }
     
-    static var usedMemory: UInt64? {
+    static var usedMemoryInByte: UInt64? {
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
         let result = withUnsafeMutablePointer(to: &info) { infoPtr in
