@@ -12,6 +12,10 @@ public extension Date {
         Calendar.autoupdatingCurrent
     }
     
+    var century: Int {
+        year / 100 + 1
+    }
+    
     var year: Int {
         calendar.component(.year, from: self)
     }
@@ -20,7 +24,7 @@ public extension Date {
         calendar.component(.month, from: self)
     }
     
-    // sunday is 1
+    /// The start of the week is Sunday and its value is 1
     var dayOfWeek: Int {
         calendar.component(.weekday, from: self)
     }
@@ -51,6 +55,11 @@ public extension Date {
     
     var weekOfYear: Int {
         calendar.component(.weekOfYear, from: self)
+    }
+    
+    var isInWeekend: Bool {
+        let d = dayOfWeek
+        return d == 1 || d == 6
     }
     
     var isInLeapYear: Bool {
