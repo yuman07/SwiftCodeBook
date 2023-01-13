@@ -20,12 +20,12 @@ public extension UIDevice {
         CGFLOAT_IS_DOUBLE == 1
     }
     
-    @available(iOSApplicationExtension, unavailable, message: "Not available in app extensions.")
+    @available(iOSApplicationExtension, unavailable, message: "Not available in iOS App extension.")
     var isNotchScreen: Bool {
         userInterfaceIdiom == .phone && hasHomeIndicator
     }
     
-    @available(iOSApplicationExtension, unavailable, message: "Not available in app extensions.")
+    @available(iOSApplicationExtension, unavailable, message: "Not available in iOS App extension.")
     var hasHomeIndicator: Bool {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
