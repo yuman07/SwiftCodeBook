@@ -8,19 +8,15 @@
 import UIKit
 
 public extension UIColor {
-    convenience init(hex: UInt64) {
-        self.init(red: CGFloat((hex & 0xff000000) >> 24) / 255,
-                  green: CGFloat((hex & 0x00ff0000) >> 16) / 255,
-                  blue: CGFloat((hex & 0x0000ff00) >> 8) / 255,
-                  alpha: CGFloat(hex & 0x000000ff) / 255)
-    }
-    
     convenience init?(RGBA: String) {
-        guard RGBA[RGBA.startIndex] == "#" && (RGBA.count == 7 || RGBA.count == 9) else { return nil }
+        guard RGBA.first == "#" && (RGBA.count == 7 || RGBA.count == 9) else { return nil }
         var hexNum = UInt64.zero
         let target = "\(RGBA.suffix(RGBA.count - 1))" + (RGBA.count == 7 ? "FF" : "" )
         guard case let s = Scanner(string: target), s.scanHexInt64(&hexNum) && s.isAtEnd else { return nil }
-        self.init(hex: hexNum)
+        self.init(red: CGFloat((hexNum & 0xff000000) >> 24) / 255,
+                  green: CGFloat((hexNum & 0x00ff0000) >> 16) / 255,
+                  blue: CGFloat((hexNum & 0x0000ff00) >> 8) / 255,
+                  alpha: CGFloat(hexNum & 0x000000ff) / 255)
     }
     
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
