@@ -1,5 +1,5 @@
 //
-//  NSLock+Tools.swift
+//  NSLocking+Tools.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2022/11/11.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension NSLock {
+public extension NSLocking {
     func around(_ block: () throws -> Void) rethrows {
         lock()
         defer { unlock() }
