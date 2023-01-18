@@ -17,17 +17,17 @@ public final class Atomic<T> {
     }
     
     public var wrappedValue: T {
-        get { lock.around { value } }
-        set { lock.around { value = newValue } }
+        get { lock.withLock { value } }
+        set { lock.withLock { value = newValue } }
     }
     
     public var projectedValue: Atomic<T> { self }
     
-    public func lock(_ closure: (inout T) throws -> Void) rethrows {
-        try lock.around { try closure(&value) }
+    public func lock(_ block: (inout T) throws -> Void) rethrows {
+        try lock.withLock { try block(&value) }
     }
     
-    public func lock<U>(_ closure: (inout T) throws -> U) rethrows -> U {
-        try lock.around { try closure(&value) }
+    public func lock<U>(_ block: (inout T) throws -> U) rethrows -> U {
+        try lock.withLock { try block(&value) }
     }
 }
