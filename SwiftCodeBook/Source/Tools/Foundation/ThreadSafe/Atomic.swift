@@ -23,11 +23,7 @@ public final class Atomic<T> {
     
     public var projectedValue: Atomic<T> { self }
     
-    public func lock(_ block: (inout T) throws -> Void) rethrows {
-        try lock.withLock { try block(&value) }
-    }
-    
-    public func lock<U>(_ block: (inout T) throws -> U) rethrows -> U {
+    public func withLock<U>(_ block: (inout T) throws -> U) rethrows -> U {
         try lock.withLock { try block(&value) }
     }
 }
