@@ -9,8 +9,8 @@ import UIKit
 
 public extension UIView {
     func removeAllSubviews() {
-        while !subviews.isEmpty {
-            subviews.last?.removeFromSuperview()
+        while let last = subviews.last {
+            last.removeFromSuperview()
         }
     }
     
