@@ -76,11 +76,11 @@ public extension UIView {
     // https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/ios/chrome/browser/snapshots/snapshot_generator.mm
     // https://github.com/CoderZhuXH/XHLaunchAd/issues/224
     func toImage() -> UIImage {
-        UIGraphicsImageRenderer(size: bounds.size).image { context in
+        UIGraphicsImageRenderer(size: bounds.size).image {
             if window != nil && viewHierarchyContainsWKWebView() {
                 drawHierarchy(in: bounds, afterScreenUpdates: true)
             } else {
-                layer.render(in: context.cgContext)
+                layer.render(in: $0.cgContext)
             }
         }
     }
@@ -89,11 +89,6 @@ public extension UIView {
         if self is WKWebView && !isHidden && alpha > 0 && bounds.size.width > 0 && bounds.size.height > 0 {
             return true
         }
-        
-        for subview in subviews {
-            if subview.viewHierarchyContainsWKWebView() { return true }
-        }
-        
-        return false
+        return subviews.contains { $0.viewHierarchyContainsWKWebView() }
     }
 }
