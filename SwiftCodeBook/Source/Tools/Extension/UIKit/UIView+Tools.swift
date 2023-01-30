@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import WebKit
 
 public extension UIView {
     func addSubviews(_ views: [UIView]) {
@@ -68,5 +69,31 @@ public extension UIView {
     @objc
     private func gestureAction(gr: UIGestureRecognizer) {
         gr.action?(gr)
+    }
+}
+
+public extension UIView {
+    // https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/ios/chrome/browser/snapshots/snapshot_generator.mm
+    // https://github.com/CoderZhuXH/XHLaunchAd/issues/224
+    func toImage() -> UIImage {
+        UIGraphicsImageRenderer(size: bounds.size).image { context in
+            if window != nil && viewHierarchyContainsWKWebView() {
+                drawHierarchy(in: bounds, afterScreenUpdates: true)
+            } else {
+                layer.render(in: context.cgContext)
+            }
+        }
+    }
+    
+    private func viewHierarchyContainsWKWebView() -> Bool {
+        if self is WKWebView && !isHidden && alpha > 0 && bounds.size.width > 0 && bounds.size.height > 0 {
+            return true
+        }
+        
+        for subview in subviews {
+            if subview.viewHierarchyContainsWKWebView() { return true }
+        }
+        
+        return false
     }
 }
