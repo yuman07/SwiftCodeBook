@@ -9,10 +9,6 @@ import UIKit
 import WebKit
 
 public extension UIView {
-    func addSubviews(_ views: [UIView]) {
-        views.forEach { self.addSubview($0) }
-    }
-    
     func removeAllSubviews() {
         while let last = subviews.last {
             last.removeFromSuperview()
