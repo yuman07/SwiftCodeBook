@@ -22,3 +22,10 @@ public extension Dictionary {
         return String(data: data, encoding: .utf8)
     }
 }
+
+public extension Dictionary where Key == String, Value == Any {
+    init?(plistFilePath: String) {
+        guard let dict = NSDictionary(contentsOfFile: plistFilePath) as? [String: Any] else { return nil }
+        self = dict
+    }
+}

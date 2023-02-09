@@ -31,8 +31,30 @@ public extension Array {
     }
 }
 
+public extension Array where Element == Any {
+    init?(plistFilePath: String) {
+        guard let array = NSArray(contentsOfFile: plistFilePath) as? [Any] else { return nil }
+        self = array
+    }
+}
+
+public extension Array where Element: Equatable {
+    func removeDuplicates() -> [Element] {
+        guard count > 1 else { return self }
+        return reduce(into: [Element]()) {
+            guard !$0.contains($1) else { return }
+            $0.append($1)
+        }
+    }
+    
+    mutating func remove(element: Element) {
+        guard let index = firstIndex(of: element) else { return }
+        remove(at: index)
+    }
+}
+
 public extension Array where Element: Hashable {
-    func unique() -> [Element] {
+    func removeDuplicates() -> [Element] {
         guard count > 1 else { return self }
         var set = Set<Element>(minimumCapacity: count)
         return filter { set.insert($0).inserted }

@@ -24,6 +24,21 @@ public extension UIApplication {
         return nil
     }
     
+    static var isAppExtension: Bool {
+        Bundle.main.bundlePath.hasSuffix(".appex")
+    }
+    
+    // https://stackoverflow.com/questions/18282326/how-can-i-detect-if-the-currently-running-app-was-installed-from-the-app-store
+    static var isInTestFlight: Bool {
+        !UIDevice.current.isSimulator
+        && Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+        && !isAdHocDistributed
+    }
+    
+    static var isAdHocDistributed: Bool {
+        Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil
+    }
+    
     static var usedMemoryInByte: UInt64? {
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
