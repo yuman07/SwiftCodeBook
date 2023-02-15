@@ -29,7 +29,8 @@ private let json1 = """
                 "p4": true,
                 "p5": [],
                 "p6": {},
-                "p7": {"22": false, "33": null, "44": 2}
+                "p7": {"22": false, "33": null, "44": 2},
+                "p8": [null, null]
             },
             "h4": {}
         }
