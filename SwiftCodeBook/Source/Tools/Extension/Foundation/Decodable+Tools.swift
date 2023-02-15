@@ -14,12 +14,12 @@ public extension Decodable {
     }
     
     init?(JSONArray: [Any]) {
-        guard let data = try? JSONSerialization.data(withJSONObject: JSONArray) else { return nil }
+        guard let data = JSONArray.toJSONData() else { return nil }
         self.init(JSONData: data)
     }
     
     init?(JSONDictionary: [AnyHashable: Any]) {
-        guard let data = try? JSONSerialization.data(withJSONObject: JSONDictionary) else { return nil }
+        guard let data = JSONDictionary.toJSONData() else { return nil }
         self.init(JSONData: data)
     }
     
