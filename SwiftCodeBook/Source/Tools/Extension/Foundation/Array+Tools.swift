@@ -9,8 +9,8 @@ import Foundation
 
 public extension Array {
     func toJSONData() -> Data? {
-        if let data = try? JSONSerialization.data(withJSONObject: self) {
-            return data
+        if JSONSerialization.isValidJSONObject(self) {
+            return try? JSONSerialization.data(withJSONObject: self)
         } else if let encode = self as? Encodable {
             return encode.toJSONData()
         }
