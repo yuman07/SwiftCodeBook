@@ -23,13 +23,11 @@ public extension Encodable {
     }
     
     func toJSONArray() -> [Any]? {
-        guard let array = toJSONDataAndObj()?.obj as? [Any] else { return nil }
-        return array
+        toJSONDataAndObj()?.obj as? [Any]
     }
     
     func toJSONDictionary() -> [String: Any]? {
-        guard let dict = toJSONDataAndObj()?.obj as? [String: Any] else { return nil }
-        return dict
+        toJSONDataAndObj()?.obj as? [String: Any]
     }
     
     func toJSONString() -> String? {
