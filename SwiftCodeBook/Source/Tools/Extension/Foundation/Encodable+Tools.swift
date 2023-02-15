@@ -10,9 +10,9 @@ import Foundation
 public extension Encodable {
     func toJSONData() -> Data? {
         if let data = self as? Data {
-            return data
+            return (try? JSONSerialization.jsonObject(with: data)).flatMap { _ in data }
         } else if let string = self as? String  {
-            return string.data(using: .utf8)
+            return string.data(using: .utf8)?.toJSONData()
         } else {
             return try? JSONEncoder().encode(self)
         }
