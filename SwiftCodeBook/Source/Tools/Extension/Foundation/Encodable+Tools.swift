@@ -31,7 +31,6 @@ public extension Encodable {
     }
     
     func toJSONString() -> String? {
-        guard let data = toJSONData() else { return nil }
-        return String(data: data, encoding: .utf8)
+        toJSONData().flatMap { String(data: $0, encoding: .utf8) }
     }
 }
