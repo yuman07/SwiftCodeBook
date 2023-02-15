@@ -40,9 +40,8 @@ public extension Array where Element == Any {
 public extension Array where Element: Equatable {
     func removeDuplicates() -> [Element] {
         guard count > 1 else { return self }
-        return reduce(into: [Element]()) {
-            guard !$0.contains($1) else { return }
-            $0.append($1)
+        return reduce(into: []) {
+            if !$0.contains($1) { $0.append($1) }
         }
     }
     
