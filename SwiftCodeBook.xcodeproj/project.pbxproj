@@ -78,7 +78,7 @@
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
-		7AB2F856299E23400058D526 /* ISO8601DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter.swift */; };
+		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
 		7AB484CC2994D8A20085D298 /* Collection+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB484CB2994D8A20085D298 /* Collection+Tools.swift */; };
 		7ACA60502918F3F9009B502A /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA604F2918F3F9009B502A /* GCDTimer.swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
@@ -151,7 +151,7 @@
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
-		7AB2F855299E23400058D526 /* ISO8601DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601DateFormatter.swift; sourceTree = "<group>"; };
+		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
 		7AB484CB2994D8A20085D298 /* Collection+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Tools.swift"; sourceTree = "<group>"; };
 		7ACA604F2918F3F9009B502A /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 				7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */,
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
-				7AB2F855299E23400058D526 /* ISO8601DateFormatter.swift */,
+				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A1074942908FAEF00C13362 /* String+Tools.swift */,
@@ -498,7 +498,7 @@
 				7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */,
 				7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */,
 				7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */,
-				7AB2F856299E23400058D526 /* ISO8601DateFormatter.swift in Sources */,
+				7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */,
 				7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */,
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */,
