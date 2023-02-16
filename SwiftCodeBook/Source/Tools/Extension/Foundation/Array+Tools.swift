@@ -30,9 +30,9 @@ public extension Array {
     }
 }
 
-public extension Array where Element == Any {
+public extension Array {
     init?(plistFilePath: String) {
-        guard let array = NSArray(contentsOfFile: plistFilePath) as? [Any] else { return nil }
+        guard let array = NSArray(contentsOfFile: plistFilePath) as? [Element] else { return nil }
         self = array
     }
 }
@@ -43,11 +43,6 @@ public extension Array where Element: Equatable {
         return reduce(into: []) {
             if !$0.contains($1) { $0.append($1) }
         }
-    }
-    
-    mutating func remove(element: Element) {
-        guard let index = firstIndex(of: element) else { return }
-        remove(at: index)
     }
 }
 

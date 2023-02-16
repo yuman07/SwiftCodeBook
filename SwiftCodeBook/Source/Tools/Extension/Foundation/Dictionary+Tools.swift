@@ -22,9 +22,9 @@ public extension Dictionary {
     }
 }
 
-public extension Dictionary where Key == String, Value == Any {
+public extension Dictionary {
     init?(plistFilePath: String) {
-        guard let dict = NSDictionary(contentsOfFile: plistFilePath) as? [String: Any] else { return nil }
+        guard let dict = NSDictionary(contentsOfFile: plistFilePath) as? [Key: Value] else { return nil }
         self = dict
     }
 }
