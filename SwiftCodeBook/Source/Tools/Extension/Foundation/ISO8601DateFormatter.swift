@@ -1,25 +1,30 @@
 //
-//  DateFormatter+Tools.swift
+//  ISO8601DateFormatter.swift
 //  SwiftCodeBook
 //
-//  Created by yuman on 2022/10/26.
+//  Created by yuman on 2023/2/16.
 //
 
 import Foundation
 
-public extension DateFormatter {
-    static func dateWithISO8601String(_ ISO8601String: String) -> Date? {
-        for formatter in ISO8601Formatters {
-            if let date = formatter.date(from: ISO8601String) {
+public extension ISO8601DateFormatter {
+    static func date(from string: String) -> Date? {
+        for formatter in formatters {
+            if let date = formatter.date(from: string) {
                 return date
             }
         }
         return nil
     }
     
-    private static let ISO8601Formatters = {
+    static func string(from date: Date) -> String {
+        formatters[3].string(from: date)
+    }
+    
+    private static let formatters = {
         let defaults: ISO8601DateFormatter.Options =
         [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
+        
         let optionals: [ISO8601DateFormatter.Options] =
         [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
         
