@@ -23,14 +23,14 @@ public extension DateFormatter {
         let optionals: [ISO8601DateFormatter.Options] =
         [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
         
-        return (0 ..< 2 << (optionals.count - 1)).reduce(into: [ISO8601DateFormatter]()) { partialResult, num in
+        return (0 ..< 2 << (optionals.count - 1)).map { num -> ISO8601DateFormatter in
             var formatOptions = defaults
             optionals.enumerated().forEach { index, value in
                 if (num >> index) & 1 == 1 { formatOptions.insert(value) }
             }
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = formatOptions
-            partialResult.append(formatter)
+            return formatter
         }
     }()
 }
