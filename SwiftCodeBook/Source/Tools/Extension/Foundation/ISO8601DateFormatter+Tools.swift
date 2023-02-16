@@ -17,18 +17,24 @@ public extension ISO8601DateFormatter {
         return nil
     }
     
-    static func string(from date: Date) -> String {
-        formatters[3].string(from: date)
+
+    static func string(from date: Date, options: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds]) -> String {
+        var index = 0
+        for option in options {
+            guard let idx = optionals.firstIndex(of: option) else { continue }
+            index += (1 << idx)
+        }
+        return formatters[index].string(from: date)
     }
     
+    private static let defaults: ISO8601DateFormatter.Options =
+    [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
+    
+    private static let optionals: [ISO8601DateFormatter.Options] =
+    [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
+    
     private static let formatters = {
-        let defaults: ISO8601DateFormatter.Options =
-        [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
-        
-        let optionals: [ISO8601DateFormatter.Options] =
-        [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
-        
-        return (0 ..< 2 << (optionals.count - 1)).map { num -> ISO8601DateFormatter in
+        (0 ..< 2 << (optionals.count - 1)).map { num -> ISO8601DateFormatter in
             var formatOptions = defaults
             optionals.enumerated().forEach { index, value in
                 if (num >> index) & 1 == 1 { formatOptions.insert(value) }
