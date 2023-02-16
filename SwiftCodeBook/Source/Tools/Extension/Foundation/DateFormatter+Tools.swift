@@ -9,7 +9,7 @@ import Foundation
 
 public extension DateFormatter {
     static func dateWithISO8601String(_ ISO8601String: String) -> Date? {
-        for formatter in formatters {
+        for formatter in ISO8601Formatters {
             if let date = formatter.date(from: ISO8601String) {
                 return date
             }
@@ -17,7 +17,7 @@ public extension DateFormatter {
         return nil
     }
     
-    private static let formatters = {
+    private static let ISO8601Formatters = {
         let defaults: ISO8601DateFormatter.Options =
         [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
         let optionals: [ISO8601DateFormatter.Options] =
