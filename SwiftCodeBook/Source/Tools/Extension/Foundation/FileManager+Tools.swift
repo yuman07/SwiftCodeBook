@@ -13,15 +13,15 @@ public extension FileManager {
     }
     
     var documentPath: String {
-        NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? homePath + "/Documents"
+        homePath + "/Documents"
     }
     
     var libraryPath: String {
-        NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first ?? homePath + "/Library"
+        homePath + "/Library"
     }
     
     var cachePath: String {
-        NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first ?? libraryPath + "/Caches"
+        libraryPath + "/Caches"
     }
     
     var tmpPath: String {
