@@ -8,56 +8,28 @@
 import Foundation
 
 public extension DateFormatter {
-    static func dateWithISO8601Format(_ ISO8601Str: String) -> Date? {
+    static func dateWithISO8601String(_ ISO8601String: String) -> Date? {
         for formatter in formatters {
-            if let date = formatter.date(from: ISO8601Str) {
+            if let date = formatter.date(from: ISO8601String) {
                 return date
             }
         }
         return nil
     }
     
-    private static let kUSPosixLocaleID = "en_US_POSIX"
-    private static let formatters: [DateFormatter] = [
-        {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: kUSPosixLocaleID)
-            return formatter
-        }(),
-        {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: kUSPosixLocaleID)
-            return formatter
-        }(),
-        {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: kUSPosixLocaleID)
-            return formatter
-        }(),
-        {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: kUSPosixLocaleID)
-            return formatter
-        }(),
-        {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: kUSPosixLocaleID)
-            return formatter
-        }()
-    ]
+    static let formatters = {
+        let options: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
+        return (0 ..< 2 << (options.count - 1)).reduce(into: [ISO8601DateFormatter]()) { partialResult, num in
+            let formatter = ISO8601DateFormatter()
+            var formatOptions = formatter.formatOptions
+            formatOptions.remove(.withTimeZone)
+            options.enumerated().forEach { index, value in
+                if (num >> index) & 1 == 1 {
+                    formatOptions.insert(value)
+                }
+            }
+            formatter.formatOptions = formatOptions
+            partialResult.append(formatter)
+        }
+    }()
 }
