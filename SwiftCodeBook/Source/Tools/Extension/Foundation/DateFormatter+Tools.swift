@@ -18,16 +18,17 @@ public extension DateFormatter {
     }
     
     private static let formatters = {
-        let options: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
-        return (0 ..< 2 << (options.count - 1)).reduce(into: [ISO8601DateFormatter]()) { partialResult, num in
-            let formatter = ISO8601DateFormatter()
-            var formatOptions = formatter.formatOptions
-            formatOptions.remove(.withTimeZone)
-            options.enumerated().forEach { index, value in
-                if (num >> index) & 1 == 1 {
-                    formatOptions.insert(value)
-                }
+        let defaults: ISO8601DateFormatter.Options =
+        [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
+        let optionals: [ISO8601DateFormatter.Options] =
+        [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
+        
+        return (0 ..< 2 << (optionals.count - 1)).reduce(into: [ISO8601DateFormatter]()) { partialResult, num in
+            var formatOptions = defaults
+            optionals.enumerated().forEach { index, value in
+                if (num >> index) & 1 == 1 { formatOptions.insert(value) }
             }
+            let formatter = ISO8601DateFormatter()
             formatter.formatOptions = formatOptions
             partialResult.append(formatter)
         }
