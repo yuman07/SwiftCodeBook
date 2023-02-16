@@ -17,7 +17,7 @@ public extension DateFormatter {
         return nil
     }
     
-    static let formatters = {
+    private static let formatters = {
         let options: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
         return (0 ..< 2 << (options.count - 1)).reduce(into: [ISO8601DateFormatter]()) { partialResult, num in
             let formatter = ISO8601DateFormatter()
