@@ -111,7 +111,7 @@ struct TestPointerInSwift {
         bufferPointer.enumerated().forEach { index, value in
             print(value)
         }
-        // 注意bufferPointer不需要释放，因为bufferPointer是pointer的包装，而pointer已经在上面释放过了
+        // 注意bufferPointer不需要释放，因为bufferPointer和pointer指向同一块内存，不能重复释放
     }
     
     /// RawPointer <--> TypePointer
@@ -146,7 +146,7 @@ struct TestPointerInSwift {
         var sampleStruct = SampleStruct(number: 25, flag: true)
         
         // 注意以下都千万不要从 withUnsafeXXX 中返回指针
-        // 只应该在{}内使用，而不要传到外部
+        // 即只应该在{}内使用，而不要传到外部
         
         // 该结构体的RawPointer，即Bytes
         withUnsafeBytes(of: &sampleStruct) { bytes in
