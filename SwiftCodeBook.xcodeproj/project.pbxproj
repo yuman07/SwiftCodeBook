@@ -78,6 +78,7 @@
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
+		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
 		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
 		7AB484CC2994D8A20085D298 /* Collection+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB484CB2994D8A20085D298 /* Collection+Tools.swift */; };
 		7ACA60502918F3F9009B502A /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA604F2918F3F9009B502A /* GCDTimer.swift */; };
@@ -151,6 +152,7 @@
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
+		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
 		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
 		7AB484CB2994D8A20085D298 /* Collection+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Tools.swift"; sourceTree = "<group>"; };
 		7ACA604F2918F3F9009B502A /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 				7A501A2D2914F43000512E32 /* KVO.swift */,
 				7AE1E49E2949B8C5001B3671 /* LimitInput.swift */,
 				7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */,
+				7AB206A3299F66310058D526 /* PointerInSwift.swift */,
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
 			);
 			path = Foundation;
@@ -529,6 +532,7 @@
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
+				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */,
 				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRange-SwiftRange.swift in Sources */,
