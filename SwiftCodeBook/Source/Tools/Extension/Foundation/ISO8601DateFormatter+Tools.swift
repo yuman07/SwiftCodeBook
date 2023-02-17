@@ -18,11 +18,10 @@ public extension ISO8601DateFormatter {
     }
     
 
-    static func string(from date: Date, options: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds]) -> String {
+    static func string(from date: Date, options: ISO8601DateFormatter.Options = [.withTimeZone, .withFractionalSeconds]) -> String {
         var index = 0
-        for option in options.removeDuplicates() {
-            guard let idx = optionals.firstIndex(of: option) else { continue }
-            index += (1 << idx)
+        optionals.enumerated().forEach { idx, value in
+            if options.contains(value) { index += (1 << idx) }
         }
         return formatters[index].string(from: date)
     }
