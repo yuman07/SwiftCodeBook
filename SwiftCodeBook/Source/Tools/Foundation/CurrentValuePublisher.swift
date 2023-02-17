@@ -119,4 +119,3 @@ public final class AnyCurrentValuePublisher<Value, Failure: Error>: CurrentValue
         _publisher.receive(subscriber: subscriber)
     }
 }
-

@@ -37,4 +37,3 @@ public extension AnyCancellable {
         cancelBag.store(self)
     }
 }
-
