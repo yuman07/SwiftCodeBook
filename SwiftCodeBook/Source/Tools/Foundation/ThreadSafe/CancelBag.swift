@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 public final class CancelBag {
-    private let lock = NSRecursiveLock()
+    private let lock = NSLock()
     private var tokens = Set<AnyCancellable>()
     
     public init() {}
