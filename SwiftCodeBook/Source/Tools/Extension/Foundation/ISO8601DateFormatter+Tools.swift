@@ -16,7 +16,6 @@ public extension ISO8601DateFormatter {
         }
         return nil
     }
-    
 
     static func string(from date: Date, options: ISO8601DateFormatter.Options = [.withTimeZone, .withFractionalSeconds]) -> String {
         var index = 0
