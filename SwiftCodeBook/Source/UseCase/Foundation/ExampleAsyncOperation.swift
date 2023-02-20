@@ -65,8 +65,10 @@ final class ExampleAsyncOperation: Operation {
     }
     
     override func cancel() {
-        super.cancel()
-        isCancelled = true
+        lock.withLock {
+            super.cancel()
+            isCancelled = true
+        }
     }
     
     override var isAsynchronous: Bool {
@@ -75,10 +77,8 @@ final class ExampleAsyncOperation: Operation {
     
     private func complete() {
         lock.withLock {
-            if !isFinished {
-                isExecuting = false
-                isFinished = true
-            }
+            isExecuting = false
+            isFinished = true
         }
     }
     
