@@ -180,6 +180,13 @@ struct TestPointerInSwift {
         
         print("---------")
         
+        // Data获取Raw指针即bytes
+        Data().withUnsafeBytes { bytes in
+            for byte in bytes { print(byte) }
+        }
+        
+        print("---------")
+        
         // 数组获取buffer指针
         let array = [SampleStruct(number: 10, flag: true), SampleStruct(number: 20, flag: false)]
         array.withUnsafeBufferPointer { pointer in
