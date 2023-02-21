@@ -92,6 +92,7 @@
 		7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */; };
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
+		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +168,7 @@
 		7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformGuide.swift; sourceTree = "<group>"; };
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
+		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +372,7 @@
 				7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */,
 				7AB206A3299F66310058D526 /* PointerInSwift.swift */,
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
+				7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				7AE1E4992949B066001B3671 /* UILabel.lineRange.swift in Sources */,
 				7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */,
 				7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */,
+				7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */,
 				7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
