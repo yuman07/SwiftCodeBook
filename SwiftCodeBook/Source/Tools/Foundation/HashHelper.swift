@@ -61,9 +61,8 @@ public extension HashHelper {
         return hasher.finalize().toHashString()
     }
     
-    static func hash(string: String, using function: Function) -> String? {
-        guard let data = string.data(using: .utf8) else { return nil }
-        return hash(data: data, using: function)
+    static func hash(string: String, using function: Function) -> String {
+        return hash(data: Data(string.utf8), using: function)
     }
     
     static func hash(filePath: String, using function: Function) async -> String? {
@@ -88,7 +87,7 @@ public extension HashHelper {
 }
 
 public extension String {
-    func hash(using function: HashHelper.Function) -> String? {
+    func hash(using function: HashHelper.Function) -> String {
         HashHelper.hash(string: self, using: function)
     }
 }

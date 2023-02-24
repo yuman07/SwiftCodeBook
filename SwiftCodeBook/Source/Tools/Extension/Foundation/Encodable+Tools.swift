@@ -12,7 +12,7 @@ public extension Encodable {
         if let data = self as? Data {
             return (try? JSONSerialization.jsonObject(with: data)).flatMap { (data, $0) }
         } else if let string = self as? String  {
-            return string.data(using: .utf8)?.toJSONDataAndObj()
+            return Data(string.utf8).toJSONDataAndObj()
         } else {
             return (try? JSONEncoder().encode(self))?.toJSONDataAndObj()
         }

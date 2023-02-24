@@ -24,7 +24,6 @@ public extension Decodable {
     }
     
     init?(JSONString: String) {
-        guard let data = JSONString.data(using: .utf8) else { return nil }
-        self.init(JSONData: data)
+        self.init(JSONData: Data(JSONString.utf8))
     }
 }
