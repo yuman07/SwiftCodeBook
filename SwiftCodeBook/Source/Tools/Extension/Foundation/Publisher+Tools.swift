@@ -11,8 +11,8 @@ public extension Publisher {
     func sinkToResult(_ result: @escaping (Result<Output, Failure>?) -> Void) -> AnyCancellable {
         sink(receiveCompletion: {
             switch $0 {
-            case let .failure(error): result(.failure(error))
             case .finished: result(nil)
+            case let .failure(error): result(.failure(error))
             }
         }, receiveValue: {
             result(.success($0))
