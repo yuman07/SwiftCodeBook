@@ -25,6 +25,9 @@ private final class ClickTextVC: UIViewController {
               let textRange = textView.textRange(from: start, to: end)
         else { return }
         
+        // 注意：这个计算必须满足此时textView已经layout finished
+        // 这里为了方便，就使用了手动布局，因此可以直接计算
+        // 如果是自动布局，则可以把该方法放到比如viewDidLayoutSubviews()中
         rects = textView.selectionRects(for: textRange).map { $0.rect }
         
         textView.addTapGesture { gr in
