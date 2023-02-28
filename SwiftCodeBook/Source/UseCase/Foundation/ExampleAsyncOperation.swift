@@ -56,12 +56,8 @@ final class ExampleAsyncOperation: Operation {
     
     private var _isCancelled: Bool = false
     override private(set) var isCancelled: Bool {
-        get {
-            lock.withLock { _isCancelled }
-        }
-        set {
-            lock.withLock { _isCancelled = newValue }
-        }
+        get { lock.withLock { _isCancelled } }
+        set { lock.withLock { _isCancelled = newValue } }
     }
     
     override func cancel() {

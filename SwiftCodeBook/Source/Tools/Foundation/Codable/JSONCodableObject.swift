@@ -172,7 +172,6 @@ private struct JSONCodingKey: CodingKey {
     
     init(intValue: Int) {
         self.stringValue = String(intValue)
-        self.intValue = intValue
     }
     
     init(stringValue: String) {
