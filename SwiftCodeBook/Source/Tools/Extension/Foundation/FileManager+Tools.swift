@@ -42,7 +42,7 @@ public extension FileManager {
     
     func directorySizeInByte(at path: String) async -> UInt64 {
         await withUnsafeContinuation { continuation in
-            Task.detached {
+            DispatchQueue.global().async {
                 guard !path.isEmpty, let contents = try? FileManager.default.subpathsOfDirectory(atPath: path), !contents.isEmpty else {
                     return continuation.resume(returning: 0)
                 }

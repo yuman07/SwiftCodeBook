@@ -67,7 +67,7 @@ public extension HashHelper {
     
     static func hash(filePath: String, using function: Function) async -> String? {
         await withUnsafeContinuation { continuation in
-            Task.detached {
+            DispatchQueue.global().async {
                 guard let handler = FileHandle(forReadingAtPath: filePath) else { return continuation.resume(returning: nil) }
                 defer { try? handler.close() }
                 
