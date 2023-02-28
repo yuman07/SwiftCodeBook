@@ -19,7 +19,11 @@ public final class HashHelper {
     
     private let function: Function
     private var hasher: any HashFunction
-    private let queue = DispatchQueue(label: "SwiftCodeBook.HashHelper.SerialQueue")
+    private let queue = {
+        let q = OperationQueue()
+        q.maxConcurrentOperationCount = 1
+        return q
+    }()
    
     public init(function: Function) {
         self.function = function
@@ -27,15 +31,20 @@ public final class HashHelper {
     }
     
     public func update(data: Data) {
-        queue.async { [weak self] in
-            self?.hasher.update(data: data)
+        queue.addOperation { [weak self] in
+            guard let self else { return }
+            self.hasher.update(data: data)
         }
     }
     
     public func finalize() -> String {
-        queue.sync {
-            hasher.finalize().toHashString()
+        var hash = ""
+        queue.addOperation { [weak self] in
+            guard let self else { return }
+            hash = self.hasher.finalize().toHashString()
         }
+        queue.waitUntilAllOperationsAreFinished()
+        return hash
     }
     
     private static func hasher(using function: Function) -> any HashFunction {
