@@ -43,6 +43,7 @@
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A429308F5D001A3345 /* HitTest.swift */; };
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
+		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
 		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
@@ -145,6 +146,7 @@
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A8A00A429308F5D001A3345 /* HitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTest.swift; sourceTree = "<group>"; };
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
+		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
 		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodable.swift; sourceTree = "<group>"; };
@@ -383,16 +385,17 @@
 		7AE1E49D2949B72A001B3671 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
-				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
 				7AABCA8B2928B0FF00059782 /* AddMask.swift */,
-				7A6CED6929308DDF00680CEC /* ScreenRotate.swift */,
+				7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */,
+				7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */,
 				7A8A00A429308F5D001A3345 /* HitTest.swift */,
+				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
+				7A6CED6929308DDF00680CEC /* ScreenRotate.swift */,
+				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
 				7AE1E4982949B066001B3671 /* UILabel.lineRange.swift */,
-				7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */,
-				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
-				7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */,
+				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
+				7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7AD0315429A670980044421E /* LazySafe.swift in Sources */,
+				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
