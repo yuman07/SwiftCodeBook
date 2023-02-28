@@ -44,6 +44,7 @@
 		7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A429308F5D001A3345 /* HitTest.swift */; };
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
+		7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */; };
 		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
@@ -87,7 +88,6 @@
 		7AD0315429A670980044421E /* LazySafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0315329A670980044421E /* LazySafe.swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
-		7AE1E4992949B066001B3671 /* UILabel.lineRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4982949B066001B3671 /* UILabel.lineRange.swift */; };
 		7AE1E49B2949B583001B3671 /* NSRange-SwiftRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */; };
 		7AE1E49F2949B8C5001B3671 /* LimitInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E49E2949B8C5001B3671 /* LimitInput.swift */; };
 		7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A02949B921001B3671 /* DictionaryOfOptionalValues.swift */; };
@@ -147,6 +147,7 @@
 		7A8A00A429308F5D001A3345 /* HitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTest.swift; sourceTree = "<group>"; };
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
+		7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+Tools.swift"; sourceTree = "<group>"; };
 		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodable.swift; sourceTree = "<group>"; };
@@ -165,7 +166,6 @@
 		7AD0315329A670980044421E /* LazySafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazySafe.swift; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
-		7AE1E4982949B066001B3671 /* UILabel.lineRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.lineRange.swift; sourceTree = "<group>"; };
 		7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange-SwiftRange.swift"; sourceTree = "<group>"; };
 		7AE1E49E2949B8C5001B3671 /* LimitInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitInput.swift; sourceTree = "<group>"; };
 		7AE1E4A02949B921001B3671 /* DictionaryOfOptionalValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryOfOptionalValues.swift; sourceTree = "<group>"; };
@@ -296,6 +296,7 @@
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
+				7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A1074942908FAEF00C13362 /* String+Tools.swift */,
@@ -393,7 +394,6 @@
 				7A6CED6929308DDF00680CEC /* ScreenRotate.swift */,
 				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
-				7AE1E4982949B066001B3671 /* UILabel.lineRange.swift */,
 				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
 				7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */,
 			);
@@ -533,12 +533,12 @@
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */,
 				7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */,
-				7AE1E4992949B066001B3671 /* UILabel.lineRange.swift in Sources */,
 				7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */,
 				7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */,
 				7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */,
 				7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
+				7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7AD0315429A670980044421E /* LazySafe.swift in Sources */,
