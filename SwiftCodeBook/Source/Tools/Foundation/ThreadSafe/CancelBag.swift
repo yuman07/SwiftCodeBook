@@ -28,7 +28,7 @@ public final class CancelBag {
     public func store(_ cancellable: AnyCancellable) {
         lock.lock()
         defer { lock.unlock() }
-        tokens.insert(cancellable)
+        cancellable.store(in: &tokens)
     }
 }
 
