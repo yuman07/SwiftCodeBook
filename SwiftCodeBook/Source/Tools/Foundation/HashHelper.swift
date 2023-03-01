@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-public final class HashHelper {
+public final actor HashHelper {
     public enum Function {
         case md5
         case sha1
@@ -19,27 +19,22 @@ public final class HashHelper {
     
     private let function: Function
     private var hasher: any HashFunction
-    private let queue = OperationQueue(maxConcurrentOperationCount: 1)
    
     public init(function: Function) {
         self.function = function
         hasher = Self.hasher(using: function)
     }
     
-    public func update(data: Data) {
-        queue.addOperation { [weak self] in
-            guard let self else { return }
-            self.hasher.update(data: data)
-        }
+    public func reset() {
+        hasher = Self.hasher(using: function)
     }
     
-    public func finalize() async -> String {
-        await withUnsafeContinuation { continuation in
-            queue.addOperation { [weak self] in
-                guard let self else { return continuation.resume(returning: "") }
-                continuation.resume(returning: self.hasher.finalize().toHashString())
-            }
-        }
+    public func update(data: Data) {
+        hasher.update(data: data)
+    }
+    
+    public func finalize() -> String {
+        hasher.finalize().toHashString()
     }
     
     private static func hasher(using function: Function) -> any HashFunction {
