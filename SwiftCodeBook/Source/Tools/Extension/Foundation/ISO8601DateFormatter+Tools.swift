@@ -25,7 +25,7 @@ public extension ISO8601DateFormatter {
         return formatters[index].string(from: date)
     }
     
-    private static let defaults: ISO8601DateFormatter.Options =
+    private static let basic: ISO8601DateFormatter.Options =
     [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
     
     private static let optionals: [ISO8601DateFormatter.Options] =
@@ -33,7 +33,7 @@ public extension ISO8601DateFormatter {
     
     private static let formatters = {
         (0 ..< 1 << optionals.count).map { num -> ISO8601DateFormatter in
-            var formatOptions = defaults
+            var formatOptions = basic
             optionals.enumerated().forEach { index, value in
                 if (num >> index) & 1 == 1 { formatOptions.insert(value) }
             }
