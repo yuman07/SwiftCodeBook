@@ -44,6 +44,12 @@ public extension String {
 }
 
 public extension String {
+    var UTF8Data: Data {
+        Data(self.utf8)
+    }
+}
+
+public extension String {
     func allIndicesOf(string: String) -> [Int] {
         var indices = [Int]()
         var start = startIndex

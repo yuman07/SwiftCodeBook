@@ -19,11 +19,7 @@ public final class HashHelper {
     
     private let function: Function
     private var hasher: any HashFunction
-    private let queue = {
-        let q = OperationQueue()
-        q.maxConcurrentOperationCount = 1
-        return q
-    }()
+    private let queue = OperationQueue(maxConcurrentOperationCount: 1)
    
     public init(function: Function) {
         self.function = function
@@ -37,14 +33,13 @@ public final class HashHelper {
         }
     }
     
-    public func finalize() -> String {
-        var hash = ""
-        queue.addOperation { [weak self] in
-            guard let self else { return }
-            hash = self.hasher.finalize().toHashString()
+    public func finalize() async -> String {
+        await withUnsafeContinuation { continuation in
+            queue.addOperation { [weak self] in
+                guard let self else { return continuation.resume(returning: "") }
+                continuation.resume(returning: self.hasher.finalize().toHashString())
+            }
         }
-        queue.waitUntilAllOperationsAreFinished()
-        return hash
     }
     
     private static func hasher(using function: Function) -> any HashFunction {
