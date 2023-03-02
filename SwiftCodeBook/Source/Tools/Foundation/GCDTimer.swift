@@ -41,9 +41,7 @@ public final class GCDTimer {
         defer { lock.unlock() }
         
         guard state == .inited || state == .paused else { return }
-        if state == .inited {
-            timer.schedule(deadline: .now() + timeInterval, repeating: .milliseconds(Int(timeInterval * 1000)))
-        }
+        if state == .inited { timer.schedule(deadline: .now() + timeInterval, repeating: .milliseconds(Int(timeInterval * 1000))) }
         timer.resume()
         state = .running
     }
@@ -62,9 +60,7 @@ public final class GCDTimer {
         defer { lock.unlock() }
         
         guard state != .stoped else { return }
-        if state == .inited {
-            timer.resume()
-        }
+        if state == .inited { timer.resume() }
         timer.cancel()
         state = .stoped
     }
