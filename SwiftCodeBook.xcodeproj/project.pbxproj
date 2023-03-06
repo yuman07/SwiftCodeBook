@@ -45,7 +45,6 @@
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
 		7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */; };
-		7A915BC329AF311B008AD58C /* OperationQueue+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A915BC229AF311B008AD58C /* OperationQueue+Tools.swift */; };
 		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
@@ -148,7 +147,6 @@
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
 		7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+Tools.swift"; sourceTree = "<group>"; };
-		7A915BC229AF311B008AD58C /* OperationQueue+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Tools.swift"; sourceTree = "<group>"; };
 		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodable.swift; sourceTree = "<group>"; };
@@ -297,7 +295,6 @@
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
 				7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */,
-				7A915BC229AF311B008AD58C /* OperationQueue+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A1074942908FAEF00C13362 /* String+Tools.swift */,
@@ -531,7 +528,6 @@
 				7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */,
-				7A915BC329AF311B008AD58C /* OperationQueue+Tools.swift in Sources */,
 				7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */,
 				7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */,
 				7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */,
