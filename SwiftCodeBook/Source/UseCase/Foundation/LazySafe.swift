@@ -9,10 +9,11 @@ import Foundation
 
 private class LazySafe {
     private var _age: Int?
-    var age: Int! {
+    var age: Int {
         DispatchQueue.runOnce {
             _age = Int.random(in: 1...100)
         }
+        guard let _age else { fatalError("_age can't be nil here") }
         return _age
     }
 }
