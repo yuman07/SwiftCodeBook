@@ -24,6 +24,25 @@ public extension UIApplication {
         return nil
     }
     
+    static var appDisplayName: String? {
+        (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
+    }
+    
+    static var appVersion: String? {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    
+    static var appBuildNumber: Int? {
+        guard let buildStr = Bundle.main.infoDictionary?["CFBundleVersion"] as? String else {
+            return nil
+        }
+        return Int(buildStr)
+    }
+    
+    static var appBundleIdentifier: String? {
+        Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
+    }
+    
     static var isAppExtension: Bool {
         Bundle.main.bundlePath.hasSuffix(".appex")
     }
