@@ -99,10 +99,6 @@ public extension Data {
 
 private extension Digest {
     func toHashString() -> String {
-        withUnsafeBytes {
-            $0.reduce(into: "") { result, byte in
-                result += String(format: "%02x", UInt8(byte))
-            }
-        }
+        map { String(format: "%02x", $0) }.joined()
     }
 }
