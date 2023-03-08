@@ -13,10 +13,4 @@ public extension URL {
             if let value = $1.value { $0[$1.name] = value }
         }
     }
-    
-    mutating func updateQueryDictionary(_ dict: [String: String]) {
-        guard var urlComponents = URLComponents(string: absoluteString) else { return }
-        urlComponents.queryItems = dict.map { URLQueryItem(name: $0.key, value: $0.value) }
-        self = urlComponents.url ?? self
-    }
 }
