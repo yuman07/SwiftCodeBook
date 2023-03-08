@@ -29,6 +29,23 @@ public extension UIDevice {
     var hasHomeIndicator: Bool {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
+    
+    var isJailbroken: Bool {
+        let canReadBinBash = FileManager.default.fileExists(atPath: "/bin/bash")
+        if let cydiaURL = URL(string: "cydia://"), let canOpenCydia = (UIApplication.value(forKey: "sharedApplication") as? UIApplication)?.canOpenURL(cydiaURL) {
+            return canOpenCydia || canReadBinBash
+        } else {
+            return canReadBinBash
+        }
+    }
+    
+    var totalDiskSpaceInBytes: UInt64 {
+        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
+    }
+    
+    var freeDiskSpaceInBytes: UInt64 {
+        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64 ?? 0
+    }
 }
 
 private extension UIDevice {
