@@ -41,6 +41,7 @@
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
+		7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */; };
 		7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A429308F5D001A3345 /* HitTest.swift */; };
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
@@ -143,6 +144,7 @@
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
+		7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Tools.swift"; sourceTree = "<group>"; };
 		7A8A00A429308F5D001A3345 /* HitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTest.swift; sourceTree = "<group>"; };
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			children = (
 				7A1074A82909061700C13362 /* Array+Tools.swift */,
 				7A1074962908FB2100C13362 /* Character+Tools.swift */,
+				7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */,
 				7AB484CB2994D8A20085D298 /* Collection+Tools.swift */,
 				7A9CAD73291E105E00046466 /* Date+Tools.swift */,
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
@@ -544,6 +547,7 @@
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
+				7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */,
 				7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */,
 				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRange-SwiftRange.swift in Sources */,
