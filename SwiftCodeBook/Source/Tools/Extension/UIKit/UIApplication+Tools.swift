@@ -14,7 +14,7 @@ public extension UIApplication {
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
     }
     
-    static var APPIcon: UIImage? {
+    static var appIcon: UIImage? {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
