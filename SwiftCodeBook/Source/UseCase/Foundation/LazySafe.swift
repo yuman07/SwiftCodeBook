@@ -5,15 +5,15 @@
 //  Created by yuman on 2023/2/22.
 //
 
-import Foundation
+import UIKit
 
 class LazySafe {
-    var age: Int {
+    var view: UIView {
         enum Once {
-            static var age = {
-                Int.random(in: 1...1000)
+            static var view = {
+                UIView()
             }()
         }
-        return Once.age
+        return Once.view
     }
 }
