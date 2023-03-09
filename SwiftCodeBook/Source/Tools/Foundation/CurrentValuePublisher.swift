@@ -20,6 +20,7 @@ public protocol CurrentValuePublisher: Publisher {
 extension CurrentValueSubject: CurrentValuePublisher {}
 extension Just: CurrentValuePublisher {}
 extension Published.Publisher: CurrentValuePublisher {}
+extension NSObject.KeyValueObservingPublisher: CurrentValuePublisher {}
 
 // MARK: Public
 
