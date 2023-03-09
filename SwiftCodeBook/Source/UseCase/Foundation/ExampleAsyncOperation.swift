@@ -8,12 +8,20 @@
 import Foundation
 
 final class ExampleAsyncOperation: Operation {
+    private struct AssociatedKeys {
+        static var isExecuting = "isExecuting"
+        static var isFinished = "isFinished"
+        static var isCancelled = "isCancelled"
+    }
+    
     private let lock = NSRecursiveLock()
     
-    private var result = ""
+    private let requestKey: String
     private let finishBlock: (Result<String, Error>) -> Void
+    private var result = ""
     
-    init(finishBlock: @escaping (Result<String, Error>) -> Void) {
+    init(requestKey: String, finishBlock: @escaping (Result<String, Error>) -> Void) {
+        self.requestKey = requestKey
         self.finishBlock = finishBlock
     }
     
@@ -30,34 +38,31 @@ final class ExampleAsyncOperation: Operation {
         main()
     }
     
-    private var _isExecuting: Bool = false
     override private(set) var isExecuting: Bool {
         get {
-            lock.withLock { _isExecuting }
+            lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isExecuting) as? Bool) ?? false }
         }
         set {
-            willChangeValue(forKey: "isExecuting")
-            lock.withLock { _isExecuting = newValue }
-            didChangeValue(forKey: "isExecuting")
+            willChangeValue(forKey: AssociatedKeys.isExecuting)
+            lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isExecuting, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+            didChangeValue(forKey: AssociatedKeys.isExecuting)
         }
     }
     
-    private var _isFinished: Bool = false
     override private(set) var isFinished: Bool {
         get {
-            lock.withLock { _isFinished }
+            lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isFinished) as? Bool) ?? false }
         }
         set {
-            willChangeValue(forKey: "isFinished")
-            lock.withLock { _isFinished = newValue }
-            didChangeValue(forKey: "isFinished")
+            willChangeValue(forKey: AssociatedKeys.isFinished)
+            lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isFinished, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+            didChangeValue(forKey: AssociatedKeys.isFinished)
         }
     }
     
-    private var _isCancelled: Bool = false
     override private(set) var isCancelled: Bool {
-        get { lock.withLock { _isCancelled } }
-        set { lock.withLock { _isCancelled = newValue } }
+        get { lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isCancelled) as? Bool) ?? false } }
+        set { lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isCancelled, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) } }
     }
     
     override func cancel() {
@@ -83,7 +88,7 @@ final class ExampleAsyncOperation: Operation {
             guard let self else { return }
             guard !self.isCancelled else { return self.complete() }
             
-            self.result = "result + \(UUID().uuidString)"
+            self.result = "\(self.requestKey) + \(UUID().uuidString)"
             self.complete()
         }
     }
