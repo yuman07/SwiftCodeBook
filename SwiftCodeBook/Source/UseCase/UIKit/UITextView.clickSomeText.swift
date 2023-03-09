@@ -25,7 +25,7 @@ private final class ClickTextVC: UIViewController {
                   let start = textView.position(from: textView.beginningOfDocument, offset: range.location),
                   let end = textView.position(from: start, offset: range.length),
                   let textRange = textView.textRange(from: start, to: end),
-                  case let rects = textView.selectionRects(for: textRange).map({ $0.rect }),
+                  case let rects = textView.selectionRects(for: textRange).map(\.rect),
                   rects.contains(where: { $0.contains(location) })
             else { return }
             
