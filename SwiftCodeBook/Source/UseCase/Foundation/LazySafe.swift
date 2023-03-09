@@ -7,13 +7,13 @@
 
 import Foundation
 
-private class LazySafe {
-    private var _age: Int?
+class LazySafe {
     var age: Int {
-        DispatchQueue.runOnce {
-            _age = Int.random(in: 1...100)
+        enum Once {
+            static var age = {
+                Int.random(in: 1...1000)
+            }()
         }
-        guard let _age else { fatalError("_age can't be nil here") }
-        return _age
+        return Once.age
     }
 }
