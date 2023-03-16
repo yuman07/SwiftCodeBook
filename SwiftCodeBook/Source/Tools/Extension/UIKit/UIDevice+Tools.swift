@@ -9,16 +9,11 @@ import UIKit
 
 public extension UIDevice {
     var isSimulator: Bool {
-        enum Once {
-            static var isSimulator = {
-            #if targetEnvironment(simulator)
-                true
-            #else
-                false
-            #endif
-            }()
-        }
-        return Once.isSimulator
+    #if targetEnvironment(simulator)
+        true
+    #else
+        false
+    #endif
     }
     
     var deviceModel: String {
@@ -38,12 +33,7 @@ public extension UIDevice {
     }
     
     var is64BitDevice: Bool {
-        enum Once {
-            static var is64BitDevice = {
-                CGFLOAT_IS_DOUBLE == 1
-            }()
-        }
-        return Once.is64BitDevice
+        CGFLOAT_IS_DOUBLE == 1
     }
     
     @available(iOSApplicationExtension, unavailable, message: "Not available in iOS App extension.")
