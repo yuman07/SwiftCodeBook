@@ -55,7 +55,7 @@ public extension UIDevice {
         return Once.totalDiskSpaceInByte
     }
     
-    var freeDiskSpaceInBytes: UInt64 {
+    var freeDiskSpaceInByte: UInt64 {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64 ?? 0
     }
 }
