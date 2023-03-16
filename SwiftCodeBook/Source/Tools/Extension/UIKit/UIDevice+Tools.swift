@@ -18,7 +18,7 @@ public extension UIDevice {
     
     var deviceModel: String {
         enum Once {
-            static var deviceModel = {
+            static let deviceModel = {
                 if UIDevice.current.isSimulator {
                     return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
                 } else {
@@ -48,7 +48,7 @@ public extension UIDevice {
     
     var totalDiskSpaceInByte: UInt64 {
         enum Once {
-            static var totalDiskSpaceInByte = {
+            static let totalDiskSpaceInByte = {
                 (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
             }()
         }
