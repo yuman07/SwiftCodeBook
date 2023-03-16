@@ -46,15 +46,6 @@ public extension UIDevice {
         UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
     }
     
-    var isJailbroken: Bool {
-        enum Once {
-            static var canReadBinBash = {
-                FileManager.default.fileExists(atPath: "/bin/bash")
-            }()
-        }
-        return Once.canReadBinBash
-    }
-    
     var totalDiskSpaceInByte: UInt64 {
         enum Once {
             static var totalDiskSpaceInByte = {
