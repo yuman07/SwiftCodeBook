@@ -30,7 +30,7 @@ import UIKit
 //    [UIApplication sharedApplication].delegate.window.layer.filters = nil;
 //}
 
-@available(iOSApplicationExtension, unavailable, message: "Not available in iOS App extension.")
+@available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
 public struct GlobalGray {
     public static func openGray() {
         let sel = #selector(CIFilterConstructor.filter(withName:))
