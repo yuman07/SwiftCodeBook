@@ -9,15 +9,41 @@ import UIKit
 
 public extension UIDevice {
     var isSimulator: Bool {
-        Self.isSimulator
+        enum Once {
+            static var isSimulator = {
+            #if targetEnvironment(simulator)
+                true
+            #else
+                false
+            #endif
+            }()
+        }
+        return Once.isSimulator
     }
     
     var deviceModel: String {
-        Self.deviceModel
+        enum Once {
+            static var deviceModel = {
+                if UIDevice.current.isSimulator {
+                    return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
+                } else {
+                    var info = utsname()
+                    uname(&info)
+                    let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
+                    return String(cString: chars)
+                }
+            }()
+        }
+        return Once.deviceModel
     }
     
     var is64BitDevice: Bool {
-        CGFLOAT_IS_DOUBLE == 1
+        enum Once {
+            static var is64BitDevice = {
+                CGFLOAT_IS_DOUBLE == 1
+            }()
+        }
+        return Once.is64BitDevice
     }
     
     @available(iOSApplicationExtension, unavailable, message: "Not available in iOS App extension.")
@@ -31,40 +57,24 @@ public extension UIDevice {
     }
     
     var isJailbroken: Bool {
-        let canReadBinBash = FileManager.default.fileExists(atPath: "/bin/bash")
-        if let cydiaURL = URL(string: "cydia://"), let canOpenCydia = (UIApplication.value(forKey: "sharedApplication") as? UIApplication)?.canOpenURL(cydiaURL) {
-            return canOpenCydia || canReadBinBash
-        } else {
-            return canReadBinBash
+        enum Once {
+            static var canReadBinBash = {
+                FileManager.default.fileExists(atPath: "/bin/bash")
+            }()
         }
+        return Once.canReadBinBash
     }
     
-    var totalDiskSpaceInBytes: UInt64 {
-        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
+    var totalDiskSpaceInByte: UInt64 {
+        enum Once {
+            static var totalDiskSpaceInByte = {
+                (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
+            }()
+        }
+        return Once.totalDiskSpaceInByte
     }
     
     var freeDiskSpaceInBytes: UInt64 {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64 ?? 0
     }
-}
-
-private extension UIDevice {
-    static let isSimulator = {
-    #if targetEnvironment(simulator)
-        true
-    #else
-        false
-    #endif
-    }()
-    
-    static let deviceModel = {
-        if isSimulator {
-            return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
-        } else {
-            var info = utsname()
-            uname(&info)
-            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            return String(cString: chars)
-        }
-    }()
 }
