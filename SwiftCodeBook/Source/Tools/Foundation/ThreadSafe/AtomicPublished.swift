@@ -22,5 +22,7 @@ public final class AtomicPublished<T> {
         set { lock.withLock { value = newValue } }
     }
     
-    public var projectedValue: AnyPublisher<T, Never> { $value.eraseToAnyPublisher() }
+    public var projectedValue: AnyPublisher<T, Never> {
+        lock.withLock { $value.eraseToAnyPublisher() }
+    }
 }
