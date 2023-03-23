@@ -37,7 +37,7 @@ class KVOItem: NSObject {
 }
 
 extension KVOItem {
-    private struct AssociatedKeys {
+    private enum AssociatedKeys {
         static var name = "name"
     }
     

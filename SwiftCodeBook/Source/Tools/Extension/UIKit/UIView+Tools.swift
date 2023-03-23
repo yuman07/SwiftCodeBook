@@ -34,7 +34,7 @@ public extension UIView {
 }
 
 private extension UIGestureRecognizer {
-    struct AssociatedKeys {
+    enum AssociatedKeys {
         static var action = "action"
     }
     

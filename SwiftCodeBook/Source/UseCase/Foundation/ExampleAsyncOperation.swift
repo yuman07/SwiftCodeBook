@@ -8,7 +8,7 @@
 import Foundation
 
 final class ExampleAsyncOperation: Operation {
-    private struct AssociatedKeys {
+    private enum AssociatedKeys {
         static var isExecuting = "isExecuting"
         static var isFinished = "isFinished"
         static var isCancelled = "isCancelled"
