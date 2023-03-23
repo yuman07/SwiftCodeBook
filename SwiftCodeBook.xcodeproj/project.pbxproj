@@ -35,11 +35,10 @@
 		7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */; };
 		7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */; };
 		7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D007294DADCB0076F89A /* GlobalGray.swift */; };
-		7A24E76D29CAFC7200E53E8C /* JSONDecoder.DateDecodingStrategy+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A24E76C29CAFC7200E53E8C /* JSONDecoder.DateDecodingStrategy+Tools.swift */; };
-		7A24E76F29CAFC7F00E53E8C /* JSONEncoder.DateEncodingStrategy+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A24E76E29CAFC7F00E53E8C /* JSONEncoder.DateEncodingStrategy+Tools.swift */; };
 		7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */; };
 		7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */; };
 		7A501A2E2914F43000512E32 /* KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2D2914F43000512E32 /* KVO.swift */; };
+		7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
@@ -141,11 +140,10 @@
 		7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.contentMode.swift; sourceTree = "<group>"; };
 		7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutDoAnimation.swift; sourceTree = "<group>"; };
 		7A20D007294DADCB0076F89A /* GlobalGray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalGray.swift; sourceTree = "<group>"; };
-		7A24E76C29CAFC7200E53E8C /* JSONDecoder.DateDecodingStrategy+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder.DateDecodingStrategy+Tools.swift"; sourceTree = "<group>"; };
-		7A24E76E29CAFC7F00E53E8C /* JSONEncoder.DateEncodingStrategy+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder.DateEncodingStrategy+Tools.swift"; sourceTree = "<group>"; };
 		7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tools.swift"; sourceTree = "<group>"; };
 		7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		7A501A2D2914F43000512E32 /* KVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVO.swift; sourceTree = "<group>"; };
+		7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601Codable.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
@@ -305,8 +303,6 @@
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
-				7A24E76C29CAFC7200E53E8C /* JSONDecoder.DateDecodingStrategy+Tools.swift */,
-				7A24E76E29CAFC7F00E53E8C /* JSONEncoder.DateEncodingStrategy+Tools.swift */,
 				7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
@@ -354,6 +350,7 @@
 			children = (
 				7A9CC058291FCB2500046466 /* JSONCodableObject.swift */,
 				7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */,
+				7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
@@ -511,7 +508,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A1074792908C01900C13362 /* ViewController.swift in Sources */,
-				7A24E76D29CAFC7200E53E8C /* JSONDecoder.DateDecodingStrategy+Tools.swift in Sources */,
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
 				7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */,
@@ -554,10 +550,10 @@
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
-				7A24E76F29CAFC7F00E53E8C /* JSONEncoder.DateEncodingStrategy+Tools.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
+				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */,
 				7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */,
