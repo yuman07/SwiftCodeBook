@@ -10,9 +10,7 @@ import Foundation
 public extension FileManager {
     var homePath: String {
         enum Once {
-            static let homePath = {
-                NSHomeDirectory()
-            }()
+            static let homePath = NSHomeDirectory()
         }
         return Once.homePath
     }
@@ -31,9 +29,7 @@ public extension FileManager {
     
     var tmpPath: String {
         enum Once {
-            static let tmpPath = {
-                NSTemporaryDirectory()
-            }()
+            static let tmpPath = NSTemporaryDirectory()
         }
         return Once.tmpPath
     }
