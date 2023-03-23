@@ -11,7 +11,7 @@ import Foundation
 class AssociatedObjectItem {}
 
 extension AssociatedObjectItem {
-    private struct AssociatedKeys {
+    private enum AssociatedKeys {
         static var age = "age"
         static var name = "name"
         static var block = "block"
