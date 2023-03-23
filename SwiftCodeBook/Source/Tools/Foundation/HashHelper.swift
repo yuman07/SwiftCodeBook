@@ -61,7 +61,7 @@ public extension HashHelper {
     }
     
     static func hash(string: String, using function: Function) -> String {
-        return hash(data: Data(string.utf8), using: function)
+        hash(data: Data(string.utf8), using: function)
     }
     
     static func hash(filePath: String, using function: Function) async -> String? {
