@@ -19,7 +19,7 @@ extension AssociatedObjectItem {
     
     var age: Int {
         get {
-            (objc_getAssociatedObject(self, &AssociatedKeys.age) as? Int) ?? 0
+            objc_getAssociatedObject(self, &AssociatedKeys.age) as? Int ?? 0
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.age, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -28,7 +28,7 @@ extension AssociatedObjectItem {
     
     var name: String {
         get {
-            (objc_getAssociatedObject(self, &AssociatedKeys.name) as? String) ?? ""
+            objc_getAssociatedObject(self, &AssociatedKeys.name) as? String ?? ""
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.name, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
