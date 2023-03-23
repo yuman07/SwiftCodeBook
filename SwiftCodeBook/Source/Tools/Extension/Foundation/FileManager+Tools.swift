@@ -9,7 +9,12 @@ import Foundation
 
 public extension FileManager {
     var homePath: String {
-        NSHomeDirectory()
+        enum Once {
+            static let homePath = {
+                NSHomeDirectory()
+            }()
+        }
+        return Once.homePath
     }
     
     var documentPath: String {
@@ -25,7 +30,12 @@ public extension FileManager {
     }
     
     var tmpPath: String {
-        NSTemporaryDirectory()
+        enum Once {
+            static let tmpPath = {
+                NSTemporaryDirectory()
+            }()
+        }
+        return Once.tmpPath
     }
     
     func directoryExists(at path: String) -> Bool {
