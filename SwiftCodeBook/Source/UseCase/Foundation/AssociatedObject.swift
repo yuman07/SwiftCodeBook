@@ -8,7 +8,7 @@
 import Foundation
 
 // must be 'class', not 'struct'
-class AssociatedObjectItem {}
+final class AssociatedObjectItem {}
 
 extension AssociatedObjectItem {
     private enum AssociatedKeys {

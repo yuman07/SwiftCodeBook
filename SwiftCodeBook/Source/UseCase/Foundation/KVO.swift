@@ -31,7 +31,7 @@ class KVOTest {
 }
 
 // must inherit from NSObject
-class KVOItem: NSObject {
+final class KVOItem: NSObject {
     // must add '@objc dynamic'
     @objc dynamic var age: Int = 0
 }
