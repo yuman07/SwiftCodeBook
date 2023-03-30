@@ -8,22 +8,22 @@
 import Foundation
 
 public extension Decodable {
-    init?(JSONData: Data) {
-        guard let value = try? JSONDecoder().decode(Self.self, from: JSONData) else { return nil }
+    init?(JSONData: Data, JSONDecoder: JSONDecoder = JSONDecoder()) {
+        guard let value = try? JSONDecoder.decode(Self.self, from: JSONData) else { return nil }
         self = value
     }
     
-    init?(JSONArray: [Any]) {
-        guard let data = JSONArray.toJSONData() else { return nil }
-        self.init(JSONData: data)
+    init?(JSONArray: [Any], JSONDecoder: JSONDecoder = JSONDecoder()) {
+        guard JSONSerialization.isValidJSONObject(JSONArray), let data = try? JSONSerialization.data(withJSONObject: JSONArray) else { return nil }
+        self.init(JSONData: data, JSONDecoder: JSONDecoder)
     }
     
-    init?(JSONDictionary: [AnyHashable: Any]) {
-        guard let data = JSONDictionary.toJSONData() else { return nil }
-        self.init(JSONData: data)
+    init?(JSONDictionary: [AnyHashable: Any], JSONDecoder: JSONDecoder = JSONDecoder()) {
+        guard JSONSerialization.isValidJSONObject(JSONDictionary), let data = try? JSONSerialization.data(withJSONObject: JSONDictionary) else { return nil }
+        self.init(JSONData: data, JSONDecoder: JSONDecoder)
     }
     
-    init?(JSONString: String) {
-        self.init(JSONData: Data(JSONString.utf8))
+    init?(JSONString: String, JSONDecoder: JSONDecoder = JSONDecoder()) {
+        self.init(JSONData: Data(JSONString.utf8), JSONDecoder: JSONDecoder)
     }
 }
