@@ -8,17 +8,17 @@
 import Foundation
 
 public extension Dictionary {
-    func toJSONData() -> Data? {
+    func toJSONData(JSONEncoder: JSONEncoder = JSONEncoder()) -> Data? {
         if JSONSerialization.isValidJSONObject(self) {
             return try? JSONSerialization.data(withJSONObject: self)
         } else if let encode = self as? Encodable {
-            return encode.toJSONData()
+            return encode.toJSONData(JSONEncoder: JSONEncoder)
         }
         return nil
     }
     
-    func toJSONString() -> String? {
-        toJSONData().flatMap { String(data: $0, encoding: .utf8) }
+    func toJSONString(JSONEncoder: JSONEncoder = JSONEncoder()) -> String? {
+        toJSONData(JSONEncoder: JSONEncoder).flatMap { String(data: $0, encoding: .utf8) }
     }
 }
 

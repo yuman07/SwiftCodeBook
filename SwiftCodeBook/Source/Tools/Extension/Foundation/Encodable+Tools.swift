@@ -8,29 +8,29 @@
 import Foundation
 
 public extension Encodable {
-    private func toJSONDataAndObj() -> (data: Data, obj: Any)? {
+    private func toJSONDataAndObj(JSONEncoder: JSONEncoder) -> (data: Data, obj: Any)? {
         if let data = self as? Data {
             return (try? JSONSerialization.jsonObject(with: data)).flatMap { (data, $0) }
         } else if let string = self as? String  {
-            return Data(string.utf8).toJSONDataAndObj()
+            return Data(string.utf8).toJSONDataAndObj(JSONEncoder: JSONEncoder)
         } else {
-            return (try? JSONEncoder().encode(self))?.toJSONDataAndObj()
+            return (try? JSONEncoder.encode(self))?.toJSONDataAndObj(JSONEncoder: JSONEncoder)
         }
     }
     
-    func toJSONData() -> Data? {
-        toJSONDataAndObj()?.data
+    func toJSONData(JSONEncoder: JSONEncoder = JSONEncoder()) -> Data? {
+        toJSONDataAndObj(JSONEncoder: JSONEncoder)?.data
     }
     
-    func toJSONArray() -> [Any]? {
-        toJSONDataAndObj()?.obj as? [Any]
+    func toJSONArray(JSONEncoder: JSONEncoder = JSONEncoder()) -> [Any]? {
+        toJSONDataAndObj(JSONEncoder: JSONEncoder)?.obj as? [Any]
     }
     
-    func toJSONDictionary() -> [String: Any]? {
-        toJSONDataAndObj()?.obj as? [String: Any]
+    func toJSONDictionary(JSONEncoder: JSONEncoder = JSONEncoder()) -> [String: Any]? {
+        toJSONDataAndObj(JSONEncoder: JSONEncoder)?.obj as? [String: Any]
     }
     
-    func toJSONString() -> String? {
-        toJSONData().flatMap { String(data: $0, encoding: .utf8) }
+    func toJSONString(JSONEncoder: JSONEncoder = JSONEncoder()) -> String? {
+        toJSONData(JSONEncoder: JSONEncoder).flatMap { String(data: $0, encoding: .utf8) }
     }
 }
