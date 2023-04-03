@@ -47,7 +47,7 @@ final class AutoLayoutDoAnimationVC: UIViewController {
             guard let self else { return }
             topCon.constant = 100
             leftCon.constant = 200
-            self.someView.superview?.layoutIfNeeded()
+            someView.superview?.layoutIfNeeded()
         }
     }
 }

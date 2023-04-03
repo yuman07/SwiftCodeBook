@@ -28,8 +28,8 @@ final class ExampleAsyncOperation: Operation {
     override func start() {
         completionBlock = { [weak self] in
             guard let self else { return }
-            guard !self.isCancelled else { return self.finishBlock(.failure(CancellationError())) }
-            self.finishBlock(.success(self.result))
+            guard !isCancelled else { return finishBlock(.failure(CancellationError())) }
+            finishBlock(.success(result))
         }
         
         guard !isCancelled else { return complete() }
@@ -86,10 +86,10 @@ final class ExampleAsyncOperation: Operation {
     override func main() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self else { return }
-            guard !self.isCancelled else { return self.complete() }
+            guard !isCancelled else { return complete() }
             
-            self.result = "\(self.requestKey) + \(UUID().uuidString)"
-            self.complete()
+            result = "\(requestKey) + \(UUID().uuidString)"
+            complete()
         }
     }
 }
