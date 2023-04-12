@@ -47,10 +47,7 @@ func CombinationTransformation() {
     
     /// Implementation method 2
     // Note that when using concatenating to connect different transformations, the effect order is the same as the code order
-    let t1 = CGAffineTransform(scaleX: 0.5, y: 0.5)
-    let t2 = CGAffineTransform(rotationAngle: .pi / 2)
-    let t3 = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
-    
-    var transform2 = t1.concatenating(t2)
-    transform2 = transform2.concatenating(t3)
+    let transform2 = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        .concatenating(CGAffineTransform(rotationAngle: .pi / 2))
+        .concatenating(CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0))
 }
