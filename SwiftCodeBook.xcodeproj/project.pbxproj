@@ -97,6 +97,7 @@
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
 		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
+		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -177,6 +178,7 @@
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
 		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
+		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -397,6 +399,7 @@
 				7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */,
 				7A8A00A429308F5D001A3345 /* HitTest.swift */,
 				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
+				7AF831E529E65E9800021A08 /* MaskedCorners.swift */,
 				7A6CED6929308DDF00680CEC /* ScreenRotate.swift */,
 				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
@@ -509,6 +512,7 @@
 			files = (
 				7A1074792908C01900C13362 /* ViewController.swift in Sources */,
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
+				7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */,
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
 				7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */,
 				7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */,

@@ -23,16 +23,16 @@ func CGAffineTransformGuide() {
     // (positive numbers are clockwise, negative numbers are counterclockwise)
     transform = CGAffineTransform(rotationAngle: .pi)
     
-    // Symmetric transformation (symmetrical along the X axis)
+    // Symmetric transformation (symmetrical along the 'X' axis(Mathematical coordinate system))
     transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
     
-    // Symmetric transformation (symmetrical along the Y axis)
+    // Symmetric transformation (symmetrical along the 'Y' axis(Mathematical coordinate system))
     transform = CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: 0, ty: 0)
     
-    // Symmetric transformation (symmetry about the origin)
+    // Symmetric transformation (symmetry about the '(0, 0)'(Mathematical coordinate system))
     transform = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
     
-    // Symmetric transformation (symmetric along y=x)
+    // Symmetric transformation (symmetric along 'y=x'(Mathematical coordinate system))
     transform = CGAffineTransform(a: 0, b: 1, c: 1, d: 0, tx: 0, ty: 0)
 }
 
