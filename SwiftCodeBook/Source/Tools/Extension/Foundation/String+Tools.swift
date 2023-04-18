@@ -45,7 +45,7 @@ public extension String {
 
 public extension String {
     var UTF8Data: Data {
-        Data(self.utf8)
+        Data(utf8)
     }
 }
 
