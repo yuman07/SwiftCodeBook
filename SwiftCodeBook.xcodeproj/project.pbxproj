@@ -35,6 +35,7 @@
 		7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */; };
 		7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */; };
 		7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D007294DADCB0076F89A /* GlobalGray.swift */; };
+		7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */; };
 		7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */; };
 		7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */; };
 		7A501A2E2914F43000512E32 /* KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2D2914F43000512E32 /* KVO.swift */; };
@@ -141,6 +142,7 @@
 		7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.contentMode.swift; sourceTree = "<group>"; };
 		7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutDoAnimation.swift; sourceTree = "<group>"; };
 		7A20D007294DADCB0076F89A /* GlobalGray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalGray.swift; sourceTree = "<group>"; };
+		7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNumber+Tools.swift"; sourceTree = "<group>"; };
 		7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tools.swift"; sourceTree = "<group>"; };
 		7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		7A501A2D2914F43000512E32 /* KVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVO.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
+				7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */,
 				7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
@@ -548,6 +551,7 @@
 				7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */,
 				7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */,
 				7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */,
+				7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
