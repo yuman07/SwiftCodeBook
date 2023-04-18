@@ -15,6 +15,7 @@ extension AssociatedObjectItem {
         static var age = "age"
         static var name = "name"
         static var block = "block"
+        static var birthDay = "birthDay"
     }
     
     var age: Int {
@@ -42,5 +43,13 @@ extension AssociatedObjectItem {
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.block, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+    }
+    
+    var birthDay: Date {
+        objc_getAssociatedObject(self, &AssociatedKeys.birthDay) as? Date ?? {
+            let date = Date()
+            objc_setAssociatedObject(self, &AssociatedKeys.birthDay, date, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return date
+        }()
     }
 }

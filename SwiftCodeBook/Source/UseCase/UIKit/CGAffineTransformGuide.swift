@@ -50,4 +50,5 @@ func CombinationTransformation() {
     let transform2 = CGAffineTransform(scaleX: 0.5, y: 0.5)
         .concatenating(CGAffineTransform(rotationAngle: .pi / 2))
         .concatenating(CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0))
+    print(transform2)
 }
