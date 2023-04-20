@@ -39,9 +39,7 @@ final class ExampleAsyncOperation: Operation {
     }
     
     override private(set) var isExecuting: Bool {
-        get {
-            lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isExecuting) as? Bool) ?? false }
-        }
+        get { lock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.isExecuting) as? Bool ?? false } }
         set {
             willChangeValue(forKey: AssociatedKeys.isExecuting)
             lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isExecuting, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
@@ -50,9 +48,7 @@ final class ExampleAsyncOperation: Operation {
     }
     
     override private(set) var isFinished: Bool {
-        get {
-            lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isFinished) as? Bool) ?? false }
-        }
+        get { lock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.isFinished) as? Bool ?? false } }
         set {
             willChangeValue(forKey: AssociatedKeys.isFinished)
             lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isFinished, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
@@ -61,7 +57,7 @@ final class ExampleAsyncOperation: Operation {
     }
     
     override private(set) var isCancelled: Bool {
-        get { lock.withLock { (objc_getAssociatedObject(self, &AssociatedKeys.isCancelled) as? Bool) ?? false } }
+        get { lock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.isCancelled) as? Bool ?? false } }
         set { lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isCancelled, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) } }
     }
     

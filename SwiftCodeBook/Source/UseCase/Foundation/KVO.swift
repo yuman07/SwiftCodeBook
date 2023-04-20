@@ -44,11 +44,7 @@ extension KVOItem {
     // works the same for associative properties, also add '@objc dynamic'
     @objc dynamic
     var name: String {
-        get {
-            (objc_getAssociatedObject(self, &AssociatedKeys.name) as? String) ?? ""
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.name, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        get { objc_getAssociatedObject(self, &AssociatedKeys.name) as? String ?? "" }
+        set { objc_setAssociatedObject(self, &AssociatedKeys.name, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 }
