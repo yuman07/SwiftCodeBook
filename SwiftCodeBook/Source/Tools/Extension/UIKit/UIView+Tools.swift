@@ -31,6 +31,10 @@ public extension UIView {
         }
         return nil
     }
+    
+    var isRightToLeftUserInterface: Bool {
+        UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
+    }
 }
 
 private extension UIGestureRecognizer {
@@ -39,12 +43,8 @@ private extension UIGestureRecognizer {
     }
     
     var action: ((UIGestureRecognizer) -> Void)? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.action) as? ((UIGestureRecognizer) -> Void)
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.action, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        get { objc_getAssociatedObject(self, &AssociatedKeys.action) as? (UIGestureRecognizer) -> Void }
+        set { objc_setAssociatedObject(self, &AssociatedKeys.action, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 }
 

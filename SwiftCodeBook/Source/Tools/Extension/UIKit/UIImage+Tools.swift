@@ -8,11 +8,11 @@
 import UIKit
 
 public extension UIImage {
-    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+    convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         guard let cgImage = UIGraphicsImageRenderer(size: size).image(actions: { context in
             color.setFill()
             context.fill(CGRect(origin: .zero, size: size))
-        }).cgImage else { return nil }
+        }).cgImage else { fatalError("UIImage.init(color:size:) fail, cgImage not exist") }
         self.init(cgImage: cgImage, scale: UIScreen.main.scale, orientation: .up)
     }
     

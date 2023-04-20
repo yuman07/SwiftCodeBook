@@ -15,7 +15,9 @@ public final class CancelBag {
     public init() {}
     
     deinit {
-        cancel()
+        lock.lock()
+        defer { lock.unlock() }
+        tokens.removeAll()
     }
     
     public func cancel() {
