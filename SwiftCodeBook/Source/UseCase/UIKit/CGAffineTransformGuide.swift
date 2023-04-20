@@ -24,16 +24,10 @@ func CGAffineTransformGuide() {
     transform = CGAffineTransform(rotationAngle: .pi)
     
     // Symmetric transformation (symmetrical along the 'X' axis(Mathematical coordinate system))
-    transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
+    transform = .horizontalAxisSymmetry
     
     // Symmetric transformation (symmetrical along the 'Y' axis(Mathematical coordinate system))
-    transform = CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: 0, ty: 0)
-    
-    // Symmetric transformation (symmetry about the '(0, 0)'(Mathematical coordinate system))
-    transform = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
-    
-    // Symmetric transformation (symmetric along 'y=x'(Mathematical coordinate system))
-    transform = CGAffineTransform(a: 0, b: 1, c: 1, d: 0, tx: 0, ty: 0)
+    transform = .verticalAxisSymmetry
 }
 
 // Combination transformation (I want to achieve an effect of "scaling first, then rotating, and finally symmetry")
@@ -41,7 +35,7 @@ func CGAffineTransformGuide() {
 func CombinationTransformation() {
     /// Implementation method 1
     /// Note that when connecting different transformations in this way, the order of effects and the order of codes are reversed
-    var transform1 = CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
+    var transform1 = CGAffineTransform.horizontalAxisSymmetry
     transform1 = transform1.rotated(by: .pi / 2)
     transform1 = transform1.scaledBy(x: 0.5, y: 0.5)
     
@@ -49,6 +43,6 @@ func CombinationTransformation() {
     // Note that when using concatenating to connect different transformations, the effect order is the same as the code order
     let transform2 = CGAffineTransform(scaleX: 0.5, y: 0.5)
         .concatenating(CGAffineTransform(rotationAngle: .pi / 2))
-        .concatenating(CGAffineTransform(a: -1, b: 0, c: 0, d: -1, tx: 0, ty: 0))
+        .concatenating(.horizontalAxisSymmetry)
     print(transform2)
 }
