@@ -9,8 +9,16 @@ import Foundation
 
 public extension URL {
     var queryDictionary: [String: String] {
-        (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) {
-            if let value = $1.value { $0[$1.name] = value }
+        get {
+            (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) {
+                if let value = $1.value { $0[$1.name] = value }
+            }
+        }
+        set {
+            if var components = URLComponents(string: absoluteString) {
+                components.queryItems = newValue.map { URLQueryItem(name: $0.key, value: $0.value) }
+                components.url.flatMap { self = $0 }
+            }
         }
     }
 }
