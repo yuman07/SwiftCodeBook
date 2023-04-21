@@ -7,29 +7,6 @@
 
 import Foundation
 
-func CGAffineTransformGuide() {
-    // zero Transform
-    var transform = CGAffineTransform.identity
-    print(transform)
-    
-    // Translation transformation(coordinate system and direction are the same as UIKit)
-    transform = CGAffineTransform(translationX: 1, y: 2)
-    
-    // Scaling transformation (x and y are scaling ratios, both are non-negative)
-    transform = CGAffineTransform(scaleX: 0.1, y: 2)
-    
-    // Rotation transformation
-    // (the value passed in is radians, .pi is 180°)
-    // (positive numbers are clockwise, negative numbers are counterclockwise)
-    transform = CGAffineTransform(rotationAngle: .pi)
-    
-    // Symmetric transformation (symmetrical along the 'X' axis(Mathematical coordinate system))
-    transform = .horizontalAxisSymmetry
-    
-    // Symmetric transformation (symmetrical along the 'Y' axis(Mathematical coordinate system))
-    transform = .verticalAxisSymmetry
-}
-
 // Combination transformation (I want to achieve an effect of "scaling first, then rotating, and finally symmetry")
 // There are two implementations here
 func CombinationTransformation() {
