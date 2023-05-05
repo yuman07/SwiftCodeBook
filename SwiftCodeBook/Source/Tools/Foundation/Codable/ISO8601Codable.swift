@@ -13,7 +13,7 @@ public extension JSONDecoder.DateDecodingStrategy {
             let container = try decoder.singleValueContainer()
             let string = try container.decode(String.self)
             guard let date = ISO8601DateFormatter.date(from: string) else {
-                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(string)")
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode ISO8601 date string \(string)")
             }
             return date
         }
