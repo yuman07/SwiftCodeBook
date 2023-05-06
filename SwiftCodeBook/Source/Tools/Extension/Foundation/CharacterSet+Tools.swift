@@ -12,9 +12,5 @@ public extension CharacterSet {
     // https://unicode-explorer.com/search/
     static let zeroWidthSpace = CharacterSet(charactersIn: "\u{200B}\u{2060}\u{200C}\u{FEFF}\u{200D}")
     
-    static let whitespacesNewlineAndZeroWidthSpace = {
-        var set = CharacterSet.whitespacesAndNewlines
-        set.formUnion(.zeroWidthSpace)
-        return set
-    }()
+    static let whitespacesNewlineAndZeroWidthSpace = CharacterSet.whitespacesAndNewlines.union(.zeroWidthSpace)
 }
