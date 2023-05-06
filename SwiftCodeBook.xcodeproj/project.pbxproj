@@ -41,6 +41,7 @@
 		7A501A2E2914F43000512E32 /* KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2D2914F43000512E32 /* KVO.swift */; };
 		7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
+		7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */; };
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */; };
@@ -149,6 +150,7 @@
 		7A501A2D2914F43000512E32 /* KVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVO.swift; sourceTree = "<group>"; };
 		7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601Codable.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
+		7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Tools.swift"; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			children = (
 				7A1074A82909061700C13362 /* Array+Tools.swift */,
 				7A1074962908FB2100C13362 /* Character+Tools.swift */,
+				7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */,
 				7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */,
 				7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */,
 				7AB484CB2994D8A20085D298 /* Collection+Tools.swift */,
@@ -557,6 +560,7 @@
 				7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */,
+				7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */,
