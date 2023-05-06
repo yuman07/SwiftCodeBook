@@ -5,10 +5,17 @@
 //  Created by yuman on 2022/10/30.
 //
 
+import Combine
 import Foundation
 
 public extension Task where Success == Never, Failure == Never {
     static func sleep(seconds: TimeInterval) async throws {
         try await Task.sleep(nanoseconds: UInt64(1_000_000_000 * seconds))
+    }
+}
+
+public extension Task {
+    func toAnyCancellable() -> AnyCancellable {
+        AnyCancellable({ cancel() })
     }
 }
