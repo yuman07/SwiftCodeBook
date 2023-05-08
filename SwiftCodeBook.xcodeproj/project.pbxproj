@@ -42,6 +42,7 @@
 		7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
 		7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */; };
+		7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */; };
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */; };
@@ -151,6 +152,7 @@
 		7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601Codable.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
 		7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
+		7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A6F333029B86BFB008431CD /* CGFloat+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Tools.swift"; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
 				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
 				7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */,
+				7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7A6F333129B86BFB008431CD /* CGFloat+Tools.swift in Sources */,
 				7AE1E4A12949B921001B3671 /* DictionaryOfOptionalValues.swift in Sources */,
+				7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */,
 				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRange-SwiftRange.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
