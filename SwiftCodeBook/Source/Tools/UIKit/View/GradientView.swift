@@ -24,12 +24,12 @@ public final class GradientView: UIView {
     /// same with CAGradientLayer.colors
     public var colors: [UIColor] {
         get { (gradientLayer.colors as? [CGColor] ?? []).map { UIColor(cgColor: $0) } }
-        set { gradientLayer.colors = newValue.map { $0.cgColor } }
+        set { gradientLayer.colors = newValue.map(\.cgColor) }
     }
     
     /// same with CAGradientLayer.locations
     public var locations: [CGFloat] {
-        get { (gradientLayer.locations ?? []).map { $0.CGFloatValue } }
+        get { (gradientLayer.locations ?? []).map(\.CGFloatValue) }
         set { gradientLayer.locations = newValue.map { NSNumber(value: $0) } }
     }
     
