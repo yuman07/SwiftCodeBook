@@ -21,26 +21,31 @@ public final class GradientView: UIView {
         return layer
     }
     
+    /// same with CAGradientLayer.colors
     public var colors: [UIColor] {
         get { (gradientLayer.colors as? [CGColor] ?? []).map { UIColor(cgColor: $0) } }
         set { gradientLayer.colors = newValue.map { $0.cgColor } }
     }
     
+    /// same with CAGradientLayer.locations
     public var locations: [CGFloat] {
         get { (gradientLayer.locations ?? []).map { $0.CGFloatValue } }
         set { gradientLayer.locations = newValue.map { NSNumber(value: $0) } }
     }
     
+    /// same with CAGradientLayer.startPoint
     public var startPoint: CGPoint {
         get { gradientLayer.startPoint }
         set { gradientLayer.startPoint = newValue }
     }
 
+    /// same with CAGradientLayer.endPoint
     public var endPoint: CGPoint {
         get { gradientLayer.endPoint }
         set { gradientLayer.endPoint = newValue }
     }
     
+    /// same with CAGradientLayer.type
     public var type: CAGradientLayerType {
         get { gradientLayer.type }
         set { gradientLayer.type = newValue }
