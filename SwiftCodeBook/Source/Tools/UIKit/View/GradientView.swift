@@ -7,17 +7,42 @@
 
 import UIKit
 
+// point的坐标系和UIKit相同，且取值范围是[0, 1]
+// 即(0, 0)代表左上角，(1, 1)代表右下角
 public final class GradientView: UIView {
     public override class var layerClass: AnyClass {
         CAGradientLayer.self
     }
     
-    // point的坐标系和UIKit相同，且取值范围是[0, 1]
-    // 即(0, 0)代表左上角，(1, 1)代表右下角
-    public func updateGradient(startPoint: CGPoint, endPoint: CGPoint, startColor: UIColor, endColor: UIColor) {
-        guard let layer = layer as? CAGradientLayer else { return }
-        layer.startPoint = startPoint
-        layer.endPoint = endPoint
-        layer.colors = [startColor.cgColor, endColor.cgColor]
+    private var gradientLayer: CAGradientLayer {
+        guard let layer = layer as? CAGradientLayer else {
+            fatalError("layer must be CAGradientLayer")
+        }
+        return layer
+    }
+    
+    public var colors: [UIColor] {
+        get { (gradientLayer.colors as? [CGColor] ?? []).map { UIColor(cgColor: $0) } }
+        set { gradientLayer.colors = newValue.map { $0.cgColor } }
+    }
+    
+    public var locations: [CGFloat] {
+        get { (gradientLayer.locations ?? []).map { $0.CGFloatValue } }
+        set { gradientLayer.locations = newValue.map { NSNumber(value: $0) } }
+    }
+    
+    public var startPoint: CGPoint {
+        get { gradientLayer.startPoint }
+        set { gradientLayer.startPoint = newValue }
+    }
+
+    public var endPoint: CGPoint {
+        get { gradientLayer.endPoint }
+        set { gradientLayer.endPoint = newValue }
+    }
+    
+    public var type: CAGradientLayerType {
+        get { gradientLayer.type }
+        set { gradientLayer.type = newValue }
     }
 }
