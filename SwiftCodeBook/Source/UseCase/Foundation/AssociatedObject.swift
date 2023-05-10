@@ -17,7 +17,6 @@ final class AssociatedObjectItem {
 extension AssociatedObjectItem {
     private enum AssociatedKeys {
         static var age = "age"
-        static var name = "name"
         static var block = "block"
         static var contentLock = "contentLock"
         static var content = "content"
@@ -30,11 +29,6 @@ extension AssociatedObjectItem {
     var age: Int {
         get { objc_getAssociatedObject(self, &AssociatedKeys.age) as? Int ?? 0 }
         set { objc_setAssociatedObject(self, &AssociatedKeys.age, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
-    
-    var name: String {
-        get { objc_getAssociatedObject(self, &AssociatedKeys.name) as? String ?? "" }
-        set { objc_setAssociatedObject(self, &AssociatedKeys.name, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
     var block: (() -> Void)? {
