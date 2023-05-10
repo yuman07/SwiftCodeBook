@@ -24,7 +24,7 @@ extension AssociatedObjectItem {
     
     // 某些情况下我们需要AssociatedObj是线程安全的，即加锁
     // 但由于锁本身的创建也需要线程安全，因此我目前想到的方法是新增一个setup方法
-    // 该方法内去创建锁，必须保证该方法的调用早于需要线程安全的变量使用
+    // 该方法的本质是保证创建锁早于使用该锁保护的变量
     func setupA() {
         _ = contentLock
     }
