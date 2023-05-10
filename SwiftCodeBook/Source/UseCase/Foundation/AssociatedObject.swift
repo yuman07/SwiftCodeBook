@@ -8,14 +8,23 @@
 import Foundation
 
 // must be 'class', not 'struct'
-final class AssociatedObjectItem {}
+final class AssociatedObjectItem {
+    init() {
+        setupA()
+    }
+}
 
 extension AssociatedObjectItem {
     private enum AssociatedKeys {
         static var age = "age"
         static var name = "name"
         static var block = "block"
-        static var birthDay = "birthDay"
+        static var contentLock = "contentLock"
+        static var content = "content"
+    }
+    
+    func setupA() {
+        _ = contentLock
     }
     
     var age: Int {
@@ -33,11 +42,16 @@ extension AssociatedObjectItem {
         set { objc_setAssociatedObject(self, &AssociatedKeys.block, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    var birthDay: Date {
-        objc_getAssociatedObject(self, &AssociatedKeys.birthDay) as? Date ?? {
-            let date = Date()
-            objc_setAssociatedObject(self, &AssociatedKeys.birthDay, date, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return date
+    var contentLock: NSLock {
+        objc_getAssociatedObject(self, &AssociatedKeys.contentLock) as? NSLock ?? {
+            let lock = NSLock()
+            objc_setAssociatedObject(self, &AssociatedKeys.contentLock, lock, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return lock
         }()
+    }
+    
+    var content: String {
+        get { contentLock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.content) as? String ?? "" } }
+        set { contentLock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.content, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) } }
     }
 }
