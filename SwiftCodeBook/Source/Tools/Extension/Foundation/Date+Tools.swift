@@ -58,8 +58,7 @@ public extension Date {
     }
     
     var isInWeekend: Bool {
-        let d = dayOfWeek
-        return d == 1 || d == 6
+        calendar.isDateInWeekend(self)
     }
     
     var isInLeapYear: Bool {
@@ -116,7 +115,7 @@ public extension Date {
     }
     
     func isSameDay(with date: Date) -> Bool {
-        days(from: date) == 0
+        calendar.isDate(self, inSameDayAs: date)
     }
     
     func isSameWeek(with date: Date) -> Bool {
