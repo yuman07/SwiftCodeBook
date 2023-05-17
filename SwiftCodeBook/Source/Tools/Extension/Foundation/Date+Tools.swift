@@ -114,23 +114,11 @@ public extension Date {
         return to - from
     }
     
-    func isSameDay(with date: Date) -> Bool {
-        calendar.isDate(self, inSameDayAs: date)
+    func isSame(with date: Date, toGranularity component: Calendar.Component) -> Bool {
+        calendar.isDate(self, equalTo: date, toGranularity: component)
     }
     
-    func isSameWeek(with date: Date) -> Bool {
-        weeks(from: date) == 0
-    }
-    
-    func isSameMonth(with date: Date) -> Bool {
-        months(from: date) == 0
-    }
-    
-    func isSameYear(with date: Date) -> Bool {
-        years(from: date) == 0
-    }
-    
-    func adding(years: Int = 0, months: Int = 0, weeks: Int = 0, days: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) -> Date? {
+    func modifyBy(years: Int = 0, months: Int = 0, weeks: Int = 0, days: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) -> Date? {
         var dateComponent = DateComponents()
         dateComponent.year = years
         dateComponent.month = months
