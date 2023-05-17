@@ -21,7 +21,7 @@ public final class GCDTimer {
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
     
-    public init(timeInterval: TimeInterval, repeats: Bool, queue: DispatchQueue = .main, block: @escaping ((_ count: Int) -> Void)) {
+    public init(timeInterval: TimeInterval, repeats: Bool, queue: DispatchQueue = .main, block: @escaping (_ count: Int) -> Void) {
         self.timeInterval = timeInterval
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         self.timer.setEventHandler { [weak self] in
