@@ -92,6 +92,7 @@
 		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
 		7AB484CC2994D8A20085D298 /* Collection+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB484CB2994D8A20085D298 /* Collection+Tools.swift */; };
 		7ACA60502918F3F9009B502A /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA604F2918F3F9009B502A /* GCDTimer.swift */; };
+		7ACBC0202A160836007A8C13 /* SpecificLocalizedString .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBC01F2A160836007A8C13 /* SpecificLocalizedString .swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 		7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */; };
@@ -178,6 +179,7 @@
 		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
 		7AB484CB2994D8A20085D298 /* Collection+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Tools.swift"; sourceTree = "<group>"; };
 		7ACA604F2918F3F9009B502A /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
+		7ACBC01F2A160836007A8C13 /* SpecificLocalizedString .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpecificLocalizedString .swift"; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 		7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Tools.swift"; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */,
 				7AB206A3299F66310058D526 /* PointerInSwift.swift */,
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
+				7ACBC01F2A160836007A8C13 /* SpecificLocalizedString .swift */,
 				7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */,
 			);
 			path = Foundation;
@@ -556,6 +559,7 @@
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
 				7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */,
 				7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */,
+				7ACBC0202A160836007A8C13 /* SpecificLocalizedString .swift in Sources */,
 				7A06F1DC2A0CB89B003BAA9B /* AsyncToSync.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */,
