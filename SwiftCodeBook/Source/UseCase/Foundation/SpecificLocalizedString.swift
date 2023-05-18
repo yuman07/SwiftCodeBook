@@ -1,5 +1,5 @@
 //
-//  SpecificLocalizedString .swift
+//  SpecificLocalizedString.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2023/5/18.
