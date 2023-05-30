@@ -14,17 +14,17 @@ public final class CancelBag {
     
     public init() {}
     
+    public func store(_ cancellable: AnyCancellable) {
+        lock.lock()
+        defer { lock.unlock() }
+        cancellable.store(in: &tokens)
+    }
+    
     public func cancel() {
         lock.lock()
         defer { lock.unlock() }
         for token in tokens { token.cancel() }
         tokens.removeAll()
-    }
-    
-    public func store(_ cancellable: AnyCancellable) {
-        lock.lock()
-        defer { lock.unlock() }
-        cancellable.store(in: &tokens)
     }
 }
 
