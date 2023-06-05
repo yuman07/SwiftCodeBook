@@ -15,7 +15,7 @@ private final class ClickTextVC: UIViewController {
         textView.isSelectable = false
         let attString = NSMutableAttributedString(string: "你好啊你好啊你好啊你好啊你好啊你好啊，详情请参阅《个人信息保护法》的相关规定")
         guard case let range = (attString.string as NSString).range(of: "《个人信息保护法》"), range.isValid else { return }
-        attString.addAttributes([.foregroundColor: UIColor.blue], range: range)
+        attString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
         textView.attributedText = attString
         view.addSubview(textView)
         
