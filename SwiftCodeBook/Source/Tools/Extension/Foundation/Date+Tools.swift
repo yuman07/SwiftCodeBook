@@ -91,34 +91,26 @@ public extension Date {
     }
     
     func days(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .day, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .day, in: .era, for: self) ?? 1
-        return to - from
+        calendar.dateComponents([.day], from: date, to: self).day ?? 0
     }
     
     func weeks(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .weekOfYear, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .weekOfYear, in: .era, for: self) ?? 1
-        return to - from
+        calendar.dateComponents([.weekOfYear], from: date, to: self).weekOfYear ?? 0
     }
     
     func months(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .month, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .month, in: .era, for: self) ?? 1
-        return to - from
+        calendar.dateComponents([.month], from: date, to: self).month ?? 0
     }
     
     func years(from date: Date) -> Int {
-        let from = calendar.ordinality(of: .year, in: .era, for: date) ?? 1
-        let to = calendar.ordinality(of: .year, in: .era, for: self) ?? 1
-        return to - from
+        calendar.dateComponents([.year], from: date, to: self).year ?? 0
     }
     
     func isSame(with date: Date, toGranularity component: Calendar.Component) -> Bool {
         calendar.isDate(self, equalTo: date, toGranularity: component)
     }
     
-    func modifyBy(years: Int = 0, months: Int = 0, weeks: Int = 0, days: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) -> Date? {
+    func addingBy(years: Int = 0, months: Int = 0, weeks: Int = 0, days: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) -> Date? {
         var dateComponent = DateComponents()
         dateComponent.year = years
         dateComponent.month = months
