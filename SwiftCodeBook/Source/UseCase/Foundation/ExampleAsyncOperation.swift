@@ -41,18 +41,18 @@ final class ExampleAsyncOperation: Operation {
     override private(set) var isExecuting: Bool {
         get { lock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.isExecuting) as? Bool ?? false } }
         set {
-            willChangeValue(forKey: AssociatedKeys.isExecuting)
+            willChangeValue(forKey: "isExecuting")
             lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isExecuting, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-            didChangeValue(forKey: AssociatedKeys.isExecuting)
+            didChangeValue(forKey: "isExecuting")
         }
     }
     
     override private(set) var isFinished: Bool {
         get { lock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.isFinished) as? Bool ?? false } }
         set {
-            willChangeValue(forKey: AssociatedKeys.isFinished)
+            willChangeValue(forKey: "isFinished")
             lock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.isFinished, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-            didChangeValue(forKey: AssociatedKeys.isFinished)
+            didChangeValue(forKey: "isFinished")
         }
     }
     
