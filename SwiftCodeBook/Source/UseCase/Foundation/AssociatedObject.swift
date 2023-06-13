@@ -16,10 +16,10 @@ final class AssociatedObjectItem {
 
 extension AssociatedObjectItem {
     private enum AssociatedKeys {
-        static var age = "age"
-        static var block = "block"
-        static var contentLock = "contentLock"
-        static var content = "content"
+        static var age = 0
+        static var block = 1
+        static var contentLock = 2
+        static var content = 3
     }
     
     // 某些情况下我们需要AssociatedObj是线程安全的，即加锁

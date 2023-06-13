@@ -9,9 +9,9 @@ import Foundation
 
 final class ExampleAsyncOperation: Operation {
     private enum AssociatedKeys {
-        static var isExecuting = "isExecuting"
-        static var isFinished = "isFinished"
-        static var isCancelled = "isCancelled"
+        static var isExecuting = 0
+        static var isFinished = 1
+        static var isCancelled = 2
     }
     
     private let lock = NSRecursiveLock()

@@ -39,7 +39,7 @@ public extension UIView {
 
 private extension UIGestureRecognizer {
     enum AssociatedKeys {
-        static var action = "action"
+        static var action = 0
     }
     
     var action: ((UIGestureRecognizer) -> Void)? {
