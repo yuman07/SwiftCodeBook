@@ -57,6 +57,10 @@ public extension Date {
         calendar.component(.weekOfYear, from: self)
     }
     
+    var startDateOfThisDay: Date {
+        calendar.startOfDay(for: self)
+    }
+    
     var isInWeekend: Bool {
         calendar.isDateInWeekend(self)
     }
