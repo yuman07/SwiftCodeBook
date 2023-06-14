@@ -14,7 +14,7 @@ public extension UIApplication {
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
     }
     
-    static var appIcon: UIImage? = {
+    static var appIcon: UIImage? {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
@@ -22,7 +22,7 @@ public extension UIApplication {
             return UIImage(named: lastIcon)
         }
         return nil
-    }()
+    }
     
     static var appDisplayName: String? = {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
@@ -44,14 +44,18 @@ public extension UIApplication {
         Bundle.main.bundlePath.hasSuffix(".appex")
     }()
     
+    static var isRunningTests: Bool {
+        ProcessInfo().environment["XCTestConfigurationFilePath"] != nil
+    }
+    
     // https://stackoverflow.com/questions/18282326/how-can-i-detect-if-the-currently-running-app-was-installed-from-the-app-store
-    static var isInTestFlight: Bool = {
+    static var isInTestFlight = {
         !UIDevice.current.isSimulator
         && Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
         && !isAdHocDistributed
     }()
     
-    static var isAdHocDistributed: Bool = {
+    static var isAdHocDistributed = {
         Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil
     }()
     
