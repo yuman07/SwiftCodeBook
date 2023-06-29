@@ -10,17 +10,18 @@ import Foundation
 public extension NSAttributedString {
     func trimmingCharacters(in characterSet: CharacterSet) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
+        var range = NSRange()
         
-        var range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet)
-        while range.location == 0 && range.length > 0 {
-            attributedString.replaceCharacters(in: range, with: "")
+        while true {
             range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet)
+            guard range.location == 0 && range.length > 0 else { break }
+            attributedString.replaceCharacters(in: range, with: "")
         }
         
-        range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
-        while NSMaxRange(range) == (attributedString.string as NSString).length && range.length > 0 {
-            attributedString.replaceCharacters(in: range, with: "")
+        while true {
             range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
+            guard NSMaxRange(range) == (attributedString.string as NSString).length && range.length > 0 else { break }
+            attributedString.replaceCharacters(in: range, with: "")
         }
         
         return attributedString
