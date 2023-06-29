@@ -10,6 +10,7 @@
 		7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F7482913A5260036A898 /* URL+Tools.swift */; };
 		7A06F1DC2A0CB89B003BAA9B /* AsyncToSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A06F1DB2A0CB89B003BAA9B /* AsyncToSync.swift */; };
 		7A0ACC272A4D569D00F8F19A /* NSAttributedString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */; };
+		7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */; };
 		7A1074752908C01900C13362 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074742908C01900C13362 /* AppDelegate.swift */; };
 		7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074762908C01900C13362 /* SceneDelegate.swift */; };
 		7A1074792908C01900C13362 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074782908C01900C13362 /* ViewController.swift */; };
@@ -121,6 +122,7 @@
 		7A02F7482913A5260036A898 /* URL+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Tools.swift"; sourceTree = "<group>"; };
 		7A06F1DB2A0CB89B003BAA9B /* AsyncToSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncToSync.swift; sourceTree = "<group>"; };
 		7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Tools.swift"; sourceTree = "<group>"; };
+		7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeLazy.swift; sourceTree = "<group>"; };
 		7A1074712908C01900C13362 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A1074742908C01900C13362 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A1074762908C01900C13362 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				7AE1E49A2949B583001B3671 /* NSRange-SwiftRange.swift */,
 				7AB206A3299F66310058D526 /* PointerInSwift.swift */,
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
+				7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */,
 				7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */,
 				7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */,
 			);
@@ -583,6 +586,7 @@
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
+				7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
