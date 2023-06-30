@@ -8,7 +8,7 @@
 import Foundation
 
 final class SafeLazy {
-    private let logServiceLock = NSRecursiveLock() // 如果确定没有重入，可以使用NSLock以提升性能
+    private let logServiceLock = NSLock()
     private var privateLogService: NSObject?
     lazy var logService: NSObject = {
         logServiceLock.withLock {
