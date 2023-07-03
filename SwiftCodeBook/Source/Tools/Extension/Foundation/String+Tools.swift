@@ -82,4 +82,8 @@ public extension String {
     var containsEmoji: Bool {
         contains { $0.isEmoji }
     }
+    
+    var capitalizeTheFirstLetter: String {
+        first?.uppercased() ?? "" + dropFirst()
+    }
 }
