@@ -84,6 +84,6 @@ public extension String {
     }
     
     var capitalizeTheFirstLetter: String {
-        first?.uppercased() ?? "" + dropFirst()
+        (first?.uppercased() ?? "") + dropFirst()
     }
 }
