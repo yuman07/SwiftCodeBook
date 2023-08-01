@@ -8,6 +8,14 @@
 import Foundation
 
 public extension URL {
+    
+    static var blank: URL {
+        guard let url = URL(string: "about:blank") else {
+            fatalError("blank should be a URL")
+        }
+        return url
+    }
+    
     var queryDictionary: [String: String] {
         get {
             (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) {
