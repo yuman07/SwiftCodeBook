@@ -67,10 +67,10 @@ public extension String {
         indexSafely(before: idx).flatMap { self[startIndex ... $0].lastIndex(of: char) }
     }
     
-    func forEachWithIndex(iterator: ((Index, Character) -> Void)) {
+    func forEachWithIndex(_ body: (Index, Character) throws -> Void) rethrows {
         var curIndex = startIndex
         for char in self {
-            iterator(curIndex, char)
+            try body(curIndex, char)
             curIndex = index(after: curIndex)
         }
     }
