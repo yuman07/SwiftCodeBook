@@ -66,6 +66,30 @@ public extension String {
     func lastIndex(of char: Character, before idx: Index) -> Index? {
         indexSafely(before: idx).flatMap { self[startIndex ... $0].lastIndex(of: char) }
     }
+    
+    func forEachWithIndex(iterator: ((Index, Character) -> Void)) {
+        var curIndex = startIndex
+        for char in self {
+            iterator(curIndex, char)
+            curIndex = index(after: curIndex)
+        }
+    }
+    
+    func allClosedRangeOfPaired(startChar: Character, endChar: Character) -> [ClosedRange<Index>] {
+        var stack = [Index]()
+        var ranges = [ClosedRange<Index>]()
+        
+        forEachWithIndex { index, char in
+            if char == startChar {
+                stack.append(index)
+            } else if char == endChar, let start = stack.last {
+                stack.removeLast()
+                ranges.append(start ... index)
+            }
+        }
+        
+        return ranges
+    }
 }
 
 public extension String {
