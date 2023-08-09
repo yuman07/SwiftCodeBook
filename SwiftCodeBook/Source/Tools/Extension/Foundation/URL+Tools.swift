@@ -9,7 +9,7 @@ import Foundation
 
 public extension URL {
     
-    static var blank: URL {
+    static let blank = {
         guard let url = URL(string: "about:blank") else {
             fatalError("blank should be a URL")
         }
