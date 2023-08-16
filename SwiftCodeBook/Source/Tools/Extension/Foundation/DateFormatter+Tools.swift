@@ -22,11 +22,11 @@ public extension DateFormatter {
         }
     }
     
-    static func string(from date: Date, with dateFormat: String) -> String {
+    static func string(from date: Date, dateFormat: String) -> String {
         dateFormatter(with: dateFormat).string(from: date)
     }
     
-    static func date(from string: String, with dateFormat: String) -> Date? {
+    static func date(from string: String, dateFormat: String) -> Date? {
         dateFormatter(with: dateFormat).date(from: string)
     }
 }
