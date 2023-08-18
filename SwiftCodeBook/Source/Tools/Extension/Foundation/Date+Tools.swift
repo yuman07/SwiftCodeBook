@@ -94,6 +94,10 @@ public extension Date {
         calendar.isDateInYesterday(self)
     }
     
+    var startOfThisDay: Date {
+        calendar.startOfDay(for: self)
+    }
+    
     func days(from date: Date) -> Int {
         calendar.dateComponents([.day], from: date, to: self).day ?? 0
     }
