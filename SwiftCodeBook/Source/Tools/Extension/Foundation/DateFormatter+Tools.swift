@@ -5,6 +5,7 @@
 //  Created by yuman on 2023/8/16.
 //
 
+import Combine
 import Foundation
 
 public extension DateFormatter {
@@ -21,6 +22,10 @@ public extension DateFormatter {
             }()
         }
     }
+    
+    private static let token = NotificationCenter.default.publisher(for: NSLocale.currentLocaleDidChangeNotification)
+        .merge(with: NotificationCenter.default.publisher(for: NSNotification.Name.NSSystemTimeZoneDidChange))
+        .sink { _ in lock.withLock { dateFormatterMap.removeAll() } }
     
     static func string(from date: Date, dateFormat: String) -> String {
         dateFormatter(with: dateFormat).string(from: date)
