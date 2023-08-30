@@ -46,6 +46,11 @@ public extension String {
         guard case let len = range.upperBound, len >= 0 else { return nil }
         return prefix(len)
     }
+    
+    subscript(_ range: NSRange) -> Substring? {
+        guard let r = Range(range, in: self) else { return nil }
+        return self[r]
+    }
 }
 
 public extension String {
