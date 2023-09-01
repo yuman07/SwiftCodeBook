@@ -24,7 +24,7 @@ public extension DateFormatter {
     }
     
     private static let token = NotificationCenter.default.publisher(for: NSLocale.currentLocaleDidChangeNotification)
-        .merge(with: NotificationCenter.default.publisher(for: NSNotification.Name.NSSystemTimeZoneDidChange))
+        .merge(with: NotificationCenter.default.publisher(for: .NSSystemTimeZoneDidChange))
         .sink { _ in lock.withLock { dateFormatterMap.removeAll() } }
     
     static func string(from date: Date, dateFormat: String) -> String {
