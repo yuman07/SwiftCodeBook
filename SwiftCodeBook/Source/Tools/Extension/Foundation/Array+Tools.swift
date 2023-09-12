@@ -37,6 +37,15 @@ public extension Array {
     }
 }
 
+public extension Array {
+    func removeDuplicates(where predicate: (Element) -> Bool) -> [Element] {
+        guard count > 1 else { return self }
+        return reduce(into: []) {
+            if !$0.contains(where: predicate) { $0.append($1) }
+        }
+    }
+}
+
 public extension Array where Element: Equatable {
     func removeDuplicates() -> [Element] {
         guard count > 1 else { return self }
