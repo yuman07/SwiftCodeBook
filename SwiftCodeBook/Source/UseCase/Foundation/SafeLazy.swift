@@ -12,13 +12,11 @@ final class SafeLazy {
     private var privateLogService: NSObject?
     lazy var logService: NSObject = {
         logServiceLock.withLock {
-            if let privateLogService {
-                return privateLogService
-            } else {
+            privateLogService ?? {
                 let newLogService = NSObject()
                 privateLogService = newLogService
                 return newLogService
-            }
+            }()
         }
     }()
     
