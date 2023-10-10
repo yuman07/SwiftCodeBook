@@ -42,7 +42,7 @@ public extension String {
     
     // [..<2]
     subscript(_ range: PartialRangeUpTo<Int>) -> Substring? {
-        guard range.upperBound >= 0,
+        guard range.upperBound > 0,
               let upperIndex = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex),
               upperIndex <= endIndex
         else { return nil }
