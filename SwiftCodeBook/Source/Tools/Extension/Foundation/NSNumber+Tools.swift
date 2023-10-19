@@ -7,8 +7,8 @@
 
 import UIKit
 
-extension NSNumber {
-    public var CGFloatValue: CGFloat {
+public extension NSNumber {
+    var CGFloatValue: CGFloat {
         CGFloat(doubleValue)
     }
 }
