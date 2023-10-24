@@ -15,11 +15,12 @@ final class AssociatedObjectItem {
 }
 
 extension AssociatedObjectItem {
+    // https://github.com/atrick/swift-evolution/blob/diagnose-implicit-raw-bitwise/proposals/nnnn-implicit-raw-bitwise-conversion.md#associated-object-string-keys
     private enum AssociatedKeys {
-        static var age = 0
-        static var block = 1
-        static var contentLock = 2
-        static var content = 3
+        static var age: Void?
+        static var block: Void?
+        static var contentLock: Void?
+        static var content: Void?
     }
     
     // 某些情况下我们需要AssociatedObj是线程安全的，即加锁
@@ -39,7 +40,7 @@ extension AssociatedObjectItem {
         set { objc_setAssociatedObject(self, &AssociatedKeys.block, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    var contentLock: NSLock {
+    private var contentLock: NSLock {
         objc_getAssociatedObject(self, &AssociatedKeys.contentLock) as? NSLock ?? {
             let lock = NSLock()
             objc_setAssociatedObject(self, &AssociatedKeys.contentLock, lock, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
