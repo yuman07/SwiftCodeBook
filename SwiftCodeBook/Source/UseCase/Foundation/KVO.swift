@@ -38,7 +38,7 @@ final class KVOItem: NSObject {
 
 extension KVOItem {
     private enum AssociatedKeys {
-        static var name = 0
+        static var name: Void?
     }
     
     // works the same for associative properties, also add '@objc dynamic'
