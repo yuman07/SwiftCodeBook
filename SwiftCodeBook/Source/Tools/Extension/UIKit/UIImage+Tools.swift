@@ -13,7 +13,7 @@ public extension UIImage {
             color.setFill()
             context.fill(CGRect(origin: .zero, size: size))
         }).cgImage else { fatalError("UIImage.init(color:size:) fail, cgImage not exist") }
-        self.init(cgImage: cgImage, scale: UIScreen.main.scale, orientation: .up)
+        self.init(cgImage: cgImage, scale: UITraitCollection.current.displayScale, orientation: .up)
     }
     
     convenience init?(filePath: String) {
