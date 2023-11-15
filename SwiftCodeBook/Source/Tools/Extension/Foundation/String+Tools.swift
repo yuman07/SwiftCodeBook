@@ -80,8 +80,8 @@ public extension String {
     
     func forEachWithIndex(_ body: (Index, Character) throws -> Void) rethrows {
         var curIndex = startIndex
-        for char in self {
-            try body(curIndex, char)
+        while curIndex < endIndex {
+            try body(curIndex, self[curIndex])
             curIndex = index(after: curIndex)
         }
     }
