@@ -18,4 +18,8 @@ public extension Task {
     func toAnyCancellable() -> AnyCancellable {
         AnyCancellable({ cancel() })
     }
+    
+    func store(in cancelBag: CancelBag) {
+        toAnyCancellable().store(in: cancelBag)
+    }
 }
