@@ -14,7 +14,7 @@ public extension URL {
             fatalError("blank should be a URL")
         }
         return url
-    }
+    }()
     
     var queryDictionary: [String: String] {
         get {
