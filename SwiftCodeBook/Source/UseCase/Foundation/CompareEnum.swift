@@ -26,6 +26,13 @@ func compareEnum() -> Bool {
     }
 }
 
+func checkEnumValue() {
+    let content = Content.text("123")
+    if case let .text(str) = content {
+        print(str)
+    }
+}
+
 func checkEnumIsSomeCase() {
     let content = Content.text("123")
     if case .text = content {
