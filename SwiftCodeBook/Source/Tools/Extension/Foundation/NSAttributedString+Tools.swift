@@ -20,7 +20,7 @@ public extension NSAttributedString {
         
         while true {
             range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
-            guard NSMaxRange(range) == (attributedString.string as NSString).length && range.length > 0 else { break }
+            guard NSMaxRange(range) == attributedString.length && range.length > 0 else { break }
             attributedString.replaceCharacters(in: range, with: "")
         }
         
