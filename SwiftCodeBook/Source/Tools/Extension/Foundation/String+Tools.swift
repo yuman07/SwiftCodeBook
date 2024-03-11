@@ -121,4 +121,8 @@ public extension String {
     var capitalizeTheFirstLetter: String {
         (first?.uppercased() ?? "") + dropFirst()
     }
+    
+    var stripAllHTMLTags: String {
+        replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+    }
 }
