@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7A02F7492913A5260036A898 /* URL+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F7482913A5260036A898 /* URL+Tools.swift */; };
 		7A06F1DC2A0CB89B003BAA9B /* AsyncToSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A06F1DB2A0CB89B003BAA9B /* AsyncToSync.swift */; };
+		7A0752082BA8124A00A575C5 /* StringRegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0752072BA8124A00A575C5 /* StringRegularExpression.swift */; };
 		7A08D21A2B16DDFC00DE9BCC /* CompareEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */; };
 		7A0ACC272A4D569D00F8F19A /* NSAttributedString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */; };
 		7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */; };
@@ -123,6 +124,7 @@
 /* Begin PBXFileReference section */
 		7A02F7482913A5260036A898 /* URL+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Tools.swift"; sourceTree = "<group>"; };
 		7A06F1DB2A0CB89B003BAA9B /* AsyncToSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncToSync.swift; sourceTree = "<group>"; };
+		7A0752072BA8124A00A575C5 /* StringRegularExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRegularExpression.swift; sourceTree = "<group>"; };
 		7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareEnum.swift; sourceTree = "<group>"; };
 		7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Tools.swift"; sourceTree = "<group>"; };
 		7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeLazy.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
 				7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */,
 				7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */,
+				7A0752072BA8124A00A575C5 /* StringRegularExpression.swift */,
 				7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */,
 			);
 			path = Foundation;
@@ -588,6 +591,7 @@
 				7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
+				7A0752082BA8124A00A575C5 /* StringRegularExpression.swift in Sources */,
 				7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */,
 				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,

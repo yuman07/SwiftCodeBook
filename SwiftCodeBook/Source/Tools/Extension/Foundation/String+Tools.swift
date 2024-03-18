@@ -60,25 +60,25 @@ public extension String {
 }
 
 public extension String {
-    func indexSafely(after idx: Index) -> Index? {
+    func indexSafely(after idx: Self.Index) -> Self.Index? {
         guard idx < endIndex else { return nil }
         return index(after: idx)
     }
     
-    func indexSafely(before idx: Index) -> Index? {
+    func indexSafely(before idx: Self.Index) -> Self.Index? {
         guard idx > startIndex else { return nil }
         return self.index(before: idx)
     }
     
-    func firstIndex(of char: Character, after idx: Index) -> Index? {
+    func firstIndex(of char: Character, after idx: Self.Index) -> Self.Index? {
         indexSafely(after: idx).flatMap { self[$0 ..< endIndex].firstIndex(of: char) }
     }
     
-    func lastIndex(of char: Character, before idx: Index) -> Index? {
+    func lastIndex(of char: Character, before idx: Self.Index) -> Self.Index? {
         indexSafely(before: idx).flatMap { self[startIndex ... $0].lastIndex(of: char) }
     }
     
-    func forEachWithIndex(_ body: (Index, Character) throws -> Void) rethrows {
+    func forEachWithIndex(_ body: (Self.Index, Character) throws -> Void) rethrows {
         var curIndex = startIndex
         while curIndex < endIndex {
             try body(curIndex, self[curIndex])
@@ -101,6 +101,14 @@ public extension String {
         
         return ranges
     }
+
+    func ranges<T>(of aString: T, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Self.Index>] where T : StringProtocol {
+      var ranges: [Range<Self.Index>] = []
+      while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? self.startIndex) ..< self.endIndex, locale: locale) {
+        ranges.append(range)
+      }
+      return ranges
+    }
 }
 
 public extension String {
@@ -118,11 +126,11 @@ public extension String {
         contains { $0.isEmoji }
     }
     
-    var capitalizeTheFirstLetter: String {
+    var capitalizeTheFirstLetter: Self {
         (first?.uppercased() ?? "") + dropFirst()
     }
     
-    var stripAllHTMLTags: String {
+    var stripAllHTMLTags: Self {
         replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
     }
 }
