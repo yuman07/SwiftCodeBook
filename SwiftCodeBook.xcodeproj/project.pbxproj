@@ -99,6 +99,7 @@
 		7ACB54AC2BB3CAA20004CBA8 /* AttributedString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AB2BB3CAA20004CBA8 /* AttributedString+Tools.swift */; };
 		7ACB54AE2BB3CD080004CBA8 /* View+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */; };
 		7ACB5E0E2BB517BB0004CBA8 /* InlinePresentationIntentCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB5E0D2BB517BB0004CBA8 /* InlinePresentationIntentCase.swift */; };
+		7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */; };
 		7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */; };
 		7ACF43E82A8C9B9B009963C7 /* DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
@@ -194,6 +195,7 @@
 		7ACB54AB2BB3CAA20004CBA8 /* AttributedString+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Tools.swift"; sourceTree = "<group>"; };
 		7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Tools.swift"; sourceTree = "<group>"; };
 		7ACB5E0D2BB517BB0004CBA8 /* InlinePresentationIntentCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlinePresentationIntentCase.swift; sourceTree = "<group>"; };
+		7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Tools.swift"; sourceTree = "<group>"; };
 		7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificLocalizedString.swift; sourceTree = "<group>"; };
 		7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Tools.swift"; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
 				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,
 				7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */,
+				7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */,
 				7A1074A42909041E00C13362 /* UIImage+Tools.swift */,
 				7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */,
 				7A1087B029097C2800C13362 /* UIView+Tools.swift */,
@@ -616,6 +619,7 @@
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
+				7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */,
 				7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
