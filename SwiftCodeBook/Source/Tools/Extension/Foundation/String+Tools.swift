@@ -60,46 +60,32 @@ public extension String {
 }
 
 public extension String {
-    func indexSafely(after idx: Self.Index) -> Self.Index? {
-        guard idx < endIndex else { return nil }
-        return index(after: idx)
+    // 对给定的index进行移动，正数向后，负数向前，最终结果在[startIndex, endIndex)即有效
+    func indexSafely(_ i: Self.Index, offsetBy distance: Int) -> Self.Index? {
+        var currentIndex = i
+        var count = abs(distance)
+        
+        while count > 0 {
+            if distance > 0 {
+                guard currentIndex < endIndex else { return nil }
+                currentIndex = index(after: currentIndex)
+            } else {
+                guard currentIndex > startIndex else { return nil }
+                currentIndex = index(before: currentIndex)
+            }
+            count -= 1
+        }
+        
+        guard currentIndex >= startIndex && currentIndex < endIndex else { return nil }
+        return currentIndex
     }
-    
-    func indexSafely(before idx: Self.Index) -> Self.Index? {
-        guard idx > startIndex else { return nil }
-        return self.index(before: idx)
-    }
-    
-    func firstIndex(of char: Character, after idx: Self.Index) -> Self.Index? {
-        indexSafely(after: idx).flatMap { self[$0 ..< endIndex].firstIndex(of: char) }
-    }
-    
-    func lastIndex(of char: Character, before idx: Self.Index) -> Self.Index? {
-        indexSafely(before: idx).flatMap { self[startIndex ... $0].lastIndex(of: char) }
-    }
-    
-    func forEachWithIndex(_ body: (Self.Index, Character) throws -> Void) rethrows {
+
+    func forEachWithIndexAndChar(_ body: (Self.Index, Character) throws -> Void) rethrows {
         var curIndex = startIndex
         while curIndex < endIndex {
             try body(curIndex, self[curIndex])
             curIndex = index(after: curIndex)
         }
-    }
-    
-    func allClosedRangeOfPaired(startChar: Character, endChar: Character) -> [ClosedRange<Index>] {
-        var stack = [Index]()
-        var ranges = [ClosedRange<Index>]()
-        
-        forEachWithIndex { index, char in
-            if char == startChar {
-                stack.append(index)
-            } else if char == endChar, let start = stack.last {
-                stack.removeLast()
-                ranges.append(start ... index)
-            }
-        }
-        
-        return ranges
     }
 
     func ranges<T>(of aString: T, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Self.Index>] where T: StringProtocol {
