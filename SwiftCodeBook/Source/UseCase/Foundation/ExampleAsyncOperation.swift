@@ -17,6 +17,7 @@ final class ExampleAsyncOperation: Operation {
     private let lock = NSRecursiveLock()
     
     private let requestKey: String
+    // finishBlock通常在子线程被执行
     private let finishBlock: (Result<String, Error>) -> Void
     private var result = ""
     

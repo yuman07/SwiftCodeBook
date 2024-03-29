@@ -7,35 +7,29 @@
 
 import Foundation
 
-func DictionaryOfOptionalValues() {
-    // Under normal circumstances, the value of Dictionary is not optional.
-    // At this time, setting nil for a key is equivalent to deleting the key.
-    var dictNormal = ["a": 1, "b": 2]
+func testDictionaryOfOptionalValues() {
+    // 通常情况下Dict的value是非可选的，此时给key赋值nil等于remove该key
+    var dictNormal: [String: Int] = ["a": 1, "b": 2]
     dictNormal["a"] = nil
     // ["b": 2]
     print(dictNormal)
     
-    // But pay attention when the value of a Dictionary is an Optional type
-    // [String: Int?]
+    // 但如果该Dict的value是可选值，此时一定要注意
     // ["a": Optional(1), "c": nil, "b": Optional(2)]
-    var dict = [
-                "a": 1,
-                "b": 2,
-                "c": nil,
-            ]
+    var dict: [String: Int?] = ["a": 1, "b": 2, "c": nil]
     print(dict)
 
-    // Still equivalent to deleting the key as "a"
+    // 对于这种Dict，直接给key赋值nil，也等于直接删除该key
     // ["c": nil, "b": Optional(2)]
     dict["a"] = nil
     print(dict)
 
-    // If you want to set nil to a
+    // 如果你想要给这种Dict的某个key设置可选值为nil，需要这样操作
     // // ["c": nil, "a": nil, "b": Optional(2)]
     dict["a"] = .some(nil)
     print(dict)
     
-    // If you need to add a new key, its value is nil
+    // 同样，如果你想新增一个value为nil的值
     // ["b": Optional(2), "a": Optional(1), "d": nil, "c": nil]
     dict["d"] = .some(nil)
     print(dict)

@@ -18,7 +18,6 @@ func SwiftRangeToNSRange() {
     print(nsRange)
 }
 
-// Because there will be conversion failures, note that the returned result type is Range?
 func NSRangeToSwiftRange() {
     let string = "好😁123"
     let nsRange = NSRange(location: 0, length: 3)
