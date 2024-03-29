@@ -15,6 +15,21 @@ public final actor HashHelper {
         case sha256
         case sha384
         case sha512
+        
+        fileprivate var hasher: any HashFunction {
+            switch self {
+            case .md5:
+                return Insecure.MD5()
+            case .sha1:
+                return Insecure.SHA1()
+            case .sha256:
+                return SHA256()
+            case .sha384:
+                return SHA384()
+            case .sha512:
+                return SHA512()
+            }
+        }
     }
     
     private let function: Function
@@ -22,11 +37,11 @@ public final actor HashHelper {
    
     public init(function: Function) {
         self.function = function
-        hasher = Self.hasher(using: function)
+        hasher = function.hasher
     }
     
     public func reset() {
-        hasher = Self.hasher(using: function)
+        hasher = function.hasher
     }
     
     public func update(data: Data) {
@@ -36,26 +51,11 @@ public final actor HashHelper {
     public func finalize() -> String {
         hasher.finalize().toHashString()
     }
-    
-    private static func hasher(using function: Function) -> any HashFunction {
-        switch function {
-        case .md5:
-            return Insecure.MD5()
-        case .sha1:
-            return Insecure.SHA1()
-        case .sha256:
-            return SHA256()
-        case .sha384:
-            return SHA384()
-        case .sha512:
-            return SHA512()
-        }
-    }
 }
 
 public extension HashHelper {
     static func hash(data: Data, using function: Function) -> String {
-        var hasher = hasher(using: function)
+        var hasher = function.hasher
         hasher.update(data: data)
         return hasher.finalize().toHashString()
     }
@@ -71,7 +71,7 @@ public extension HashHelper {
                 defer { try? handler.close() }
                 
                 var isEnd = false
-                var hasher = hasher(using: function)
+                var hasher = function.hasher
                 while !isEnd {
                     autoreleasepool {
                         guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
