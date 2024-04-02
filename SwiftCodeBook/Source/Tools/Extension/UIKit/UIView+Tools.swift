@@ -69,7 +69,7 @@ public extension UIView {
 }
 
 public extension UIView {
-    // https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/ios/chrome/browser/snapshots/snapshot_generator.mm
+    // https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/ios/chrome/browser/snapshots/model
     // https://github.com/CoderZhuXH/XHLaunchAd/issues/224
     func toImage() -> UIImage {
         UIGraphicsImageRenderer(size: bounds.size).image {
