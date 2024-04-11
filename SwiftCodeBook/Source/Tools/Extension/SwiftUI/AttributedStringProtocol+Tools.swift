@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension AttributedString {
+public extension AttributedStringProtocol {
     var plainText: String {
     String(characters[...])
   }
