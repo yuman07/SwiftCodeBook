@@ -39,4 +39,3 @@ final class SampleWillDidMoveViewController: UIViewController {
         }
     }
 }
-
