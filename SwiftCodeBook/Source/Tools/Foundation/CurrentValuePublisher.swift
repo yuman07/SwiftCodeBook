@@ -60,10 +60,10 @@ extension Publisher {
 /// its current value and all values published by it.
 public final class AnyCurrentValuePublisher<Value, Failure: Error>: CurrentValuePublisher {
     public typealias Output = Value
-
+    
     private let _publisher: AnyPublisher<Value, Failure>
     private let _value: () -> Value
-
+    
     public convenience init<Root: CurrentValuePublisher>(
         _ subject: Root,
         _ transform: @escaping (Root.Output) -> Value
@@ -74,7 +74,7 @@ public final class AnyCurrentValuePublisher<Value, Failure: Error>: CurrentValue
             transform: transform
         )
     }
-
+    
     public convenience init<Root: CurrentValuePublisher>(
         _ subject: Root,
         keyPath: KeyPath<Root.Output, Value>
@@ -94,7 +94,7 @@ public final class AnyCurrentValuePublisher<Value, Failure: Error>: CurrentValue
             value: { subject.value }
         )
     }
-
+    
     public init<P: Publisher>(
         unsafeSubject subject: P,
         value: @escaping () -> Value,
@@ -111,11 +111,11 @@ public final class AnyCurrentValuePublisher<Value, Failure: Error>: CurrentValue
         self._value = value
         self._publisher = subject.eraseToAnyPublisher()
     }
-
+    
     public var value: Value {
         _value()
     }
-
+    
     public func receive<S: Subscriber>(subscriber: S) where S.Failure == Failure, S.Input == Value {
         _publisher.receive(subscriber: subscriber)
     }

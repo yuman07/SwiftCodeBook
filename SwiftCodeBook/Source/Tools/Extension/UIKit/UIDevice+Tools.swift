@@ -9,11 +9,11 @@ import UIKit
 
 public extension UIDevice {
     var isSimulator: Bool {
-    #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
         true
-    #else
+#else
         false
-    #endif
+#endif
     }
     
     var deviceModel: String {

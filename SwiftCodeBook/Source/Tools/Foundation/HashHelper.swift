@@ -34,7 +34,7 @@ public final actor HashHelper {
     
     private let function: Function
     private var hasher: any HashFunction
-   
+    
     public init(function: Function) {
         self.function = function
         hasher = function.hasher

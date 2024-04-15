@@ -152,7 +152,7 @@ struct TestPointerInSwift {
         withUnsafeBytes(of: &sampleStruct) { bytes in
             for byte in bytes { print(byte) }
         }
-
+        
         print("---------")
         
         // 该结构体的类型指针

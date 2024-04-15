@@ -79,7 +79,7 @@ public extension String {
         guard currentIndex >= startIndex && currentIndex < endIndex else { return nil }
         return currentIndex
     }
-
+    
     func forEachWithIndexAndChar(_ body: (Self.Index, Character) throws -> Void) rethrows {
         var curIndex = startIndex
         while curIndex < endIndex {
@@ -87,13 +87,13 @@ public extension String {
             curIndex = index(after: curIndex)
         }
     }
-
+    
     func ranges<T>(of aString: T, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Self.Index>] where T: StringProtocol {
-      var ranges: [Range<Self.Index>] = []
-      while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? startIndex) ..< endIndex, locale: locale) {
-        ranges.append(range)
-      }
-      return ranges
+        var ranges: [Range<Self.Index>] = []
+        while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? startIndex) ..< endIndex, locale: locale) {
+            ranges.append(range)
+        }
+        return ranges
     }
 }
 

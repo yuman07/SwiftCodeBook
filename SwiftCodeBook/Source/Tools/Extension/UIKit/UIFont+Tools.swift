@@ -16,14 +16,14 @@ public extension UIFont {
         }
         return UIFont(descriptor: descriptor, size: 0)
     }
-
+    
     func removeTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
         guard let descriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.subtracting(traits)) else {
             return self
         }
         return UIFont(descriptor: descriptor, size: 0)
     }
-
+    
     // isBold: containsTraits(.traitBold)
     func containsTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> Bool {
         fontDescriptor.symbolicTraits.contains(traits)

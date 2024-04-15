@@ -38,7 +38,7 @@ public final class GradientView: UIView {
         get { gradientLayer.startPoint }
         set { gradientLayer.startPoint = newValue }
     }
-
+    
     /// same with CAGradientLayer.endPoint
     public var endPoint: CGPoint {
         get { gradientLayer.endPoint }

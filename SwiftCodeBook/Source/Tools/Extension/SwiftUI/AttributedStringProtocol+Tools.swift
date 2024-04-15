@@ -9,6 +9,6 @@ import Foundation
 
 public extension AttributedStringProtocol {
     var plainText: String {
-    String(characters[...])
-  }
+        String(characters[...])
+    }
 }

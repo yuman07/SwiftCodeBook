@@ -18,12 +18,12 @@ func testDictionaryOfOptionalValues() {
     // ["a": Optional(1), "c": nil, "b": Optional(2)]
     var dict: [String: Int?] = ["a": 1, "b": 2, "c": nil]
     print(dict)
-
+    
     // 对于这种Dict，直接给key赋值nil，也等于直接删除该key
     // ["c": nil, "b": Optional(2)]
     dict["a"] = nil
     print(dict)
-
+    
     // 如果你想要给这种Dict的某个key设置可选值为nil，需要这样操作
     // // ["c": nil, "a": nil, "b": Optional(2)]
     dict["a"] = .some(nil)

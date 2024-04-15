@@ -18,7 +18,7 @@ class shadowViewController: UIViewController {
         
         // 阴影的颜色。必须设置，注意是CGColor
         contentView.layer.shadowColor = UIColor.black.cgColor
-            
+        
         // 阴影的透明度，范围是[0, 1]，默认值为0即不显示
         // 必须手动设置为大于0的值
         contentView.layer.shadowOpacity = 1.0
@@ -50,7 +50,7 @@ class shadowViewController: UIViewController {
         
         /// 对shadowView设置阴影属性...(省略)
         shadowView.layer.shadowColor = nil
-            
+        
         /// 对contentView设置masksToBounds为YES
         contentView.layer.masksToBounds = true
     }
