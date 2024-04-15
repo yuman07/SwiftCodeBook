@@ -5,7 +5,6 @@
 //  Created by yuman on 2024/4/15.
 //
 
-import UIKit
 import SwiftUI
 
 // 测试可以发现：NSAttributedString.Key 与 AttributeScopes.SwiftUIAttributes.FontAttribute 不是等价的，两者在NSAttributedString转换时会同时保留。

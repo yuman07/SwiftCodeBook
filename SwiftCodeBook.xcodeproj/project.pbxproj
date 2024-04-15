@@ -377,8 +377,17 @@
 			children = (
 				7AE1E49C2949B724001B3671 /* Foundation */,
 				7AE1E49D2949B72A001B3671 /* UIKit */,
+				7A6227C62BCD0F6B00E33417 /* SwiftUI */,
 			);
 			path = UseCase;
+			sourceTree = "<group>";
+		};
+		7A6227C62BCD0F6B00E33417 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		7A9CBA09291E42C300046466 /* Codable */ = {
@@ -445,7 +454,6 @@
 				7AABCA8B2928B0FF00059782 /* AddMask.swift */,
 				7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */,
 				7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */,
-				7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */,
 				7A8A00A429308F5D001A3345 /* HitTest.swift */,
 				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
 				7AF831E529E65E9800021A08 /* MaskedCorners.swift */,
