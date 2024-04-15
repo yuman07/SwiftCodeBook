@@ -9,6 +9,6 @@ import Foundation
 
 public extension CGPoint {
     func distanceTo(_ point: CGPoint) -> CGFloat {
-        sqrt(pow((point.x - self.x), 2) + pow((point.y - self.y), 2))
+        sqrt(pow((point.x - x), 2) + pow((point.y - y), 2))
     }
 }
