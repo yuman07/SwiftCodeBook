@@ -97,13 +97,13 @@ public extension String {
     }
 }
 
-public extension String {
+public extension StringProtocol {
     var UTF8Data: Data {
         Data(utf8)
     }
 }
 
-public extension String {
+public extension StringProtocol {
     var containsChinese: Bool {
         contains { $0.isChinese }
     }
@@ -112,11 +112,11 @@ public extension String {
         contains { $0.isEmoji }
     }
     
-    var capitalizeTheFirstLetter: Self {
+    var capitalizeTheFirstLetter: String {
         (first?.uppercased() ?? "") + dropFirst()
     }
     
-    var stripAllHTMLTags: Self {
+    var stripAllHTMLTags: String {
         replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
     }
 }
