@@ -32,7 +32,7 @@ public extension ISO8601DateFormatter {
     [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
     
     private static let formatters = {
-        (0 ..< 1 << optionals.count).map { num -> ISO8601DateFormatter in
+        (0 ..< 1 << optionals.count).reversed().map { num -> ISO8601DateFormatter in
             var formatOptions = basic
             optionals.enumerated().forEach { index, value in
                 if (num >> index) & 1 == 1 { formatOptions.insert(value) }
