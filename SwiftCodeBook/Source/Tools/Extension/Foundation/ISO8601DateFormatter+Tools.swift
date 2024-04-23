@@ -9,7 +9,7 @@ import Foundation
 
 public extension ISO8601DateFormatter {
     static func date(from string: String) -> Date? {
-        for formatter in formatters {
+        for formatter in formatters.reversed() {
             if let date = formatter.date(from: string) {
                 return date
             }
@@ -32,7 +32,7 @@ public extension ISO8601DateFormatter {
     [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
     
     private static let formatters = {
-        (0 ..< 1 << optionals.count).reversed().map { num -> ISO8601DateFormatter in
+        (0 ..< 1 << optionals.count).map { num -> ISO8601DateFormatter in
             var formatOptions = basic
             optionals.enumerated().forEach { index, value in
                 if (num >> index) & 1 == 1 { formatOptions.insert(value) }
