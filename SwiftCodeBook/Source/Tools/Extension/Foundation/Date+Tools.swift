@@ -98,6 +98,18 @@ public extension Date {
         calendar.startOfDay(for: self)
     }
     
+    func seconds(from date: Date) -> Int {
+        calendar.dateComponents([.second], from: date, to: self).second ?? 0
+    }
+    
+    func minutes(from date: Date) -> Int {
+        calendar.dateComponents([.minute], from: date, to: self).minute ?? 0
+    }
+    
+    func hours(from date: Date) -> Int {
+        calendar.dateComponents([.hour], from: date, to: self).hour ?? 0
+    }
+    
     func days(from date: Date) -> Int {
         calendar.dateComponents([.day], from: date, to: self).day ?? 0
     }
