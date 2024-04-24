@@ -8,7 +8,7 @@
 import AVKit
 import Foundation
 
-struct CodeBookHelper {
+enum CodeBookHelper {
     static func timeCost(action: () -> Void, repeats: Int = 1) {
         let begin = CACurrentMediaTime()
         for _ in 0 ..< repeats {
