@@ -70,18 +70,6 @@ public extension Date {
         return y % 400 == 0 || (y % 4 == 0 && y % 100 != 0)
     }
     
-    var daysInThisMonth: Int {
-        switch month {
-        case 1, 3, 5, 7, 8, 10, 12: return 31
-        case 2: return isInLeapYear ? 29 : 28
-        default: return 30
-        }
-    }
-    
-    var daysInThisYear: Int {
-        isInLeapYear ? 366 : 365
-    }
-    
     var isToday: Bool {
         calendar.isDateInToday(self)
     }
