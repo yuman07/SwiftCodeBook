@@ -15,23 +15,23 @@ public extension FileManager {
         return Once.homePath
     }
     
-    var documentPath: String {
+    var documentPath: String? {
         enum Once {
-            static let documentPath = FileManager.default.homePath + "/Documents"
+            static let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
         }
         return Once.documentPath
     }
     
-    var libraryPath: String {
+    var libraryPath: String? {
         enum Once {
-            static let libraryPath = FileManager.default.homePath + "/Library"
+            static let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
         }
         return Once.libraryPath
     }
     
-    var cachePath: String {
+    var cachePath: String? {
         enum Once {
-            static let cachePath = FileManager.default.homePath + "/Caches"
+            static let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
         }
         return Once.cachePath
     }

@@ -8,12 +8,7 @@
 import Foundation
 
 public extension URL {
-    static let blank = {
-        guard let url = URL(string: "about:blank") else {
-            fatalError("blank should be a URL")
-        }
-        return url
-    }()
+    static let blank = URL(string: "about:blank")!
     
     var queryDictionary: [String: String] {
         get {
