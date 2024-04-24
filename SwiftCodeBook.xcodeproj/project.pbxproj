@@ -102,6 +102,7 @@
 		7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */; };
 		7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */; };
 		7ACF43E82A8C9B9B009963C7 /* DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */; };
+		7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD080B72BD8EAAB0053F3EB /* CodeBookHelper.swift */; };
 		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 		7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */; };
@@ -198,6 +199,7 @@
 		7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Tools.swift"; sourceTree = "<group>"; };
 		7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificLocalizedString.swift; sourceTree = "<group>"; };
 		7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Tools.swift"; sourceTree = "<group>"; };
+		7AD080B72BD8EAAB0053F3EB /* CodeBookHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBookHelper.swift; sourceTree = "<group>"; };
 		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 		7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Tools.swift"; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 			children = (
 				7A1074742908C01900C13362 /* AppDelegate.swift */,
 				7A1074762908C01900C13362 /* SceneDelegate.swift */,
+				7AD080B72BD8EAAB0053F3EB /* CodeBookHelper.swift */,
 				7A10747A2908C01900C13362 /* Main.storyboard */,
 				7A10747D2908C01B00C13362 /* Assets.xcassets */,
 				7A10747F2908C01B00C13362 /* LaunchScreen.storyboard */,
@@ -580,6 +583,7 @@
 				7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */,
 				7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */,
 				7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */,
+				7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */,
 				7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */,
 				7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */,
 				7ACF43E82A8C9B9B009963C7 /* DateFormatter+Tools.swift in Sources */,
