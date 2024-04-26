@@ -10,6 +10,7 @@ import Foundation
 // NSCache在Swift中直接使用很麻烦，因为要求其Key是NSObject子类，且Value是class类型。
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
 public final class NSEasyCache {
+    private var nsCacheDelegate: NSCacheDelegate?
     private let cache = NSCache<KeyObject, ValueObject>()
     
     public init() {}
@@ -18,8 +19,8 @@ public final class NSEasyCache {
         cache.object(forKey: KeyObject(key))?.value
     }
     
-    public func setValue(_ obj: Any, forKey key: AnyHashable, cost g: Int = 0) {
-        cache.setObject(ValueObject(obj), forKey: KeyObject(key), cost: g)
+    public func setValue(_ val: Any, forKey key: AnyHashable, cost g: Int = 0) {
+        cache.setObject(ValueObject(val), forKey: KeyObject(key), cost: g)
     }
     
     public func removeValue(forKey key: AnyHashable) {
@@ -35,9 +36,17 @@ public final class NSEasyCache {
         set { cache.name = newValue }
     }
     
-    public var delegate: (any NSCacheDelegate)? {
-        get { cache.delegate }
-        set { cache.delegate = newValue }
+    public var delegate: (any NSEasyCacheDelegate)? {
+        get { (nsCacheDelegate as? NSCacheDelegateObject)?.delegate }
+        set {
+            guard let newValue else {
+                nsCacheDelegate = nil
+                cache.delegate = nil
+                return
+            }
+            nsCacheDelegate = NSCacheDelegateObject(easyCache: self, delegate: newValue)
+            cache.delegate = nsCacheDelegate
+        }
     }
     
     public var totalCostLimit: Int {
@@ -54,6 +63,10 @@ public final class NSEasyCache {
         get { cache.evictsObjectsWithDiscardedContent }
         set { cache.evictsObjectsWithDiscardedContent = newValue }
     }
+}
+
+public protocol NSEasyCacheDelegate: AnyObject {
+    func cache(_ cache: NSEasyCache, willEvictValue val: Any)
 }
 
 @available(*, unavailable)
@@ -76,9 +89,24 @@ private final class KeyObject: NSObject {
 }
 
 private final class ValueObject {
-    var value: Any?
+    var value: Any
     
-    init(_ value: Any? = nil) {
+    init(_ value: Any) {
         self.value = value
+    }
+}
+
+private final class NSCacheDelegateObject: NSObject, NSCacheDelegate {
+    private weak var easyCache: NSEasyCache?
+    weak var delegate: NSEasyCacheDelegate?
+    
+    init(easyCache: NSEasyCache?, delegate: NSEasyCacheDelegate?) {
+        self.easyCache = easyCache
+        self.delegate = delegate
+    }
+    
+    func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
+        guard let easyCache, let val = obj as? ValueObject else { return }
+        delegate?.cache(easyCache, willEvictValue: val.value)
     }
 }
