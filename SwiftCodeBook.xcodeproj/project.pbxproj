@@ -54,6 +54,7 @@
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */; };
 		7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7720C12BDB91620008828B /* Locale+Tools.swift */; };
+		7A772A3C2BDB97180008828B /* NSEasyCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A772A3B2BDB97180008828B /* NSEasyCache.swift */; };
 		7A8A00A529308F5D001A3345 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A429308F5D001A3345 /* HitTest.swift */; };
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
@@ -177,6 +178,7 @@
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Tools.swift"; sourceTree = "<group>"; };
 		7A7720C12BDB91620008828B /* Locale+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Tools.swift"; sourceTree = "<group>"; };
+		7A772A3B2BDB97180008828B /* NSEasyCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSEasyCache.swift; sourceTree = "<group>"; };
 		7A8A00A429308F5D001A3345 /* HitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTest.swift; sourceTree = "<group>"; };
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
@@ -309,8 +311,9 @@
 				7A9CBA09291E42C300046466 /* Codable */,
 				7A10748D2908C0B300C13362 /* ThreadSafe */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
-				7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */,
 				7ACA604F2918F3F9009B502A /* GCDTimer.swift */,
+				7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */,
+				7A772A3B2BDB97180008828B /* NSEasyCache.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 			);
 			path = Foundation;
@@ -630,6 +633,7 @@
 				7A0752082BA8124A00A575C5 /* StringRegularExpression.swift in Sources */,
 				7A6227C52BCD0A4E00E33417 /* ConvertNSAttributedString.swift in Sources */,
 				7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */,
+				7A772A3C2BDB97180008828B /* NSEasyCache.swift in Sources */,
 				7ACB54AC2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift in Sources */,
 				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
