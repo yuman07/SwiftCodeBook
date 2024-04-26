@@ -24,6 +24,6 @@ public extension NSAttributedString {
             attributedString.replaceCharacters(in: range, with: "")
         }
         
-        return attributedString
+        return NSAttributedString(attributedString: attributedString)
     }
 }
