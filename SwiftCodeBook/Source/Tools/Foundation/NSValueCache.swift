@@ -1,5 +1,5 @@
 //
-//  NSEasyCache.swift
+//  NSValueCache.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2024/4/26.
@@ -9,8 +9,7 @@ import Foundation
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key是NSObject子类，且Value是class类型。
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
-public final class NSEasyCache {
-    private var nsCacheDelegate: NSCacheDelegate?
+public final class NSValueCache {
     private let cache = NSCache<KeyObject, ValueObject>()
     
     public init() {}
@@ -36,19 +35,6 @@ public final class NSEasyCache {
         set { cache.name = newValue }
     }
     
-    public var delegate: (any NSEasyCacheDelegate)? {
-        get { (nsCacheDelegate as? NSCacheDelegateObject)?.delegate }
-        set {
-            guard let newValue else {
-                nsCacheDelegate = nil
-                cache.delegate = nil
-                return
-            }
-            nsCacheDelegate = NSCacheDelegateObject(easyCache: self, delegate: newValue)
-            cache.delegate = nsCacheDelegate
-        }
-    }
-    
     public var totalCostLimit: Int {
         get { cache.totalCostLimit }
         set { cache.totalCostLimit = newValue }
@@ -65,12 +51,8 @@ public final class NSEasyCache {
     }
 }
 
-public protocol NSEasyCacheDelegate: AnyObject {
-    func cache(_ cache: NSEasyCache, willEvictValue val: Any)
-}
-
 @available(*, unavailable)
-extension NSEasyCache: @unchecked Sendable {}
+extension NSValueCache: @unchecked Sendable {}
 
 private final class KeyObject: NSObject {
     let key: AnyHashable
@@ -93,20 +75,5 @@ private final class ValueObject {
     
     init(_ value: Any) {
         self.value = value
-    }
-}
-
-private final class NSCacheDelegateObject: NSObject, NSCacheDelegate {
-    private weak var easyCache: NSEasyCache?
-    weak var delegate: NSEasyCacheDelegate?
-    
-    init(easyCache: NSEasyCache?, delegate: NSEasyCacheDelegate?) {
-        self.easyCache = easyCache
-        self.delegate = delegate
-    }
-    
-    func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
-        guard let easyCache, let val = obj as? ValueObject else { return }
-        delegate?.cache(easyCache, willEvictValue: val.value)
     }
 }
