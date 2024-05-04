@@ -71,7 +71,7 @@ private final class KeyObject: NSObject {
 }
 
 private final class ValueObject {
-    var value: Any
+    let value: Any
     
     init(_ value: Any) {
         self.value = value
