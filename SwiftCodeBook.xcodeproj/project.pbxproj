@@ -408,8 +408,8 @@
 			children = (
 				7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */,
 				7A9CC058291FCB2500046466 /* JSONCodableObject.swift */,
-				7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */,
 				7ABBC5A12BEE184100715C32 /* LowerFirstLetterKey.swift */,
+				7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
