@@ -8,6 +8,7 @@
 import Foundation
 
 public extension JSONDecoder.KeyDecodingStrategy {
+    // 注意这个处理其实并不完美，比如payload: { "id": "111", "Id": 222 }, 这种case就会出现bug
     static let lowerFirstLetter = Self.custom { codingPath in
         guard let key = codingPath.last?.stringValue, !key.isEmpty else {
             return codingPath.last ?? AnyKey(stringValue: "")
