@@ -14,6 +14,11 @@ public extension UIApplication {
         return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
     }
     
+    @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
+    var interfaceOrientation: UIInterfaceOrientation {
+        keyWindow?.windowScene?.interfaceOrientation ?? .unknown
+    }
+    
     static var appIcon: UIImage? {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
