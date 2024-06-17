@@ -27,7 +27,7 @@ extension NSObject.KeyValueObservingPublisher: CurrentValuePublisher {}
 extension CurrentValuePublisher where Failure == Never {
     @inlinable
     public var value: Output {
-        return _getValue()
+        _getValue()
     }
 }
 
