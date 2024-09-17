@@ -53,13 +53,6 @@ public extension UIApplication {
         ProcessInfo().environment["XCTestConfigurationFilePath"] != nil
     }
     
-    // https://stackoverflow.com/questions/18282326/how-can-i-detect-if-the-currently-running-app-was-installed-from-the-app-store
-    static var isInTestFlight = {
-        !UIDevice.current.isSimulator
-        && Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-        && !isAdHocDistributed
-    }()
-    
     static var isAdHocDistributed = {
         Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil
     }()
