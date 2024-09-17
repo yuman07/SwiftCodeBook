@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ExampleAsyncOperation: Operation {
+final class ExampleAsyncOperation: Operation, @unchecked Sendable {
     private enum AssociatedKeys {
         static var isExecuting: Void?
         static var isFinished: Void?
