@@ -6,15 +6,15 @@
 //
 
 import Foundation
+import os
 
 final class SafeLazy {
-    private let logServiceLock = NSLock()
-    private var privateLogService: NSObject?
+    private let logServiceLock = OSAllocatedUnfairLock<NSObject?>(initialState: nil)
     lazy var logService: NSObject = {
-        logServiceLock.withLock {
-            privateLogService ?? {
+        logServiceLock.withLock { service in
+            service ?? {
                 let newLogService = NSObject()
-                privateLogService = newLogService
+                service = newLogService
                 return newLogService
             }()
         }

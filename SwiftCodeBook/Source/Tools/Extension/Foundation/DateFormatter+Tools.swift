@@ -6,17 +6,17 @@
 //
 
 import Foundation
+import os
 
 public extension DateFormatter {
-    private static let lock = NSLock()
-    private static var dateFormatterMap = [String: DateFormatter]()
+    private static let dateFormatterMap = OSAllocatedUnfairLock(initialState: [String: DateFormatter]())
     
     private static func dateFormatter(with dateFormat: String) -> DateFormatter {
-        lock.withLock {
-            dateFormatterMap[dateFormat] ?? {
+        dateFormatterMap.withLock { map in
+            map[dateFormat] ?? {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = dateFormat
-                dateFormatterMap[dateFormat] = dateFormatter
+                map[dateFormat] = dateFormatter
                 return dateFormatter
             }()
         }

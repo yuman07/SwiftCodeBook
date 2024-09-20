@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public final class GCDTimer {
     private enum State {
@@ -15,9 +16,8 @@ public final class GCDTimer {
         case stoped
     }
     
-    private let lock = NSLock()
-    private var state = State.inited
-    private var count = 0
+    private let state = OSAllocatedUnfairLock(initialState: State.inited)
+    private let count = OSAllocatedUnfairLock(initialState: 0)
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
     
@@ -26,8 +26,10 @@ public final class GCDTimer {
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         self.timer.setEventHandler { [weak self] in
             guard let self else { return }
-            block(count)
-            count += 1
+            count.withLock { count in
+                block(count)
+                count += 1
+            }
             if !repeats { stop() }
         }
     }
@@ -37,31 +39,28 @@ public final class GCDTimer {
     }
     
     public func start() {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        guard state == .inited || state == .paused else { return }
-        if state == .inited { timer.schedule(deadline: .now() + timeInterval, repeating: .milliseconds(Int(timeInterval * 1000))) }
-        timer.resume()
-        state = .running
+        state.withLock { state in
+            guard state == .inited || state == .paused else { return }
+            if state == .inited { timer.schedule(deadline: .now() + timeInterval, repeating: .milliseconds(Int(timeInterval * 1000))) }
+            timer.resume()
+            state = .running
+        }
     }
     
     public func pause() {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        guard state == .running else { return }
-        timer.suspend()
-        state = .paused
+        state.withLock { state in
+            guard state == .running else { return }
+            timer.suspend()
+            state = .paused
+        }
     }
     
     public func stop() {
-        lock.lock()
-        defer { lock.unlock() }
-        
-        guard state != .stoped else { return }
-        if state == .inited { timer.resume() }
-        timer.cancel()
-        state = .stoped
+        state.withLock { state in
+            guard state != .stoped else { return }
+            if state == .inited { timer.resume() }
+            timer.cancel()
+            state = .stoped
+        }
     }
 }

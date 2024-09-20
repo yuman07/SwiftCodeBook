@@ -60,7 +60,6 @@
 		7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */; };
 		7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */; };
 		7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */; };
-		7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
 		7A9CC059291FCB2500046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
@@ -69,7 +68,6 @@
 		7A9CC06D291FE24000046466 /* Decodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AE2909090000C13362 /* Decodable+Tools.swift */; };
 		7A9CC06F291FE25B00046466 /* OptionalDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */; };
 		7A9CC070291FE25D00046466 /* JSONCodableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC058291FCB2500046466 /* JSONCodableObject.swift */; };
-		7A9CC073291FE26400046466 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD71291DF07E00046466 /* Atomic.swift */; };
 		7A9CC074291FE26600046466 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
 		7A9CC075291FE26800046466 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
 		7A9CC076291FE26A00046466 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA604F2918F3F9009B502A /* GCDTimer.swift */; };
@@ -186,7 +184,6 @@
 		7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		7A914DB129ADDAD0008AD58C /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
 		7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+Tools.swift"; sourceTree = "<group>"; };
-		7A9CAD71291DF07E00046466 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDecodable.swift; sourceTree = "<group>"; };
 		7A9CC058291FCB2500046466 /* JSONCodableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCodableObject.swift; sourceTree = "<group>"; };
@@ -326,7 +323,6 @@
 		7A10748D2908C0B300C13362 /* ThreadSafe */ = {
 			isa = PBXGroup;
 			children = (
-				7A9CAD71291DF07E00046466 /* Atomic.swift */,
 				7ADC4C0B29C2EAE2005C737D /* AtomicPublished.swift */,
 				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 			);
@@ -593,7 +589,6 @@
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
 				7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */,
 				7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */,
-				7A9CAD72291DF07E00046466 /* Atomic.swift in Sources */,
 				7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */,
 				7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */,
 				7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */,
@@ -693,7 +688,6 @@
 				7A9CC07B291FE27500046466 /* Array+Tools.swift in Sources */,
 				7A9CC06D291FE24000046466 /* Decodable+Tools.swift in Sources */,
 				7A9CC08A291FE27800046466 /* UIDevice+Tools.swift in Sources */,
-				7A9CC073291FE26400046466 /* Atomic.swift in Sources */,
 				7A9CC080291FE27500046466 /* Dictionary+Tools.swift in Sources */,
 				7A9CC076291FE26A00046466 /* GCDTimer.swift in Sources */,
 				7A9CC087291FE27800046466 /* UIBezierPath+Tools.swift in Sources */,

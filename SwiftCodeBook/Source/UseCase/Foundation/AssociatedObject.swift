@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import os
 
 // 必须使用 'class' 而不是 'struct'
 // 尽管'struct'可以通过编译，但实际set时无效
 final class AssociatedObjectItem {
     init() {
-        setupA()
+        // 保证content.objc_setAssociatedObject的过程是非多线程的
+        _ = content
     }
 }
 
@@ -20,15 +22,7 @@ extension AssociatedObjectItem {
     private enum AssociatedKeys {
         static var age: Void?
         static var block: Void?
-        static var contentLock: Void?
         static var content: Void?
-    }
-    
-    // 某些情况下我们需要AssociatedObj是线程安全的，即加锁
-    // 但由于锁本身的创建也需要线程安全，因此我目前想到的方法是新增一个setup方法
-    // 该方法的本质是保证创建锁早于使用该锁保护的变量
-    private func setupA() {
-        _ = contentLock
     }
     
     var age: Int {
@@ -41,17 +35,14 @@ extension AssociatedObjectItem {
         set { objc_setAssociatedObject(self, &AssociatedKeys.block, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    private var contentLock: NSLock {
-        objc_getAssociatedObject(self, &AssociatedKeys.contentLock) as? NSLock ?? {
-            let lock = NSLock()
-            objc_setAssociatedObject(self, &AssociatedKeys.contentLock, lock, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return lock
+    // 有些时候我们需要AssociatedObject是线程安全的，这时可以这样写
+    // 但注意一定要在该class init时去获取一下该obj，即保证objc_setAssociatedObject的过程是非多线程的
+    var content: OSAllocatedUnfairLock<String> {
+        objc_getAssociatedObject(self, &AssociatedKeys.content) as? OSAllocatedUnfairLock<String> ?? {
+            let content = OSAllocatedUnfairLock(initialState: "")
+            objc_setAssociatedObject(self, &AssociatedKeys.content, content, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return content
         }()
-    }
-    
-    var content: String {
-        get { contentLock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.content) as? String ?? "" } }
-        set { contentLock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.content, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) } }
     }
 }
 

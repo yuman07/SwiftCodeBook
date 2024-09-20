@@ -7,30 +7,28 @@
 
 import Combine
 import Foundation
+import os
 
 public final class CancelBag {
-    private let lock = NSLock()
-    private var tokens = Set<AnyCancellable>()
+    private let tokens = OSAllocatedUnfairLock(initialState: Set<AnyCancellable>())
     
     public init() {}
     
     deinit {
-        lock.lock()
-        defer { lock.unlock() }
-        tokens.removeAll()
+        cancel()
     }
     
     public func store(_ cancellable: AnyCancellable) {
-        lock.lock()
-        defer { lock.unlock() }
-        cancellable.store(in: &tokens)
+        tokens.withLock { tokens in
+            cancellable.store(in: &tokens)
+        }
     }
     
     public func cancel() {
-        lock.lock()
-        defer { lock.unlock() }
-        for token in tokens { token.cancel() }
-        tokens.removeAll()
+        tokens.withLock { tokens in
+            for token in tokens { token.cancel() }
+            tokens.removeAll()
+        }
     }
 }
 
