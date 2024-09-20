@@ -7,7 +7,8 @@
 
 import Foundation
 
-// must be 'class', not 'struct'
+// 必须使用 'class' 而不是 'struct'
+// 尽管'struct'可以通过编译，但实际set时无效
 final class AssociatedObjectItem {
     init() {
         setupA()
@@ -52,4 +53,31 @@ extension AssociatedObjectItem {
         get { contentLock.withLock { objc_getAssociatedObject(self, &AssociatedKeys.content) as? String ?? "" } }
         set { contentLock.withLock { objc_setAssociatedObject(self, &AssociatedKeys.content, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) } }
     }
+}
+
+// 除了能对class增加AssociatedObject，其实AnyObject的Protocol也可以
+protocol SomeObjectProtocol: AnyObject {}
+
+enum SomeAssociatedKeys {
+    static var name: Void?
+}
+
+extension SomeObjectProtocol {
+    var name: String {
+        get { objc_getAssociatedObject(self, &SomeAssociatedKeys.name) as? String ?? "" }
+        set { objc_setAssociatedObject(self, &SomeAssociatedKeys.name, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+}
+
+private final class SomeObject: SomeObjectProtocol {
+    init() {}
+}
+
+func testSomeObject() {
+    testSomeObjectProtocol(obj: SomeObject())
+}
+
+func testSomeObjectProtocol(obj: SomeObjectProtocol) {
+    obj.name = "yuman"
+    print(obj.name)
 }

@@ -29,7 +29,7 @@ public final class GradientView: UIView {
     
     /// same with CAGradientLayer.locations
     public var locations: [CGFloat] {
-        get { (gradientLayer.locations ?? []).map(\.CGFloatValue) }
+        get { (gradientLayer.locations ?? []).map(\.cgFloatValue) }
         set { gradientLayer.locations = newValue.map { NSNumber(value: $0) } }
     }
     
