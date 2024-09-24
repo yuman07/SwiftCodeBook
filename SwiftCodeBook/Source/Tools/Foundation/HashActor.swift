@@ -1,5 +1,5 @@
 //
-//  HashHelper.swift
+//  HashActor.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2022/10/28.
@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-public final actor HashHelper {
+public final actor HashActor {
     public enum Function {
         case md5
         case sha1
@@ -48,7 +48,7 @@ public final actor HashHelper {
     }
 }
 
-public extension HashHelper {
+public extension HashActor {
     static func hash(data: Data, using function: Function) -> String {
         var hasher = function.hasher
         hasher.update(data: data)
@@ -60,7 +60,7 @@ public extension HashHelper {
     }
     
     static func hash(filePath: String, using function: Function) async -> String? {
-        let hasher = HashHelper(function: function)
+        let hasher = HashActor(function: function)
         guard let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
         defer { try? handler.close() }
         
@@ -81,14 +81,14 @@ public extension HashHelper {
 }
 
 public extension String {
-    func hash(using function: HashHelper.Function) -> String {
-        HashHelper.hash(string: self, using: function)
+    func hash(using function: HashActor.Function) -> String {
+        HashActor.hash(string: self, using: function)
     }
 }
 
 public extension Data {
-    func hash(using function: HashHelper.Function) -> String {
-        HashHelper.hash(data: self, using: function)
+    func hash(using function: HashActor.Function) -> String {
+        HashActor.hash(data: self, using: function)
     }
 }
 
