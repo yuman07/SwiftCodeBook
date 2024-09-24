@@ -18,16 +18,11 @@ public final actor HashHelper {
         
         fileprivate var hasher: any HashFunction {
             switch self {
-            case .md5:
-                return Insecure.MD5()
-            case .sha1:
-                return Insecure.SHA1()
-            case .sha256:
-                return SHA256()
-            case .sha384:
-                return SHA384()
-            case .sha512:
-                return SHA512()
+            case .md5: Insecure.MD5()
+            case .sha1: Insecure.SHA1()
+            case .sha256: SHA256()
+            case .sha384: SHA384()
+            case .sha512: SHA512()
             }
         }
     }
@@ -65,23 +60,23 @@ public extension HashHelper {
     }
     
     static func hash(filePath: String, using function: Function) async -> String? {
-        await withUnsafeContinuation { continuation in
-            DispatchQueue.global().async {
-                guard let handler = FileHandle(forReadingAtPath: filePath) else { return continuation.resume(returning: nil) }
-                defer { try? handler.close() }
-                
-                var isEnd = false
-                var hasher = function.hasher
-                while !isEnd {
-                    autoreleasepool {
-                        guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
-                        hasher.update(data: data)
-                    }
+        let hasher = HashHelper(function: function)
+        guard let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
+        defer { try? handler.close() }
+        
+        var isEnd = false
+        while !isEnd {
+            var task: Task<Void, Never>?
+            autoreleasepool {
+                task = Task {
+                    guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
+                    await hasher.update(data: data)
                 }
-                
-                return continuation.resume(returning: hasher.finalize().toHashString())
             }
+            _ = await task?.value
         }
+        
+        return await hasher.finalize()
     }
 }
 
