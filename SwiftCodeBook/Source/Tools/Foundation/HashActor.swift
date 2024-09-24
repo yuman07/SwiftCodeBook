@@ -59,24 +59,28 @@ public extension HashActor {
         hash(data: Data(string.utf8), using: function)
     }
     
+    static func hashAsync(data: Data, using function: Function) async -> String {
+        hash(data: data, using: function)
+    }
+    
+    static func hashAsync(string: String, using function: Function) async -> String {
+        hash(string: string, using: function)
+    }
+    
     static func hash(filePath: String, using function: Function) async -> String? {
-        let hasher = HashActor(function: function)
         guard let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
         defer { try? handler.close() }
         
+        var hasher = function.hasher
         var isEnd = false
         while !isEnd {
-            var task: Task<Void, Never>?
             autoreleasepool {
-                task = Task {
-                    guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
-                    await hasher.update(data: data)
-                }
+                guard let data = try? handler.read(upToCount: 8192), !data.isEmpty else { return isEnd = true }
+                hasher.update(data: data)
             }
-            _ = await task?.value
         }
         
-        return await hasher.finalize()
+        return hasher.finalize().toHashString()
     }
 }
 

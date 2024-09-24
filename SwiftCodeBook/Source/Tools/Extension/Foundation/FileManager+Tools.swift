@@ -56,21 +56,11 @@ public extension FileManager {
     }
     
     func directorySizeInByte(at path: String) async -> UInt64 {
-        let sizeActor = SizeActor()
         guard !path.isEmpty, let contents = try? subpathsOfDirectory(atPath: path), !contents.isEmpty else {
             return 0
         }
-        for content in contents {
-            let filePath = path + "/\(content)"
-            await sizeActor.addSize(at: filePath)
+        return contents.reduce(into: 0) { partialResult, file in
+            partialResult += ((try? attributesOfItem(atPath: path + "/\(file)"))?[.size] as? UInt64) ?? 0
         }
-        return await sizeActor.size
-    }
-}
-
-private final actor SizeActor {
-    var size = UInt64.zero
-    func addSize(at filePath: String) {
-        size += ((try? FileManager.default.attributesOfItem(atPath: filePath))?[.size] as? UInt64) ?? 0
     }
 }
