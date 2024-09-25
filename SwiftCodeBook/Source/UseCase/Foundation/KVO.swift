@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class KVOTest {
+final class KVOTest {
     let item = KVOItem()
     var cancelBag = Set<AnyCancellable>()
     

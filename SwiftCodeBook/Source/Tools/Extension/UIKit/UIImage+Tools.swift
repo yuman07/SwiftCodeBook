@@ -9,10 +9,10 @@ import UIKit
 
 public extension UIImage {
     static func color(_ color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
-        UIGraphicsImageRenderer(size: size).image(actions: { context in
+        UIGraphicsImageRenderer(size: size).image { context in
             color.setFill()
             context.fill(CGRect(origin: .zero, size: size))
-        })
+        }
     }
     
     convenience init?(filePath: String) {

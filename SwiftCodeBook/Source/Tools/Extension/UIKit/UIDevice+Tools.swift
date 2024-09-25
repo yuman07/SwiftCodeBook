@@ -33,7 +33,10 @@ public extension UIDevice {
     }
     
     var is64BitDevice: Bool {
-        CGFLOAT_IS_DOUBLE == 1
+        enum Once {
+            static let is64BitDevice = CGFLOAT_IS_DOUBLE == 1
+        }
+        return Once.is64BitDevice
     }
     
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
