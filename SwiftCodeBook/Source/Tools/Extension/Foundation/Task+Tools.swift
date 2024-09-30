@@ -15,11 +15,7 @@ public extension Task where Success == Never, Failure == Never {
 }
 
 public extension Task {
-    func toAnyCancellable() -> AnyCancellable {
-        AnyCancellable({ cancel() })
-    }
-    
     func store(in cancelBag: CancelBag) {
-        toAnyCancellable().store(in: cancelBag)
+        AnyCancellable({ cancel() }).store(in: cancelBag)
     }
 }
