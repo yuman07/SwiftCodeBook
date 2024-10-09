@@ -34,8 +34,9 @@ private final class Test {
             // 如上所述，因为Test就是一个普通的class，Task会运行于一个并发队列
             // 即造成in/SomeActor的输出是错乱的
             Task {
-                print("in: \(idx)")
+                print("in before: \(idx)")
                 await tmp.ppp(index: idx)
+                print("in after: \(idx)")
             }
         }
     }
@@ -45,9 +46,11 @@ private final class Test {
         for idx in 1 ... 10000 {
             print("out: \(idx)")
             // 使用 @MyActor 修饰后，in/SomeActor的输出是顺序的
+            // 但需要注意此时Task{...}仍是可重入的，即遇到await就会执行该串行队列的下一个block
             Task { @MyActor in
-                print("in: \(idx)")
+                print("in before: \(idx)")
                 await tmp.ppp(index: idx)
+                print("in after: \(idx)")
             }
         }
     }
