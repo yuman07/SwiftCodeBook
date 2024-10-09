@@ -20,3 +20,11 @@ func switchType() {
         break
     }
 }
+
+func testType<T>(value: T) {
+    if let a = value as? Int {
+        print(a)
+    } else {
+        print("fail")
+    }
+}
