@@ -8,7 +8,7 @@
 import Foundation
 import os
 
-public final class GCDTimer {
+public final class GCDTimer: @unchecked Sendable {
     private enum State {
         case inited
         case running
