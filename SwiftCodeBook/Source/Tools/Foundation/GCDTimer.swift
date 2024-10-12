@@ -26,11 +26,12 @@ public final class GCDTimer {
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         self.timer.setEventHandler { [weak self] in
             guard let self else { return }
-            let newCount = count.withLock { count in
+            let curCount = count.withLock { count in
+                let curCount = count
                 count += 1
-                return count
+                return curCount
             }
-            block(newCount)
+            block(curCount)
             if !repeats { stop() }
         }
     }
