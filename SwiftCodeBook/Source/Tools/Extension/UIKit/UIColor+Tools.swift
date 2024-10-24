@@ -13,10 +13,12 @@ public extension UIColor {
         var hexNum = UInt64.zero
         let target = "\(RGBA.dropFirst())" + (RGBA.count == 7 ? "FF" : "")
         guard case let s = Scanner(string: target), s.scanHexInt64(&hexNum) && s.isAtEnd else { return nil }
-        self.init(red: CGFloat((hexNum & 0xff000000) >> 24) / 255,
-                  green: CGFloat((hexNum & 0x00ff0000) >> 16) / 255,
-                  blue: CGFloat((hexNum & 0x0000ff00) >> 8) / 255,
-                  alpha: CGFloat(hexNum & 0x000000ff) / 255)
+        self.init(
+            red: CGFloat((hexNum & 0xff000000) >> 24) / 255,
+            green: CGFloat((hexNum & 0x00ff0000) >> 16) / 255,
+            blue: CGFloat((hexNum & 0x0000ff00) >> 8) / 255,
+            alpha: CGFloat(hexNum & 0x000000ff) / 255
+        )
     }
     
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
