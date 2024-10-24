@@ -443,8 +443,8 @@
 			isa = PBXGroup;
 			children = (
 				7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */,
-				7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */,
 				7A4CB2792CCA37F300820147 /* Spacer+Tools.swift */,
+				7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
