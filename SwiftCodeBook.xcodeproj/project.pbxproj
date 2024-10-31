@@ -119,6 +119,7 @@
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
 		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
+		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 /* End PBXBuildFile section */
 
@@ -222,6 +223,7 @@
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
 		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
+		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -288,6 +290,7 @@
 		7A1074892908C05C00C13362 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */,
 				7A501A2A2914EECB00512E32 /* UseCase */,
 				7A9CC08E2920BFCB00046466 /* Tools */,
 			);
@@ -655,6 +658,7 @@
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */,
+				7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */,
 				7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
