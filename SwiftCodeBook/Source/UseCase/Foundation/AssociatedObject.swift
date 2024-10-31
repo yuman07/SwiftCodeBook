@@ -12,7 +12,7 @@ import os
 // 尽管'struct'可以通过编译，但实际set时无效
 final class AssociatedObjectItem {
     init() {
-        // 保证content.objc_setAssociatedObject的过程是非多线程的
+        // 保证content.objc_setAssociatedObject的过程是线程安全的
         _ = content
     }
 }
@@ -36,7 +36,7 @@ extension AssociatedObjectItem {
     }
     
     // 有些时候我们需要AssociatedObject是线程安全的，这时可以这样写
-    // 但注意一定要在该class init时去获取一下该obj，即保证objc_setAssociatedObject的过程是非多线程的
+    // 但注意一定要在该class init时去获取一下该obj，即保证objc_setAssociatedObject的过程是线程安全的
     var content: OSAllocatedUnfairLock<String> {
         objc_getAssociatedObject(self, &AssociatedKeys.content) as? OSAllocatedUnfairLock<String> ?? {
             let content = OSAllocatedUnfairLock(initialState: "")
