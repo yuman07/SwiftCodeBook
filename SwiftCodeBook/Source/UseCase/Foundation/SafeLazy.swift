@@ -25,6 +25,15 @@ final class SafeLazy {
         }
     }
     
+    // 线程安全 + 只读 (法2)
+    // 该方法只适合初始化比较简单的case，因为无法把其他参数传递到Once中
+    var readOnly2Obj: NSObject {
+        enum Once {
+            static let once = NSObject()
+        }
+        return Once.once
+    }
+    
     // 线程安全 + 读写
     private let readWriteObjLock = OSAllocatedUnfairLock<NSObject?>(initialState: nil)
     var readWriteObj: NSObject {

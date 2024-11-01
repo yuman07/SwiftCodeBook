@@ -1,5 +1,5 @@
 //
-//  ExampleAsyncOperation.swift
+//  AsyncOperation.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2023/2/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ExampleAsyncOperation: Operation, @unchecked Sendable {
+final class AsyncOperation: Operation, @unchecked Sendable {
     private enum AssociatedKeys {
         static var isExecuting: Void?
         static var isFinished: Void?
