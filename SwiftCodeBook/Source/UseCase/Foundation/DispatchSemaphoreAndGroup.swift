@@ -20,11 +20,11 @@ final class DispatchSemaphoreAndGroup {
         // 比如你需要阻塞以等待另一个异步操作
         let semaphore = DispatchSemaphore(value: 0)
         print("begin async")
-        DispatchQueue.global().async {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1.0) {
             print("end async")
             semaphore.signal()
         }
-        let result = semaphore.wait(timeout: .now() + 2)
+        let result = semaphore.wait(timeout: .now() + 3.0)
         switch result {
         case .success:
             print("success")
