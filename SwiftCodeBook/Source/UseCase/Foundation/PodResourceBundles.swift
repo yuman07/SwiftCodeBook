@@ -12,10 +12,15 @@ import Foundation
 // 想要获取该module的Bundle可参考下面代码
 private extension Bundle {
     static var swiftCodeBookBundle: Bundle? {
-        guard let resourceBundleURL = Bundle.main.url(forResource: "SwiftCodeBookResourceBundle", withExtension: "bundle") else {
-            return nil
+        enum Once {
+            static let bundle: Bundle? = {
+                guard let resourceBundleURL = Bundle.main.url(forResource: "SwiftCodeBookResourceBundle", withExtension: "bundle") else {
+                    return nil
+                }
+                return Bundle(url: resourceBundleURL)
+            }()
         }
-        return Bundle(url: resourceBundleURL)
+        return Once.bundle
     }
 }
 
