@@ -67,6 +67,7 @@
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
+		7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */; };
 		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
 		7AB21C1B29A32F900058D526 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB21C1A29A32F900058D526 /* AsyncOperation.swift */; };
 		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
@@ -158,6 +159,7 @@
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
+		7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodResourceBundles.swift; sourceTree = "<group>"; };
 		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
 		7AB21C1A29A32F900058D526 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				7AD3A3FC2CAA507E00AC09CF /* GlobalActor.swift */,
 				7A501A2D2914F43000512E32 /* KVO.swift */,
 				7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */,
+				7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */,
 				7AB206A3299F66310058D526 /* PointerInSwift.swift */,
 				7A8A00A629309BE0001A3345 /* PropertyWrapper.swift */,
 				7A0AE4A92A4D7F9C00F8F19A /* SafeLazy.swift */,
@@ -557,6 +560,7 @@
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */,
 				7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */,
+				7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A0752082BA8124A00A575C5 /* StringRegularExpression.swift in Sources */,
