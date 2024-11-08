@@ -159,6 +159,10 @@ import Foundation
  在使用lock.withLock{ val in ... }时要注意：
  1) 不能在{}中把val传给其他的异步方法，不然还是会有线程安全问题。你应该在异步方法中继续使用withLock来获取val
  2) {}的开始和结束必须在同一线程，最常见的错误就是{}中包裹了一个await，注意await前后极大概率不是同一个线程
+ 
+ 
+ 有时我们在方法中使用enum Once { static let value = xxx } 这种写法来缓存结果避免重复计算
+ 但注意这样会导致被Once.value持有的变量不会被释放，因此你仅应该用这种写法缓存简单的如String/Int这种类型的数据
  */
 
 
