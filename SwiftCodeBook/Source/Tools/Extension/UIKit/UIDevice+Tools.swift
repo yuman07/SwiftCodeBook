@@ -16,6 +16,7 @@ public extension UIDevice {
 #endif
     }
     
+    // https://theapplewiki.com/wiki/Main_Page
     var deviceModel: String {
         enum Once {
             static let deviceModel = {
@@ -34,7 +35,7 @@ public extension UIDevice {
     
     var is64BitDevice: Bool {
         enum Once {
-            static let is64BitDevice = CGFLOAT_IS_DOUBLE == 1
+            static let is64BitDevice = Int.bitWidth == 64
         }
         return Once.is64BitDevice
     }
