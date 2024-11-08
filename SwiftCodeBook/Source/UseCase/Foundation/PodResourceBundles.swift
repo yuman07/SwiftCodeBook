@@ -7,7 +7,7 @@
 
 import Foundation
 
-// 在xxx.podspec中，我们一般使用如下来定义该module独有的资源文件地址:
+// 在xxx.podspec中，我们一般使用如下来定义该module独有的资源文件Bundle:
 // spec.resource_bundles = { 'SwiftCodeBookResourceBundle' => ['Sources/SwiftCodeBook/**/*.{xib,storyboard,xcassets,json,mp4}'] }
 // 想要获取该module的Bundle可参考下面代码
 private extension Bundle {
