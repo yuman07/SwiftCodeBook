@@ -67,6 +67,7 @@
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
+		7AAF03152CDF2EAF00525A44 /* ActorNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF03142CDF2EAF00525A44 /* ActorNote.swift */; };
 		7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */; };
 		7AAFB70D2CDE055E00525A44 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70C2CDE055E00525A44 /* CombineNote.swift */; };
 		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
@@ -93,7 +94,7 @@
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
 		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
 		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
-		7AEA3A6F2CD3E06500E92F3E /* DispatchSemaphoreAndGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchSemaphoreAndGroup.swift */; };
+		7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 /* End PBXBuildFile section */
 
@@ -160,6 +161,7 @@
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
+		7AAF03142CDF2EAF00525A44 /* ActorNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorNote.swift; sourceTree = "<group>"; };
 		7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodResourceBundles.swift; sourceTree = "<group>"; };
 		7AAFB70C2CDE055E00525A44 /* CombineNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineNote.swift; sourceTree = "<group>"; };
 		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
@@ -186,7 +188,7 @@
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
 		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
 		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		7AEA3A6E2CD3E06500E92F3E /* DispatchSemaphoreAndGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchSemaphoreAndGroup.swift; sourceTree = "<group>"; };
+		7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchNote.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -400,12 +402,13 @@
 		7AE1E49C2949B724001B3671 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				7AAF03142CDF2EAF00525A44 /* ActorNote.swift */,
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
 				7AB21C1A29A32F900058D526 /* AsyncOperation.swift */,
 				7AAFB70C2CDE055E00525A44 /* CombineNote.swift */,
 				7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */,
 				7AE1E4A02949B921001B3671 /* DictionaryOfOptionalValues.swift */,
-				7AEA3A6E2CD3E06500E92F3E /* DispatchSemaphoreAndGroup.swift */,
+				7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */,
 				7AD3A3FC2CAA507E00AC09CF /* GlobalActor.swift */,
 				7A501A2D2914F43000512E32 /* KVO.swift */,
 				7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */,
@@ -539,7 +542,7 @@
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A4CB27A2CCA37F300820147 /* Spacer+Tools.swift in Sources */,
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
-				7AEA3A6F2CD3E06500E92F3E /* DispatchSemaphoreAndGroup.swift in Sources */,
+				7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
 				7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */,
 				7ADC4C0C29C2EAE2005C737D /* AtomicPublished.swift in Sources */,
@@ -579,6 +582,7 @@
 				7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */,
 				7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */,
 				7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */,
+				7AAF03152CDF2EAF00525A44 /* ActorNote.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,

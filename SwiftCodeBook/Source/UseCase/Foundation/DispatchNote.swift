@@ -1,5 +1,5 @@
 //
-//  DispatchSemaphoreAndGroup.swift
+//  DispatchNote.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2024/10/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DispatchSemaphoreAndGroup {
+final class TestDispatchNote {
     // DispatchSemaphore: 信号量
     // https://developer.apple.com/documentation/dispatch/1452955-dispatch_semaphore_create
     // 有一个初始值(Int)，调用signal会将该值+1，调用wait会先将该值-1然后判断：如果小于0则同步等待直到值>=0或者超时
