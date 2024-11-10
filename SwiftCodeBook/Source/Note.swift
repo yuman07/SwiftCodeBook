@@ -152,6 +152,11 @@ import Foundation
  对ISO8601字符串进行Date Decode时要注意，一定要使用ISO8601DateFormatter这个专门的API，传统的DateFormatter在处理ISO8601时在某些系统的语言/时间格式下会解码失败
  
  
+ 通常情况下Dict的value是非可选的，此时给key赋值nil等于remove该key
+ 但如果该Dict的value是可选值，此时一定要注意：对于这种Dict，直接给key赋值nil，也等于直接删除该key
+ 如果你想要给这种Dict的某个key设置可选值为nil，需要这样操作：dict[key] = .some(nil)
+ 
+ 
  在监听键盘的通知时要注意：键盘是唯一的！
  即你的VM监听到了键盘升起，但这不代表是你的功能引发的。一定要结合你的功能的独有flag一同判断
  

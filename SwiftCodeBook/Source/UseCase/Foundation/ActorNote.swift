@@ -27,7 +27,8 @@ private actor TestSetupActor {
     var file: Int?
     
     init() {
-        Task {
+        // 使用最高优先级确保setup()是该actor执行的第一个方法
+        Task(priority: .high) {
             await setup()
         }
     }
