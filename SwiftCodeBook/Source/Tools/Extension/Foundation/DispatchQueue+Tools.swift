@@ -29,13 +29,12 @@ public extension DispatchQueue {
     private static let onceLock = NSRecursiveLock()
     private static var tokenSet = Set<String>()
     static func runOnce(file: String = #file, function: String = #function, line: Int = #line, block: (() -> Void)) {
-        onceLock.lock()
-        defer { onceLock.unlock() }
-        
-        let t = "\(file)_\(function)_\(line)"
-        if !tokenSet.contains(t) {
-            tokenSet.insert(t)
-            block()
+        onceLock.withLock {
+            let t = "\(file)_\(function)_\(line)"
+            if !tokenSet.contains(t) {
+                tokenSet.insert(t)
+                block()
+            }
         }
     }
 }
