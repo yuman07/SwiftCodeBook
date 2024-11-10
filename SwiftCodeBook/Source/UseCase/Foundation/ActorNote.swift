@@ -33,10 +33,11 @@ private actor TestSetupActor {
     }
     
     // 利用semaphore和Task.detached，将异步转同步
+    // 注意这样做会有优先级翻转问题，仅万不得已的手段
     func setup() {
         let semaphore = DispatchSemaphore(value: 0)
         var result: Int?
-        Task.detached {
+        Task.detached(priority: Task.currentPriority) {
             print("setup begin")
             result = await read()
             print("setup end")

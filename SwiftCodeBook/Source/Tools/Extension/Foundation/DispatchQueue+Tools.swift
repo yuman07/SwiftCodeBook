@@ -8,8 +8,12 @@
 import Foundation
 
 public extension DispatchQueue {
+    static var currentQueueLabel: String {
+        String(cString: __dispatch_queue_get_label(nil))
+    }
+    
     static var isMainQueue: Bool {
-        String(cString: __dispatch_queue_get_label(nil)) == DispatchQueue.main.label
+        currentQueueLabel == DispatchQueue.main.label
     }
     
     static func mainCurrentOrAsync(block: @escaping (() -> Void)) {
