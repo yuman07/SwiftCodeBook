@@ -7,10 +7,11 @@
 
 import Combine
 import Foundation
+import os
 
 @propertyWrapper
 public final class AtomicPublished<T> {
-    private let lock = NSRecursiveLock()
+    private let lock = OSAllocatedUnfairLock()
     @Published private var value: T
     
     public init(wrappedValue: T) {

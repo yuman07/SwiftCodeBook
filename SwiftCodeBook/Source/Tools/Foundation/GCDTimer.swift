@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public final class GCDTimer: @unchecked Sendable {
     private enum State {
@@ -15,11 +16,10 @@ public final class GCDTimer: @unchecked Sendable {
         case stoped
     }
     
-    private var state = State.inited
     private var count = 0
+    private let state = OSAllocatedUnfairLock(initialState: State.inited)
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
-    private let queue = DispatchQueue(label: "SwiftCodeBook.GCDTimerQueue")
     
     public init(timeInterval: TimeInterval, repeats: Bool, queue: DispatchQueue = .main, block: @escaping (_ count: Int) -> Void) {
         self.timeInterval = timeInterval
@@ -37,7 +37,7 @@ public final class GCDTimer: @unchecked Sendable {
     }
     
     public func start() {
-        queue.sync {
+        state.withLock { state in
             switch state {
             case .running, .stoped:
                 return
@@ -52,7 +52,7 @@ public final class GCDTimer: @unchecked Sendable {
     }
     
     public func pause() {
-        queue.sync {
+        state.withLock { state in
             guard state == .running else { return }
             timer.suspend()
             state = .paused
@@ -60,7 +60,7 @@ public final class GCDTimer: @unchecked Sendable {
     }
     
     public func stop() {
-        queue.sync {
+        state.withLock { state in
             guard state != .stoped else { return }
             timer.setEventHandler(handler: nil)
             if state == .inited { timer.resume() }

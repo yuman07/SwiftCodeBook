@@ -32,7 +32,6 @@ final class TestDispatchNote {
         case .timedOut:
             print("timedOut")
         }
-
     }
     
     func testGetQos() {

@@ -25,7 +25,7 @@ final class SafeLazy {
         }
     }
     
-    // 线程安全 + 读写(这里假设无所谓操作的时间顺序，因此可以用Lock)
+    // 线程安全 + 读写
     private let readWriteObjLock = OSAllocatedUnfairLock<NSObject?>(initialState: nil)
     var readWriteObj: NSObject {
         set {
