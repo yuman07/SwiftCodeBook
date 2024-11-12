@@ -9,6 +9,7 @@ import Combine
 import Foundation
 import os
 
+// https://github.com/OpenCombine/OpenCombine/blob/master/Sources/OpenCombineFoundation/Timer%2BPublisher.swift
 public extension GCDTimer {
     static func publish(every: TimeInterval, receiveQueue: DispatchQueue = .main) -> GCDTimerPublisher {
         GCDTimerPublisher(interval: every, receiveQueue: receiveQueue)
