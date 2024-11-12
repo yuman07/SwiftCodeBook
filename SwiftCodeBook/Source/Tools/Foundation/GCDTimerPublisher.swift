@@ -16,7 +16,7 @@ public extension GCDTimer {
 }
 
 public final class GCDTimerPublisher: ConnectablePublisher {
-    public typealias Output = Date
+    public typealias Output = Int
     public typealias Failure = Never
     
     private let interval: TimeInterval
@@ -34,9 +34,9 @@ public final class GCDTimerPublisher: ConnectablePublisher {
             timer = GCDTimer(timeInterval: interval, repeats: true, queue: receiveQueue, block: { [weak self] _ in
                 guard let self else { return }
                 sides.withLock { sides in
-                    let now = Date()
                     for side in sides.values {
-                        side.send(now)
+                        side.send(side.count)
+                        side.count += 1
                     }
                 }
             })
@@ -56,7 +56,7 @@ public final class GCDTimerPublisher: ConnectablePublisher {
     public func receive<Downstream: Subscriber>(subscriber: Downstream) where Failure == Downstream.Failure, Output == Downstream.Input {
         sides.withLock { sides in
             let inner = Inner(parent: self, downstream: subscriber)
-            sides[inner.combineIdentifier] = Side(send: inner.send(_:))
+            sides[inner.combineIdentifier] = Side(count: 0, send: inner.send(_:))
             subscriber.receive(subscription: inner)
         }
     }
@@ -67,11 +67,17 @@ public final class GCDTimerPublisher: ConnectablePublisher {
         }
     }
     
-    private struct Side {
-        let send: (Date) -> Void
+    private final class Side {
+        var count: Int
+        let send: (Output) -> Void
+
+        init(count: Int, send: @escaping (Output) -> Void) {
+            self.count = count
+            self.send = send
+        }
     }
     
-    private final class Inner<Downstream: Subscriber>: Subscription where Downstream.Input == Date, Downstream.Failure == Never {
+    private final class Inner<Downstream: Subscriber>: Subscription where Downstream.Input == Output, Downstream.Failure == Never {
         private weak var parent: GCDTimerPublisher?
         private var downstream: Downstream?
         private var pending = Subscribers.Demand.none
@@ -82,11 +88,11 @@ public final class GCDTimerPublisher: ConnectablePublisher {
             self.downstream = downstream
         }
         
-        func send(_ date: Date) {
+        func send(_ value: Output) {
             lock.withLock {
                 guard let downstream, pending != .none else { return }
                 pending -= 1
-                let newDemand = downstream.receive(date)
+                let newDemand = downstream.receive(value)
                 guard newDemand != .none else { return }
                 pending += newDemand
             }
