@@ -49,6 +49,7 @@
 		7A6227C52BCD0A4E00E33417 /* ConvertNSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */; };
 		7A6227C82BCD121800E33417 /* WillDidMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C72BCD121800E33417 /* WillDidMove.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
+		7A6812C22CE321BC00A70BF6 /* GCDTimerPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6812C12CE321BC00A70BF6 /* GCDTimerPublisher.swift */; };
 		7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */; };
 		7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */; };
 		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
@@ -142,6 +143,7 @@
 		7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertNSAttributedString.swift; sourceTree = "<group>"; };
 		7A6227C72BCD121800E33417 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
+		7A6812C12CE321BC00A70BF6 /* GCDTimerPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimerPublisher.swift; sourceTree = "<group>"; };
 		7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
 		7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
 		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				7A10748D2908C0B300C13362 /* ThreadSafe */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
 				7ACA604F2918F3F9009B502A /* GCDTimer.swift */,
+				7A6812C12CE321BC00A70BF6 /* GCDTimerPublisher.swift */,
 				7AD0DC5E290C1C5C0010BBC8 /* HashActor.swift */,
 				7A772A3B2BDB97180008828B /* NSValueCache.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
@@ -529,6 +532,7 @@
 				7A3B17AE2BFC3F0D0092F0C5 /* SwitchType.swift in Sources */,
 				7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */,
 				7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */,
+				7A6812C22CE321BC00A70BF6 /* GCDTimerPublisher.swift in Sources */,
 				7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */,
 				7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */,
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
