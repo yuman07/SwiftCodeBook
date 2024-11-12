@@ -68,10 +68,10 @@ public final class GCDTimerPublisher: ConnectablePublisher {
     }
     
     private final class Side {
-        var count: Int
+        var count: Output
         let send: (Output) -> Void
 
-        init(count: Int, send: @escaping (Output) -> Void) {
+        init(count: Output, send: @escaping (Output) -> Void) {
             self.count = count
             self.send = send
         }
