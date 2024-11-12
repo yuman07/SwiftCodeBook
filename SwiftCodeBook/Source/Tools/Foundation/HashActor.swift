@@ -65,17 +65,17 @@ public extension HashActor {
         
         var hasher = function.hasher
         var isEnd = false
-        var readError = false
-        while !isEnd && !readError {
-            guard !Task.isCancelled else { return nil }
+        var meetError = Task.isCancelled
+        while !isEnd && !meetError {
             autoreleasepool {
-                guard let data = try? handler.read(upToCount: 16384) else { return readError = true }
+                guard let data = try? handler.read(upToCount: 16384) else { return meetError = true }
                 guard !data.isEmpty else { return isEnd = true }
                 hasher.update(data: data)
             }
+            meetError = meetError || Task.isCancelled
         }
         
-        return readError ? nil : hasher.finalize().toHashString()
+        return meetError ? nil : hasher.finalize().toHashString()
     }
 }
 
