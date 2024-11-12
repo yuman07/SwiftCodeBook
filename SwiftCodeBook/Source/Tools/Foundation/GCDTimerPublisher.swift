@@ -48,7 +48,7 @@ public final class GCDTimerPublisher: ConnectablePublisher {
                 sides = [:]
             }
             timer.withLock { timer in
-                timer?.stop()
+                timer = nil
             }
         }
     }
