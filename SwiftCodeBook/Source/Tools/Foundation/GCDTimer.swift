@@ -16,7 +16,7 @@ public final class GCDTimer: @unchecked Sendable {
         case stoped
     }
     
-    private var count = 0
+    private let count = OSAllocatedUnfairLock(initialState: 0)
     private let state = OSAllocatedUnfairLock(initialState: State.inited)
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
@@ -26,9 +26,13 @@ public final class GCDTimer: @unchecked Sendable {
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         self.timer.setEventHandler { [weak self] in
             guard let self else { return }
-            block(count)
+            let curCount = count.withLock { count in
+                let curCount = count
+                count += 1
+                return curCount
+            }
+            block(curCount)
             if !repeats { stop() }
-            count += 1
         }
     }
     
