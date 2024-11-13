@@ -10,14 +10,14 @@ import os
 
 public final class GCDTimer: @unchecked Sendable {
     private enum State {
-        case inited
+        case idle
         case running
         case paused
         case stoped
     }
     
     private let count = OSAllocatedUnfairLock(initialState: 0)
-    private let state = OSAllocatedUnfairLock(initialState: State.inited)
+    private let state = OSAllocatedUnfairLock(initialState: State.idle)
     private let timer: DispatchSourceTimer
     private let timeInterval: TimeInterval
     
@@ -47,7 +47,7 @@ public final class GCDTimer: @unchecked Sendable {
                 return
             case .paused:
                 break
-            case .inited:
+            case .idle:
                 timer.schedule(deadline: .now() + timeInterval, repeating: .milliseconds(Int(timeInterval * 1000)))
             }
             timer.resume()
@@ -67,7 +67,7 @@ public final class GCDTimer: @unchecked Sendable {
         state.withLock { state in
             guard state != .stoped else { return }
             timer.setEventHandler(handler: nil)
-            if state == .inited { timer.resume() }
+            if state == .idle { timer.resume() }
             timer.cancel()
             state = .stoped
         }
