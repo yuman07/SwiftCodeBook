@@ -8,6 +8,7 @@
 import UIKit
 
 public extension UIBezierPath {
+    // https://github.com/Tencent/QMUI_iOS/blob/master/QMUIKit/UIKitExtensions/UIBezierPath%2BQMUI.h
     convenience init(size: CGSize, cornerRadius: (topLeft: CGFloat, bottomLeft: CGFloat, bottomRight: CGFloat, topRight: CGFloat)) {
         self.init()
         
