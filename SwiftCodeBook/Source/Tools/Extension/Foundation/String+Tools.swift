@@ -98,7 +98,7 @@ public extension String {
 }
 
 public extension StringProtocol {
-    var UTF8Data: Data {
+    var utf8Data: Data {
         Data(utf8)
     }
 }
@@ -112,11 +112,7 @@ public extension StringProtocol {
         contains { $0.isEmoji }
     }
     
-    var capitalizeTheFirstLetter: String {
+    var capitalizeFirstLetter: String {
         (first?.uppercased() ?? "") + dropFirst()
-    }
-    
-    var stripAllHTMLTags: String {
-        replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
     }
 }
