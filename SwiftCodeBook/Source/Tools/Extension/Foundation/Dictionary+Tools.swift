@@ -20,6 +20,17 @@ public extension Dictionary {
     func toJSONString(JSONEncoder: JSONEncoder = JSONEncoder()) -> String? {
         toJSONData(JSONEncoder: JSONEncoder).flatMap { String(data: $0, encoding: .utf8) }
     }
+    
+    mutating func removeAll(where shouldBeRemoved: (Key, Value) throws -> Bool) rethrows {
+        let keys = try reduce(into: [Key]()) { partialResult, element in
+            if try shouldBeRemoved(element.key, element.value) {
+                partialResult.append(element.key)
+            }
+        }
+        for key in keys {
+            removeValue(forKey: key)
+        }
+    }
 }
 
 public extension Dictionary {
