@@ -9,7 +9,6 @@ import Foundation
 
 // When decoding an array, the default behavior is that as long as any item in the array fails to decode, the entire array will be considered a failure.
 // To prevent this and filter out items that fail to decode, use this
-// Use case reference OptionalDecodableTest.swift
 public struct OptionalDecodable<T: Decodable>: Decodable {
     public let value: T?
     

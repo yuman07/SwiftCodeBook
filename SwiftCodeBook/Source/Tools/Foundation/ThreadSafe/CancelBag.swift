@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import os
 
-public final class CancelBag {
+public final class CancelBag: Sendable {
     private let tokens = OSAllocatedUnfairLock(initialState: Set<AnyCancellable>())
     
     public init() {}

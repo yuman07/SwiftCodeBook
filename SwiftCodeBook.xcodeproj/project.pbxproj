@@ -72,7 +72,6 @@
 		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
 		7AB21C1B29A32F900058D526 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB21C1A29A32F900058D526 /* AsyncOperation.swift */; };
 		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
-		7ABBC5A22BEE184100715C32 /* LowerFirstLetterKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABBC5A12BEE184100715C32 /* LowerFirstLetterKey.swift */; };
 		7ACB54AC2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */; };
 		7ACB54AE2BB3CD080004CBA8 /* View+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */; };
 		7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */; };
@@ -162,7 +161,6 @@
 		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
 		7AB21C1A29A32F900058D526 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
-		7ABBC5A12BEE184100715C32 /* LowerFirstLetterKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowerFirstLetterKey.swift; sourceTree = "<group>"; };
 		7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedStringProtocol+Tools.swift"; sourceTree = "<group>"; };
 		7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Tools.swift"; sourceTree = "<group>"; };
 		7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Tools.swift"; sourceTree = "<group>"; };
@@ -362,7 +360,6 @@
 			children = (
 				7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */,
 				7A9CC058291FCB2500046466 /* JSONCodableObject.swift */,
-				7ABBC5A12BEE184100715C32 /* LowerFirstLetterKey.swift */,
 				7A9CBA0A291E43C000046466 /* OptionalDecodable.swift */,
 			);
 			path = Codable;
@@ -505,7 +502,6 @@
 			files = (
 				7A1074792908C01900C13362 /* ViewController.swift in Sources */,
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
-				7ABBC5A22BEE184100715C32 /* LowerFirstLetterKey.swift in Sources */,
 				7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */,
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
 				7A9CBA0B291E43C000046466 /* OptionalDecodable.swift in Sources */,

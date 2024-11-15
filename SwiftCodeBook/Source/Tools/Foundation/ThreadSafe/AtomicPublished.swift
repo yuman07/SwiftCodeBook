@@ -10,7 +10,7 @@ import Foundation
 import os
 
 @propertyWrapper
-public final class AtomicPublished<T> {
+public final class AtomicPublished<T>: @unchecked Sendable {
     private let lock = OSAllocatedUnfairLock()
     @Published private var value: T
     
