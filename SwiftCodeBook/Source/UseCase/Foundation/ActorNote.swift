@@ -41,9 +41,9 @@ private actor TestSetupActor {
 }
 
 private func setup() async -> Int {
-    print("read begin")
+    print("setup begin")
     try? await Task.sleep(for: .seconds(2))
-    print("read end")
+    print("setup end")
     return 100
 }
 
