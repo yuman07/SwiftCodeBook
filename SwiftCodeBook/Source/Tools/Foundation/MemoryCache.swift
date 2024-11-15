@@ -1,5 +1,5 @@
 //
-//  NSValueCache.swift
+//  MemoryCache.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2024/4/26.
@@ -9,7 +9,7 @@ import Foundation
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key是NSObject子类，且Value是class类型。
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
-public final class NSValueCache<Key, Value> where Key: Hashable {
+public final class MemoryCache<Key, Value> where Key: Hashable {
     private let cache = NSCache<KeyObject<Key>, ValueObject<Value>>()
     
     public init() {}
@@ -52,7 +52,7 @@ public final class NSValueCache<Key, Value> where Key: Hashable {
 }
 
 @available(*, unavailable)
-extension NSValueCache: @unchecked Sendable {}
+extension MemoryCache: @unchecked Sendable {}
 
 private final class KeyObject<Key>: NSObject where Key: Hashable {
     let key: Key
