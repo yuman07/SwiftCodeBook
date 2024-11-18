@@ -18,26 +18,18 @@ public extension UIDevice {
     
     // https://theapplewiki.com/wiki/Main_Page
     var deviceModel: String {
-        enum Once {
-            static let deviceModel = {
-                if UIDevice.current.isSimulator {
-                    return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
-                } else {
-                    var info = utsname()
-                    uname(&info)
-                    let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-                    return String(cString: chars)
-                }
-            }()
+        if UIDevice.current.isSimulator {
+            return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
+        } else {
+            var info = utsname()
+            uname(&info)
+            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
+            return String(cString: chars)
         }
-        return Once.deviceModel
     }
     
     var is64BitDevice: Bool {
-        enum Once {
-            static let is64BitDevice = Int.bitWidth == 64
-        }
-        return Once.is64BitDevice
+        Int.bitWidth == 64
     }
     
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
@@ -51,12 +43,7 @@ public extension UIDevice {
     }
     
     var totalDiskSpaceInByte: UInt64 {
-        enum Once {
-            static let totalDiskSpaceInByte = {
-                (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
-            }()
-        }
-        return Once.totalDiskSpaceInByte
+        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
     }
     
     var freeDiskSpaceInByte: UInt64 {

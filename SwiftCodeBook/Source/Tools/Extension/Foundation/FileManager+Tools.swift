@@ -9,38 +9,23 @@ import Foundation
 
 public extension FileManager {
     var homePath: String {
-        enum Once {
-            static let homePath = NSHomeDirectory()
-        }
-        return Once.homePath
+        NSHomeDirectory()
     }
     
     var documentPath: String? {
-        enum Once {
-            static let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-        }
-        return Once.documentPath
+        NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
     }
     
     var libraryPath: String? {
-        enum Once {
-            static let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
-        }
-        return Once.libraryPath
+        NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
     }
     
     var cachePath: String? {
-        enum Once {
-            static let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
-        }
-        return Once.cachePath
+        NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
     }
     
     var tmpPath: String {
-        enum Once {
-            static let tmpPath = NSTemporaryDirectory()
-        }
-        return Once.tmpPath
+        NSTemporaryDirectory()
     }
     
     func directoryExists(at path: String) -> Bool {

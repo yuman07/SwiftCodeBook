@@ -15,7 +15,7 @@ enum CodeBookHelper {
             action()
         }
         let total = TimeInterval((CACurrentMediaTime() - begin) * 1000)
-        print("总耗时：\(total)")
-        print("平均耗时：\(total / TimeInterval(repeats))")
+        print("总耗时：\(total) ms")
+        print("平均耗时：\(total / TimeInterval(repeats)) ms")
     }
 }
