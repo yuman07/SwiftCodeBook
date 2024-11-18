@@ -20,7 +20,16 @@ public extension Dictionary {
     func toJSONString(JSONEncoder: JSONEncoder = JSONEncoder()) -> String? {
         toJSONData(JSONEncoder: JSONEncoder).flatMap { String(data: $0, encoding: .utf8) }
     }
-    
+}
+
+public extension Dictionary {
+    init?(plistFilePath: String) {
+        guard let dict = NSDictionary(contentsOfFile: plistFilePath) as? [Key: Value] else { return nil }
+        self = dict
+    }
+}
+
+public extension Dictionary {
     mutating func removeAll(where shouldBeRemoved: (Key, Value) throws -> Bool) rethrows {
         let keys = try reduce(into: [Key]()) { partialResult, element in
             if try shouldBeRemoved(element.key, element.value) {
@@ -30,12 +39,5 @@ public extension Dictionary {
         for key in keys {
             removeValue(forKey: key)
         }
-    }
-}
-
-public extension Dictionary {
-    init?(plistFilePath: String) {
-        guard let dict = NSDictionary(contentsOfFile: plistFilePath) as? [Key: Value] else { return nil }
-        self = dict
     }
 }
