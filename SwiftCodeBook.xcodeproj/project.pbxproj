@@ -82,7 +82,6 @@
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 		7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */; };
 		7AD3A3FD2CAA507E00AC09CF /* GlobalActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD3A3FC2CAA507E00AC09CF /* GlobalActor.swift */; };
-		7ADC4C0C29C2EAE2005C737D /* AtomicPublished.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC4C0B29C2EAE2005C737D /* AtomicPublished.swift */; };
 		7AE1E49B2949B583001B3671 /* NSRangeSwiftRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */; };
 		7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */; };
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
@@ -171,7 +170,6 @@
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 		7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Tools.swift"; sourceTree = "<group>"; };
 		7AD3A3FC2CAA507E00AC09CF /* GlobalActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalActor.swift; sourceTree = "<group>"; };
-		7ADC4C0B29C2EAE2005C737D /* AtomicPublished.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicPublished.swift; sourceTree = "<group>"; };
 		7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRangeSwiftRange.swift; sourceTree = "<group>"; };
 		7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformGuide.swift; sourceTree = "<group>"; };
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
@@ -278,7 +276,6 @@
 		7A10748D2908C0B300C13362 /* ThreadSafe */ = {
 			isa = PBXGroup;
 			children = (
-				7ADC4C0B29C2EAE2005C737D /* AtomicPublished.swift */,
 				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 			);
 			path = ThreadSafe;
@@ -528,7 +525,6 @@
 				7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
 				7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */,
-				7ADC4C0C29C2EAE2005C737D /* AtomicPublished.swift in Sources */,
 				7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */,
 				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
 				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
