@@ -19,8 +19,8 @@ public final class CancelBag: Sendable {
     }
     
     public func store(_ cancellable: AnyCancellable) {
-        tokens.withLock { tokens in
-            cancellable.store(in: &tokens)
+        tokens.withLock { token in
+            cancellable.store(in: &token)
         }
     }
     
