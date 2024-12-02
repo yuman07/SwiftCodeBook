@@ -45,18 +45,6 @@ public extension UIApplication {
         Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
     }()
     
-    static var isAppExtension: Bool = {
-        Bundle.main.bundlePath.hasSuffix(".appex")
-    }()
-    
-    static var isRunningTests: Bool {
-        ProcessInfo().environment["XCTestConfigurationFilePath"] != nil
-    }
-    
-    static var isAdHocDistributed = {
-        Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil
-    }()
-    
     static var usedMemoryInByte: UInt64? {
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.stride / MemoryLayout<natural_t>.stride)

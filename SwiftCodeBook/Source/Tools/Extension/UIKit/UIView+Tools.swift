@@ -31,10 +31,6 @@ public extension UIView {
         }
         return nil
     }
-    
-    var isRightToLeftUserInterface: Bool {
-        UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
-    }
 }
 
 private extension UIGestureRecognizer {

@@ -42,12 +42,12 @@ public extension FileManager {
     
     func directorySizeInByte(at path: String) async throws -> UInt64 {
         try Task.checkCancellation()
-        guard !path.isEmpty, let contents = try? subpathsOfDirectory(atPath: path), !contents.isEmpty else {
+        guard !path.isEmpty, case let contents = try subpathsOfDirectory(atPath: path), !contents.isEmpty else {
             return 0
         }
         return try contents.reduce(into: 0) { partialResult, file in
             try Task.checkCancellation()
-            partialResult += ((try? attributesOfItem(atPath: path + "/\(file)"))?[.size] as? UInt64) ?? 0
+            partialResult += ((try attributesOfItem(atPath: path + "/\(file)"))[.size] as? UInt64) ?? 0
         }
     }
 }
