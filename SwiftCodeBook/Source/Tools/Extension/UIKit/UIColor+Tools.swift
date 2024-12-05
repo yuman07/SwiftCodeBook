@@ -29,4 +29,15 @@ public extension UIColor {
         getRed(&r, green: &g, blue: &b, alpha: &a)
         return (r, g, b, a)
     }
+    
+    var rgbaString: String {
+        let rgba = rgba
+        let r = String(Int(round(rgba.red * 255.0)), radix: 16, uppercase: true)
+        let g = String(Int(round(rgba.green * 255.0)), radix: 16, uppercase: true)
+        let b = String(Int(round(rgba.blue * 255.0)), radix: 16, uppercase: true)
+        let a = rgba.alpha == 1 ? "" : String(Int(round(rgba.alpha * 255.0)), radix: 16, uppercase: true)
+        return [r, g, b, a].reduce(into: "#") { partialResult, hex in
+            partialResult += hex.count == 1 ? "0\(hex)" : hex
+        }
+    }
 }
