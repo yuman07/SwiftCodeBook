@@ -115,4 +115,13 @@ public extension StringProtocol {
     var capitalizeFirstLetter: String {
         (first?.uppercased() ?? "") + dropFirst()
     }
+
+    var languageDirection: Locale.LanguageDirection {
+        // CFStringTokenizerCopyBestStringLanguage documentation says 200-400 characters are required to reliably guess the language
+        // Use the lower end for speed
+        let maxCharacters = 200
+        let range = CFRange(location: 0, length: Swift.min(maxCharacters, count))
+        guard let languageId = CFStringTokenizerCopyBestStringLanguage(String(self) as CFString, range) else { return .unknown }
+        return Locale(identifier: String(languageId)).language.characterDirection
+    }
 }

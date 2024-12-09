@@ -10,8 +10,10 @@ import UIKit
 public extension UIApplication {
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
     var keyWindow: UIWindow? {
-        let windows = connectedScenes.compactMap{ $0 as? UIWindowScene }.flatMap(\.windows)
-        return windows.count == 1 ? windows.first : windows.first(where: { $0.isKeyWindow })
+        connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
     }
     
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
