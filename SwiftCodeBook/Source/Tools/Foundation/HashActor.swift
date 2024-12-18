@@ -8,26 +8,17 @@
 import CryptoKit
 import Foundation
 
-public final actor HashActor {
+public final class HashActor: @unchecked Sendable {
     public enum Function {
         case md5
         case sha1
         case sha256
         case sha384
         case sha512
-        
-        fileprivate var hasher: any HashFunction {
-            switch self {
-            case .md5: Insecure.MD5()
-            case .sha1: Insecure.SHA1()
-            case .sha256: SHA256()
-            case .sha384: SHA384()
-            case .sha512: SHA512()
-            }
-        }
     }
     
     private let function: Function
+    private let queue = DispatchQueue(label: "com.HashActor.serialQueue")
     private var hasher: any HashFunction
     
     public init(function: Function) {
@@ -36,15 +27,38 @@ public final actor HashActor {
     }
     
     public func reset() {
-        hasher = function.hasher
+        queue.async { [weak self] in
+            guard let self else { return }
+            hasher = function.hasher
+        }
     }
     
     public func update(data: Data) {
-        hasher.update(data: data)
+        queue.async { [weak self] in
+            guard let self else { return }
+            hasher.update(data: data)
+        }
     }
     
-    public func finalize() -> String {
-        hasher.finalize().toHashString()
+    public func finalize() async -> String {
+        await withCheckedContinuation { continuation in
+            queue.async { [weak self] in
+                guard let self else { return continuation.resume(returning: "") }
+                continuation.resume(returning: hasher.finalize().toHashString())
+            }
+        }
+    }
+}
+
+private extension HashActor.Function {
+    var hasher: any HashFunction {
+        switch self {
+        case .md5: Insecure.MD5()
+        case .sha1: Insecure.SHA1()
+        case .sha256: SHA256()
+        case .sha384: SHA384()
+        case .sha512: SHA512()
+        }
     }
 }
 
