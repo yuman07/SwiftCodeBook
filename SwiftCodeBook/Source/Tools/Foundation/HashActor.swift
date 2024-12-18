@@ -18,7 +18,7 @@ public final class HashHelper: @unchecked Sendable {
     }
     
     private let function: Function
-    private let queue = DispatchQueue(label: "com.HashActor.serialQueue")
+    private let queue = DispatchQueue(label: "com.HashHelper.serialQueue")
     private var hasher: any HashFunction
     
     public init(function: Function) {
