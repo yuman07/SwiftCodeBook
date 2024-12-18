@@ -40,10 +40,10 @@ public final class HashHelper: @unchecked Sendable {
         }
     }
     
-    public func finalize() async -> String {
+    public func finalize() async -> String? {
         await withCheckedContinuation { continuation in
             queue.async { [weak self] in
-                guard let self else { return continuation.resume(returning: "") }
+                guard let self else { return continuation.resume(returning: nil) }
                 continuation.resume(returning: hasher.finalize().toHashString())
             }
         }
