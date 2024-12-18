@@ -32,16 +32,6 @@ public extension UIDevice {
         Int.bitWidth == 64
     }
     
-    @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
-    var isNotchScreen: Bool {
-        userInterfaceIdiom == .phone && hasHomeIndicator
-    }
-    
-    @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
-    var hasHomeIndicator: Bool {
-        UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.bottom > 0 } ?? false
-    }
-    
     var totalDiskSpaceInByte: UInt64 {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
     }
