@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-public final class HashActor: @unchecked Sendable {
+public final class HashHelper: @unchecked Sendable {
     public enum Function {
         case md5
         case sha1
@@ -50,7 +50,7 @@ public final class HashActor: @unchecked Sendable {
     }
 }
 
-private extension HashActor.Function {
+private extension HashHelper.Function {
     var hasher: any HashFunction {
         switch self {
         case .md5: Insecure.MD5()
@@ -62,7 +62,7 @@ private extension HashActor.Function {
     }
 }
 
-public extension HashActor {
+public extension HashHelper {
     static func hash(data: Data, using function: Function) -> String {
         var hasher = function.hasher
         hasher.update(data: data)
@@ -94,14 +94,14 @@ public extension HashActor {
 }
 
 public extension String {
-    func hash(using function: HashActor.Function) -> String {
-        HashActor.hash(string: self, using: function)
+    func hash(using function: HashHelper.Function) -> String {
+        HashHelper.hash(string: self, using: function)
     }
 }
 
 public extension Data {
-    func hash(using function: HashActor.Function) -> String {
-        HashActor.hash(data: self, using: function)
+    func hash(using function: HashHelper.Function) -> String {
+        HashHelper.hash(data: self, using: function)
     }
 }
 
