@@ -14,10 +14,10 @@ public extension UIColor {
         let target = "\(RGBA.dropFirst())" + (RGBA.count == 7 ? "FF" : "")
         guard case let s = Scanner(string: target), s.scanHexInt64(&hexNum) && s.isAtEnd else { return nil }
         self.init(
-            red: CGFloat((hexNum & 0xff000000) >> 24) / 255,
-            green: CGFloat((hexNum & 0x00ff0000) >> 16) / 255,
-            blue: CGFloat((hexNum & 0x0000ff00) >> 8) / 255,
-            alpha: CGFloat(hexNum & 0x000000ff) / 255
+            red: CGFloat((hexNum >> 24) & 0xFF) / 255,
+            green: CGFloat((hexNum >> 16) & 0xFF) / 255,
+            blue: CGFloat((hexNum >> 8) & 0xFF) / 255,
+            alpha: CGFloat(hexNum & 0xFF) / 255
         )
     }
     
