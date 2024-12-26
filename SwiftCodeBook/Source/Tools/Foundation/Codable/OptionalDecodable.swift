@@ -7,9 +7,9 @@
 
 import Foundation
 
-// When decoding an array, the default behavior is that as long as any item in the array fails to decode, the entire array will be considered a failure.
-// To prevent this and filter out items that fail to decode, use this
-public struct OptionalDecodable<T: Decodable>: Decodable {
+// 当Model中有一个Array需要Decode时，只要其中有一个item Decode失败，整个Array的Decode就会失败
+// 我们有时不需要这个行为，希望如果其中一个item失败那它就是nil即可，不要影响整个Array
+public struct OptionalCodable<T: Codable>: Codable {
     public let value: T?
     
     public init(from decoder: Decoder) throws {
@@ -19,5 +19,10 @@ public struct OptionalDecodable<T: Decodable>: Decodable {
         } catch {
             self.value = nil
         }
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(value)
     }
 }

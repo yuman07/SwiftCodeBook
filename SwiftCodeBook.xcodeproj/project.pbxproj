@@ -89,6 +89,7 @@
 		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
 		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
 		7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */; };
+		7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B22D1CFE04009B7556 /* CodableNote.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 /* End PBXBuildFile section */
 
@@ -177,6 +178,7 @@
 		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
 		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchNote.swift; sourceTree = "<group>"; };
+		7AF129B22D1CFE04009B7556 /* CodableNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableNote.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -388,6 +390,7 @@
 				7AAF03142CDF2EAF00525A44 /* ActorNote.swift */,
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
 				7AB21C1A29A32F900058D526 /* AsyncOperation.swift */,
+				7AF129B22D1CFE04009B7556 /* CodableNote.swift */,
 				7AAFB70C2CDE055E00525A44 /* CombineNote.swift */,
 				7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */,
 				7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */,
@@ -519,6 +522,7 @@
 				7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */,
 				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
 				7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */,
+				7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */,
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A4CB27A2CCA37F300820147 /* Spacer+Tools.swift in Sources */,
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
