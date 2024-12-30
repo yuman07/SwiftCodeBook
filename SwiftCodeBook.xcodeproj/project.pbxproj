@@ -89,7 +89,7 @@
 		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
 		7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */; };
 		7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B22D1CFE04009B7556 /* CodableNote.swift */; };
-		7AF129B52D1D0C42009B7556 /* AnyJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONCodable.swift */; };
+		7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 /* End PBXBuildFile section */
 
@@ -178,7 +178,7 @@
 		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchNote.swift; sourceTree = "<group>"; };
 		7AF129B22D1CFE04009B7556 /* CodableNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableNote.swift; sourceTree = "<group>"; };
-		7AF129B42D1D0C42009B7556 /* AnyJSONCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONCodable.swift; sourceTree = "<group>"; };
+		7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONValue.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -357,7 +357,7 @@
 		7A9CBA09291E42C300046466 /* Codable */ = {
 			isa = PBXGroup;
 			children = (
-				7AF129B42D1D0C42009B7556 /* AnyJSONCodable.swift */,
+				7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */,
 				7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */,
 				7A9CBA0A291E43C000046466 /* OptionalCodable.swift */,
 			);
@@ -559,7 +559,7 @@
 				7ACB54AC2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift in Sources */,
 				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
-				7AF129B52D1D0C42009B7556 /* AnyJSONCodable.swift in Sources */,
+				7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */,
 				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */,

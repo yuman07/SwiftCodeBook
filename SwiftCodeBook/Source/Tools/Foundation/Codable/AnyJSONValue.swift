@@ -1,5 +1,5 @@
 //
-//  AnyJSONCodable.swift
+//  AnyJSONValue.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2024/12/26.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-// 有些时候在一个Model中我们只知道一个属性是json的一种value，但不知道具体类型，此时可以用AnyJSONCodable
-public struct AnyJSONCodable: Codable {
+// 有些时候在一个Model中我们只知道一个属性是json的一种value，但不知道具体类型，此时可以用AnyJSONValue
+public struct AnyJSONValue: Codable {
     private let value: Any
     
     public init(from decoder: Decoder) throws {
@@ -57,7 +57,7 @@ public struct AnyJSONCodable: Codable {
     }
 }
 
-public extension AnyJSONCodable {
+public extension AnyJSONValue {
     var isNull: Bool {
         value is NSNull
     }

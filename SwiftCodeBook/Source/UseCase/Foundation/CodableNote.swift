@@ -25,7 +25,7 @@ func testOptionalCodable() {
 
 func testAnyJSONCodable() {
     struct TestModel: Codable {
-        let value: AnyJSONCodable
+        let value: AnyJSONValue
     }
     
     let jsonInt = "{\"value\": 100}"
