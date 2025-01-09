@@ -165,6 +165,13 @@ import Foundation
  在开发中，我们有时会用Int.max这种来表示无限制
  但要注意，万一这个值后续被用于加法运算，就会因为溢出直接crash了
  总之还是尽量避免这种写法
+ 
+ 
+ UITextView默认是自带padding的。如果想去掉padding，即得到一个恰好包裹住text的view，则需要设置：
+ textView.contentInset = .zero
+ textView.textContainerInset = .zero
+ textView.textContainer.lineFragmentPadding = 0
+ 
  */
 
 
