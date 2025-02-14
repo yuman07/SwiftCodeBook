@@ -176,22 +176,9 @@ import Foundation
 
 
 /*
- 线程安全：
- 
- 在iOS中有三种实现线程安全的方式：actor，queue，lock
- 实现一个线程安全的类必须同时保证：
- 1) 串行调用时，外界调用顺序与实际执行顺序相同
- 2) 并行调用时，没有数据竞争问题
- 对于
- 3) 并行调用时，外界调用顺序与实际执行顺序相同
- 这点主要是在unfair lock下不满足，但绝大多数情况下不满足也不会有问题
- 因为在多线程下调用方法，实际执行的顺序是不确定的。比如按顺序123往并发队列中添加方法，但实际的执行顺序可能是213
- unfair lock会将接收到的顺序再次打乱，最终顺序可能就是231了。
- 如果想严格保证顺序正确，即按123执行，此时的第一责任人调用方：必须保证123是在同一个线程被依次调用。因为如果在多线程下，即便接收方是个actor，但收到调用的顺序已经是213了，也只能按这个顺序执行
- 总之对于12必须都要满足，对于3使用lock时会不满足，但一般也不会有问题，只要知道有这种case即可
- // https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md (Implementation note)
- 还有对于actor，当多个task await同一个actor时，最终执行的顺序不一定是它们当初等待的顺序，而是要考虑task的优先级，高的先执行
- 而queue是严格FIFO的
+ https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md (Implementation note)
+ 对于actor，当多个task await同一个actor时，最终执行的顺序不一定是它们当初等待的顺序
+ 如果需要严格的FIFO，请使用Queue
  */
 
 

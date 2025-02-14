@@ -47,3 +47,7 @@ private func setup() async -> Int {
     return 100
 }
 
+// globalActor
+@globalActor actor MyActor {
+    static let shared = MyActor()
+}
