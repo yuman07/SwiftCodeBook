@@ -8,8 +8,8 @@
 import UIKit
 
 public extension UIImage {
-    static func color(_ color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
-        UIGraphicsImageRenderer(size: size).image { context in
+    static func color(_ color: UIColor, size: CGSize = .one) -> UIImage {
+        UIGraphicsImageRenderer(size: size.validSelfOrOne).image { context in
             color.setFill()
             context.fill(CGRect(origin: .zero, size: size))
         }
@@ -20,8 +20,9 @@ public extension UIImage {
         self.init(data: data)
     }
     
-    convenience init?(symbolName: String, size: CGFloat) {
-        self.init(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: size))
+    convenience init?(symbolName: String, pointSize: CGFloat) {
+        guard pointSize.isFinite else { return nil }
+        self.init(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: pointSize))
     }
     
     var sizeInByte: UInt64 {

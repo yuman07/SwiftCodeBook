@@ -71,6 +71,7 @@
 		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
 		7AB21C1B29A32F900058D526 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB21C1A29A32F900058D526 /* AsyncOperation.swift */; };
 		7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */; };
+		7AC9EFAC2D70364E007C32F3 /* CGSize+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */; };
 		7ACB54AC2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */; };
 		7ACB54AE2BB3CD080004CBA8 /* View+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */; };
 		7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */; };
@@ -159,6 +160,7 @@
 		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
 		7AB21C1A29A32F900058D526 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+Tools.swift"; sourceTree = "<group>"; };
+		7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Tools.swift"; sourceTree = "<group>"; };
 		7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedStringProtocol+Tools.swift"; sourceTree = "<group>"; };
 		7ACB54AD2BB3CD080004CBA8 /* View+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Tools.swift"; sourceTree = "<group>"; };
 		7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Tools.swift"; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */,
+				7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */,
 				7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */,
 				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
 				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,
@@ -548,6 +551,7 @@
 				7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */,
 				7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */,
 				7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */,
+				7AC9EFAC2D70364E007C32F3 /* CGSize+Tools.swift in Sources */,
 				7A1074932908FABB00C13362 /* UIColor+Tools.swift in Sources */,
 				7A0752082BA8124A00A575C5 /* StringRegularExpression.swift in Sources */,
 				7A6227C52BCD0A4E00E33417 /* ConvertNSAttributedString.swift in Sources */,
