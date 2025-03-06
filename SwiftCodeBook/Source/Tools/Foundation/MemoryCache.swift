@@ -52,7 +52,7 @@ public final class MemoryCache<Key, Value> where Key: Hashable {
 }
 
 @available(*, unavailable)
-extension MemoryCache: @unchecked Sendable {}
+extension MemoryCache: Sendable {}
 
 private final class KeyObject<Key>: NSObject where Key: Hashable {
     let key: Key
