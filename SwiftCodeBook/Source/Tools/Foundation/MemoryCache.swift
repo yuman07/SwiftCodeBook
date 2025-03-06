@@ -9,7 +9,7 @@ import Foundation
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key/value是class类型
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
-public final class MemoryCache<Key, Value>: @unchecked Sendable where Key: Hashable {
+public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     private let cache = NSCache<KeyObject<Key>, ValueObject<Value>>()
     
     public init() {}
@@ -51,7 +51,7 @@ public final class MemoryCache<Key, Value>: @unchecked Sendable where Key: Hasha
     }
 }
 
-private final class KeyObject<Key>: Hashable where Key: Hashable {
+private final class KeyObject<Key: Hashable>: Hashable {
     private let key: Key
     
     init(_ key: Key) {
