@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/10/26.
 //
 
+import Combine
 import UIKit
 
 public extension UIApplication {
@@ -20,7 +21,21 @@ public extension UIApplication {
     var interfaceOrientation: UIInterfaceOrientation {
         keyWindow?.windowScene?.interfaceOrientation ?? .unknown
     }
-    
+
+    @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
+    var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
+        #if os(iOS)
+            NotificationCenter
+                .default
+                .publisher(for: UIDevice.orientationDidChangeNotification)
+                .map({ _ in UIApplication.shared.interfaceOrientation })
+                .removeDuplicates()
+                .eraseToAnyPublisher()
+        #else
+            Empty().eraseToAnyPublisher()
+        #endif
+    }
+
     static var appIcon: UIImage? {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
