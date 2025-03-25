@@ -172,6 +172,11 @@ import Foundation
  textView.textContainerInset = .zero
  textView.textContainer.lineFragmentPadding = 0
  
+ 
+ SwiftUI中一个view设置了cornerRadius以及contextMenu后，长按后四个角会有白色
+ 此时需要设置 view.contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: {viewCornerRadius}))
+ https://stackoverflow.com/questions/62741902/contextmenu-on-a-rounded-lineargradient-produces-sharp-edges-in-swiftui
+ 
  */
 
 
