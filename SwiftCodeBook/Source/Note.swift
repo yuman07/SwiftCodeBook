@@ -177,6 +177,12 @@ import Foundation
  此时需要设置 view.contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: {viewCornerRadius}))
  https://stackoverflow.com/questions/62741902/contextmenu-on-a-rounded-lineargradient-produces-sharp-edges-in-swiftui
  
+ 
+ 当用户的iOS设备在某些地区和多语言的设置下，会出现整个系统的文字行间距变大
+ 目前已知的复现设置为：
+ 地区：India
+ 语言：English, Hindi, Awadhi, Italian
+ 
  */
 
 
