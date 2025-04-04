@@ -5,7 +5,6 @@
 //  Created by yuman on 2024/10/31.
 //
 
-import Foundation
 /*
  注意以下的坑有些发生在较早的iOS版本，目前不一定成立，但可作为警示与思路
  */
@@ -182,6 +181,15 @@ import Foundation
  目前已知的复现设置为：
  地区：India
  语言：English, Hindi, Awadhi, Italian
+ 
+ 
+ 避免SwiftUI中多余的view刷新：
+ https://fatbobman.com/zh/posts/avoid_repeated_calculations_of_swiftui_views/
+ 1) 当一个View实现了Equatable协议时，还必须给该view添加.equatable()，才能确保该view会通过Equatable里的方法来判断相等
+ 2) 对于如 @State属性(DynamicProperty)，在Equatable方法中，不需要判断其是否左右相等。因为该属性的变化一定会导致view的刷新
+ 3) @State属性(DynamicProperty)在赋值前先判等，确保不同再赋值
+ 4) 确保该 @State属性(DynamicProperty)的变化和view的变化是一一对应的。比如view有一个 @State属性 number，但是该view是判断该number的奇偶性来展示不同UI。
+ 那这时就会造成当number变化时，可能其奇偶性并未改变，但是view会被多余刷新。此时应该让该 @State属性为 isOdd 这样的Bool值
  
  */
 
