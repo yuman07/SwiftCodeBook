@@ -9,7 +9,7 @@ import CryptoKit
 import Foundation
 
 public final class HashHelper {
-    public enum Function {
+    @frozen public enum Function {
         case md5
         case sha1
         case sha256
