@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-public final class HashHelper: @unchecked Sendable {
+public final class HashHelper {
     public enum Function {
         case md5
         case sha1
@@ -18,7 +18,6 @@ public final class HashHelper: @unchecked Sendable {
     }
     
     private let function: Function
-    private let queue = DispatchQueue(label: "com.HashHelper.serialQueue")
     private var hasher: any HashFunction
     
     public init(function: Function) {
@@ -27,38 +26,15 @@ public final class HashHelper: @unchecked Sendable {
     }
     
     public func reset() {
-        queue.async { [weak self] in
-            guard let self else { return }
-            hasher = function.hasher
-        }
+        hasher = function.hasher
     }
     
     public func update(data: Data) {
-        queue.async { [weak self] in
-            guard let self else { return }
-            hasher.update(data: data)
-        }
+        hasher.update(data: data)
     }
     
-    public func finalize() async -> String? {
-        await withCheckedContinuation { continuation in
-            queue.async { [weak self] in
-                guard let self else { return continuation.resume(returning: nil) }
-                continuation.resume(returning: hasher.finalize().toHashString())
-            }
-        }
-    }
-}
-
-private extension HashHelper.Function {
-    var hasher: any HashFunction {
-        switch self {
-        case .md5: Insecure.MD5()
-        case .sha1: Insecure.SHA1()
-        case .sha256: SHA256()
-        case .sha384: SHA384()
-        case .sha512: SHA512()
-        }
+    public func finalize() -> String {
+        hasher.finalize().toHashString()
     }
 }
 
@@ -102,6 +78,18 @@ public extension String {
 public extension Data {
     func hash(using function: HashHelper.Function) -> String {
         HashHelper.hash(data: self, using: function)
+    }
+}
+
+private extension HashHelper.Function {
+    var hasher: any HashFunction {
+        switch self {
+        case .md5: Insecure.MD5()
+        case .sha1: Insecure.SHA1()
+        case .sha256: SHA256()
+        case .sha384: SHA384()
+        case .sha512: SHA512()
+        }
     }
 }
 
