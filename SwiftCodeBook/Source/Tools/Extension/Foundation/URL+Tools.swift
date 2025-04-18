@@ -16,30 +16,38 @@ public extension URL {
         }
     }
     
-    func queryItemValue(forKey key: String) -> String? {
-        queryDictionary[key]
-    }
-    
-    func setQueryItemValue(_ value: String, forKey key: String) -> URL {
+    func appendingQueryItems(
+        _ queryItems: [URLQueryItem],
+        uniquingKeysWith combine: ((_ key: String, _ currentValue: String, _ newValue: String?) -> String?)? = nil
+    ) -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
         
         var queryDict = queryDictionary
-        queryDict[key] = value
+        for queryItem in queryItems {
+            let key = queryItem.name
+            let currentValue = queryDict[key]
+            var newValue = queryItem.value
+            if let currentValue, let combine {
+                newValue = combine(key, currentValue, newValue)
+            }
+            queryDict[key] = newValue
+        }
+        
         components.queryItems = queryDict.map { queryKey, queryValue in
             URLQueryItem(name: queryKey, value: queryValue)
         }
         return components.url ?? self
     }
     
-    func removeQueryItemValue(forKey key: String) -> URL {
+    func removeQueryItems(forKeys keys: [String]) -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
         
         var queryDict = queryDictionary
-        queryDict.removeValue(forKey: key)
+        for key in keys { queryDict.removeValue(forKey: key) }
         components.queryItems = queryDict.map { queryKey, queryValue in
             URLQueryItem(name: queryKey, value: queryValue)
         }
@@ -50,6 +58,7 @@ public extension URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
+        
         components.queryItems = nil
         return components.url ?? self
     }
