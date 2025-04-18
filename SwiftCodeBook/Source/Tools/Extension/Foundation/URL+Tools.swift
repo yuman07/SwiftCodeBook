@@ -18,19 +18,19 @@ public extension URL {
     
     func appendingQueryItems(
         _ queryItems: [URLQueryItem],
-        uniquingKeysWith combine: ((_ key: String, _ currentValue: String, _ newValue: String?) -> String?)? = nil
-    ) -> URL {
+        uniquingKeysWith combine: ((_ key: String, _ currentValue: String, _ newValue: String?) throws -> String?)? = nil
+    ) rethrows -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
         
         var queryDict = queryDictionary
-        for queryItem in queryItems {
+        try queryItems.forEach { queryItem in
             let key = queryItem.name
             let currentValue = queryDict[key]
             var newValue = queryItem.value
             if let currentValue, let combine {
-                newValue = combine(key, currentValue, newValue)
+                newValue = try combine(key, currentValue, newValue)
             }
             queryDict[key] = newValue
         }
