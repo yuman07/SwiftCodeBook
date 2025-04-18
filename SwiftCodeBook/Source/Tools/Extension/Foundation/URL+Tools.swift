@@ -27,9 +27,8 @@ public extension URL {
         var queryDict = queryDictionary
         try queryItems.forEach { queryItem in
             let key = queryItem.name
-            let currentValue = queryDict[key]
             var newValue = queryItem.value
-            if let currentValue, let combine {
+            if let combine, let currentValue = queryDict[key] {
                 newValue = try combine(key, currentValue, newValue)
             }
             queryDict[key] = newValue
