@@ -15,4 +15,26 @@ public extension URL {
             if let value = item.value { dict[item.name] = value }
         }
     }
+    
+    func removeQueryItems(forKeys keys: [String]) -> URL {
+        guard var components = URLComponents(string: absoluteString) else {
+            return self
+        }
+        
+        var queryDict = queryDictionary
+        for key in keys { queryDict.removeValue(forKey: key) }
+        components.queryItems = queryDict.map { queryKey, queryValue in
+            URLQueryItem(name: queryKey, value: queryValue)
+        }
+        return components.url ?? self
+    }
+    
+    func removeAllQueryItems() -> URL {
+        guard var components = URLComponents(string: absoluteString) else {
+            return self
+        }
+        
+        components.queryItems = nil
+        return components.url ?? self
+    }
 }
