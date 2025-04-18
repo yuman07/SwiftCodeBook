@@ -11,16 +11,46 @@ public extension URL {
     static let blank = URL(string: "about:blank")!
     
     var queryDictionary: [String: String] {
-        get {
-            (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) {
-                if let value = $1.value { $0[$1.name] = value }
-            }
+        (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) { dict, item in
+            if let value = item.value { dict[item.name] = value }
         }
-        set {
-            if var components = URLComponents(string: absoluteString) {
-                components.queryItems = newValue.map { URLQueryItem(name: $0.key, value: $0.value) }
-                components.url.flatMap { self = $0 }
-            }
+    }
+    
+    func queryItemValue(forKey key: String) -> String? {
+        queryDictionary[key]
+    }
+    
+    func setQueryItemValue(_ value: String, forKey key: String) -> URL {
+        guard var components = URLComponents(string: absoluteString) else {
+            return self
         }
+        
+        var queryDict = queryDictionary
+        queryDict[key] = value
+        components.queryItems = queryDict.map { queryKey, queryValue in
+            URLQueryItem(name: queryKey, value: queryValue)
+        }
+        return components.url ?? self
+    }
+    
+    func removeQueryItemValue(forKey key: String) -> URL {
+        guard var components = URLComponents(string: absoluteString) else {
+            return self
+        }
+        
+        var queryDict = queryDictionary
+        queryDict.removeValue(forKey: key)
+        components.queryItems = queryDict.map { queryKey, queryValue in
+            URLQueryItem(name: queryKey, value: queryValue)
+        }
+        return components.url ?? self
+    }
+    
+    func removeAllQueryItems() -> URL {
+        guard var components = URLComponents(string: absoluteString) else {
+            return self
+        }
+        components.queryItems = nil
+        return components.url ?? self
     }
 }
