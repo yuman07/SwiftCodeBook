@@ -31,4 +31,12 @@ public extension View {
             action(frame)
         }
     }
+
+    func onSafeAreaInsetsChange(_ action: @escaping (_ newSafeAreaInsets: EdgeInsets) -> Void) -> some View {
+        self.onGeometryChange(for: EdgeInsets.self) { proxy in
+            proxy.safeAreaInsets
+        } action: { edgeInsets in
+            action(edgeInsets)
+        }
+    }
 }
