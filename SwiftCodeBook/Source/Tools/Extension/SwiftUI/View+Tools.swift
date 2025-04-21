@@ -15,4 +15,20 @@ public extension View {
             self
         }
     }
+    
+    func onSizeChange(_ action: @escaping (_ newSize: CGSize) -> Void) -> some View {
+        self.onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: { size in
+            action(size)
+        }
+    }
+    
+    func onFrameChange(in coordinateSpace: CoordinateSpaceProtocol, _ action: @escaping (_ newFrame: CGRect) -> Void) -> some View {
+        self.onGeometryChange(for: CGRect.self) { proxy in
+            proxy.frame(in: coordinateSpace)
+        } action: { frame in
+            action(frame)
+        }
+    }
 }
