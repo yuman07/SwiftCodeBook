@@ -78,7 +78,7 @@
 		7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */; };
 		7ACF43E82A8C9B9B009963C7 /* DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */; };
 		7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD080B72BD8EAAB0053F3EB /* CodeBookHelper.swift */; };
-		7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */; };
+		7AD0DC5F290C1C5C0010BBC8 /* HashHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */; };
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 		7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */; };
 		7AE1E49B2949B583001B3671 /* NSRangeSwiftRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */; };
@@ -167,7 +167,7 @@
 		7ACBC01F2A160836007A8C13 /* SpecificLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificLocalizedString.swift; sourceTree = "<group>"; };
 		7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Tools.swift"; sourceTree = "<group>"; };
 		7AD080B72BD8EAAB0053F3EB /* CodeBookHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBookHelper.swift; sourceTree = "<group>"; };
-		7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
+		7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHandler.swift; sourceTree = "<group>"; };
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 		7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Tools.swift"; sourceTree = "<group>"; };
 		7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRangeSwiftRange.swift; sourceTree = "<group>"; };
@@ -268,7 +268,7 @@
 				7A9CBA09291E42C300046466 /* Codable */,
 				7A10748D2908C0B300C13362 /* ThreadSafe */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
-				7AD0DC5E290C1C5C0010BBC8 /* HashHelper.swift */,
+				7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */,
 				7A772A3B2BDB97180008828B /* MemoryCache.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 			);
@@ -574,7 +574,7 @@
 				7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */,
 				7ACB54AE2BB3CD080004CBA8 /* View+Tools.swift in Sources */,
 				7A08D21A2B16DDFC00DE9BCC /* CompareEnum.swift in Sources */,
-				7AD0DC5F290C1C5C0010BBC8 /* HashHelper.swift in Sources */,
+				7AD0DC5F290C1C5C0010BBC8 /* HashHandler.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRangeSwiftRange.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
 				7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */,
