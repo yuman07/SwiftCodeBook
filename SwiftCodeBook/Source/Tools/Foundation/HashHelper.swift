@@ -1,5 +1,5 @@
 //
-//  HashActor.swift
+//  HashHelper.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2022/10/28.
