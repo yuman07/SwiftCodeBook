@@ -1,5 +1,5 @@
 //
-//  HashHelper.swift
+//  HashHandler.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2022/10/28.
@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-public final class HashHelper {
+public final class HashHandler {
     @frozen public enum Function {
         case md5
         case sha1
@@ -38,7 +38,7 @@ public final class HashHelper {
     }
 }
 
-public extension HashHelper {
+public extension HashHandler {
     static func hash(data: Data, using function: Function) -> String {
         var hasher = function.hasher
         hasher.update(data: data)
@@ -70,18 +70,18 @@ public extension HashHelper {
 }
 
 public extension String {
-    func hash(using function: HashHelper.Function) -> String {
-        HashHelper.hash(string: self, using: function)
+    func hash(using function: HashHandler.Function) -> String {
+        HashHandler.hash(string: self, using: function)
     }
 }
 
 public extension Data {
-    func hash(using function: HashHelper.Function) -> String {
-        HashHelper.hash(data: self, using: function)
+    func hash(using function: HashHandler.Function) -> String {
+        HashHandler.hash(data: self, using: function)
     }
 }
 
-private extension HashHelper.Function {
+private extension HashHandler.Function {
     var hasher: any HashFunction {
         switch self {
         case .md5: Insecure.MD5()
