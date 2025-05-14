@@ -191,6 +191,9 @@
  4) 确保该 @State属性(DynamicProperty)的变化和view的变化是一一对应的。比如view有一个 @State属性 number，但是该view是判断该number的奇偶性来展示不同UI。
  那这时就会造成当number变化时，可能其奇偶性并未改变，但是view会被多余刷新。此时应该让该 @State属性为 isOdd 这样的Bool值
  
+ 
+ AttributedString转为NSAttributedString时，如果AttributedString包含自定义的key，则转为NSAttributedString后会丢失
+ 
  */
 
 
