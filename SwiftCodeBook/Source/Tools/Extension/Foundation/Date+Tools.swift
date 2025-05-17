@@ -9,7 +9,7 @@ import Foundation
 
 public extension Date {
     private var calendar: Calendar {
-        Calendar.autoupdatingCurrent
+        Calendar.current
     }
     
     var century: Int {
@@ -112,6 +112,10 @@ public extension Date {
     
     func years(from date: Date) -> Int {
         calendar.dateComponents([.year], from: date, to: self).year ?? 0
+    }
+    
+    func isInSameDayAs(date: Date) -> Bool {
+        calendar.isDate(self, inSameDayAs: date)
     }
     
     func isSame(with date: Date, toGranularity component: Calendar.Component) -> Bool {
