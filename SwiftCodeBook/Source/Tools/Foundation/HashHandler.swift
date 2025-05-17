@@ -25,16 +25,16 @@ public final class HashHandler {
         hasher = function.hasher
     }
     
-    public func reset() {
-        hasher = function.hasher
-    }
-    
     public func update(data: Data) {
         hasher.update(data: data)
     }
     
     public func finalize() -> String {
         hasher.finalize().toHashString()
+    }
+    
+    public func reset() {
+        hasher = function.hasher
     }
 }
 
@@ -49,23 +49,22 @@ public extension HashHandler {
         hash(data: Data(string.utf8), using: function)
     }
     
-    static func hash(filePath: String, using function: Function) async -> String? {
-        guard !Task.isCancelled, let handler = FileHandle(forReadingAtPath: filePath) else { return nil }
+    static func hash(filePath: String, using function: Function) async throws -> String {
+        try Task.checkCancellation()
+        let handler = try FileHandle(forReadingFrom: URL(filePath: filePath))
         defer { try? handler.close() }
         
-        var hasher = function.hasher
         var isEnd = false
-        var meetError = Task.isCancelled
-        while !isEnd && !meetError {
-            autoreleasepool {
-                guard let data = try? handler.read(upToCount: 16384) else { return meetError = true }
-                guard !data.isEmpty else { return isEnd = true }
+        var hasher = function.hasher
+        while !isEnd {
+            try Task.checkCancellation()
+            try autoreleasepool {
+                guard let data = try handler.read(upToCount: 16384), !data.isEmpty else { return isEnd = true }
                 hasher.update(data: data)
             }
-            meetError = meetError || Task.isCancelled
         }
         
-        return meetError ? nil : hasher.finalize().toHashString()
+        return hasher.finalize().toHashString()
     }
 }
 
