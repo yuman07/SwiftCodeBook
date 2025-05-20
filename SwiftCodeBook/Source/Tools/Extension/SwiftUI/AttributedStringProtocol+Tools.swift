@@ -8,7 +8,7 @@
 import Foundation
 
 public extension AttributedStringProtocol {
-    var plainText: String {
+    var text: String {
         String(characters[...])
     }
 }

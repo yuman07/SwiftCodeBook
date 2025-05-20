@@ -15,6 +15,16 @@ public extension UIImage {
         }
     }
     
+    static func snapshotView(_ uiView: UIView, afterScreenUpdates: Bool = false) -> UIImage {
+        UIGraphicsImageRenderer(size: uiView.bounds.size).image {
+            if !afterScreenUpdates {
+                uiView.layer.render(in: $0.cgContext)
+            } else {
+                uiView.drawHierarchy(in: uiView.bounds, afterScreenUpdates: true)
+            }
+        }
+    }
+    
     convenience init?(filePath: String) {
         guard let data = try? Data(contentsOf: URL(fileURLWithPath: filePath)) else { return nil }
         self.init(data: data)

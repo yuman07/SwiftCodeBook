@@ -16,6 +16,7 @@ public extension UIDevice {
 #endif
     }
     
+    // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
     var deviceModel: String {
         if UIDevice.current.isSimulator {
@@ -32,11 +33,11 @@ public extension UIDevice {
         Int.bitWidth == 64
     }
     
-    var totalDiskSpaceInByte: UInt64 {
-        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64 ?? 0
+    var totalDiskSpaceInByte: UInt64? {
+        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
     }
     
-    var freeDiskSpaceInByte: UInt64 {
-        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64 ?? 0
+    var freeDiskSpaceInByte: UInt64? {
+        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
     }
 }

@@ -36,15 +36,15 @@ public extension UIApplication {
         #endif
     }
 
-    static var appIcon: UIImage? {
-        if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
-           let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
-           let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
-           let lastIcon = iconFiles.last {
-            return UIImage(named: lastIcon)
+    static var appIcon: UIImage? = {
+        guard let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [AnyHashable: Any],
+              let primaryIcon = icons["CFBundlePrimaryIcon"] as? [AnyHashable: Any],
+              let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+              let iconName = iconFiles.last else {
+            return nil
         }
-        return nil
-    }
+        return UIImage(named: iconName)
+    }()
     
     static var appDisplayName: String? = {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
