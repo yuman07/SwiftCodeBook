@@ -27,7 +27,7 @@ public extension ISO8601DateFormatter {
     
     private static let basic: ISO8601DateFormatter.Options = [.withYear, .withMonth, .withDay, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withColonSeparatorInTimeZone]
     
-    private static let optionals: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds, .withSpaceBetweenDateAndTime]
+    private static let optionals: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds]
     
     private static let formatters = {
         (0 ..< 1 << optionals.count).map { num -> ISO8601DateFormatter in
