@@ -194,6 +194,11 @@
  
  AttributedString转为NSAttributedString时，如果AttributedString包含自定义的key，则转为NSAttributedString后会丢失
  
+ 
+ 当我们给UITextView/UILabel设置attributedText属性时要注意，iOS内部会自动对我们传入的attributedText进行调整。
+ 导致我们赋值的attributedText和之后我们从textView.attributedText获取的attributedText不相等(即isEqual为false)
+ 此时可以给textView添加一个rawAttributedText之类的属性，用这个来进行比较。这样就稳定了
+ 
  */
 
 
