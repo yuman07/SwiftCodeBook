@@ -64,6 +64,7 @@ public extension HashHandler {
             }
         }
         
+        try Task.checkCancellation()
         return hasher.finalize().toHashString()
     }
 }
