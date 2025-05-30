@@ -11,4 +11,8 @@ public extension NSRange {
     var isValid: Bool {
         location >= 0 && location != NSNotFound && length > 0
     }
+
+    var endLocation: Int {
+        NSMaxRange(self)
+    }
 }

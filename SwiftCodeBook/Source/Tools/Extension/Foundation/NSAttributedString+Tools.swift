@@ -8,6 +8,10 @@
 import Foundation
 
 public extension NSAttributedString {
+    var allRange: NSRange {
+        NSRange(location: 0, length: length)
+    }
+
     func trimmingCharacters(in characterSet: CharacterSet) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
         var range = NSRange()
