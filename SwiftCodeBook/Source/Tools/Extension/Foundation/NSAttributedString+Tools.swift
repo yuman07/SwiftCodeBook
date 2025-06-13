@@ -8,7 +8,7 @@
 import Foundation
 
 public extension NSAttributedString {
-    var allRange: NSRange {
+    var fullRange: NSRange {
         NSRange(location: 0, length: length)
     }
 
