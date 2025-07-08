@@ -5,14 +5,24 @@
 //  Created by yuman on 2024/4/26.
 //
 
-import Foundation
+import Combine
+import UIKit
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key/value是class类型
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
 public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     private let cache = NSCache<KeyObject<Key>, ValueObject<Value>>()
+    private var cancellable: AnyCancellable?
     
-    public init() {}
+    public init() {
+        cancellable = NotificationCenter
+            .default
+            .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                removeAllValues()
+            }
+    }
     
     public func value(forKey key: Key) -> Value? {
         cache.object(forKey: KeyObject(key))?.value
