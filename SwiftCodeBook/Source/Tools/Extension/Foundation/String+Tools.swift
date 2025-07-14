@@ -59,7 +59,7 @@ public extension String {
     }
 }
 
-public extension String {
+public extension StringProtocol {
     // 对给定的index进行移动，正数向后，负数向前，最终结果在[startIndex, endIndex)即有效
     func indexSafely(_ i: Index, offsetBy distance: Int) -> Index? {
         var currentIndex = i
@@ -88,7 +88,7 @@ public extension String {
         }
     }
     
-    func ranges<T>(of aString: T, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
+    func ranges<T>(of aString: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
         var ranges = [Range<Index>]()
         while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? startIndex) ..< endIndex, locale: locale) {
             ranges.append(range)
