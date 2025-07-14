@@ -89,7 +89,7 @@ public extension String {
     }
     
     func ranges<T>(of aString: T, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
-        var ranges: [Range<Index>] = []
+        var ranges = [Range<Index>]()
         while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? startIndex) ..< endIndex, locale: locale) {
             ranges.append(range)
         }
