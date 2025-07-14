@@ -15,7 +15,7 @@ public extension AttributedStringProtocol {
     func ranges<T>(of stringToFind: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<AttributedString.Index>] where T: StringProtocol {
         var ranges = [Range<AttributedString.Index>]()
         var currentStartIndex = startIndex
-        while let range = self[currentStartIndex ... endIndex].range(of: stringToFind, options: options, locale: locale) {
+        while currentStartIndex < endIndex, let range = self[currentStartIndex ..< endIndex].range(of: stringToFind, options: options, locale: locale) {
             ranges.append(range)
             currentStartIndex = range.upperBound
         }

@@ -90,8 +90,10 @@ public extension StringProtocol {
     
     func ranges<T>(of aString: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
         var ranges = [Range<Index>]()
-        while let range = range(of: aString, options: options, range: (ranges.last?.upperBound ?? startIndex) ..< endIndex, locale: locale) {
+        var currentStartIndex = startIndex
+        while currentStartIndex < endIndex, let range = range(of: aString, options: options, range: currentStartIndex ..< endIndex, locale: locale) {
             ranges.append(range)
+            currentStartIndex = range.upperBound
         }
         return ranges
     }
