@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 #if canImport(UIKit)
-    import UIKit
+import UIKit
 #endif
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key/value是class类型
