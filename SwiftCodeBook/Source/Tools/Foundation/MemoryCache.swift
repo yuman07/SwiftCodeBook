@@ -7,9 +7,7 @@
 
 import Combine
 import Foundation
-#if canImport(UIKit)
 import UIKit
-#endif
 
 // NSCache在Swift中直接使用很麻烦，因为要求其Key/value是class类型
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
@@ -18,7 +16,6 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     private var cancellable: AnyCancellable?
     
     public init() {
-    #if canImport(UIKit)
         cancellable = NotificationCenter
             .default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
@@ -26,7 +23,6 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
                 guard let self else { return }
                 removeAllValues()
             }
-    #endif
     }
     
     public func value(forKey key: Key) -> Value? {
