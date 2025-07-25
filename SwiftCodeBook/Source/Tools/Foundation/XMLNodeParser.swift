@@ -79,14 +79,6 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
 }
 
 extension XMLNodeParserImp: XMLParserDelegate {
-    func parserDidEndDocument(_ parser: XMLParser) {
-        guard let root = stack.popLast(), stack.isEmpty else {
-            stop(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
-            return
-        }
-        stop(.success(root.toXMLNode()))
-    }
-    
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         var newNode = Node()
         newNode.name = elementName
@@ -116,6 +108,14 @@ extension XMLNodeParserImp: XMLParserDelegate {
         } else {
             stack.append(lastNode)
         }
+    }
+    
+    func parserDidEndDocument(_ parser: XMLParser) {
+        guard let root = stack.popLast(), stack.isEmpty else {
+            stop(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
+            return
+        }
+        stop(.success(root.toXMLNode()))
     }
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: any Error) {
