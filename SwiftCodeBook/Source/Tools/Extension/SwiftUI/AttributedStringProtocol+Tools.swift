@@ -22,3 +22,16 @@ public extension AttributedStringProtocol {
         return ranges
     }
 }
+
+public extension AttributedString {
+    func trimmingWhitespacesAndNewlines() -> Self {
+        var text = self
+        if let range = range(of: #"\s+$"#, options: .regularExpression), !range.isEmpty {
+            text.removeSubrange(range)
+        }
+        if let range = range(of: #"^\s+"#, options: .regularExpression), !range.isEmpty {
+            text.removeSubrange(range)
+        }
+        return text
+    }
+}

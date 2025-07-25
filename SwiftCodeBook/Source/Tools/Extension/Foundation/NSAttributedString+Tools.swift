@@ -19,13 +19,13 @@ public extension NSAttributedString {
         while true {
             range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet)
             guard range.location == 0 && range.length > 0 else { break }
-            attributedString.replaceCharacters(in: range, with: "")
+            attributedString.deleteCharacters(in: range)
         }
         
         while true {
             range = (attributedString.string as NSString).rangeOfCharacter(from: characterSet, options: .backwards)
             guard NSMaxRange(range) == attributedString.length && range.length > 0 else { break }
-            attributedString.replaceCharacters(in: range, with: "")
+            attributedString.deleteCharacters(in: range)
         }
         
         return NSAttributedString(attributedString: attributedString)
