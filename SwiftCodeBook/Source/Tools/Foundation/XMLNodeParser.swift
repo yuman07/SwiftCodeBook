@@ -97,7 +97,9 @@ extension XMLNodeParserImp: XMLParserDelegate {
             stopWithError(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters"))
             return
         }
-        lastNode.text.append(string)
+        if case let string = string.trimmingCharacters(in: .whitespacesAndNewlines), !string.isEmpty {
+            lastNode.text.append(string)
+        }
         stack.append(lastNode)
     }
     
