@@ -21,6 +21,31 @@ public extension AttributedStringProtocol {
         }
         return ranges
     }
+
+    func components<T>(
+        separatedBy stringToFind: T,
+        options: String.CompareOptions = [],
+        locale: Locale? = nil,
+        keepMatches: Bool = false
+    ) -> [AttributedSubstring] where T: StringProtocol {
+        guard case let ranges = ranges(of: stringToFind, options: options, locale: locale), !ranges.isEmpty else { return [self[startIndex ..< endIndex]] }
+
+        var components = [AttributedSubstring]()
+        for idx in 0 ..< ranges.count {
+            let range = ranges[idx]
+            if idx == 0 {
+                components.append(self[startIndex ..< range.lowerBound])
+            }
+            if keepMatches {
+                components.append(self[range])
+            }
+            if idx == ranges.count - 1 {
+                components.append(self[range.upperBound ..< endIndex])
+            }
+        }
+
+        return components
+    }
 }
 
 public extension AttributedString {
