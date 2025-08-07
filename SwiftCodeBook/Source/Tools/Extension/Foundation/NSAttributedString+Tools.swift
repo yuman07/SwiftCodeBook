@@ -37,21 +37,18 @@ public extension NSAttributedString {
         locale: Locale? = nil,
         keepMatches: Bool = false
     ) -> [NSAttributedString] where T: StringProtocol {
-        guard case let ranges = string.ranges(of: separator, options: options, locale: locale), !ranges.isEmpty else { return [self] }
-
+        let ranges = string.ranges(of: separator, options: options, locale: locale)
         var components = [NSAttributedString]()
-        for idx in 0 ..< ranges.count {
-            let range = ranges[idx]
-            if idx == 0 {
-                components.append(attributedSubstring(from: NSRange(string.startIndex ..< range.lowerBound, in: string)))
-            }
+        var lastUpperBound = string.startIndex
+
+        for range in ranges {
+            components.append(attributedSubstring(from: NSRange(lastUpperBound ..< range.lowerBound, in: string)))
             if keepMatches {
                 components.append(attributedSubstring(from: NSRange(range, in: string)))
             }
-            if idx == ranges.count - 1 {
-                components.append(attributedSubstring(from: NSRange(range.upperBound ..< string.endIndex, in: string)))
-            }
+            lastUpperBound = range.upperBound
         }
+        components.append(attributedSubstring(from: NSRange(lastUpperBound ..< string.endIndex, in: string)))
 
         return components
     }

@@ -28,21 +28,18 @@ public extension AttributedStringProtocol {
         locale: Locale? = nil,
         keepMatches: Bool = false
     ) -> [AttributedSubstring] where T: StringProtocol {
-        guard case let ranges = ranges(of: separator, options: options, locale: locale), !ranges.isEmpty else { return [self[startIndex ..< endIndex]] }
-
+        let ranges = ranges(of: separator, options: options, locale: locale)
         var components = [AttributedSubstring]()
-        for idx in 0 ..< ranges.count {
-            let range = ranges[idx]
-            if idx == 0 {
-                components.append(self[startIndex ..< range.lowerBound])
-            }
+        var lastUpperBound = startIndex
+
+        for range in ranges {
+            components.append(self[lastUpperBound ..< range.lowerBound])
             if keepMatches {
                 components.append(self[range])
             }
-            if idx == ranges.count - 1 {
-                components.append(self[range.upperBound ..< endIndex])
-            }
+            lastUpperBound = range.upperBound
         }
+        components.append(self[lastUpperBound ..< endIndex])
 
         return components
     }
