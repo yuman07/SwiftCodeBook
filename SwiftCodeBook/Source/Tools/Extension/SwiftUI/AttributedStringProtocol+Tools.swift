@@ -23,12 +23,12 @@ public extension AttributedStringProtocol {
     }
 
     func components<T>(
-        separatedBy stringToFind: T,
+        separatedBy separator: T,
         options: String.CompareOptions = [],
         locale: Locale? = nil,
         keepMatches: Bool = false
     ) -> [AttributedSubstring] where T: StringProtocol {
-        guard case let ranges = ranges(of: stringToFind, options: options, locale: locale), !ranges.isEmpty else { return [self[startIndex ..< endIndex]] }
+        guard case let ranges = ranges(of: separator, options: options, locale: locale), !ranges.isEmpty else { return [self[startIndex ..< endIndex]] }
 
         var components = [AttributedSubstring]()
         for idx in 0 ..< ranges.count {
