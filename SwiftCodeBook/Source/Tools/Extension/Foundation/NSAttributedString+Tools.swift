@@ -35,20 +35,25 @@ public extension NSAttributedString {
         separator: T,
         options: String.CompareOptions = [],
         locale: Locale? = nil,
-        keepMatches: Bool = false
+        keepSeparator: Bool = false,
+        omittingEmptySubsequences: Bool = true
     ) -> [NSAttributedString] where T: StringProtocol {
         let ranges = string.ranges(of: separator, options: options, locale: locale)
         var components = [NSAttributedString]()
         var lastUpperBound = string.startIndex
 
         for range in ranges {
-            components.append(attributedSubstring(from: NSRange(lastUpperBound ..< range.lowerBound, in: string)))
-            if keepMatches {
+            if lastUpperBound < range.lowerBound || !omittingEmptySubsequences {
+                components.append(attributedSubstring(from: NSRange(lastUpperBound ..< range.lowerBound, in: string)))
+            }
+            if keepSeparator {
                 components.append(attributedSubstring(from: NSRange(range, in: string)))
             }
             lastUpperBound = range.upperBound
         }
-        components.append(attributedSubstring(from: NSRange(lastUpperBound ..< string.endIndex, in: string)))
+        if lastUpperBound < string.endIndex || !omittingEmptySubsequences {
+            components.append(attributedSubstring(from: NSRange(lastUpperBound ..< string.endIndex, in: string)))
+        }
 
         return components
     }

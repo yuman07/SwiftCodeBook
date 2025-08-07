@@ -26,20 +26,25 @@ public extension AttributedStringProtocol {
         separator: T,
         options: String.CompareOptions = [],
         locale: Locale? = nil,
-        keepMatches: Bool = false
+        keepSeparator: Bool = false,
+        omittingEmptySubsequences: Bool = true
     ) -> [AttributedSubstring] where T: StringProtocol {
         let ranges = ranges(of: separator, options: options, locale: locale)
         var components = [AttributedSubstring]()
         var lastUpperBound = startIndex
 
         for range in ranges {
-            components.append(self[lastUpperBound ..< range.lowerBound])
-            if keepMatches {
+            if lastUpperBound < range.lowerBound || !omittingEmptySubsequences {
+                components.append(self[lastUpperBound ..< range.lowerBound])
+            }
+            if keepSeparator {
                 components.append(self[range])
             }
             lastUpperBound = range.upperBound
         }
-        components.append(self[lastUpperBound ..< endIndex])
+        if lastUpperBound < endIndex || !omittingEmptySubsequences {
+            components.append(self[lastUpperBound ..< endIndex])
+        }
 
         return components
     }
