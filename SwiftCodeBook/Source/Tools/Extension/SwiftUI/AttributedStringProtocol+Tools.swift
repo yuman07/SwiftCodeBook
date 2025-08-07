@@ -22,8 +22,8 @@ public extension AttributedStringProtocol {
         return ranges
     }
 
-    func components<T>(
-        separatedBy separator: T,
+    func split<T>(
+        separator: T,
         options: String.CompareOptions = [],
         locale: Locale? = nil,
         keepMatches: Bool = false
