@@ -8,16 +8,16 @@
 import Foundation
 
 public extension AttributedStringProtocol {
-    var text: String {
+    var string: String {
         String(characters[...])
     }
     
     func ranges<T>(of stringToFind: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<AttributedString.Index>] where T: StringProtocol {
         var ranges = [Range<AttributedString.Index>]()
-        var currentStartIndex = startIndex
-        while currentStartIndex < endIndex, let range = self[currentStartIndex ..< endIndex].range(of: stringToFind, options: options, locale: locale) {
+        var lastUpperBound = startIndex
+        while lastUpperBound < endIndex, let range = self[lastUpperBound ..< endIndex].range(of: stringToFind, options: options, locale: locale) {
             ranges.append(range)
-            currentStartIndex = range.upperBound
+            lastUpperBound = range.upperBound
         }
         return ranges
     }
