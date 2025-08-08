@@ -38,7 +38,7 @@ public extension Array {
 }
 
 public extension Array where Element: Equatable {
-    func removeDuplicates() -> [Element] {
+    func removingDuplicates() -> [Element] {
         guard count > 1 else { return self }
         return reduce(into: []) {
             if !$0.contains($1) { $0.append($1) }
@@ -47,7 +47,7 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array where Element: Hashable {
-    func removeDuplicates() -> [Element] {
+    func removingDuplicates() -> [Element] {
         guard count > 1 else { return self }
         var set = Set<Element>(minimumCapacity: count)
         return filter { set.insert($0).inserted }
