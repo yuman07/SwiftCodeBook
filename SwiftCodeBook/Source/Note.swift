@@ -199,6 +199,10 @@
  导致我们赋值的attributedText和之后我们从textView.attributedText获取的attributedText不相等(即isEqual为false)
  此时可以给textView添加一个rawAttributedText之类的属性，用这个来进行比较。这样就稳定了
  
+ 
+ 在Combine中对Publisher获取value时，应该使用传统的sink而不要使用await.
+ 使用await会导致某些情况下无法正确获取所有的更新
+ 
  */
 
 
