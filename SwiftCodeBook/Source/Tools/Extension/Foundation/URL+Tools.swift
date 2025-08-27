@@ -16,15 +16,13 @@ public extension URL {
         }
     }
     
-    func removeQueryItems(forKeys keys: [String]) -> URL {
+    func removeQueryItems(where shouldBeRemoved: (URLQueryItem) throws -> Bool) rethrows -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
         
-        var queryDict = queryDictionary
-        for key in keys { queryDict.removeValue(forKey: key) }
-        components.queryItems = queryDict.map { queryKey, queryValue in
-            URLQueryItem(name: queryKey, value: queryValue)
+        components.queryItems = try (components.queryItems ?? []).compactMap { item in
+            try shouldBeRemoved(item) ? nil : URLQueryItem(name: item.name, value: item.value)
         }
         return components.url ?? self
     }
