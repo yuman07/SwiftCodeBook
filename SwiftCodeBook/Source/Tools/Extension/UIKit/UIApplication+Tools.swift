@@ -19,7 +19,7 @@ public extension UIApplication {
     
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
     var interfaceOrientation: UIInterfaceOrientation {
-        keyWindow?.windowScene?.interfaceOrientation ?? .unknown
+        keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
     }
 
     @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
