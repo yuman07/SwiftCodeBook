@@ -28,11 +28,11 @@ public extension DateFormatter {
             map[styleKey] ?? {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = styleKey.dateFormat
-                if let timeZone = styleKey.locale {
-                    dateFormatter.locale = styleKey.locale
+                if let locale = styleKey.locale {
+                    dateFormatter.locale = locale
                 }
                 if let timeZone = styleKey.timeZone {
-                    dateFormatter.timeZone = styleKey.timeZone
+                    dateFormatter.timeZone = timeZone
                 }
                 map[styleKey] = dateFormatter
                 return dateFormatter
