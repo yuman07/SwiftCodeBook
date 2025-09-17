@@ -9,9 +9,9 @@ import Foundation
 
 public extension Locale {
     // "en-US"
-    var isoLanguageCode: String {
+    var bcp47Identifier: String {
         let localeIdentifier = identifier.replacingOccurrences(of: "_", with: "-")
-        /// Some locale identifiers contain special fields like calendar or numbers, eg: "ar-SA@calendar=gregorian;numbers=latn"
+        // Some locale identifiers contain special fields like calendar or numbers, eg: "ar-SA@calendar=gregorian;numbers=latn"
         return localeIdentifier.components(separatedBy: "@").first ?? localeIdentifier
     }
 }
