@@ -16,7 +16,7 @@ public extension DispatchQueue {
         currentQueueLabel == DispatchQueue.main.label
     }
     
-    static func mainCurrentOrAsync(block: @escaping (() -> Void)) {
+    static func dispatchToMainIfNeeded(block: @escaping (() -> Void)) {
         if Thread.isMainThread && isMainQueue {
             block()
         } else {
