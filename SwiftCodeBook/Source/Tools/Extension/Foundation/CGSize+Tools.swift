@@ -5,7 +5,7 @@
 //  Created by yuman on 2025/2/27.
 //
 
-import UIKit
+import Foundation
 
 public extension CGSize {
     static var one: Self {

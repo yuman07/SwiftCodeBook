@@ -290,7 +290,9 @@
 				7A1074A82909061700C13362 /* Array+Tools.swift */,
 				7A1074962908FB2100C13362 /* Character+Tools.swift */,
 				7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */,
+				7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */,
 				7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */,
+				7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */,
 				7A9CAD73291E105E00046466 /* Date+Tools.swift */,
 				7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */,
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
@@ -315,8 +317,6 @@
 		7A1074A7290905F100C13362 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */,
-				7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */,
 				7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */,
 				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
 				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,

@@ -5,7 +5,7 @@
 //  Created by yuman on 2023/4/18.
 //
 
-import UIKit
+import Foundation
 
 public extension NSNumber {
     var cgFloatValue: CGFloat {
