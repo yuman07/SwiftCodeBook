@@ -19,7 +19,7 @@ public extension UIDevice {
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
     var deviceModel: String {
-        if UIDevice.current.isSimulator {
+        if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
             var info = utsname()
