@@ -49,6 +49,7 @@ public extension HashHandler {
         hash(data: Data(string.utf8), using: function)
     }
     
+    @concurrent
     static func hash(filePath: String, using function: Function) async throws -> String {
         try Task.checkCancellation()
         let handler = try FileHandle(forReadingFrom: URL(filePath: filePath))

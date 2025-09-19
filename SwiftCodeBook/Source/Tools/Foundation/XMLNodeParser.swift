@@ -22,6 +22,7 @@ public enum XMLNodeParser: Sendable {
         case stream(InputStream)
     }
 
+    @concurrent
     public static func parseXML(from dataSource: DataSource) async throws -> XMLNode {
         try await withUnsafeThrowingContinuation {
             let parser = XMLNodeParserImp(dataSource: dataSource)

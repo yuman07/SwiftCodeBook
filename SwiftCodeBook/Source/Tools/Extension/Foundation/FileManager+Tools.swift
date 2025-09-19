@@ -40,6 +40,7 @@ public extension FileManager {
         return exist && !isDir.boolValue
     }
     
+    @concurrent
     func directorySizeInByte(at path: String) async throws -> UInt64 {
         try Task.checkCancellation()
         guard !path.isEmpty, case let contents = try subpathsOfDirectory(atPath: path), !contents.isEmpty else {
