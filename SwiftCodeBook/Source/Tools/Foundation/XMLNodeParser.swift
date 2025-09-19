@@ -7,15 +7,15 @@
 
 import Foundation
 
-public struct XMLNode {
+public struct XMLNode: Sendable {
     public let name: String
     public let attributes: [String: String]
     public let text: [String]
     public let childNodes: [XMLNode]
 }
 
-public enum XMLNodeParser {
-    public enum DataSource {
+public enum XMLNodeParser: Sendable {
+    public enum DataSource: @unchecked Sendable {
         case string(String)
         case data(Data)
         case url(URL)

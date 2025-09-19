@@ -9,7 +9,7 @@ import CryptoKit
 import Foundation
 
 public final class HashHandler {
-    @frozen public enum Function {
+    @frozen public enum Function: Sendable {
         case md5
         case sha1
         case sha256
