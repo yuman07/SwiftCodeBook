@@ -9,7 +9,7 @@ import Foundation
 import os
 
 public extension DateFormatter {
-    struct StyleKey: Hashable {
+    struct StyleKey: Hashable, Sendable {
         public let dateFormat: String
         public let locale: Locale?
         public let timeZone: TimeZone?
