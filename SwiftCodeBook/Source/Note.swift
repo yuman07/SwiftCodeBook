@@ -203,6 +203,11 @@
  在Combine中对Publisher获取value时，应该使用传统的sink而不要使用await.
  使用await会导致某些情况下无法正确获取所有的更新
  
+ 
+ 在使用系统键盘的dictation时，如果在说话过程中，对该TextView的text进行了手动赋值，则会造成直接退出dictation状态
+ 监听当前是否处于系统dictation状态可以监听UITextInputMode.currentInputModeDidChangeNotification，然后使用
+ textView.textInputMode?.primaryLanguage == "dictation"
+ 来判断是否处于dictation状态
  */
 
 
