@@ -72,7 +72,7 @@ final public class AnimationTimer {
     }
     
     @objc private func updateAnimation(_ link: CADisplayLink) {
-        finishedDuration += TimeInterval(link.targetTimestamp) - TimeInterval(link.timestamp)
+        finishedDuration += TimeInterval(link.targetTimestamp - link.timestamp)
         let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration))
         
         if progress >= 1 {
