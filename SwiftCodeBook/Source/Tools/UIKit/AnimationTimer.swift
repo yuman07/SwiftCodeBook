@@ -12,7 +12,6 @@ import UIKit
 @MainActor
 final public class AnimationTimer {
     private let duration: TimeInterval
-    private let timingFunctionName: CAMediaTimingFunctionName
     private let cubicBezier: CubicBezier
     
     private var timer: CADisplayLink?
@@ -22,8 +21,7 @@ final public class AnimationTimer {
     
     public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName) {
         self.duration = duration
-        self.timingFunctionName = timingFunctionName
-        self.cubicBezier = CubicBezier(timingFunction: CAMediaTimingFunction(name: timingFunctionName))
+        self.cubicBezier = CubicBezier(timingFunctionName: timingFunctionName)
     }
     
     deinit {
@@ -75,10 +73,7 @@ final public class AnimationTimer {
     
     @objc private func updateAnimation(_ link: CADisplayLink) {
         finishedDuration += TimeInterval(link.targetTimestamp) - TimeInterval(link.timestamp)
-        var progress = max(0, min(1, CGFloat(finishedDuration / duration)))
-        if timingFunctionName != .linear {
-            progress = cubicBezier.value(at: progress)
-        }
+        let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration))
         
         if progress >= 1 {
             finishAnimation(at: .end)
@@ -97,8 +92,10 @@ private struct CubicBezier {
     private let ay: CGFloat
     private let by: CGFloat
     private let cy: CGFloat
+    private let timingFunctionName: CAMediaTimingFunctionName
     
-    init(timingFunction: CAMediaTimingFunction) {
+    init(timingFunctionName: CAMediaTimingFunctionName) {
+        let timingFunction = CAMediaTimingFunction(name: timingFunctionName)
         var p1: [Float] = [0, 0]
         var p2: [Float] = [0, 0]
         timingFunction.getControlPoint(at: 1, values: &p1)
@@ -115,12 +112,14 @@ private struct CubicBezier {
         self.cy = 3 * y1
         self.by = 3 * y2 - 6 * y1
         self.ay = 3 * y1 - 3 * y2 + 1
+        self.timingFunctionName = timingFunctionName
     }
     
     func value(at t: CGFloat) -> CGFloat {
         let targetX = max(0, min(1, t))
         if targetX <= 0 { return 0 }
         if targetX >= 1 { return 1 }
+        if timingFunctionName == .linear { return targetX }
         let s = solveForS(targetX: targetX)
         return max(0, min(1, sampleY(s)))
     }
