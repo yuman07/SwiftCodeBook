@@ -11,16 +11,8 @@ import UIKit
 
 @MainActor
 final public class AnimationTimer {
-    @frozen public enum TimingFunction {
-        case linear
-        case easeIn
-        case easeOut
-        case easeInEaseOut
-        case `default`
-    }
-    
     private let duration: TimeInterval
-    private let timingFunction: TimingFunction
+    private let timingFunctionName: CAMediaTimingFunctionName
     private let cubicBezier: CubicBezier
     
     private var timer: CADisplayLink?
@@ -28,20 +20,10 @@ final public class AnimationTimer {
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
-    public init(duration: TimeInterval, timingFunction: TimingFunction) {
+    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName) {
         self.duration = duration
-        self.timingFunction = timingFunction
-        self.cubicBezier = {
-            let function: CAMediaTimingFunction
-            switch timingFunction {
-            case .linear: function = CAMediaTimingFunction(name: .linear)
-            case .easeIn: function = CAMediaTimingFunction(name: .easeIn)
-            case .easeOut:  function = CAMediaTimingFunction(name: .easeOut)
-            case .easeInEaseOut: function = CAMediaTimingFunction(name: .easeInEaseOut)
-            case .default: function = CAMediaTimingFunction(name: .default)
-            }
-            return CubicBezier(timingFunction: function)
-        }()
+        self.timingFunctionName = timingFunctionName
+        self.cubicBezier = CubicBezier(timingFunction: CAMediaTimingFunction(name: timingFunctionName))
     }
     
     deinit {
@@ -94,7 +76,7 @@ final public class AnimationTimer {
     @objc private func updateAnimation(_ link: CADisplayLink) {
         finishedDuration += TimeInterval(link.targetTimestamp) - TimeInterval(link.timestamp)
         var progress = max(0, min(1, CGFloat(finishedDuration / duration)))
-        if timingFunction != .linear {
+        if timingFunctionName != .linear {
             progress = cubicBezier.value(at: progress)
         }
         
