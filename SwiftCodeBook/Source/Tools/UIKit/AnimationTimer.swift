@@ -13,15 +13,17 @@ import UIKit
 final public class AnimationTimer {
     private let duration: TimeInterval
     private let cubicBezier: CubicBezier
+    private let preferredFrameRateRange: CAFrameRateRange?
     
     private var timer: CADisplayLink?
     private var finishedDuration = TimeInterval.zero
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
-    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName) {
+    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName, preferredFrameRateRange: CAFrameRateRange? = nil) {
         self.duration = duration
         self.cubicBezier = CubicBezier(timingFunctionName: timingFunctionName)
+        self.preferredFrameRateRange = preferredFrameRateRange
     }
     
     deinit {
@@ -33,6 +35,7 @@ final public class AnimationTimer {
         finishedDuration = 0
         timer?.invalidate()
         timer = CADisplayLink(target: self, selector: #selector(updateAnimation))
+        preferredFrameRateRange.flatMap { timer?.preferredFrameRateRange = $0 }
         timer?.add(to: .main, forMode: .common)
     }
     
