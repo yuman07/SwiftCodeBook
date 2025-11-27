@@ -64,7 +64,7 @@ final public class AnimationTimer {
         animations.append(animation)
     }
     
-    public func addCompletion(_ completion: @escaping (UIViewAnimatingPosition) -> Void) {
+    public func addCompletion(_ completion: @escaping (_ finalPosition: UIViewAnimatingPosition) -> Void) {
         completions.append(completion)
     }
     
