@@ -16,6 +16,7 @@ final public class AnimationTimer {
         case easeIn
         case easeOut
         case easeInEaseOut
+        case `default`
     }
     
     private let duration: TimeInterval
@@ -37,6 +38,7 @@ final public class AnimationTimer {
             case .easeIn: function = CAMediaTimingFunction(name: .easeIn)
             case .easeOut:  function = CAMediaTimingFunction(name: .easeOut)
             case .easeInEaseOut: function = CAMediaTimingFunction(name: .easeInEaseOut)
+            case .default: function = CAMediaTimingFunction(name: .default)
             }
             var p1: [Float] = [0, 0]
             var p2: [Float] = [0, 0]

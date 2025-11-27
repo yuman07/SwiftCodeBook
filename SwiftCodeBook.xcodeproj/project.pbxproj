@@ -259,8 +259,8 @@
 			isa = PBXGroup;
 			children = (
 				7A20D006294DA9400076F89A /* View */,
-				7A20D007294DADCB0076F89A /* GlobalGray.swift */,
 				7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */,
+				7A20D007294DADCB0076F89A /* GlobalGray.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
