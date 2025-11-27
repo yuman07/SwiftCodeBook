@@ -149,7 +149,7 @@ private struct CubicBezier {
     
     private func solveForS(targetX t: CGFloat) -> CGFloat {
         var s = t
-        for _ in 0 ..< 7 {
+        for _ in 0 ..< 8 {
             let x = sampleX(s)
             let err = x - t
             if abs(err) < 1e-8 { break }
