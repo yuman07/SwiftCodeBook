@@ -20,7 +20,7 @@ final public class AnimationTimer {
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
-    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName, preferredFrameRateRange: CAFrameRateRange? = nil) {
+    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName = .default, preferredFrameRateRange: CAFrameRateRange? = nil) {
         self.duration = duration
         self.cubicBezier = CubicBezier(timingFunctionName: timingFunctionName)
         self.preferredFrameRateRange = preferredFrameRateRange
