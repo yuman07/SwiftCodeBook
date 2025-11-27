@@ -40,11 +40,7 @@ final public class AnimationTimer {
             case .easeInEaseOut: function = CAMediaTimingFunction(name: .easeInEaseOut)
             case .default: function = CAMediaTimingFunction(name: .default)
             }
-            var p1: [Float] = [0, 0]
-            var p2: [Float] = [0, 0]
-            function.getControlPoint(at: 1, values: &p1)
-            function.getControlPoint(at: 2, values: &p2)
-            return CubicBezier(x1: CGFloat(p1[0]), y1: CGFloat(p1[1]), x2: CGFloat(p2[0]), y2: CGFloat(p2[1]))
+            return CubicBezier(timingFunction: function)
         }()
     }
     
@@ -120,7 +116,17 @@ private struct CubicBezier {
     private let by: CGFloat
     private let cy: CGFloat
     
-    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat) {
+    init(timingFunction: CAMediaTimingFunction) {
+        var p1: [Float] = [0, 0]
+        var p2: [Float] = [0, 0]
+        timingFunction.getControlPoint(at: 1, values: &p1)
+        timingFunction.getControlPoint(at: 2, values: &p2)
+        
+        let x1 = CGFloat(p1[0])
+        let y1 = CGFloat(p1[1])
+        let x2 = CGFloat(p2[0])
+        let y2 = CGFloat(p2[1])
+        
         self.cx = 3 * x1
         self.bx = 3 * x2 - 6 * x1
         self.ax = 3 * x1 - 3 * x2 + 1
