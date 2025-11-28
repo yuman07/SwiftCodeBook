@@ -41,14 +41,42 @@ public extension FileManager {
     }
     
     @concurrent
-    func directorySizeInByte(at path: String) async throws -> UInt64 {
+    func sizeInByte(at path: String) async throws -> (logicalSize: UInt64, onDiskSize: UInt64) {
         try Task.checkCancellation()
-        guard !path.isEmpty, case let contents = try subpathsOfDirectory(atPath: path), !contents.isEmpty else {
-            return 0
+        
+        let keys: Set<URLResourceKey> = [
+            .fileSizeKey,
+            .totalFileSizeKey,
+            .fileAllocatedSizeKey,
+            .totalFileAllocatedSizeKey
+        ]
+        
+        guard case let root = URL(fileURLWithPath: path),
+              let enumerator = FileManager.default.enumerator(
+                at: root,
+                includingPropertiesForKeys: Array(keys),
+                options: [],
+                errorHandler: { _, _ in true }
+              ) else {
+            return (0, 0)
         }
-        return try contents.reduce(into: 0) { partialResult, file in
+        
+        var logicalSize = UInt64.zero
+        var onDiskSize = UInt64.zero
+        
+        if let values = try? root.resourceValues(forKeys: keys) {
+            logicalSize += max(0, UInt64(values.totalFileSize ?? values.fileSize ?? 0))
+            onDiskSize += max(0, UInt64(values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0))
+        }
+        
+        while let obj = enumerator.nextObject() {
             try Task.checkCancellation()
-            partialResult += ((try attributesOfItem(atPath: path + "/\(file)"))[.size] as? UInt64) ?? 0
+            guard let url = obj as? URL else { continue }
+            guard let values = try? url.resourceValues(forKeys: keys) else { continue }
+            logicalSize += UInt64(max(0, values.totalFileSize ?? values.fileSize ?? 0))
+            onDiskSize += UInt64(max(0, values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0))
         }
+        
+        return (logicalSize, onDiskSize)
     }
 }
