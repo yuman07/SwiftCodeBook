@@ -26,6 +26,10 @@ final class SerialTask {
         }
     }
     
+    deinit {
+        continuation.finish()
+    }
+    
     private func userDidInput(_ text: String) {
         // yield 是同步调用，顺序完全跟输入一致
         continuation.yield(text)
