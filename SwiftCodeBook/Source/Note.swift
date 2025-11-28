@@ -212,13 +212,6 @@
 
 
 /*
- https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md (Implementation note)
- 对于actor，当多个task await同一个actor时，最终执行的顺序不一定是它们当初等待的顺序
- 如果需要严格的FIFO，请使用Queue
- */
-
-
-/*
  更换APP启动图：
  
  以下仅针对使用'storyboard'来管理启动图的情况
