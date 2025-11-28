@@ -42,6 +42,7 @@ final class SerialTaskAndActor {
     
     func userDidInput(_ text: String) {
         // yield 是同步调用，顺序完全跟输入一致
+        // continuation是Sendable的，即其方法如yield可以在多线程下安全调用
         continuation.yield(text)
     }
 }
