@@ -25,6 +25,7 @@ final class SerialTaskAndActor {
             // 1) 事件按顺序从 AsyncStream 取出
             // 2) 每次 await sendRequest 完成后，才会继续下一次循环
             // 因此也能保证actor里的sendRequest的调用顺序和实际执行顺序一致
+            // 注意这也保证了networkService.sendRequest不会发生重入，即一定是上一个全部执行完了才会执行下一个
             for await text in stream {
                 await networkService.sendRequest(for: text)
             }
@@ -35,7 +36,7 @@ final class SerialTaskAndActor {
         continuation.finish()
     }
     
-    private func userDidInput(_ text: String) {
+    func userDidInput(_ text: String) {
         // yield 是同步调用，顺序完全跟输入一致
         continuation.yield(text)
     }
