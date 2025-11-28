@@ -15,13 +15,18 @@ import Foundation
 // 如果没有特殊处理，因为输入回调都是在主线程，即创建Task都是顺序的，但我们没法保证实际Task的执行顺序(即网络请求顺序)是串行的
 // 以下是使用AsyncStream来解决这个问题
 
-final class SerialTask {
+final class SerialTaskAndActor {
     private let (stream, continuation) = AsyncStream<String>.makeStream()
+    private let networkService = NetworkService()
 
     init() {
         Task {
+            // 这里的for await其实保证了两件事：
+            // 1) 事件按顺序从 AsyncStream 取出
+            // 2) 每次 await sendRequest 完成后，才会继续下一次循环
+            // 因此也能保证actor里的sendRequest的调用顺序和实际执行顺序一致
             for await text in stream {
-                await sendRequest(for: text)
+                await networkService.sendRequest(for: text)
             }
         }
     }
@@ -34,8 +39,10 @@ final class SerialTask {
         // yield 是同步调用，顺序完全跟输入一致
         continuation.yield(text)
     }
-    
-    private func sendRequest(for text: String) async {
+}
+
+private actor NetworkService {
+    func sendRequest(for text: String) {
         print(text)
     }
 }
