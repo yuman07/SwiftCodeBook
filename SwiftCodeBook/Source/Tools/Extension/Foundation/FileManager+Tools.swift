@@ -48,7 +48,7 @@ public extension FileManager {
             .fileSizeKey,
             .totalFileSizeKey,
             .fileAllocatedSizeKey,
-            .totalFileAllocatedSizeKey
+            .totalFileAllocatedSizeKey,
         ]
         
         guard case let root = URL(fileURLWithPath: path),
