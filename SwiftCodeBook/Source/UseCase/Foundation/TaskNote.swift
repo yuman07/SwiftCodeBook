@@ -59,6 +59,8 @@ private actor NetworkService {
 }
 
 // 使用globalConcurrentExecutor让Task里的code默认执行在子线程
+// 注意如果你的工作包含长时间同步阻塞，要小心：globalConcurrentExecutor 文档明确警告它是固定大小线程池，不适合跑可能长时间阻塞的同步操作，否则可能让整个并发系统变慢甚至不响应。
+// 这类场景往往更适合：把阻塞部分丢到 自建 DispatchQueue / OperationQueue（或自定义 TaskExecutor），再桥接回 async/await 或改用真正 async 的 API（最理想）
 func testGlobalConcurrentExecutor() {
     Task(executorPreference: globalConcurrentExecutor) {
 //        print(Thread.isMainThread)
