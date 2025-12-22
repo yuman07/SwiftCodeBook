@@ -53,6 +53,14 @@ private actor NetworkService {
     }
 }
 
+// 自定义global actor
 @globalActor actor MyActor {
     static let shared = MyActor()
+}
+
+// 使用globalConcurrentExecutor让Task里的code默认执行在子线程
+func testGlobalConcurrentExecutor() {
+    Task(executorPreference: globalConcurrentExecutor) {
+//        print(Thread.isMainThread)
+    }
 }
