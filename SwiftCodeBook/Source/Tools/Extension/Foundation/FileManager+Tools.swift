@@ -70,8 +70,7 @@ public extension FileManager {
         
         while let obj = enumerator.nextObject() {
             try Task.checkCancellation()
-            guard let url = obj as? URL else { continue }
-            guard let values = try? url.resourceValues(forKeys: keys) else { continue }
+            guard let url = obj as? URL, let values = try? url.resourceValues(forKeys: keys) else { continue }
             logicalSize += UInt64(max(0, values.totalFileSize ?? values.fileSize ?? 0))
             onDiskSize += UInt64(max(0, values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0))
         }
