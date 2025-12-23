@@ -208,6 +208,10 @@
  监听当前是否处于系统dictation状态可以监听UITextInputMode.currentInputModeDidChangeNotification，然后使用
  textView.textInputMode?.primaryLanguage == "dictation"
  来判断是否处于dictation状态
+ 
+ 
+ 请使用String的 replacing(_:with:) 方法来代替 replacingOccurrences(of:with)
+ https://juejin.cn/post/7583613222344507418
  */
 
 
