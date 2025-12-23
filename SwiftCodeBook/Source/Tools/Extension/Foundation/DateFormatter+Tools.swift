@@ -9,7 +9,7 @@ import Foundation
 import os
 
 public extension DateFormatter {
-    struct StyleKey: Hashable, Sendable {
+    struct Format: Hashable, Sendable {
         public let dateFormat: String
         public let locale: Locale?
         public let timeZone: TimeZone?
@@ -21,30 +21,30 @@ public extension DateFormatter {
         }
     }
     
-    private static let dateFormatterMap = OSAllocatedUnfairLock(initialState: [DateFormatter.StyleKey: DateFormatter]())
+    private static let dateFormatterMap = OSAllocatedUnfairLock(initialState: [DateFormatter.Format: DateFormatter]())
     
-    private static func dateFormatter(with styleKey: DateFormatter.StyleKey) -> DateFormatter {
+    private static func dateFormatter(with format: DateFormatter.Format) -> DateFormatter {
         dateFormatterMap.withLock { map in
-            map[styleKey] ?? {
+            map[format] ?? {
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = styleKey.dateFormat
-                if let locale = styleKey.locale {
+                dateFormatter.dateFormat = format.dateFormat
+                if let locale = format.locale {
                     dateFormatter.locale = locale
                 }
-                if let timeZone = styleKey.timeZone {
+                if let timeZone = format.timeZone {
                     dateFormatter.timeZone = timeZone
                 }
-                map[styleKey] = dateFormatter
+                map[format] = dateFormatter
                 return dateFormatter
             }()
         }
     }
     
-    static func string(from date: Date, styleKey: DateFormatter.StyleKey) -> String {
-        dateFormatter(with: styleKey).string(from: date)
+    static func string(from date: Date, format: DateFormatter.Format) -> String {
+        dateFormatter(with: format).string(from: date)
     }
     
-    static func date(from string: String, styleKey: DateFormatter.StyleKey) -> Date? {
-        dateFormatter(with: styleKey).date(from: string)
+    static func date(from string: String, format: DateFormatter.Format) -> Date? {
+        dateFormatter(with: format).date(from: string)
     }
 }
