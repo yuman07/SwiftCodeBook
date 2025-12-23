@@ -52,14 +52,13 @@ public extension FileManager {
         ]
         
         guard case let root = URL(fileURLWithPath: path),
-              let enumerator = FileManager.default.enumerator(
+              let enumerator = enumerator(
                 at: root,
                 includingPropertiesForKeys: Array(keys),
                 options: [],
                 errorHandler: { _, _ in true }
-              ) else {
-            return (0, 0)
-        }
+              )
+        else { return (0, 0) }
         
         var logicalSize = UInt64.zero
         var onDiskSize = UInt64.zero
