@@ -18,7 +18,7 @@ public actor InFlightOperationCache<Key: Hashable & Sendable, Value: Sendable> {
 
     public init() {}
 
-    public func run(_ key: Key, operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
+    public func run(reuseKey key: Key, operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
         let task: Task<Value, Error>
         
         if var entry = inflight[key] {
