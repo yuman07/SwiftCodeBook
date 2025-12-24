@@ -11,7 +11,7 @@ import UIKit
 
 @MainActor
 final public class AnimationTimer {
-    private let duration: TimeInterval
+    private let duration: Duration
     private let cubicBezier: CubicBezier
     private let preferredFrameRateRange: CAFrameRateRange?
     
@@ -20,7 +20,7 @@ final public class AnimationTimer {
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
-    public init(duration: TimeInterval, timingFunctionName: CAMediaTimingFunctionName = .default, preferredFrameRateRange: CAFrameRateRange? = nil) {
+    public init(duration: Duration, timingFunctionName: CAMediaTimingFunctionName = .default, preferredFrameRateRange: CAFrameRateRange? = nil) {
         self.duration = duration
         self.cubicBezier = CubicBezier(timingFunctionName: timingFunctionName)
         self.preferredFrameRateRange = preferredFrameRateRange
@@ -76,7 +76,7 @@ final public class AnimationTimer {
     
     @objc private func updateAnimation(_ link: CADisplayLink) {
         finishedDuration += TimeInterval(link.targetTimestamp - link.timestamp)
-        let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration))
+        let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration.seconds))
         
         if progress >= 1 {
             finishAnimation(at: .end)

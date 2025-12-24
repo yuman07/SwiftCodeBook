@@ -93,6 +93,7 @@
 		7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B22D1CFE04009B7556 /* CodableNote.swift */; };
 		7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
+		7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,6 +185,7 @@
 		7AF129B22D1CFE04009B7556 /* CodableNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableNote.swift; sourceTree = "<group>"; };
 		7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONValue.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
+		7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Duration+Tools.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,6 +303,7 @@
 				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
 				7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */,
 				7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */,
+				7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */,
 				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
@@ -568,6 +571,7 @@
 				7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */,
 				7A0AE4AA2A4D7F9C00F8F19A /* SafeLazy.swift in Sources */,
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
+				7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */,
