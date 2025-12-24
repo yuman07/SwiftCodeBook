@@ -94,6 +94,7 @@
 		7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 		7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */; };
+		7AFC48F32EFB9D7A007F4F4C /* InFlightOperationCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F22EFB9D7A007F4F4C /* InFlightOperationCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,6 +187,7 @@
 		7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONValue.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 		7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Duration+Tools.swift"; sourceTree = "<group>"; };
+		7AFC48F22EFB9D7A007F4F4C /* InFlightOperationCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InFlightOperationCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +276,7 @@
 				7A10748D2908C0B300C13362 /* ThreadSafe */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
 				7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */,
+				7AFC48F22EFB9D7A007F4F4C /* InFlightOperationCache.swift */,
 				7A772A3B2BDB97180008828B /* MemoryCache.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 				7AD0C0E92E336221009B4437 /* XMLNodeParser.swift */,
@@ -511,6 +514,7 @@
 				7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */,
 				7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */,
 				7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */,
+				7AFC48F32EFB9D7A007F4F4C /* InFlightOperationCache.swift in Sources */,
 				7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */,
 				7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */,
 				7ACF43E82A8C9B9B009963C7 /* DateFormatter+Tools.swift in Sources */,
