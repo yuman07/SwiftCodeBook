@@ -8,7 +8,7 @@
 import Foundation
 
 // 用于如request url时，如果当前已经有一样的url request在飞，则不发送此次request而复用当前在飞的request的结果
-public actor InFlightOperationCache<Key: Hashable & Sendable, Value: Sendable> {
+public actor InFlightOperationCache<Key: Hashable, Value: Sendable> {
     private struct Entry: Sendable {
         let task: Task<Value, Error>
         var refCount: Int
