@@ -11,49 +11,48 @@ import Foundation
 public actor InFlightOperationCache<Key: Hashable, Value: Sendable> {
     private struct Entry: Sendable {
         let task: Task<Value, Error>
-        var refCount: Int
+        var refIdSet: Set<String>
     }
-
+    
     private var inflight = [Key: Entry]()
-
+    
     public init() {}
-
+    
     public func run(reuseKey key: Key, operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
         let task: Task<Value, Error>
+        let refId = UUID().uuidString
         
         if var entry = inflight[key] {
-            entry.refCount += 1
+            entry.refIdSet.insert(refId)
             inflight[key] = entry
             task = entry.task
         } else {
-            let newTask = Task(priority: Task.currentPriority) {
-                try await operation()
-            }
-            inflight[key] = Entry(task: newTask, refCount: 1)
+            let newTask = Task { try await operation() }
+            inflight[key] = Entry(task: newTask, refIdSet: [refId])
             task = newTask
         }
         
-        return try await awaitTaskValue(key: key, task: task)
+        return try await awaitTaskValue(key: key, task: task, refId: refId)
     }
-
-    private func awaitTaskValue(key: Key, task: Task<Value, Error>) async throws -> Value {
+    
+    private func awaitTaskValue(key: Key, task: Task<Value, Error>, refId: String) async throws -> Value {
         try await withTaskCancellationHandler {
-            defer { finishTask(for: key) }
-            try Task.checkCancellation()
-            let value = try await task.value
-            try Task.checkCancellation()
-            return value
-        } onCancel: {}
+            defer { finishTask(for: key, refId: refId, isCancelled: false) }
+            return try await task.value
+        } onCancel: {
+            Task {
+                await finishTask(for: key, refId: refId, isCancelled: true)
+            }
+        }
     }
-
-    private func finishTask(for key: Key) {
-        guard var entry = inflight[key] else { return }
-        entry.refCount -= 1
-        if entry.refCount > 0 {
+    
+    private func finishTask(for key: Key, refId: String, isCancelled: Bool) {
+        guard var entry = inflight[key], entry.refIdSet.remove(refId) != nil else { return }
+        if !entry.refIdSet.isEmpty {
             inflight[key] = entry
         } else {
             inflight[key] = nil
-            if Task.isCancelled {
+            if isCancelled {
                 entry.task.cancel()
             }
         }
