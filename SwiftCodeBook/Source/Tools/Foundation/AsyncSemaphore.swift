@@ -10,7 +10,6 @@ import Foundation
 public actor AsyncSemaphore {
     private struct Waiter {
         let id: UUID
-        let priority: TaskPriority
         let continuation: UnsafeContinuation<Void, Error>
     }
 
@@ -22,15 +21,20 @@ public actor AsyncSemaphore {
     }
     
     public func wait() async throws {
-        if value > 0 {
-            value -= 1
+        value -= 1
+        if value >= 0 {
             return
+        }
+        
+        if Task.isCancelled {
+            release()
+            throw CancellationError()
         }
         
         let id = UUID()
         try await withTaskCancellationHandler {
             try await withUnsafeThrowingContinuation { continuation in
-                let waiter = Waiter(id: id, priority: Task.currentPriority, continuation: continuation)
+                let waiter = Waiter(id: id, continuation: continuation)
                 waiters.append(waiter)
             }
         } onCancel: {
@@ -48,19 +52,16 @@ public actor AsyncSemaphore {
     
     private func release() {
         value += 1
-        guard let maxPriority = waiters.map(\.priority).max(),
-              let index = waiters.firstIndex(where: { $0.priority == maxPriority }) else {
-            return
+        if let first = waiters.first {
+            first.continuation.resume()
+            waiters.removeFirst()
         }
-        
-        waiters[index].continuation.resume()
-        waiters.remove(at: index)
     }
 
     private func cancel(_ id: UUID) {
         guard let index = waiters.firstIndex(where: { $0.id == id }) else { return }
         waiters[index].continuation.resume(throwing: CancellationError())
         waiters.remove(at: index)
-        value += 1
+        release()
     }
 }
