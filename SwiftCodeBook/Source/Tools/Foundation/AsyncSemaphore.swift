@@ -34,8 +34,7 @@ public actor AsyncSemaphore {
         let id = UUID()
         try await withTaskCancellationHandler {
             try await withUnsafeThrowingContinuation { continuation in
-                let waiter = Waiter(id: id, continuation: continuation)
-                waiters.append(waiter)
+                waiters.append(Waiter(id: id, continuation: continuation))
             }
         } onCancel: {
             Task {
