@@ -7,11 +7,18 @@
 
 import Foundation
 
-public struct XMLNode: Sendable {
+public struct XMLNode: Sendable, Hashable {
     public let name: String
     public let attributes: [String: String]
     public let text: [String]
     public let childNodes: [XMLNode]
+    
+    public init(name: String, attributes: [String : String], text: [String], childNodes: [XMLNode]) {
+        self.name = name
+        self.attributes = attributes
+        self.text = text
+        self.childNodes = childNodes
+    }
 }
 
 public enum XMLNodeParser: Sendable {
