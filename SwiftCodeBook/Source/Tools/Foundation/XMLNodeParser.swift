@@ -13,7 +13,7 @@ public struct XMLNode: Sendable, Hashable {
     public let text: [String]
     public let childNodes: [XMLNode]
     
-    public init(name: String, attributes: [String : String], text: [String], childNodes: [XMLNode]) {
+    public init(name: String, attributes: [String: String], text: [String], childNodes: [XMLNode]) {
         self.name = name
         self.attributes = attributes
         self.text = text
