@@ -8,10 +8,10 @@
 import Foundation
 
 public actor AsyncSemaphore {
-    private var value: Int
+    private var value: UInt
     private var waiters = [UnsafeContinuation<Void, Never>]()
     
-    public init(value: Int) {
+    public init(value: UInt) {
         self.value = value
     }
     
