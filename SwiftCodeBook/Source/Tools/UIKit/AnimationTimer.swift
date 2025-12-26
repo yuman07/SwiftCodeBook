@@ -88,6 +88,7 @@ final public class AnimationTimer {
     }
 }
 
+@MainActor
 private struct CubicBezier {
     private let ax: CGFloat
     private let bx: CGFloat
