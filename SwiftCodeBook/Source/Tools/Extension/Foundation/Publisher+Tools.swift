@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 public extension Publisher {
     func sinkToResult(_ result: @escaping (Result<Output, Failure>?) -> Void) -> AnyCancellable {
