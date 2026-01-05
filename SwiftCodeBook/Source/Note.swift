@@ -212,6 +212,9 @@
  
  请使用String的 replacing(_:with:) 方法来代替 replacingOccurrences(of:with)
  https://juejin.cn/post/7583613222344507418
+ 
+ 
+ 使用await MainActor.run {} 来执行代码时，如果当前已经处于main actor则不会切换actor，即会先执行{}里的代码然后继续往下执行
  */
 
 
