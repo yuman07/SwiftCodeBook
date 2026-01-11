@@ -66,16 +66,12 @@
  [string substringToIndex:4];
  
  
- 录制视频时，对于AVCaptureMovieFileOutput，需要设置它的movieFragmentInterval属性为kCMTimeInvalid，不然录制的视频超过10秒就会没有声音。
- 
- 
  在VCInit/viewDidLoad/viewWillAppear中获取屏幕宽高时要小心，可能此时应用旋转，导致想获取宽，结果得到了高。可以采用获取长短边值或者延后获取来解决
  
  
  使用Xcode12及以上的版本打包时。对于cell(UITableViewCell等)，系统会自动将其contentview置于顶层，且哪怕将其remove也会自动加回来。
  这会导致如果你直接将控件add到cell上，点击该控件将无响应，因为顶层的contentview将其拦截了。
- 推荐的解法是按照苹果推荐，将子view都add到contentview上。
- 或者也可以设置contentview的hidden为YES。子view仍直接放在cell上
+ 推荐的解法是按照苹果推荐，将子view都add到contentview上
  
  
  UIDatePicker从iOS13.4开始，会自动根据屏幕和设备类型等来调整样式。取消自动适配：
