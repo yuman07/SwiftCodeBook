@@ -11,10 +11,10 @@ import os
 public extension DateFormatter {
     struct Format: Hashable, Sendable {
         public let dateFormat: String
-        public let locale: Locale?
-        public let timeZone: TimeZone?
+        public let locale: Locale
+        public let timeZone: TimeZone
         
-        public init(dateFormat: String, locale: Locale? = nil, timeZone: TimeZone? = nil) {
+        public init(dateFormat: String, locale: Locale = .current, timeZone: TimeZone = .current) {
             self.dateFormat = dateFormat
             self.locale = locale
             self.timeZone = timeZone
@@ -28,12 +28,8 @@ public extension DateFormatter {
             map[format] ?? {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = format.dateFormat
-                if let locale = format.locale {
-                    dateFormatter.locale = locale
-                }
-                if let timeZone = format.timeZone {
-                    dateFormatter.timeZone = timeZone
-                }
+                dateFormatter.locale = format.locale
+                dateFormatter.timeZone = format.timeZone
                 map[format] = dateFormatter
                 return dateFormatter
             }()
