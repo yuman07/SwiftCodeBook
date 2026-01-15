@@ -41,17 +41,11 @@ public extension FileManager {
     }
     
     @concurrent
-    func sizeInByte(at path: String) async throws -> (logicalSize: UInt64, onDiskSize: UInt64) {
+    func sizeInByte(at path: String) async throws -> (logicalBytes: UInt64, physicalBytes: UInt64) {
         try Task.checkCancellation()
         
-        let keys: Set<URLResourceKey> = [
-            .fileSizeKey,
-            .totalFileSizeKey,
-            .fileAllocatedSizeKey,
-            .totalFileAllocatedSizeKey,
-        ]
-        
-        guard case let root = URL(fileURLWithPath: path),
+        guard case let keys: Set<URLResourceKey> = [.fileSizeKey, .fileAllocatedSizeKey],
+              case let root = URL(fileURLWithPath: path),
               let enumerator = enumerator(
                 at: root,
                 includingPropertiesForKeys: Array(keys),
@@ -60,21 +54,21 @@ public extension FileManager {
               )
         else { return (0, 0) }
         
-        var logicalSize = UInt64.zero
-        var onDiskSize = UInt64.zero
+        var logicalBytes = UInt64.zero
+        var physicalBytes = UInt64.zero
         
         if let values = try? root.resourceValues(forKeys: keys) {
-            logicalSize += max(0, UInt64(values.totalFileSize ?? values.fileSize ?? 0))
-            onDiskSize += max(0, UInt64(values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0))
+            logicalBytes += UInt64(max(0, values.fileSize ?? 0))
+            physicalBytes += UInt64(max(0, values.fileAllocatedSize ?? 0))
         }
-        
+
         while let obj = enumerator.nextObject() {
             try Task.checkCancellation()
             guard let url = obj as? URL, let values = try? url.resourceValues(forKeys: keys) else { continue }
-            logicalSize += UInt64(max(0, values.totalFileSize ?? values.fileSize ?? 0))
-            onDiskSize += UInt64(max(0, values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0))
+            logicalBytes += UInt64(max(0, values.fileSize ?? 0))
+            physicalBytes += UInt64(max(0, values.fileAllocatedSize ?? 0))
         }
         
-        return (logicalSize, onDiskSize)
+        return (logicalBytes, physicalBytes)
     }
 }
