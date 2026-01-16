@@ -106,18 +106,6 @@ public extension StringProtocol {
 }
 
 public extension StringProtocol {
-    var containsChinese: Bool {
-        contains { $0.isChinese }
-    }
-    
-    var containsEmoji: Bool {
-        contains { $0.isEmoji }
-    }
-    
-    var capitalizeFirstLetter: String {
-        (first?.uppercased() ?? "") + dropFirst()
-    }
-
     var languageDirection: Locale.LanguageDirection {
         // CFStringTokenizerCopyBestStringLanguage documentation says 200-400 characters are required to reliably guess the language
         // Use the lower end(200) for speed
