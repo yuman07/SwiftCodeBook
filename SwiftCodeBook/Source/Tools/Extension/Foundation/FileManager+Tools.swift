@@ -44,8 +44,8 @@ public extension FileManager {
     func sizeInByte(at path: String) async throws -> (logicalBytes: UInt64, physicalBytes: UInt64) {
         try Task.checkCancellation()
         
-        guard case let keys: Set<URLResourceKey> = [.fileSizeKey, .fileAllocatedSizeKey],
-              case let root = URL(fileURLWithPath: path),
+        guard case let root = URL(fileURLWithPath: path),
+              case let keys: Set<URLResourceKey> = [.fileSizeKey, .fileAllocatedSizeKey],
               let enumerator = enumerator(
                 at: root,
                 includingPropertiesForKeys: Array(keys),
@@ -61,7 +61,7 @@ public extension FileManager {
             logicalBytes += UInt64(max(0, values.fileSize ?? 0))
             physicalBytes += UInt64(max(0, values.fileAllocatedSize ?? 0))
         }
-
+        
         while let obj = enumerator.nextObject() {
             try Task.checkCancellation()
             guard let url = obj as? URL, let values = try? url.resourceValues(forKeys: keys) else { continue }
