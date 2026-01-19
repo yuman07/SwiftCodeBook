@@ -68,7 +68,6 @@ public final class CurrentApplication: Sendable {
         return NotificationCenter
             .default
             .publisher(for: UIDevice.orientationDidChangeNotification)
-            .receive(on: DispatchQueue.main)
             .map({ _ in interfaceOrientation })
             .removeDuplicates()
             .eraseToAnyPublisher()
