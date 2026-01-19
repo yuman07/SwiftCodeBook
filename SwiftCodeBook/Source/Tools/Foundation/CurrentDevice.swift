@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class CurrentDevice {
+public final class CurrentDevice: Sendable {
     private init() {}
 }
 

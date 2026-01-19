@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class CurrentApplication {
+public final class CurrentApplication: Sendable {
     private init() {}
 }
 
