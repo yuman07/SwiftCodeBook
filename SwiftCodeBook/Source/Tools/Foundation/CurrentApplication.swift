@@ -20,9 +20,9 @@ import UIKit
 
 public final class CurrentApplication: Sendable {
     private init() {}
-    
+
 #if os(macOS)
-    public static var appIcon: NSImage? = {
+    public static var appIcon: NSImage? {
         NSApplication.shared.applicationIconImage
     }
 #else
@@ -36,12 +36,14 @@ public final class CurrentApplication: Sendable {
         return UIImage(named: iconName)
     }
 #endif
-    
+
 #if os(macOS)
-    public static var keyWindow: NSImage? = {
-        NSApplication.shared.applicationIconImage
+    @MainActor
+    public static var keyWindow: NSWindow? {
+        NSApplication.shared.keyWindow
     }
-#else
+#elseif os(iOS) || os(tvOS) || os(visionOS)
+    @MainActor
     public static var keyWindow: UIWindow? {
         UIApplication
             .shared
@@ -51,32 +53,31 @@ public final class CurrentApplication: Sendable {
             .first { $0.isKeyWindow }
     }
 #endif
-    
-#if os(macOS)
-    public static var keyWindow: NSImage? = {
-        NSApplication.shared.applicationIconImage
-    }
-#else
+
+#if os(iOS) || os(visionOS)
+    @MainActor
     public static var interfaceOrientation: UIInterfaceOrientation {
         keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
     }
 #endif
-    
-#if os(macOS)
-    public static var keyWindow: NSImage? = {
-        NSApplication.shared.applicationIconImage
-    }
-#else
+
+#if os(iOS) || os(visionOS)
+    @MainActor
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
-        NotificationCenter
+#if os(iOS)
+        return NotificationCenter
             .default
             .publisher(for: UIDevice.orientationDidChangeNotification)
-            .map({ _ in CurrentApplication.interfaceOrientation })
+            .receive(on: DispatchQueue.main)
+            .map({ _ in interfaceOrientation })
             .removeDuplicates()
             .eraseToAnyPublisher()
+#else
+        return Empty().eraseToAnyPublisher()
+#endif
     }
 #endif
-    
+
     public static var appDisplayName: String?  {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
     }
