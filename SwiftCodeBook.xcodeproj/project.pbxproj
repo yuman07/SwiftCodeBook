@@ -21,7 +21,6 @@
 		7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074942908FAEF00C13362 /* String+Tools.swift */; };
 		7A1074972908FB2100C13362 /* Character+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074962908FB2100C13362 /* Character+Tools.swift */; };
 		7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */; };
-		7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */; };
 		7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */; };
 		7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */; };
 		7A1074A32909019300C13362 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A22909019300C13362 /* GradientView.swift */; };
@@ -116,7 +115,6 @@
 		7A1074942908FAEF00C13362 /* String+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Tools.swift"; sourceTree = "<group>"; };
 		7A1074962908FB2100C13362 /* Character+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Tools.swift"; sourceTree = "<group>"; };
 		7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Tools.swift"; sourceTree = "<group>"; };
-		7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Tools.swift"; sourceTree = "<group>"; };
 		7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Tools.swift"; sourceTree = "<group>"; };
 		7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Tools.swift"; sourceTree = "<group>"; };
 		7A1074A22909019300C13362 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -334,7 +332,6 @@
 		7A1074A7290905F100C13362 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */,
 				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
 				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,
 				7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */,
@@ -530,7 +527,6 @@
 				7AB2F856299E23400058D526 /* ISO8601DateFormatter+Tools.swift in Sources */,
 				7ADC0BEC2F1E14EF0005E6CC /* CurrentApplication.swift in Sources */,
 				7ADC0BE82F1E0D430005E6CC /* Data+Tools.swift in Sources */,
-				7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */,
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */,
 				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
