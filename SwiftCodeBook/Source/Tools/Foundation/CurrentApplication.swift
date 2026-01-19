@@ -10,7 +10,3 @@ import Foundation
 public final class CurrentApplication: Sendable {
     private init() {}
 }
-
-public extension CurrentApplication {
-    
-}

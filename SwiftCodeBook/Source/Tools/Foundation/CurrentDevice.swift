@@ -9,10 +9,8 @@ import Foundation
 
 public final class CurrentDevice: Sendable {
     private init() {}
-}
-
-public extension CurrentDevice {
-    static var isSimulator: Bool {
+    
+    public static var isSimulator: Bool {
 #if targetEnvironment(simulator)
         true
 #else
@@ -22,7 +20,7 @@ public extension CurrentDevice {
     
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
-    static var deviceModel: String {
+    public static var deviceModel: String {
         if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
@@ -33,15 +31,15 @@ public extension CurrentDevice {
         }
     }
     
-    static var is64BitDevice: Bool {
+    public static var is64BitDevice: Bool {
         Int.bitWidth == 64
     }
     
-    static var totalDiskSpaceInByte: UInt64? {
+    public static var totalDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
     }
     
-    static var freeDiskSpaceInByte: UInt64? {
+    public static var freeDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
     }
 }
