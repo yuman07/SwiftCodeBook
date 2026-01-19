@@ -23,7 +23,6 @@
 		7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */; };
 		7A10749B2908FBA100C13362 /* UIApplication+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */; };
 		7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */; };
-		7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */; };
 		7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */; };
 		7A1074A32909019300C13362 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A22909019300C13362 /* GradientView.swift */; };
 		7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A42909041E00C13362 /* UIImage+Tools.swift */; };
@@ -84,6 +83,7 @@
 		7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */; };
 		7AD2A03029F1286300BABD94 /* CGAffineTransform+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */; };
 		7ADC0BE82F1E0D430005E6CC /* Data+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */; };
+		7ADC0BEA2F1E136C0005E6CC /* CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */; };
 		7AE1E49B2949B583001B3671 /* NSRangeSwiftRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */; };
 		7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */; };
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
@@ -117,7 +117,6 @@
 		7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Tools.swift"; sourceTree = "<group>"; };
 		7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Tools.swift"; sourceTree = "<group>"; };
 		7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Tools.swift"; sourceTree = "<group>"; };
-		7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Tools.swift"; sourceTree = "<group>"; };
 		7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Tools.swift"; sourceTree = "<group>"; };
 		7A1074A22909019300C13362 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7A1074A42909041E00C13362 /* UIImage+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Tools.swift"; sourceTree = "<group>"; };
@@ -178,6 +177,7 @@
 		7AD0E8EF290EB31D0010BBC8 /* Task+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Tools.swift"; sourceTree = "<group>"; };
 		7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Tools.swift"; sourceTree = "<group>"; };
 		7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Tools.swift"; sourceTree = "<group>"; };
+		7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDevice.swift; sourceTree = "<group>"; };
 		7AE1E49A2949B583001B3671 /* NSRangeSwiftRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRangeSwiftRange.swift; sourceTree = "<group>"; };
 		7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformGuide.swift; sourceTree = "<group>"; };
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
@@ -277,6 +277,7 @@
 				7A9CBA09291E42C300046466 /* Codable */,
 				7A10748D2908C0B300C13362 /* ThreadSafe */,
 				7AFC48F42EFD100F007F4F4C /* AsyncSemaphore.swift */,
+				7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
 				7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */,
 				7A772A3B2BDB97180008828B /* MemoryCache.swift */,
@@ -333,7 +334,6 @@
 				7A10749A2908FBA100C13362 /* UIApplication+Tools.swift */,
 				7A1074982908FB6300C13362 /* UIBezierPath+Tools.swift */,
 				7A1074922908FABB00C13362 /* UIColor+Tools.swift */,
-				7A10749E2908FC7700C13362 /* UIDevice+Tools.swift */,
 				7ACB8C4C2BB566320004CBA8 /* UIFont+Tools.swift */,
 				7A1074A42909041E00C13362 /* UIImage+Tools.swift */,
 				7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */,
@@ -512,8 +512,8 @@
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
 				7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */,
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
+				7ADC0BEA2F1E136C0005E6CC /* CurrentDevice.swift in Sources */,
 				7A9CBA0B291E43C000046466 /* OptionalCodable.swift in Sources */,
-				7A10749F2908FC7700C13362 /* UIDevice+Tools.swift in Sources */,
 				7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */,
 				7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */,
 				7AD080B82BD8EAAB0053F3EB /* CodeBookHelper.swift in Sources */,

@@ -1,14 +1,18 @@
 //
-//  UIDevice+Tools.swift
+//  CurrentDevice.swift
 //  SwiftCodeBook
 //
-//  Created by yuman on 2022/10/26.
+//  Created by yuman on 2026/1/19.
 //
 
-import UIKit
+import Foundation
 
-public extension UIDevice {
-    var isSimulator: Bool {
+public final class CurrentDevice {
+    private init() {}
+}
+
+public extension CurrentDevice {
+    static var isSimulator: Bool {
 #if targetEnvironment(simulator)
         true
 #else
@@ -18,7 +22,7 @@ public extension UIDevice {
     
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
-    var deviceModel: String {
+    static var deviceModel: String {
         if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
@@ -29,15 +33,15 @@ public extension UIDevice {
         }
     }
     
-    var is64BitDevice: Bool {
+    static var is64BitDevice: Bool {
         Int.bitWidth == 64
     }
     
-    var totalDiskSpaceInByte: UInt64? {
+    static var totalDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
     }
     
-    var freeDiskSpaceInByte: UInt64? {
+    static var freeDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
     }
 }
