@@ -9,7 +9,7 @@ import CryptoKit
 import Foundation
 
 public final class HashHandler {
-    @frozen public enum Function: Sendable, Hashable {
+    @frozen public enum Algorithm: Sendable, Hashable {
         case md5
         case sha1
         case sha256
@@ -17,12 +17,12 @@ public final class HashHandler {
         case sha512
     }
     
-    private let function: Function
+    private let algorithm: Algorithm
     private var hasher: any HashFunction
     
-    public init(function: Function) {
-        self.function = function
-        hasher = function.hasher
+    public init(algorithm: Algorithm) {
+        self.algorithm = algorithm
+        hasher = algorithm.hasher
     }
     
     public func update(data: Data) {
@@ -34,29 +34,29 @@ public final class HashHandler {
     }
     
     public func reset() {
-        hasher = function.hasher
+        hasher = algorithm.hasher
     }
 }
 
 public extension HashHandler {
-    static func hash(data: Data, using function: Function) -> String {
-        var hasher = function.hasher
+    static func hash(data: Data, using algorithm: HashHandler.Algorithm) -> String {
+        var hasher = algorithm.hasher
         hasher.update(data: data)
         return hasher.finalize().toHashString()
     }
     
-    static func hash(string: String, using function: Function) -> String {
-        hash(data: Data(string.utf8), using: function)
+    static func hash(string: String, using algorithm: HashHandler.Algorithm) -> String {
+        hash(data: Data(string.utf8), using: algorithm)
     }
     
     @concurrent
-    static func hash(filePath: String, using function: Function) async throws -> String {
+    static func hash(filePath: String, using algorithm: HashHandler.Algorithm) async throws -> String {
         try Task.checkCancellation()
         let handler = try FileHandle(forReadingFrom: URL(filePath: filePath))
         defer { try? handler.close() }
         
         var isEnd = false
-        var hasher = function.hasher
+        var hasher = algorithm.hasher
         while !isEnd {
             try Task.checkCancellation()
             try autoreleasepool {
@@ -71,18 +71,18 @@ public extension HashHandler {
 }
 
 public extension String {
-    func hash(using function: HashHandler.Function) -> String {
+    func hash(using function: HashHandler.Algorithm) -> String {
         HashHandler.hash(string: self, using: function)
     }
 }
 
 public extension Data {
-    func hash(using function: HashHandler.Function) -> String {
+    func hash(using function: HashHandler.Algorithm) -> String {
         HashHandler.hash(data: self, using: function)
     }
 }
 
-private extension HashHandler.Function {
+private extension HashHandler.Algorithm {
     var hasher: any HashFunction {
         switch self {
         case .md5: Insecure.MD5()
