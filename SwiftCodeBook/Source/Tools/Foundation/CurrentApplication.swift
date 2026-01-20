@@ -19,11 +19,11 @@ import AppKit
 #endif
 
 @frozen public enum CurrentApplication: Sendable {
-#if os(macOS)
+#if canImport(AppKit)
     public static var appIcon: NSImage? {
         NSApplication.shared.applicationIconImage
     }
-#else
+#elseif canImport(UIKit)
     public static var appIcon: UIImage? {
         guard let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [AnyHashable: Any],
               let primaryIcon = icons["CFBundlePrimaryIcon"] as? [AnyHashable: Any],
