@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct XMLNode: Sendable, Hashable {
+@frozen public struct XMLNode: Sendable, Hashable {
     public let name: String
     public let attributes: [String: String]
     public let text: [String]
@@ -21,8 +21,8 @@ public struct XMLNode: Sendable, Hashable {
     }
 }
 
-public enum XMLNodeParser: Sendable {
-    public enum DataSource: @unchecked Sendable {
+@frozen public enum XMLNodeParser: Sendable {
+    @frozen public enum DataSource: @unchecked Sendable {
         case string(String)
         case data(Data)
         case url(URL)

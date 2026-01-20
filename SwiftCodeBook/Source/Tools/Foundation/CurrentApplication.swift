@@ -18,9 +18,7 @@ import AppKit
 import UIKit
 #endif
 
-public final class CurrentApplication: Sendable {
-    private init() {}
-
+@frozen public enum CurrentApplication: Sendable {
 #if os(macOS)
     public static var appIcon: NSImage? {
         NSApplication.shared.applicationIconImage

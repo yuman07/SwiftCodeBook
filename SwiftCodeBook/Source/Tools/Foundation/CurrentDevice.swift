@@ -7,9 +7,7 @@
 
 import Foundation
 
-public final class CurrentDevice: Sendable {
-    private init() {}
-    
+@frozen public enum CurrentDevice: Sendable {
     public static var isSimulator: Bool {
 #if targetEnvironment(simulator)
         true
