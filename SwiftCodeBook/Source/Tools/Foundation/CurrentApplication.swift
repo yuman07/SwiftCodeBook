@@ -42,6 +42,7 @@ import AppKit
     }
 #elseif os(iOS) || os(tvOS) || os(visionOS)
     @MainActor
+    @available(iOSApplicationExtension, unavailable)
     public static var keyWindow: UIWindow? {
         UIApplication
             .shared
@@ -53,6 +54,7 @@ import AppKit
 #endif
     
     @MainActor
+    @available(iOSApplicationExtension, unavailable)
     public static var interfaceOrientation: UIInterfaceOrientation {
 #if os(iOS) || os(visionOS)
         keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
@@ -62,6 +64,7 @@ import AppKit
     }
     
     @MainActor
+    @available(iOSApplicationExtension, unavailable)
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(iOS)
         let effectiveGeometryNotification = NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)

@@ -35,7 +35,6 @@
 		7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1087B029097C2800C13362 /* UIView+Tools.swift */; };
 		7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */; };
 		7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */; };
-		7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D007294DADCB0076F89A /* GlobalGray.swift */; };
 		7A2A472F2ED80F39005140E1 /* AnimationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */; };
 		7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */; };
 		7A39349C2E06D3F700428D41 /* NoZoomWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */; };
@@ -129,7 +128,6 @@
 		7A1087B029097C2800C13362 /* UIView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Tools.swift"; sourceTree = "<group>"; };
 		7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.contentMode.swift; sourceTree = "<group>"; };
 		7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutDoAnimation.swift; sourceTree = "<group>"; };
-		7A20D007294DADCB0076F89A /* GlobalGray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalGray.swift; sourceTree = "<group>"; };
 		7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTimer.swift; sourceTree = "<group>"; };
 		7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNumber+Tools.swift"; sourceTree = "<group>"; };
 		7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoZoomWKWebView.swift; sourceTree = "<group>"; };
@@ -266,7 +264,6 @@
 			children = (
 				7A20D006294DA9400076F89A /* View */,
 				7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */,
-				7A20D007294DADCB0076F89A /* GlobalGray.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -547,7 +544,6 @@
 				7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */,
 				7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
-				7A20D008294DADCB0076F89A /* GlobalGray.swift in Sources */,
 				7AAFB70D2CDE055E00525A44 /* CombineNote.swift in Sources */,
 				7A0ACC272A4D569D00F8F19A /* NSAttributedString+Tools.swift in Sources */,
 				7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */,
@@ -622,6 +618,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -670,7 +667,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -685,6 +682,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -727,7 +725,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -741,12 +739,13 @@
 		7A1074862908C01B00C13362 /* Debug configuration for PBXNativeTarget "SwiftCodeBook" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Z352NN8K4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftCodeBook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -772,12 +771,13 @@
 		7A1074872908C01B00C13362 /* Release configuration for PBXNativeTarget "SwiftCodeBook" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Z352NN8K4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftCodeBook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
