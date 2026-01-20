@@ -64,14 +64,21 @@ import AppKit
     @MainActor
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(iOS)
-        NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-            .merge(with: NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification))
+        let effectiveGeometryNotification = NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
+            .merge(with: NotificationCenter.default.publisher(for: UIScene.didActivateNotification))
+            .receive(on: DispatchQueue.main)
+            .compactMap({ _ in keyWindow?.windowScene })
+            .flatMap({ $0.publisher(for: \.effectiveGeometry) })
+            .map({ _ in Notification(name: .init("")) })
+
+        return NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+            .merge(with: effectiveGeometryNotification)
             .receive(on: DispatchQueue.main)
             .map({ _ in interfaceOrientation })
             .removeDuplicates()
             .eraseToAnyPublisher()
 #else
-        Empty().eraseToAnyPublisher()
+        return Empty().eraseToAnyPublisher()
 #endif
     }
     
