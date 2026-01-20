@@ -57,21 +57,21 @@ import AppKit
 #if os(iOS) || os(visionOS)
         keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
 #else
-            .portrait
+        .portrait
 #endif
     }
     
     @MainActor
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(iOS)
-        return NotificationCenter
-            .default
-            .publisher(for: UIDevice.orientationDidChangeNotification)
+        NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+            .merge(with: NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification))
+            .receive(on: DispatchQueue.main)
             .map({ _ in interfaceOrientation })
             .removeDuplicates()
             .eraseToAnyPublisher()
 #else
-        return Empty().eraseToAnyPublisher()
+        Empty().eraseToAnyPublisher()
 #endif
     }
     
