@@ -52,17 +52,14 @@ import AppKit
     }
 #endif
     
+    @MainActor
+    public static var interfaceOrientation: UIInterfaceOrientation {
 #if os(iOS) || os(visionOS)
-    @MainActor
-    public static var interfaceOrientation: UIInterfaceOrientation {
         keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
-    }
 #else
-    @MainActor
-    public static var interfaceOrientation: UIInterfaceOrientation {
-        .portrait
-    }
+            .portrait
 #endif
+    }
     
     @MainActor
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
