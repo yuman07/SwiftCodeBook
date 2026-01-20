@@ -8,6 +8,45 @@
 import Foundation
 
 @frozen public enum CurrentDevice: Sendable {
+    public static func systemName(treatIPadOSAsIOS: Bool = false) -> String {
+        #if os(watchOS)
+        return "watchOS"
+
+        #elseif os(tvOS)
+        return "tvOS"
+
+        #elseif os(visionOS)
+        return "visionOS"
+
+        #elseif os(macOS)
+        return "macOS"
+
+        #elseif os(iOS)
+        #if targetEnvironment(macCatalyst)
+        return "macOS"
+        #else
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            return "macOS"
+        }
+
+        if deviceModel.lowercased().contains("ipad") {
+            return treatIPadOSAsIOS ? "iOS" : "iPadOS"
+        } else {
+            return "iOS"
+        }
+        #endif
+
+        #else
+        return "unknown"
+        #endif
+    }
+    
+    public static var systemVersion: String {
+        let info = ProcessInfo.processInfo.operatingSystemVersion
+        let version = "\(info.majorVersion).\(info.minorVersion)"
+        return info.patchVersion == 0 ? version : version + ".\(info.patchVersion)"
+    }
+    
     public static var isSimulator: Bool {
 #if targetEnvironment(simulator)
         true
