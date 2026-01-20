@@ -28,18 +28,6 @@ public extension FileManager {
         NSTemporaryDirectory()
     }
     
-    func directoryExists(at path: String) -> Bool {
-        var isDir = ObjCBool(false)
-        let exist = fileExists(atPath: path, isDirectory: &isDir)
-        return exist && isDir.boolValue
-    }
-    
-    func normalFileExists(at path: String) -> Bool {
-        var isDir = ObjCBool(false)
-        let exist = fileExists(atPath: path, isDirectory: &isDir)
-        return exist && !isDir.boolValue
-    }
-    
     @concurrent
     func sizeInByte(at path: String) async throws -> (logicalBytes: UInt64, physicalBytes: UInt64) {
         try Task.checkCancellation()

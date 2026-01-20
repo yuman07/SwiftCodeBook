@@ -12,10 +12,10 @@ import Foundation
 import Darwin
 #endif
 
-#if os(macOS)
-import AppKit
-#else
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 @frozen public enum CurrentApplication: Sendable {
@@ -34,7 +34,7 @@ import UIKit
         return UIImage(named: iconName)
     }
 #endif
-
+    
 #if os(macOS)
     @MainActor
     public static var keyWindow: NSWindow? {
@@ -51,15 +51,19 @@ import UIKit
             .first { $0.isKeyWindow }
     }
 #endif
-
+    
 #if os(iOS) || os(visionOS)
     @MainActor
     public static var interfaceOrientation: UIInterfaceOrientation {
         keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
     }
+#else
+    @MainActor
+    public static var interfaceOrientation: UIInterfaceOrientation {
+        .portrait
+    }
 #endif
-
-#if os(iOS) || os(visionOS)
+    
     @MainActor
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(iOS)
@@ -73,8 +77,7 @@ import UIKit
         return Empty().eraseToAnyPublisher()
 #endif
     }
-#endif
-
+    
     public static var appDisplayName: String?  {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
     }
@@ -106,3 +109,22 @@ import UIKit
 #endif
     }
 }
+
+#if os(iOS) || os(visionOS)
+#else
+public enum UIInterfaceOrientation : Int, Sendable {
+    case unknown = 0
+    case portrait = 1
+    case portraitUpsideDown = 2
+    case landscapeLeft = 4
+    case landscapeRight = 3
+    
+    public var isPortrait: Bool {
+        self == .portrait || self == .portraitUpsideDown
+    }
+    
+    public var isLandscape: Bool {
+        self == .landscapeLeft || self == .landscapeRight
+    }
+}
+#endif

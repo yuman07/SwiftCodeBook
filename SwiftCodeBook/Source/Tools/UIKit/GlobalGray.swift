@@ -30,6 +30,7 @@ import UIKit
 //    [UIApplication sharedApplication].delegate.window.layer.filters = nil;
 //}
 
+@MainActor
 @available(iOSApplicationExtension, unavailable, message: "unavailable in iOS App extension.")
 public struct GlobalGray {
     public static func openGray() {
@@ -37,10 +38,10 @@ public struct GlobalGray {
         guard let cls = NSClassFromString(["C", "A", "Fi", "lt", "er"].joined(separator: "")) as AnyObject as? NSObjectProtocol, cls.responds(to: sel) else { return }
         let filter = cls.perform(sel, with: ["col", "or", "Sat", "ur", "ate"].joined(separator: "")).retain().takeRetainedValue()
         filter.setValue(0, forKey: ["i", "npu", "t", "Am", "ount"].joined(separator: ""))
-        UIApplication.shared.keyWindow?.layer.filters = [filter]
+        CurrentApplication.keyWindow?.layer.filters = [filter]
     }
     
     public static func closeGray() {
-        UIApplication.shared.keyWindow?.layer.filters = nil
+        CurrentApplication.keyWindow?.layer.filters = nil
     }
 }
