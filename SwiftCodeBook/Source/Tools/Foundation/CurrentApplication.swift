@@ -56,6 +56,7 @@ import WatchKit
 #endif
     
     @MainActor
+    @available(iOSApplicationExtension, unavailable)
     public static var keyWindowSize: CGSize? {
 #if os(watchOS)
         WKInterfaceDevice.current().screenBounds.size
