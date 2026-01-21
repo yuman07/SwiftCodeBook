@@ -67,21 +67,16 @@ import AppKit
     @available(iOSApplicationExtension, unavailable)
     public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(iOS)
-        let effectiveGeometryNotification = NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
+        NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
             .merge(with: NotificationCenter.default.publisher(for: UIScene.didActivateNotification))
             .receive(on: DispatchQueue.main)
             .compactMap({ _ in keyWindow?.windowScene })
             .flatMap({ $0.publisher(for: \.effectiveGeometry) })
-            .map({ _ in Notification(name: .init("")) })
-
-        return NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-            .merge(with: effectiveGeometryNotification)
-            .receive(on: DispatchQueue.main)
             .map({ _ in interfaceOrientation })
             .removeDuplicates()
             .eraseToAnyPublisher()
 #else
-        return Empty().eraseToAnyPublisher()
+        Empty().eraseToAnyPublisher()
 #endif
     }
     
@@ -119,7 +114,7 @@ import AppKit
 
 #if os(iOS) || os(visionOS)
 #else
-public enum UIInterfaceOrientation : Int, Sendable {
+public enum UIInterfaceOrientation: Int, Sendable {
     case unknown = 0
     case portrait = 1
     case portraitUpsideDown = 2
