@@ -7,15 +7,17 @@
 
 import Combine
 import Foundation
-
 #if canImport(Darwin)
 import Darwin
 #endif
-
 #if canImport(UIKit)
 import UIKit
-#elseif canImport(AppKit)
+#endif
+#if canImport(AppKit)
 import AppKit
+#endif
+#if canImport(WatchKit)
+import WatchKit
 #endif
 
 @frozen public enum CurrentApplication: Sendable {
@@ -52,6 +54,15 @@ import AppKit
             .first { $0.isKeyWindow }
     }
 #endif
+    
+    @MainActor
+    public static var keyWindowSize: CGSize? {
+#if os(watchOS)
+        WKInterfaceDevice.current().screenBounds.size
+#else
+        keyWindow?.frame.size
+#endif
+    }
     
     @MainActor
     @available(iOSApplicationExtension, unavailable)
