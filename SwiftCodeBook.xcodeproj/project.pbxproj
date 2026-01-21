@@ -26,8 +26,6 @@
 		7A1074A32909019300C13362 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A22909019300C13362 /* GradientView.swift */; };
 		7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A42909041E00C13362 /* UIImage+Tools.swift */; };
 		7A1074A92909061700C13362 /* Array+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074A82909061700C13362 /* Array+Tools.swift */; };
-		7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AC290908F000C13362 /* Encodable+Tools.swift */; };
-		7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074AE2909090000C13362 /* Decodable+Tools.swift */; };
 		7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */; };
 		7A1074B329091B1700C13362 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B229091B1700C13362 /* WeakObject.swift */; };
 		7A1074B529091CAD00C13362 /* Result+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1074B429091CAD00C13362 /* Result+Tools.swift */; };
@@ -89,7 +87,6 @@
 		7AE2017429A4BEC000CC59D6 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */; };
 		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
 		7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */; };
-		7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B22D1CFE04009B7556 /* CodableNote.swift */; };
 		7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */; };
 		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 		7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */; };
@@ -118,8 +115,6 @@
 		7A1074A22909019300C13362 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7A1074A42909041E00C13362 /* UIImage+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Tools.swift"; sourceTree = "<group>"; };
 		7A1074A82909061700C13362 /* Array+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Tools.swift"; sourceTree = "<group>"; };
-		7A1074AC290908F000C13362 /* Encodable+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Tools.swift"; sourceTree = "<group>"; };
-		7A1074AE2909090000C13362 /* Decodable+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+Tools.swift"; sourceTree = "<group>"; };
 		7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Tools.swift"; sourceTree = "<group>"; };
 		7A1074B229091B1700C13362 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
 		7A1074B429091CAD00C13362 /* Result+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Tools.swift"; sourceTree = "<group>"; };
@@ -181,7 +176,6 @@
 		7AE2017329A4BEC000CC59D6 /* UseOptionSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseOptionSet.swift; sourceTree = "<group>"; };
 		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchNote.swift; sourceTree = "<group>"; };
-		7AF129B22D1CFE04009B7556 /* CodableNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableNote.swift; sourceTree = "<group>"; };
 		7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONValue.swift; sourceTree = "<group>"; };
 		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 		7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Duration+Tools.swift"; sourceTree = "<group>"; };
@@ -304,11 +298,9 @@
 				7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */,
 				7A9CAD73291E105E00046466 /* Date+Tools.swift */,
 				7ACF43E72A8C9B9B009963C7 /* DateFormatter+Tools.swift */,
-				7A1074AE2909090000C13362 /* Decodable+Tools.swift */,
 				7A1074B029090C4F00C13362 /* Dictionary+Tools.swift */,
 				7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */,
 				7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */,
-				7A1074AC290908F000C13362 /* Encodable+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
 				7A7720C12BDB91620008828B /* Locale+Tools.swift */,
@@ -398,7 +390,6 @@
 			children = (
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
 				7AB21C1A29A32F900058D526 /* AsyncOperation.swift */,
-				7AF129B22D1CFE04009B7556 /* CodableNote.swift */,
 				7AAFB70C2CDE055E00525A44 /* CombineNote.swift */,
 				7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */,
 				7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */,
@@ -523,9 +514,7 @@
 				7ADC0BE82F1E0D430005E6CC /* Data+Tools.swift in Sources */,
 				7A1074A32909019300C13362 /* GradientView.swift in Sources */,
 				7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */,
-				7A1074AD290908F000C13362 /* Encodable+Tools.swift in Sources */,
 				7AD0E8F0290EB31D0010BBC8 /* Task+Tools.swift in Sources */,
-				7AF129B32D1CFE04009B7556 /* CodableNote.swift in Sources */,
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A4CB27A2CCA37F300820147 /* Spacer+Tools.swift in Sources */,
 				7A39349C2E06D3F700428D41 /* NoZoomWKWebView.swift in Sources */,
@@ -565,7 +554,6 @@
 				7A914DB229ADDAD0008AD58C /* UITextView.clickSomeText.swift in Sources */,
 				7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */,
 				7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */,
-				7A1074AF2909090000C13362 /* Decodable+Tools.swift in Sources */,
 				7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */,
 				7ACB8C4D2BB566320004CBA8 /* UIFont+Tools.swift in Sources */,
 				7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */,
