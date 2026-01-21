@@ -45,10 +45,8 @@
 		7A6227C52BCD0A4E00E33417 /* ConvertNSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */; };
 		7A6227C82BCD121800E33417 /* WillDidMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C72BCD121800E33417 /* WillDidMove.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
-		7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */; };
 		7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
-		7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */; };
 		7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7720C12BDB91620008828B /* Locale+Tools.swift */; };
 		7A772A3C2BDB97180008828B /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A772A3B2BDB97180008828B /* MemoryCache.swift */; };
 		7A89340F2ED98340002C487E /* TaskNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89340E2ED98340002C487E /* TaskNote.swift */; };
@@ -134,10 +132,8 @@
 		7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertNSAttributedString.swift; sourceTree = "<group>"; };
 		7A6227C72BCD121800E33417 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
-		7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
 		7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
-		7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Tools.swift"; sourceTree = "<group>"; };
 		7A7720C12BDB91620008828B /* Locale+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Tools.swift"; sourceTree = "<group>"; };
 		7A772A3B2BDB97180008828B /* MemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCache.swift; sourceTree = "<group>"; };
 		7A89340E2ED98340002C487E /* TaskNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNote.swift; sourceTree = "<group>"; };
@@ -291,9 +287,7 @@
 				7A1074A82909061700C13362 /* Array+Tools.swift */,
 				7ACB54AB2BB3CAA20004CBA8 /* AttributedStringProtocol+Tools.swift */,
 				7A1074962908FB2100C13362 /* Character+Tools.swift */,
-				7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */,
 				7AD2A02F29F1286300BABD94 /* CGAffineTransform+Tools.swift */,
-				7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */,
 				7AC9EFAB2D70364E007C32F3 /* CGSize+Tools.swift */,
 				7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */,
 				7A9CAD73291E105E00046466 /* Date+Tools.swift */,
@@ -521,7 +515,6 @@
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
 				7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
-				7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */,
 				7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */,
 				7A10749D2908FBDD00C13362 /* FileManager+Tools.swift in Sources */,
 				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
@@ -539,7 +532,6 @@
 				7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */,
 				7A1074B329091B1700C13362 /* WeakObject.swift in Sources */,
 				7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */,
-				7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */,
 				7A89340F2ED98340002C487E /* TaskNote.swift in Sources */,
 				7AD0C0EA2E336221009B4437 /* XMLNodeParser.swift in Sources */,
 				7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */,
