@@ -119,7 +119,7 @@ import WatchKit
         }
         return (result == KERN_SUCCESS) ? UInt64(info.phys_footprint) : nil
 #else
-        return nil
+        nil
 #endif
     }
 }
