@@ -9,7 +9,7 @@ import Foundation
 
 public extension Date {
     private var calendar: Calendar {
-        Calendar.current
+        .current
     }
     
     var century: Int {

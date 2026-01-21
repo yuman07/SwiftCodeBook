@@ -8,7 +8,7 @@
 import Foundation
 
 // 有些时候在一个Model中我们只知道一个属性是json的一种value，但不知道具体类型，此时可以用AnyJSONValue
-@frozen public struct AnyJSONValue: Codable {
+public struct AnyJSONValue: Codable {
     private let value: Any
     
     public init(from decoder: Decoder) throws {
