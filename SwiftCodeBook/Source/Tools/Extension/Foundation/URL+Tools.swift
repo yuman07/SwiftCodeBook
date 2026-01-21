@@ -16,7 +16,7 @@ public extension URL {
         }
     }
     
-    func removeQueryItems(where shouldBeRemoved: (URLQueryItem) throws -> Bool) rethrows -> URL {
+    func removingQueryItems(where shouldBeRemoved: (URLQueryItem) throws -> Bool) rethrows -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
@@ -27,7 +27,7 @@ public extension URL {
         return components.url ?? self
     }
     
-    func removeAllQueryItems() -> URL {
+    func removingAllQueryItems() -> URL {
         guard var components = URLComponents(string: absoluteString) else {
             return self
         }
