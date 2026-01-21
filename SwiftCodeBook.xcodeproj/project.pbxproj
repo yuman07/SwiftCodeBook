@@ -49,7 +49,6 @@
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
 		7A6A0FD42A06203700BDC719 /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */; };
 		7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */; };
-		7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CED6929308DDF00680CEC /* ScreenRotate.swift */; };
 		7A6EB346292F24E300BAF448 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6EB345292F24E300BAF448 /* CancelBag.swift */; };
 		7A6F41BD29B87724008431CD /* CGPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */; };
 		7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7720C12BDB91620008828B /* Locale+Tools.swift */; };
@@ -142,7 +141,6 @@
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
 		7A6A0FD32A06203700BDC719 /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
 		7A6A55052A08EB6E00BDC719 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
-		7A6CED6929308DDF00680CEC /* ScreenRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRotate.swift; sourceTree = "<group>"; };
 		7A6EB345292F24E300BAF448 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		7A6F41BC29B87724008431CD /* CGPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Tools.swift"; sourceTree = "<group>"; };
 		7A7720C12BDB91620008828B /* Locale+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Tools.swift"; sourceTree = "<group>"; };
@@ -428,7 +426,6 @@
 				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
 				7AF831E529E65E9800021A08 /* MaskedCorners.swift */,
 				7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */,
-				7A6CED6929308DDF00680CEC /* ScreenRotate.swift */,
 				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
 				7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */,
@@ -541,7 +538,6 @@
 				7A107B0929091E1400C13362 /* Publisher+Tools.swift in Sources */,
 				7A1074752908C01900C13362 /* AppDelegate.swift in Sources */,
 				7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */,
-				7A6CED6A29308DDF00680CEC /* ScreenRotate.swift in Sources */,
 				7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
 				7AAFB70D2CDE055E00525A44 /* CombineNote.swift in Sources */,
