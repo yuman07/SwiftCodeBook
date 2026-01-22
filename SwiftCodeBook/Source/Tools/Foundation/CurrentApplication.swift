@@ -57,11 +57,28 @@ import WatchKit
     
     @MainActor
     @available(iOSApplicationExtension, unavailable)
-    public static var keyWindowSize: CGSize? {
+    public static var keyWindowSize: CGSize {
 #if os(watchOS)
         WKInterfaceDevice.current().screenBounds.size
 #else
-        keyWindow?.frame.size
+        keyWindow?.frame.size ?? .zero
+#endif
+    }
+    
+    @MainActor
+    @available(iOSApplicationExtension, unavailable)
+    public static var keyWindowSizePublisher: AnyPublisher<CGSize, Never> {
+#if os(watchOS)
+        Empty().eraseToAnyPublisher()
+#else
+        NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
+            .merge(with: NotificationCenter.default.publisher(for: UIScene.didActivateNotification))
+            .receive(on: DispatchQueue.main)
+            .compactMap({ _ in keyWindow })
+            .flatMap({ $0.publisher(for: \.frame) })
+            .map({ $0.size })
+            .removeDuplicates()
+            .eraseToAnyPublisher()
 #endif
     }
     
