@@ -5,16 +5,16 @@
 //  Created by yuman on 2026/1/19.
 //
 
+#if canImport(AppKit)
+import AppKit
+#endif
 import Combine
-import Foundation
 #if canImport(Darwin)
 import Darwin
 #endif
+import Foundation
 #if canImport(UIKit)
 import UIKit
-#endif
-#if canImport(AppKit)
-import AppKit
 #endif
 #if canImport(WatchKit)
 import WatchKit
