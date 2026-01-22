@@ -5,6 +5,7 @@
 //  Created by yuman on 2024/3/28.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIFont {
@@ -29,3 +30,4 @@ public extension UIFont {
         fontDescriptor.symbolicTraits.contains(traits)
     }
 }
+#endif

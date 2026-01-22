@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/10/26.
 //
 
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 // point的坐标系和UIKit相同，且取值范围是[0, 1]
@@ -43,3 +44,4 @@ public final class GradientView: UIView {
         set { gradientLayer.type = newValue }
     }
 }
+#endif

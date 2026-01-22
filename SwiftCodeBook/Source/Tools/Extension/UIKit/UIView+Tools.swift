@@ -5,8 +5,8 @@
 //  Created by yuman on 2022/10/26.
 //
 
+#if canImport(UIKit)
 import UIKit
-import WebKit
 
 public extension UIView {
     func removeAllSubviews() {
@@ -32,3 +32,4 @@ public extension UIView {
         return nil
     }
 }
+#endif

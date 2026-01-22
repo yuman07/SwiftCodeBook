@@ -5,7 +5,9 @@
 //  Created by yuman on 2022/10/26.
 //
 
+#if canImport(UIKit)
 import SwiftUI
+import UIKit
 
 public extension UIBezierPath {
     // https://github.com/Tencent/QMUI_iOS/blob/master/QMUIKit/UIKitExtensions/UIBezierPath%2BQMUI.h
@@ -51,3 +53,4 @@ public extension UIBezierPath {
         close()
     }
 }
+#endif

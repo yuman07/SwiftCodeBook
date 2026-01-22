@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/10/26.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIImage {
@@ -32,3 +33,4 @@ public extension UIImage {
         self.init(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: pointSize))
     }
 }
+#endif

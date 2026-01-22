@@ -5,6 +5,7 @@
 //  Created by yuman on 2023/1/18.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIStackView {
@@ -14,3 +15,4 @@ public extension UIStackView {
         }
     }
 }
+#endif

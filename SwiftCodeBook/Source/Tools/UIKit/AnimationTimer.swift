@@ -5,9 +5,18 @@
 //  Created by yuman on 2025/11/27.
 //
 
+#if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
 import Foundation
 import QuartzCore
+#if canImport(UIKit)
 import UIKit
+#else
+public enum UIViewAnimatingPosition: Int, Sendable {
+    case end = 0
+    case start = 1
+    case current = 2
+}
+#endif
 
 @MainActor
 final public class AnimationTimer {
@@ -156,3 +165,4 @@ private struct CubicBezier {
         return s
     }
 }
+#endif

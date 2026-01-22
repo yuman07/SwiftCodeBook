@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/12/14.
 //
 
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 // 歌词式高亮Label
@@ -31,3 +32,4 @@ public final class LyricHighlightingLabel: UILabel {
         UIRectFillUsingBlendMode(fillRect, .sourceIn)
     }
 }
+#endif
