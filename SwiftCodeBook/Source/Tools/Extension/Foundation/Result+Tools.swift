@@ -9,21 +9,23 @@ import Foundation
 
 public extension Result {
     var isSuccess: Bool {
-        guard case .success = self else { return false }
-        return true
-    }
-    
-    var isFailure: Bool {
-        !isSuccess
+        switch self {
+        case .success: true
+        case .failure: false
+        }
     }
     
     var value: Success? {
-        guard case let .success(val) = self else { return nil }
-        return val
+        switch self {
+        case let .success(val): val
+        case .failure: nil
+        }
     }
     
     var error: Failure? {
-        guard case let .failure(err) = self else { return nil }
-        return err
+        switch self {
+        case .success: nil
+        case let .failure(err): err
+        }
     }
 }
