@@ -16,12 +16,14 @@ public extension DispatchQueue {
         currentQueueLabel == DispatchQueue.main.label
     }
     
-    static func dispatchToMainQueueIfNeeded(block: @escaping (() -> Void)) {
+    static func dispatchToMainQueueIfNeeded(_ operation: @escaping @MainActor () -> Void) {
         if Thread.isMainThread && isMainQueue {
-            block()
+            MainActor.assumeIsolated {
+                operation()
+            }
         } else {
             DispatchQueue.main.async {
-                block()
+                operation()
             }
         }
     }

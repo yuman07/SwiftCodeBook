@@ -69,21 +69,23 @@ public extension UIView {
     }
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
-        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((
-            horizontal: traitCollection.horizontalSizeClass,
-            vertical: traitCollection.verticalSizeClass
-        ))
+        let subject = PassthroughSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>()
         
-        let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, previous: UITraitCollection) in
-            subject.send((
-                horizontal: self.traitCollection.horizontalSizeClass,
-                vertical: self.traitCollection.verticalSizeClass
-            ))
+        let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
+            subject.send((horizontal: view.traitCollection.horizontalSizeClass, vertical: view.traitCollection.verticalSizeClass))
+        }
+        
+        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+            guard let self else { return }
+            subject.send((horizontal: traitCollection.horizontalSizeClass, vertical: traitCollection.verticalSizeClass))
         }
         
         return subject
             .handleEvents(receiveCancel: { [weak self] in
-                self?.unregisterForTraitChanges(token)
+                guard let self else { return }
+                DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+                    self?.unregisterForTraitChanges(token)
+                }
             })
             .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
             .receive(on: DispatchQueue.main)
@@ -115,17 +117,22 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
     func request(_ demand: Subscribers.Demand) {}
     
     func cancel() {
-        subscriber = nil
-        cancelToken?.cancel()
-        cancelToken = nil
+        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+            guard let self else { return }
+            subscriber = nil
+            cancelToken?.cancel()
+            cancelToken = nil
+        }
     }
     
     func attach(host: UIView?) {
-        guard let host else { return }
-        cancelToken = getOrCreateObserver(on: host).$parentWindow
-            .sink { [weak self] window in
-                _ = self?.subscriber?.receive(window)
-            }
+        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+            guard let self, let host else { return }
+            cancelToken = getOrCreateObserver(on: host).$parentWindow
+                .sink { [weak self] window in
+                    _ = self?.subscriber?.receive(window)
+                }
+        }
     }
     
     private func getOrCreateObserver(on host: UIView) -> WindowObserverView {

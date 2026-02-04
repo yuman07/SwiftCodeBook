@@ -75,11 +75,11 @@ final public class CADisplayLinkAnimator: Sendable {
         }
     }
     
-    public func addAnimation(_ animation: @escaping (_ progress: CGFloat) -> Void) {
+    public func addAnimation(_ animation: @escaping @MainActor (_ progress: CGFloat) -> Void) {
         animations.append(animation)
     }
     
-    public func addCompletion(_ completion: @escaping (_ finalPosition: UIViewAnimatingPosition) -> Void) {
+    public func addCompletion(_ completion: @escaping @MainActor (_ finalPosition: UIViewAnimatingPosition) -> Void) {
         completions.append(completion)
     }
     
