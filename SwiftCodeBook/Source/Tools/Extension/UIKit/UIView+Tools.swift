@@ -65,6 +65,29 @@ public extension UIView {
             .removeDuplicates()
             .eraseToAnyPublisher()
     }
+    
+    var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
+        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((
+            horizontal: traitCollection.horizontalSizeClass,
+            vertical: traitCollection.verticalSizeClass
+        ))
+
+        let traits: [UITrait] = [UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]
+        let token = registerForTraitChanges(traits) { (self: Self, previous: UITraitCollection) in
+            subject.send((
+                horizontal: self.traitCollection.horizontalSizeClass,
+                vertical: self.traitCollection.verticalSizeClass
+            ))
+        }
+
+        return subject
+            .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
+            .receive(on: DispatchQueue.main)
+            .handleEvents(receiveCancel: { [weak self] in
+                self?.unregisterForTraitChanges(token)
+            })
+            .eraseToAnyPublisher()
+    }
 }
 
 private final class WindowObserverView: UIView {
