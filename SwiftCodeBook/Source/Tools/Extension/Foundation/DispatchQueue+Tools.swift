@@ -16,7 +16,7 @@ public extension DispatchQueue {
         currentQueueLabel == DispatchQueue.main.label
     }
     
-    static func dispatchToMainQueueIfNeeded(_ operation: @escaping @MainActor () -> Void) {
+    static func dispatchToMainIfNeeded(_ operation: @escaping @MainActor () -> Void) {
         if Thread.isMainThread && isMainQueue {
             MainActor.assumeIsolated {
                 operation()

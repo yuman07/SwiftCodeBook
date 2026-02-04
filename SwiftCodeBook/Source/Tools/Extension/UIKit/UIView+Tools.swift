@@ -75,7 +75,7 @@ public extension UIView {
             subject.send((horizontal: view.traitCollection.horizontalSizeClass, vertical: view.traitCollection.verticalSizeClass))
         }
         
-        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
             guard let self else { return }
             subject.send((horizontal: traitCollection.horizontalSizeClass, vertical: traitCollection.verticalSizeClass))
         }
@@ -83,7 +83,7 @@ public extension UIView {
         return subject
             .handleEvents(receiveCancel: { [weak self] in
                 guard let self else { return }
-                DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+                DispatchQueue.dispatchToMainIfNeeded { [weak self] in
                     self?.unregisterForTraitChanges(token)
                 }
             })
@@ -117,7 +117,7 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
     func request(_ demand: Subscribers.Demand) {}
     
     func cancel() {
-        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
             guard let self else { return }
             subscriber = nil
             cancelToken?.cancel()
@@ -126,7 +126,7 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
     }
     
     func attach(host: UIView?) {
-        DispatchQueue.dispatchToMainQueueIfNeeded { [weak self] in
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
             guard let self, let host else { return }
             cancelToken = getOrCreateObserver(on: host).$parentWindow
                 .sink { [weak self] window in
