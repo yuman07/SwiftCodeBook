@@ -16,9 +16,6 @@ import Foundation
 #if canImport(UIKit)
 import UIKit
 #endif
-#if canImport(WatchKit)
-import WatchKit
-#endif
 
 @frozen public enum CurrentApplication: Sendable {
 #if canImport(AppKit)
@@ -36,78 +33,6 @@ import WatchKit
         return UIImage(named: iconName)
     }
 #endif
-    
-#if os(macOS)
-    @MainActor
-    public static var keyWindow: NSWindow? {
-        NSApplication.shared.keyWindow
-    }
-#elseif os(iOS) || os(tvOS) || os(visionOS)
-    @MainActor
-    @available(iOSApplicationExtension, unavailable)
-    public static var keyWindow: UIWindow? {
-        UIApplication
-            .shared
-            .connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-    }
-#endif
-    
-    @MainActor
-    @available(iOSApplicationExtension, unavailable)
-    public static var keyWindowSize: CGSize {
-#if os(watchOS)
-        WKInterfaceDevice.current().screenBounds.size
-#else
-        keyWindow?.frame.size ?? .zero
-#endif
-    }
-    
-    @MainActor
-    @available(iOSApplicationExtension, unavailable)
-    public static var keyWindowSizePublisher: AnyPublisher<CGSize, Never> {
-#if os(watchOS)
-        Empty().eraseToAnyPublisher()
-#else
-        NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
-            .merge(with: NotificationCenter.default.publisher(for: UIScene.didActivateNotification))
-            .receive(on: DispatchQueue.main)
-            .compactMap({ _ in keyWindow })
-            .flatMap({ $0.publisher(for: \.frame) })
-            .map({ $0.size })
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-#endif
-    }
-    
-    @MainActor
-    @available(iOSApplicationExtension, unavailable)
-    public static var interfaceOrientation: UIInterfaceOrientation {
-#if os(iOS) || os(visionOS)
-        keyWindow?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
-#else
-        .portrait
-#endif
-    }
-    
-    @MainActor
-    @available(iOSApplicationExtension, unavailable)
-    public static var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
-#if os(iOS)
-        NotificationCenter.default.publisher(for: UIWindow.didBecomeKeyNotification)
-            .merge(with: NotificationCenter.default.publisher(for: UIScene.didActivateNotification))
-            .receive(on: DispatchQueue.main)
-            .compactMap({ _ in keyWindow?.windowScene })
-            .flatMap({ $0.publisher(for: \.effectiveGeometry) })
-            .map({ _ in interfaceOrientation })
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-#else
-        Empty().eraseToAnyPublisher()
-#endif
-    }
     
     public static var appDisplayName: String?  {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
@@ -140,22 +65,3 @@ import WatchKit
 #endif
     }
 }
-
-#if os(iOS) || os(visionOS)
-#else
-public enum UIInterfaceOrientation: Int, Sendable {
-    case unknown = 0
-    case portrait = 1
-    case portraitUpsideDown = 2
-    case landscapeLeft = 4
-    case landscapeRight = 3
-    
-    public var isPortrait: Bool {
-        self == .portrait || self == .portraitUpsideDown
-    }
-    
-    public var isLandscape: Bool {
-        self == .landscapeLeft || self == .landscapeRight
-    }
-}
-#endif
