@@ -127,7 +127,7 @@ private struct WindowExtractor: NSViewRepresentable {
     }
 
     final class WindowTrackingView: NSView {
-        var onChange: (@MainActor (CGSize?) -> Void)
+        var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: NSWindow?
         private var cancelToken: AnyCancellable?
 
