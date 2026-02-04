@@ -135,6 +135,7 @@ private struct WindowExtractor: NSViewRepresentable {
             self.onChange = onChange
             super.init(frame: .zero)
             isHidden = true
+            layer?.backgroundColor = .clear
             
             cancelToken = $parentWindow
                 .flatMap({ window -> AnyPublisher<CGSize?, Never> in
@@ -155,6 +156,10 @@ private struct WindowExtractor: NSViewRepresentable {
         override func viewDidMoveToWindow() {
             super.viewDidMoveToWindow()
             parentWindow = window
+        }
+        
+        override func isAccessibilityHidden() -> Bool {
+            true
         }
     }
 }
