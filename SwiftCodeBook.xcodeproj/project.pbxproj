@@ -33,7 +33,7 @@
 		7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1087B029097C2800C13362 /* UIView+Tools.swift */; };
 		7A20D003294D9C560076F89A /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */; };
 		7A20D005294DA8730076F89A /* AutoLayoutDoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */; };
-		7A2A472F2ED80F39005140E1 /* AnimationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */; };
+		7A2A472F2ED80F39005140E1 /* CADisplayLinkAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A472E2ED80F39005140E1 /* CADisplayLinkAnimator.swift */; };
 		7A34972929EE71A100A692C7 /* NSNumber+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */; };
 		7A3757D92F3365AB00FAAC50 /* UIViewController+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3757D82F3365AB00FAAC50 /* UIViewController+Tools.swift */; };
 		7A39349C2E06D3F700428D41 /* NoZoomWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */; };
@@ -121,7 +121,7 @@
 		7A1087B029097C2800C13362 /* UIView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Tools.swift"; sourceTree = "<group>"; };
 		7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.contentMode.swift; sourceTree = "<group>"; };
 		7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutDoAnimation.swift; sourceTree = "<group>"; };
-		7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTimer.swift; sourceTree = "<group>"; };
+		7A2A472E2ED80F39005140E1 /* CADisplayLinkAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkAnimator.swift; sourceTree = "<group>"; };
 		7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNumber+Tools.swift"; sourceTree = "<group>"; };
 		7A3757D82F3365AB00FAAC50 /* UIViewController+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Tools.swift"; sourceTree = "<group>"; };
 		7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoZoomWKWebView.swift; sourceTree = "<group>"; };
@@ -253,7 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				7A20D006294DA9400076F89A /* View */,
-				7A2A472E2ED80F39005140E1 /* AnimationTimer.swift */,
+				7A2A472E2ED80F39005140E1 /* CADisplayLinkAnimator.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -564,7 +564,7 @@
 				7A08D21A2B16DDFC00DE9BCC /* CompareEnum.swift in Sources */,
 				7AD0DC5F290C1C5C0010BBC8 /* HashHandler.swift in Sources */,
 				7AE1E49B2949B583001B3671 /* NSRangeSwiftRange.swift in Sources */,
-				7A2A472F2ED80F39005140E1 /* AnimationTimer.swift in Sources */,
+				7A2A472F2ED80F39005140E1 /* CADisplayLinkAnimator.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
 				7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */,
 				7AB21C1B29A32F900058D526 /* AsyncOperation.swift in Sources */,

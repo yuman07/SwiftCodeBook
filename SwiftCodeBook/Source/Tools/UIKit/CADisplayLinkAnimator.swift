@@ -19,7 +19,7 @@ public enum UIViewAnimatingPosition: Int, Sendable {
 #endif
 
 @MainActor
-final public class AnimationTimer {
+final public class CADisplayLinkAnimator: Sendable {
     private let duration: Duration
     private let cubicBezier: CubicBezier
     private let preferredFrameRateRange: CAFrameRateRange?
@@ -98,7 +98,7 @@ final public class AnimationTimer {
 }
 
 @MainActor
-private struct CubicBezier {
+private struct CubicBezier: Sendable {
     private let ax: CGFloat
     private let bx: CGFloat
     private let cx: CGFloat
