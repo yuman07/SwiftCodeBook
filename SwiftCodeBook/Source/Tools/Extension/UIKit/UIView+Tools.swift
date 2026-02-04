@@ -32,6 +32,10 @@ public extension UIView {
         }
         return nil
     }
+    
+    var interfaceOrientation: UIInterfaceOrientation {
+        window?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
+    }
 }
 
 public extension UIView {
@@ -47,20 +51,6 @@ public extension UIView {
             .flatMap({ window -> AnyPublisher<CGSize?, Never> in
                 guard let window else { return Just(nil).eraseToAnyPublisher() }
                 return window.publisher(for: \.bounds).map(\.size).eraseToAnyPublisher()
-            })
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-    }
-
-    var interfaceOrientation: UIInterfaceOrientation {
-        window?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
-    }
-
-    var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
-        parentWindowPublisher
-            .flatMap({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
-                guard let windowScene = window?.windowScene else { return Just(.unknown).eraseToAnyPublisher() }
-                return windowScene.publisher(for: \.effectiveGeometry).map(\.interfaceOrientation).eraseToAnyPublisher()
             })
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -177,23 +167,4 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
     }
 }
 
-#endif
-
-#if os(iOS) || os(visionOS)
-#else
-public enum UIInterfaceOrientation: Int, Sendable {
-    case unknown = 0
-    case portrait = 1
-    case portraitUpsideDown = 2
-    case landscapeLeft = 4
-    case landscapeRight = 3
-    
-    public var isPortrait: Bool {
-        self == .portrait || self == .portraitUpsideDown
-    }
-    
-    public var isLandscape: Bool {
-        self == .landscapeLeft || self == .landscapeRight
-    }
-}
 #endif
