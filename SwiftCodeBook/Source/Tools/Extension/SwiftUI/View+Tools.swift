@@ -21,7 +21,7 @@ public extension View {
     }
     
     func onSizeChange(_ action: @escaping (_ newSize: CGSize) -> Void) -> some View {
-        self.onGeometryChange(for: CGSize.self) { proxy in
+        onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: { size in
             action(size)
@@ -29,7 +29,7 @@ public extension View {
     }
     
     func onFrameChange(in coordinateSpace: CoordinateSpaceProtocol, _ action: @escaping (_ newFrame: CGRect) -> Void) -> some View {
-        self.onGeometryChange(for: CGRect.self) { proxy in
+        onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: coordinateSpace)
         } action: { frame in
             action(frame)
@@ -37,7 +37,7 @@ public extension View {
     }
 
     func onSafeAreaInsetsChange(_ action: @escaping (_ newSafeAreaInsets: EdgeInsets) -> Void) -> some View {
-        self.onGeometryChange(for: EdgeInsets.self) { proxy in
+        onGeometryChange(for: EdgeInsets.self) { proxy in
             proxy.safeAreaInsets
         } action: { edgeInsets in
             action(edgeInsets)
@@ -90,8 +90,7 @@ private struct WindowExtractor: UIViewRepresentable {
                 })
                 .removeDuplicates()
                 .sink { [weak self] size in
-                    guard let self else { return }
-                    onChange(size)
+                    self?.onChange(size)
                 }
         }
 

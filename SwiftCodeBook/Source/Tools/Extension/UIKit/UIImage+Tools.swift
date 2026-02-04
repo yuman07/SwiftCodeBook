@@ -9,6 +9,7 @@
 import UIKit
 
 public extension UIImage {
+    // TODO: watchos
     static func color(_ color: UIColor, size: CGSize = .one) -> UIImage {
         UIGraphicsImageRenderer(size: size.validSelfOrOne).image { context in
             color.setFill()
@@ -16,6 +17,7 @@ public extension UIImage {
         }
     }
     
+    // TODO: watchos
     func fixOrientation() -> UIImage {
         guard imageOrientation != .up else { return self }
         return UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in

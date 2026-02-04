@@ -5,7 +5,7 @@
 //  Created by yuman on 2023/1/18.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 public extension UIStackView {

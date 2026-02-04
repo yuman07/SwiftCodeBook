@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/10/26.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import Combine
 import UIKit
 
@@ -56,6 +56,16 @@ public extension UIView {
             .eraseToAnyPublisher()
     }
     
+    var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
+        parentWindowPublisher
+            .flatMap({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
+                guard let windowScene = window?.windowScene else { return Just(.unknown).eraseToAnyPublisher() }
+                return windowScene.publisher(for: \.effectiveGeometry).map(\.interfaceOrientation).eraseToAnyPublisher()
+            })
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+    
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
         let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((
             horizontal: traitCollection.horizontalSizeClass,
@@ -73,8 +83,7 @@ public extension UIView {
             .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveCancel: { [weak self] in
-                guard let self else { return }
-                unregisterForTraitChanges(token)
+                self?.unregisterForTraitChanges(token)
             })
             .eraseToAnyPublisher()
     }
