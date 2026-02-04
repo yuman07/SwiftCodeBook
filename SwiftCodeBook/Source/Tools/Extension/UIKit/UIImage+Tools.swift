@@ -9,20 +9,33 @@
 import UIKit
 
 public extension UIImage {
-    // TODO: watchos
     static func color(_ color: UIColor, size: CGSize = .one) -> UIImage {
+#if os(iOS) || os(tvOS) || os(visionOS)
         UIGraphicsImageRenderer(size: size.validSelfOrOne).image { context in
             color.setFill()
             context.fill(CGRect(origin: .zero, size: size))
         }
+#else
+        UIGraphicsBeginImageContext(size)
+        defer { UIGraphicsEndImageContext() }
+        color.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+#endif
     }
     
-    // TODO: watchos
     func fixOrientation() -> UIImage {
         guard imageOrientation != .up else { return self }
+#if os(iOS) || os(tvOS) || os(visionOS)
         return UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in
             draw(at: .zero)
         }
+#else
+        UIGraphicsBeginImageContextWithOptions(size, imageRendererFormat.opaque, imageRendererFormat.scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(at: .zero)
+        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+#endif
     }
     
     convenience init?(filePath: String) {
