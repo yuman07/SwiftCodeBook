@@ -41,8 +41,8 @@ public extension UIView {
 public extension UIView {
     var parentWindowPublisher: AnyPublisher<UIWindow?, Never> {
         WindowChangePublisher(host: self)
-            .receive(on: DispatchQueue.main)
             .removeDuplicates()
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
@@ -53,6 +53,7 @@ public extension UIView {
                 return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
             })
             .removeDuplicates()
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
@@ -63,6 +64,7 @@ public extension UIView {
                 return windowScene.publisher(for: \.effectiveGeometry).map(\.interfaceOrientation).eraseToAnyPublisher()
             })
             .removeDuplicates()
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
@@ -80,11 +82,11 @@ public extension UIView {
         }
 
         return subject
-            .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
-            .receive(on: DispatchQueue.main)
             .handleEvents(receiveCancel: { [weak self] in
                 self?.unregisterForTraitChanges(token)
             })
+            .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }
