@@ -73,14 +73,14 @@ public extension UIView {
             horizontal: traitCollection.horizontalSizeClass,
             vertical: traitCollection.verticalSizeClass
         ))
-
+        
         let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, previous: UITraitCollection) in
             subject.send((
                 horizontal: self.traitCollection.horizontalSizeClass,
                 vertical: self.traitCollection.verticalSizeClass
             ))
         }
-
+        
         return subject
             .handleEvents(receiveCancel: { [weak self] in
                 self?.unregisterForTraitChanges(token)
@@ -91,13 +91,60 @@ public extension UIView {
     }
 }
 
+private struct WindowChangePublisher: Publisher {
+    typealias Output = UIWindow?
+    typealias Failure = Never
+    
+    weak var host: UIView?
+    
+    func receive<S>(subscriber: S) where S: Subscriber, S.Input == UIWindow?, S.Failure == Never {
+        let subscription = WindowSubscription(subscriber: subscriber)
+        subscriber.receive(subscription: subscription)
+        subscription.attach(host: host)
+    }
+}
+
+private final class WindowSubscription<S: Subscriber>: Subscription where S.Input == UIWindow?, S.Failure == Never {
+    private var subscriber: S?
+    private var cancelToken: AnyCancellable?
+    
+    init(subscriber: S) {
+        self.subscriber = subscriber
+    }
+    
+    func request(_ demand: Subscribers.Demand) {}
+    
+    func cancel() {
+        subscriber = nil
+        cancelToken?.cancel()
+        cancelToken = nil
+    }
+    
+    func attach(host: UIView?) {
+        guard let host else { return }
+        cancelToken = getOrCreateObserver(on: host).$parentWindow
+            .sink { [weak self] window in
+                _ = self?.subscriber?.receive(window)
+            }
+    }
+    
+    private func getOrCreateObserver(on host: UIView) -> WindowObserverView {
+        if let windowObserverView = host.subviews.compactMap({ $0 as? WindowObserverView }).first {
+            return windowObserverView
+        }
+        let observer = WindowObserverView(frame: .zero)
+        host.addSubview(observer)
+        return observer
+    }
+}
+
 private final class WindowObserverView: UIView {
     @Published var parentWindow: UIWindow?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         isHidden = true
@@ -106,67 +153,10 @@ private final class WindowObserverView: UIView {
         isAccessibilityElement = false
         accessibilityElementsHidden = true
     }
-
+    
     override func didMoveToWindow() {
         super.didMoveToWindow()
         parentWindow = window
-    }
-}
-
-private struct WindowChangePublisher: Publisher {
-    typealias Output = UIWindow?
-    typealias Failure = Never
-
-    weak var host: UIView?
-
-    func receive<S>(subscriber: S) where S: Subscriber, S.Input == UIWindow?, S.Failure == Never {
-        subscriber.receive(subscription: WindowSubscription(
-            host: host,
-            subscriber: subscriber
-        ))
-    }
-}
-
-private final class WindowSubscription<S: Subscriber>: Subscription where S.Input == UIWindow?, S.Failure == Never {
-    private weak var host: UIView?
-    private var subscriber: S?
-    private var cancelToken: AnyCancellable?
-
-    init(host: UIView?, subscriber: S) {
-        self.host = host
-        self.subscriber = subscriber
-        attach()
-    }
-
-    func request(_ demand: Subscribers.Demand) {}
-
-    func cancel() {
-        cancelToken?.cancel()
-        cancelToken = nil
-        subscriber = nil
-    }
-
-    private func attach() {
-        guard let host else { return }
-        let observer = getOrCreateObserver(on: host)
-        
-        _ = subscriber?.receive(host.window)
-        
-        cancelToken = observer.$parentWindow
-            .sink { [weak self] window in
-                guard let self else { return }
-                _ = subscriber?.receive(window)
-            }
-    }
-    
-    private func getOrCreateObserver(on host: UIView) -> WindowObserverView {
-        if let windowObserverView = host.subviews.compactMap({ $0 as? WindowObserverView }).first {
-            return windowObserverView
-        }
-
-        let observer = WindowObserverView(frame: .zero)
-        host.addSubview(observer)
-        return observer
     }
 }
 #endif
