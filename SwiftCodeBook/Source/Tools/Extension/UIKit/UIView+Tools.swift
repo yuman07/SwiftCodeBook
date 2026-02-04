@@ -69,22 +69,22 @@ public extension UIView {
     }
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
-        let subject = PassthroughSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>()
-        
-        let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
-            subject.send((horizontal: view.traitCollection.horizontalSizeClass, vertical: view.traitCollection.verticalSizeClass))
-        }
+        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((.unspecified, .unspecified))
         
         DispatchQueue.dispatchToMainIfNeeded { [weak self] in
             guard let self else { return }
-            subject.send((horizontal: traitCollection.horizontalSizeClass, vertical: traitCollection.verticalSizeClass))
+            subject.send((traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass))
+        }
+        
+        let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
+            subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
         }
         
         return subject
             .handleEvents(receiveCancel: { [weak self] in
                 guard let self else { return }
-                DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-                    self?.unregisterForTraitChanges(token)
+                DispatchQueue.dispatchToMainIfNeeded {
+                    self.unregisterForTraitChanges(token)
                 }
             })
             .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }

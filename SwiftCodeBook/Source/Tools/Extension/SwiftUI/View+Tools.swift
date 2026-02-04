@@ -26,7 +26,7 @@ public extension View {
         }
     }
     
-    func onSizeChange(_ action: @escaping (_ newSize: CGSize) -> Void) -> some View {
+    func onSizeChange(_ action: @escaping @MainActor (_ newSize: CGSize) -> Void) -> some View {
         onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: { size in
@@ -34,7 +34,7 @@ public extension View {
         }
     }
     
-    func onFrameChange(in coordinateSpace: CoordinateSpaceProtocol, _ action: @escaping (_ newFrame: CGRect) -> Void) -> some View {
+    func onFrameChange(in coordinateSpace: CoordinateSpaceProtocol, _ action: @escaping @MainActor (_ newFrame: CGRect) -> Void) -> some View {
         onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: coordinateSpace)
         } action: { frame in
@@ -42,7 +42,7 @@ public extension View {
         }
     }
 
-    func onSafeAreaInsetsChange(_ action: @escaping (_ newSafeAreaInsets: EdgeInsets) -> Void) -> some View {
+    func onSafeAreaInsetsChange(_ action: @escaping @MainActor (_ newSafeAreaInsets: EdgeInsets) -> Void) -> some View {
         onGeometryChange(for: EdgeInsets.self) { proxy in
             proxy.safeAreaInsets
         } action: { edgeInsets in
@@ -79,7 +79,7 @@ private struct WindowExtractor: UIViewRepresentable {
     }
 
     final class WindowTrackingView: UIView {
-        var onChange: (@MainActor (CGSize?) -> Void)
+        var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: UIWindow?
         private var cancelToken: AnyCancellable?
 
