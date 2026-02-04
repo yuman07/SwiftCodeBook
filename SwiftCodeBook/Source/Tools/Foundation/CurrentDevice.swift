@@ -6,39 +6,24 @@
 //
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
+#if canImport(WatchKit)
+import WatchKit
+#endif
 
 @frozen public enum CurrentDevice: Sendable {
-    public static func systemName(treatIPadOSAsIOS: Bool = false) -> String {
-        #if os(watchOS)
-        return "watchOS"
-
-        #elseif os(tvOS)
-        return "tvOS"
-
-        #elseif os(visionOS)
-        return "visionOS"
-
-        #elseif os(macOS)
-        return "macOS"
-
-        #elseif os(iOS)
-        #if targetEnvironment(macCatalyst)
-        return "macOS"
-        #else
-        if ProcessInfo.processInfo.isiOSAppOnMac {
-            return "macOS"
-        }
-
-        if deviceModel.lowercased().contains("ipad") {
-            return treatIPadOSAsIOS ? "iOS" : "iPadOS"
-        } else {
-            return "iOS"
-        }
-        #endif
-
-        #else
-        return "unknown"
-        #endif
+    public static var systemName: String {
+#if os(macOS)
+        "macOS"
+#elseif os(iOS) || os(tvOS) || os(visionOS)
+        UIDevice.current.systemName
+#elseif os(watchOS)
+        WKInterfaceDevice.current().systemName
+#else
+        "Unknown"
+#endif
     }
     
     public static var systemVersion: String {

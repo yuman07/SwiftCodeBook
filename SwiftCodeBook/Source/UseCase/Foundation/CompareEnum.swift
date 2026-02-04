@@ -14,7 +14,7 @@ private enum Content {
 
 func compareEnum() -> Bool {
     let contentA = Content.text("123")
-    let contentB = Content.image(url: .blank)
+    let contentB = Content.image(url: .init(filePath: ""))
     
     switch (contentA, contentB) {
     case let (.text(ls), .text(rs)):
