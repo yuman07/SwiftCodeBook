@@ -54,7 +54,7 @@ public extension View {
 public extension View {
     func onWindowSizeChanged(_ handler: @escaping @MainActor (CGSize?) -> Void) -> some View {
 #if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
-        background(WindowExtractor(onChange: handler).hidden().accessibilityHidden(true))
+        background(WindowExtractor(onChange: handler).allowsHitTesting(false).accessibilityHidden(true))
 #elseif os(watchOS)
         DispatchQueue.main.async {
             handler(WKInterfaceDevice.current().screenBounds.size)
