@@ -72,8 +72,7 @@ public extension UIView {
             vertical: traitCollection.verticalSizeClass
         ))
 
-        let traits: [UITrait] = [UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]
-        let token = registerForTraitChanges(traits) { (self: Self, previous: UITraitCollection) in
+        let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, previous: UITraitCollection) in
             subject.send((
                 horizontal: self.traitCollection.horizontalSizeClass,
                 vertical: self.traitCollection.verticalSizeClass
