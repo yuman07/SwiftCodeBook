@@ -169,5 +169,4 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
         return observer
     }
 }
-
 #endif
