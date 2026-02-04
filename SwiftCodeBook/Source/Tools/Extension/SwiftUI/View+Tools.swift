@@ -5,7 +5,11 @@
 //  Created by yuman on 2024/3/27.
 //
 
+import Combine
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public extension View {
     @ViewBuilder func modify(@ViewBuilder _ transform: (Self) -> (some View)?) -> some View {
@@ -40,3 +44,65 @@ public extension View {
         }
     }
 }
+
+public extension View {
+    func onWindowSizeChanged(_ handler: @escaping @MainActor (CGSize?) -> Void) -> some View {
+#if os(iOS) || os(tvOS) || os(visionOS)
+        background(WindowExtractor(onChange: handler))
+#elseif os(macOS)
+        self
+#else
+        self
+#endif
+    }
+}
+
+#if os(iOS) || os(tvOS) || os(visionOS)
+private struct WindowExtractor: UIViewRepresentable {
+    let onChange: @MainActor (CGSize?) -> Void
+
+    func makeUIView(context: Context) -> WindowTrackingView {
+        WindowTrackingView(onChange: onChange)
+    }
+
+    func updateUIView(_ uiView: WindowTrackingView, context: Context) {
+        uiView.onChange = onChange
+    }
+
+    final class WindowTrackingView: UIView {
+        var onChange: (@MainActor (CGSize?) -> Void)
+        @Published private var parentWindow: UIWindow?
+        private var cancelToken: AnyCancellable?
+
+        init(onChange: @escaping @MainActor (CGSize?) -> Void) {
+            self.onChange = onChange
+            super.init(frame: .zero)
+            isHidden = true
+            backgroundColor = .clear
+            isUserInteractionEnabled = false
+            isAccessibilityElement = false
+            accessibilityElementsHidden = true
+            
+            cancelToken = $parentWindow
+                .flatMap({ window -> AnyPublisher<CGSize?, Never> in
+                    guard let window else { return Just(nil).eraseToAnyPublisher() }
+                    return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
+                })
+                .removeDuplicates()
+                .sink { [weak self] size in
+                    guard let self else { return }
+                    onChange(size)
+                }
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            parentWindow = window
+        }
+    }
+}
+#endif

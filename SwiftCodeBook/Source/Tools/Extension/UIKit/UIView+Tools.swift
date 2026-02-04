@@ -50,7 +50,7 @@ public extension UIView {
         parentWindowPublisher
             .flatMap({ window -> AnyPublisher<CGSize?, Never> in
                 guard let window else { return Just(nil).eraseToAnyPublisher() }
-                return window.publisher(for: \.bounds).map(\.size).eraseToAnyPublisher()
+                return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
             })
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -73,7 +73,8 @@ public extension UIView {
             .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveCancel: { [weak self] in
-                self?.unregisterForTraitChanges(token)
+                guard let self else { return }
+                unregisterForTraitChanges(token)
             })
             .eraseToAnyPublisher()
     }
@@ -93,7 +94,6 @@ private final class WindowObserverView: UIView {
         isUserInteractionEnabled = false
         isAccessibilityElement = false
         accessibilityElementsHidden = true
-        translatesAutoresizingMaskIntoConstraints = false
     }
 
     override func didMoveToWindow() {
@@ -155,14 +155,6 @@ private final class WindowSubscription<S: Subscriber>: Subscription where S.Inpu
 
         let observer = WindowObserverView(frame: .zero)
         host.addSubview(observer)
-
-        NSLayoutConstraint.activate([
-            observer.topAnchor.constraint(equalTo: host.topAnchor),
-            observer.leadingAnchor.constraint(equalTo: host.leadingAnchor),
-            observer.widthAnchor.constraint(equalToConstant: 0),
-            observer.heightAnchor.constraint(equalToConstant: 0),
-        ])
-        
         return observer
     }
 }
