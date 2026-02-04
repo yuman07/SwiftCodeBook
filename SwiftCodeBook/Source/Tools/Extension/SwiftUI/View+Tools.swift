@@ -5,6 +5,9 @@
 //  Created by yuman on 2024/3/27.
 //
 
+#if canImport(AppKit)
+import AppKit
+#endif
 import Combine
 import SwiftUI
 #if canImport(UIKit)
@@ -47,10 +50,8 @@ public extension View {
 
 public extension View {
     func onWindowSizeChanged(_ handler: @escaping @MainActor (CGSize?) -> Void) -> some View {
-#if os(iOS) || os(tvOS) || os(visionOS)
-        background(WindowExtractor(onChange: handler))
-#elseif os(macOS)
-        self
+#if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
+        background(WindowExtractor(onChange: handler).hidden().accessibilityHidden(true))
 #else
         self
 #endif
@@ -89,6 +90,7 @@ private struct WindowExtractor: UIViewRepresentable {
                     return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
                 })
                 .removeDuplicates()
+                .receive(on: DispatchQueue.main)
                 .sink { [weak self] size in
                     self?.onChange(size)
                 }
@@ -100,6 +102,50 @@ private struct WindowExtractor: UIViewRepresentable {
 
         override func didMoveToWindow() {
             super.didMoveToWindow()
+            parentWindow = window
+        }
+    }
+}
+#elseif os(macOS)
+private struct WindowExtractor: NSViewRepresentable {
+    let onChange: @MainActor (CGSize?) -> Void
+
+    func makeNSView(context: Context) -> WindowTrackingView {
+        WindowTrackingView(onChange: onChange)
+    }
+
+    func updateNSView(_ nsView: WindowTrackingView, context: Context) {
+        nsView.onChange = onChange
+    }
+
+    final class WindowTrackingView: NSView {
+        var onChange: (@MainActor (CGSize?) -> Void)
+        @Published private var parentWindow: NSWindow?
+        private var cancelToken: AnyCancellable?
+
+        init(onChange: @escaping @MainActor (CGSize?) -> Void) {
+            self.onChange = onChange
+            super.init(frame: .zero)
+            isHidden = true
+            
+            cancelToken = $parentWindow
+                .flatMap({ window -> AnyPublisher<CGSize?, Never> in
+                    guard let window else { return Just(nil).eraseToAnyPublisher() }
+                    return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
+                })
+                .removeDuplicates()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] size in
+                    self?.onChange(size)
+                }
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
             parentWindow = window
         }
     }
