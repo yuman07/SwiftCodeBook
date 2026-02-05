@@ -70,24 +70,16 @@ public extension UIView {
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
         let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((.unspecified, .unspecified))
-        var token: UITraitChangeRegistration?
+        
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
+            guard let self else { return }
+            subject.send((traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass))
+            _ = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
+                subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
+            }
+        }
         
         return subject
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                guard let self else { return }
-                DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-                    guard let self else { return }
-                    subject.send((traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass))
-                    token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
-                        subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
-                    }
-                }
-            }, receiveCancel: { [weak self] in
-                guard let self else { return }
-                DispatchQueue.dispatchToMainIfNeeded {
-                    token.flatMap { self.unregisterForTraitChanges($0) }
-                }
-            })
             .removeDuplicates { $0.horizontal == $1.horizontal && $0.vertical == $1.vertical }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -95,24 +87,16 @@ public extension UIView {
     
     var userInterfaceStylePublisher: AnyPublisher<UIUserInterfaceStyle, Never> {
         let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(.unspecified)
-        var token: UITraitChangeRegistration?
+        
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
+            guard let self else { return }
+            subject.send(traitCollection.userInterfaceStyle)
+            _ = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
+                subject.send(view.traitCollection.userInterfaceStyle)
+            }
+        }
         
         return subject
-            .handleEvents(receiveSubscription: { [weak self] _ in
-                guard let self else { return }
-                DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-                    guard let self else { return }
-                    subject.send(traitCollection.userInterfaceStyle)
-                    token = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
-                        subject.send(view.traitCollection.userInterfaceStyle)
-                    }
-                }
-            }, receiveCancel: { [weak self] in
-                guard let self else { return }
-                DispatchQueue.dispatchToMainIfNeeded {
-                    token.flatMap { self.unregisterForTraitChanges($0) }
-                }
-            })
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
