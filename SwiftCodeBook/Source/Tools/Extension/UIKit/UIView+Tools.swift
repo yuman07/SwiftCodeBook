@@ -40,25 +40,20 @@ public extension UIView {
 
 public extension UIView {
     var parentWindowPublisher: AnyPublisher<UIWindow?, Never> {
-        let subject = CurrentValueSubject<UIWindow?, Never>(nil)
+        let subject = CurrentValueSubject<UIWindow?, Never>(window)
         
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subject.send(window)
-            
-            let observer: WindowObserverView
-            if let windowObserverView = subviews.compactMap({ $0 as? WindowObserverView }).first {
-                observer = windowObserverView
-            } else {
-                let windowObserverView = WindowObserverView()
-                addSubview(windowObserverView)
-                observer = windowObserverView
-            }
-            
-            observer.$parentWindow
-                .sink { subject.send($0) }
-                .store(in: observer.cancelBag)
+        let observer: WindowObserverView
+        if let windowObserverView = subviews.compactMap({ $0 as? WindowObserverView }).first {
+            observer = windowObserverView
+        } else {
+            let windowObserverView = WindowObserverView()
+            addSubview(windowObserverView)
+            observer = windowObserverView
         }
+        
+        observer.$parentWindow
+            .sink { subject.send($0) }
+            .store(in: observer.cancelBag)
         
         return subject
             .removeDuplicates()
@@ -89,14 +84,12 @@ public extension UIView {
     }
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
-        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((.unspecified, .unspecified))
+        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>(
+            (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass)
+        )
         
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subject.send((traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass))
-            _ = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
-                subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
-            }
+        _ = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
+            subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
         }
         
         return subject
@@ -106,14 +99,10 @@ public extension UIView {
     }
     
     var userInterfaceStylePublisher: AnyPublisher<UIUserInterfaceStyle, Never> {
-        let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(.unspecified)
+        let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(traitCollection.userInterfaceStyle)
         
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subject.send(traitCollection.userInterfaceStyle)
-            _ = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
-                subject.send(view.traitCollection.userInterfaceStyle)
-            }
+        _ = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
+            subject.send(view.traitCollection.userInterfaceStyle)
         }
         
         return subject
