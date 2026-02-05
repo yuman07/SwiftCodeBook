@@ -57,12 +57,15 @@ public extension HashHandler {
         
         var isEnd = false
         var hasher = algorithm.hasher
+        var count = 0
         while !isEnd {
             try Task.checkCancellation()
             try autoreleasepool {
                 guard let data = try handler.read(upToCount: 16384), !data.isEmpty else { return isEnd = true }
                 hasher.update(data: data)
             }
+            count += 1
+            if count.isMultiple(of: 500) { await Task.yield() }
         }
         
         try Task.checkCancellation()

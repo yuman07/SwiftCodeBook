@@ -50,11 +50,14 @@ public extension FileManager {
             physicalBytes += UInt64(max(0, values.fileAllocatedSize ?? 0))
         }
         
+        var count = 0
         while let obj = enumerator.nextObject() {
             try Task.checkCancellation()
             guard let url = obj as? URL, let values = try? url.resourceValues(forKeys: keys) else { continue }
             logicalBytes += UInt64(max(0, values.fileSize ?? 0))
             physicalBytes += UInt64(max(0, values.fileAllocatedSize ?? 0))
+            count += 1
+            if count.isMultiple(of: 100) { await Task.yield() }
         }
         
         return (logicalBytes, physicalBytes)
