@@ -64,4 +64,39 @@ import UIKit
         nil
 #endif
     }
+    
+    private static let gcdMemoryWarningPublisher = GCDMemoryWarningPublisher()
+    public static var memoryWarningPublisher: AnyPublisher<Void, Never> {
+#if os(iOS) || os(tvOS) || os(visionOS)
+        let systemNotification = NotificationCenter
+            .default
+            .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
+            .map({ _ in })
+            .eraseToAnyPublisher()
+#else
+        let systemNotification = Empty().eraseToAnyPublisher()
+#endif
+        return gcdMemoryWarningPublisher.subject
+            .eraseToAnyPublisher()
+            .merge(with: systemNotification)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+}
+
+private final class GCDMemoryWarningPublisher {
+    let subject = PassthroughSubject<Void, Never>()
+    private let source: DispatchSourceMemoryPressure
+    
+    init() {
+        source = DispatchSource.makeMemoryPressureSource(eventMask: .all, queue: .main)
+        source.setEventHandler { [weak self] in
+            guard let self else { return }
+            let level = source.data
+            if level.contains(.warning) || level.contains(.critical) {
+                subject.send()
+            }
+        }
+        source.resume()
+    }
 }
