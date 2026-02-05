@@ -16,14 +16,17 @@ import WatchKit
 @frozen public enum CurrentDevice: Sendable {}
 
 public extension CurrentDevice {
-    @MainActor
     static let systemName = {
-#if os(macOS)
+#if os(iOS)
+        "iOS"
+#elseif os(macOS)
         "macOS"
-#elseif os(iOS) || os(tvOS) || os(visionOS)
-        UIDevice.current.systemName
+#elseif os(tvOS)
+        "tvOS"
+#elseif os(visionOS)
+        "visionOS"
 #elseif os(watchOS)
-        WKInterfaceDevice.current().systemName
+        "watchOS"
 #else
         "unknown"
 #endif
