@@ -36,21 +36,21 @@ public extension CurrentApplication {
     }
 #endif
     
-    static var appDisplayName: String?  {
+    static let appDisplayName = {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
-    }
+    }()
     
-    static var appVersion: String? {
+    static let appVersion = {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-    }
+    }()
     
-    static var appBuildNumber: Int? {
+    static let appBuildNumber = {
         (Bundle.main.infoDictionary?["CFBundleVersion"] as? String).flatMap { Int($0) }
-    }
+    }()
     
-    static var appBundleIdentifier: String? {
+    static let appBundleIdentifier = {
         Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
-    }
+    }()
     
     static var usedMemoryInByte: UInt64? {
 #if canImport(Darwin)

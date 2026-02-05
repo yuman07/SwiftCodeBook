@@ -17,7 +17,7 @@ import WatchKit
 
 public extension CurrentDevice {
     @MainActor
-    static var systemName: String {
+    static let systemName = {
 #if os(macOS)
         "macOS"
 #elseif os(iOS) || os(tvOS) || os(visionOS)
@@ -25,46 +25,46 @@ public extension CurrentDevice {
 #elseif os(watchOS)
         WKInterfaceDevice.current().systemName
 #else
-        "Unknown"
+        "unknown"
 #endif
-    }
+    }()
     
-    static var systemVersion: String {
+    static let systemVersion = {
         let info = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(info.majorVersion).\(info.minorVersion)"
         return info.patchVersion == 0 ? version : version + ".\(info.patchVersion)"
-    }
+    }()
     
-    static var isSimulator: Bool {
+    static let isSimulator = {
 #if targetEnvironment(simulator)
         true
 #else
         false
 #endif
-    }
+    }()
     
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
-    static var deviceModel: String {
+    static let deviceModel = {
         if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
             var info = utsname()
             uname(&info)
             let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            return String(cString: chars, encoding: .utf8) ?? ""
+            return String(cString: chars, encoding: .utf8) ?? "unknown"
         }
-    }
+    }()
     
-    static var is64BitDevice: Bool {
+    static let is64BitDevice = {
         Int.bitWidth == 64
-    }
+    }()
 }
 
 public extension CurrentDevice {
-    static var totalDiskSpaceInByte: UInt64? {
+    static let totalDiskSpaceInByte = {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
-    }
+    }()
     
     static var freeDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
