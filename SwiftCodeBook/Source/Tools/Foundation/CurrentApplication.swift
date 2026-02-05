@@ -70,17 +70,17 @@ public extension CurrentApplication {
     private static let gcdMemoryWarningPublisher = GCDMemoryWarningPublisher()
     static var memoryWarningPublisher: AnyPublisher<Void, Never> {
 #if os(iOS) || os(tvOS) || os(visionOS)
-        let systemNotification = NotificationCenter
+        let didReceiveMemoryWarningNotification = NotificationCenter
             .default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
             .map({ _ in })
             .eraseToAnyPublisher()
 #else
-        let systemNotification = Empty().eraseToAnyPublisher()
+        let didReceiveMemoryWarningNotification = Empty().eraseToAnyPublisher()
 #endif
         return gcdMemoryWarningPublisher.subject
             .eraseToAnyPublisher()
-            .merge(with: systemNotification)
+            .merge(with: didReceiveMemoryWarningNotification)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
