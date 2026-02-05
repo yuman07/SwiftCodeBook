@@ -114,66 +114,66 @@ private struct WindowChangePublisher: Publisher {
         subscriber.receive(subscription: subscription)
         subscription.attach(host: host)
     }
-}
+    
+    private final class WindowSubscription<S: Subscriber>: Subscription where S.Input == UIWindow?, S.Failure == Never {
+        private var subscriber: S?
+        private var cancelToken: AnyCancellable?
+        
+        init(subscriber: S) {
+            self.subscriber = subscriber
+        }
+        
+        func request(_ demand: Subscribers.Demand) {}
+        
+        func cancel() {
+            DispatchQueue.dispatchToMainIfNeeded { [weak self] in
+                guard let self else { return }
+                subscriber = nil
+                cancelToken?.cancel()
+                cancelToken = nil
+            }
+        }
+        
+        func attach(host: UIView?) {
+            DispatchQueue.dispatchToMainIfNeeded { [weak self] in
+                guard let self, let host else { return }
+                cancelToken = getOrCreateObserver(on: host).$parentWindow
+                    .sink { [weak self] window in
+                        _ = self?.subscriber?.receive(window)
+                    }
+            }
+        }
+        
+        private func getOrCreateObserver(on host: UIView) -> WindowObserverView {
+            if let windowObserverView = host.subviews.compactMap({ $0 as? WindowObserverView }).first {
+                return windowObserverView
+            }
+            let observer = WindowObserverView(frame: .zero)
+            host.addSubview(observer)
+            return observer
+        }
+    }
 
-private final class WindowSubscription<S: Subscriber>: Subscription where S.Input == UIWindow?, S.Failure == Never {
-    private var subscriber: S?
-    private var cancelToken: AnyCancellable?
-    
-    init(subscriber: S) {
-        self.subscriber = subscriber
-    }
-    
-    func request(_ demand: Subscribers.Demand) {}
-    
-    func cancel() {
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subscriber = nil
-            cancelToken?.cancel()
-            cancelToken = nil
+    private final class WindowObserverView: UIView {
+        @Published var parentWindow: UIWindow?
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
-    }
-    
-    func attach(host: UIView?) {
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self, let host else { return }
-            cancelToken = getOrCreateObserver(on: host).$parentWindow
-                .sink { [weak self] window in
-                    _ = self?.subscriber?.receive(window)
-                }
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            isHidden = true
+            backgroundColor = .clear
+            isUserInteractionEnabled = false
+            isAccessibilityElement = false
+            accessibilityElementsHidden = true
         }
-    }
-    
-    private func getOrCreateObserver(on host: UIView) -> WindowObserverView {
-        if let windowObserverView = host.subviews.compactMap({ $0 as? WindowObserverView }).first {
-            return windowObserverView
+        
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            parentWindow = window
         }
-        let observer = WindowObserverView(frame: .zero)
-        host.addSubview(observer)
-        return observer
-    }
-}
-
-private final class WindowObserverView: UIView {
-    @Published var parentWindow: UIWindow?
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        isHidden = true
-        backgroundColor = .clear
-        isUserInteractionEnabled = false
-        isAccessibilityElement = false
-        accessibilityElementsHidden = true
-    }
-    
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-        parentWindow = window
     }
 }
 #endif
