@@ -40,8 +40,6 @@ public extension UIView {
 
 public extension UIView {
     var parentWindowPublisher: AnyPublisher<UIWindow?, Never> {
-        let subject = CurrentValueSubject<UIWindow?, Never>(window)
-        
         let observer: WindowObserverView
         if let windowObserverView = subviews.compactMap({ $0 as? WindowObserverView }).first {
             observer = windowObserverView
@@ -51,11 +49,7 @@ public extension UIView {
             observer = windowObserverView
         }
         
-        observer.$parentWindow
-            .sink { subject.send($0) }
-            .store(in: observer.cancelBag)
-        
-        return subject
+        return observer.$parentWindow
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -114,7 +108,6 @@ public extension UIView {
 
 private final class WindowObserverView: UIView {
     @Published var parentWindow: UIWindow?
-    let cancelBag = CancelBag()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
