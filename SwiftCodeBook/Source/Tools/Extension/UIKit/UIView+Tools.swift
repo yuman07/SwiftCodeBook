@@ -69,12 +69,9 @@ public extension UIView {
     }
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
-        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>((.unspecified, .unspecified))
-        
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subject.send((traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass))
-        }
+        let subject = CurrentValueSubject<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never>(
+            (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass)
+        )
         
         let token = registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (view: Self, _) in
             subject.send((view.traitCollection.horizontalSizeClass, view.traitCollection.verticalSizeClass))
@@ -93,12 +90,7 @@ public extension UIView {
     }
     
     var userInterfaceStylePublisher: AnyPublisher<UIUserInterfaceStyle, Never> {
-        let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(.unspecified)
-        
-        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
-            guard let self else { return }
-            subject.send(traitCollection.userInterfaceStyle)
-        }
+        let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(traitCollection.userInterfaceStyle)
         
         let token = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
             subject.send(view.traitCollection.userInterfaceStyle)
