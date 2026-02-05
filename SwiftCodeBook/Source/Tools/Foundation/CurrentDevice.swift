@@ -52,7 +52,7 @@ public extension CurrentDevice {
             var info = utsname()
             uname(&info)
             let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            return String(cString: chars)
+            return String(cString: chars, encoding: .utf8) ?? ""
         }
     }
     

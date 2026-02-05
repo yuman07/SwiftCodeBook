@@ -33,14 +33,6 @@ public extension View {
             action(size)
         }
     }
-    
-    func onFrameChange(in coordinateSpace: CoordinateSpaceProtocol, _ action: @escaping @MainActor (_ newFrame: CGRect) -> Void) -> some View {
-        onGeometryChange(for: CGRect.self) { proxy in
-            proxy.frame(in: coordinateSpace)
-        } action: { frame in
-            action(frame)
-        }
-    }
 
     func onSafeAreaInsetsChange(_ action: @escaping @MainActor (_ newSafeAreaInsets: EdgeInsets) -> Void) -> some View {
         onGeometryChange(for: EdgeInsets.self) { proxy in
