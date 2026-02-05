@@ -19,22 +19,21 @@ import Foundation
 // 要解决这个case，需要让actor执行方法时不能有其他caller在await，即A全部执行完，B才开始执行
 // 如果想实现A全部执行完，再执行B，则可以使用AsyncStream实现
 
-final class SerialTaskAndActor {
+final class SerialTaskAndActor: Sendable {
     private let (stream, continuation) = AsyncStream<String>.makeStream()
     private let networkService = NetworkService()
 
     init() {
-        // TODO: yuman
-//        Task {
-//            // 这里的for await其实保证了两件事：
-//            // 1) 事件按顺序从 AsyncStream 取出
-//            // 2) 每次 await sendRequest 完成后，才会继续下一次循环
-//            // 因此也能保证actor里的sendRequest的调用顺序和实际执行顺序一致
-//            // 注意这也保证了networkService.sendRequest不会发生重入，即一定是上一个全部执行完了才会执行下一个
-//            for await text in stream {
-//                await networkService.sendRequest(for: text)
-//            }
-//        }
+        Task {
+            // 这里的for await其实保证了两件事：
+            // 1) 事件按顺序从 AsyncStream 取出
+            // 2) 每次 await sendRequest 完成后，才会继续下一次循环
+            // 因此也能保证actor里的sendRequest的调用顺序和实际执行顺序一致
+            // 注意这也保证了networkService.sendRequest不会发生重入，即一定是上一个全部执行完了才会执行下一个
+            for await text in stream {
+                await networkService.sendRequest(for: text)
+            }
+        }
     }
     
     deinit {
