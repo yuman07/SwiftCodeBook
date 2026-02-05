@@ -70,15 +70,15 @@ public extension View {
 private struct WindowExtractor: UIViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
-    func makeUIView(context: Context) -> WindowTrackingView {
-        WindowTrackingView(onChange: onChange)
+    func makeUIView(context: Context) -> WindowObserverView {
+        WindowObserverView(onChange: onChange)
     }
 
-    func updateUIView(_ uiView: WindowTrackingView, context: Context) {
+    func updateUIView(_ uiView: WindowObserverView, context: Context) {
         uiView.onChange = onChange
     }
 
-    final class WindowTrackingView: UIView {
+    final class WindowObserverView: UIView {
         var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: UIWindow?
         private var cancelToken: AnyCancellable?
@@ -118,15 +118,15 @@ private struct WindowExtractor: UIViewRepresentable {
 private struct WindowExtractor: NSViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
-    func makeNSView(context: Context) -> WindowTrackingView {
-        WindowTrackingView(onChange: onChange)
+    func makeNSView(context: Context) -> WindowObserverView {
+        WindowObserverView(onChange: onChange)
     }
 
-    func updateNSView(_ nsView: WindowTrackingView, context: Context) {
+    func updateNSView(_ nsView: WindowObserverView, context: Context) {
         nsView.onChange = onChange
     }
 
-    final class WindowTrackingView: NSView {
+    final class WindowObserverView: NSView {
         var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: NSWindow?
         private var cancelToken: AnyCancellable?
