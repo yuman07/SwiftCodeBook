@@ -91,6 +91,30 @@ public extension UIView {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
+    var userInterfaceStylePublisher: AnyPublisher<UIUserInterfaceStyle, Never> {
+        let subject = CurrentValueSubject<UIUserInterfaceStyle, Never>(.unspecified)
+        
+        DispatchQueue.dispatchToMainIfNeeded { [weak self] in
+            guard let self else { return }
+            subject.send(traitCollection.userInterfaceStyle)
+        }
+        
+        let token = registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _) in
+            subject.send(view.traitCollection.userInterfaceStyle)
+        }
+        
+        return subject
+            .handleEvents(receiveCancel: { [weak self] in
+                guard let self else { return }
+                DispatchQueue.dispatchToMainIfNeeded {
+                    self.unregisterForTraitChanges(token)
+                }
+            })
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }
 
 private struct WindowChangePublisher: Publisher {
