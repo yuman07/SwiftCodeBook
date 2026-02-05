@@ -13,8 +13,10 @@ import UIKit
 import WatchKit
 #endif
 
-@frozen public enum CurrentDevice: Sendable {
-    public static var systemName: String {
+@frozen public enum CurrentDevice: Sendable {}
+
+public extension CurrentDevice {
+    static var systemName: String {
 #if os(macOS)
         "macOS"
 #elseif os(iOS) || os(tvOS) || os(visionOS)
@@ -26,13 +28,13 @@ import WatchKit
 #endif
     }
     
-    public static var systemVersion: String {
+    static var systemVersion: String {
         let info = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(info.majorVersion).\(info.minorVersion)"
         return info.patchVersion == 0 ? version : version + ".\(info.patchVersion)"
     }
     
-    public static var isSimulator: Bool {
+    static var isSimulator: Bool {
 #if targetEnvironment(simulator)
         true
 #else
@@ -42,7 +44,7 @@ import WatchKit
     
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
-    public static var deviceModel: String {
+    static var deviceModel: String {
         if isSimulator {
             return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
         } else {
@@ -53,15 +55,48 @@ import WatchKit
         }
     }
     
-    public static var is64BitDevice: Bool {
+    static var is64BitDevice: Bool {
         Int.bitWidth == 64
     }
-    
-    public static var totalDiskSpaceInByte: UInt64? {
+}
+
+public extension CurrentDevice {
+    static var totalDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
     }
     
-    public static var freeDiskSpaceInByte: UInt64? {
+    static var freeDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
+    }
+}
+
+public extension CurrentDevice {
+    @frozen enum HapticFeedbackStyle: Sendable {
+        case light
+        case medium
+        case heavy
+        case soft
+        case rigid
+#if os(iOS)
+        public var uikitFeedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle {
+            switch self {
+            case .light: .light
+            case .medium: .medium
+            case .heavy: .heavy
+            case .soft: .soft
+            case .rigid: .rigid
+            }
+        }
+#endif
+    }
+    
+    static func triggerHapticFeedbackIfCould(_ style: CurrentDevice.HapticFeedbackStyle) {
+#if os(iOS)
+        DispatchQueue.dispatchToMainIfNeeded {
+            let generator = UIImpactFeedbackGenerator(style: style.uikitFeedbackStyle)
+            generator.prepare()
+            generator.impactOccurred()
+        }
+#endif
     }
 }

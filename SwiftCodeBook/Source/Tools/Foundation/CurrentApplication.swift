@@ -17,13 +17,15 @@ import Foundation
 import UIKit
 #endif
 
-@frozen public enum CurrentApplication: Sendable {
+@frozen public enum CurrentApplication: Sendable {}
+
+public extension CurrentApplication {
 #if canImport(AppKit)
-    public static var appIcon: NSImage? {
+    static var appIcon: NSImage? {
         NSApplication.shared.applicationIconImage
     }
 #elseif canImport(UIKit)
-    public static var appIcon: UIImage? {
+    static var appIcon: UIImage? {
         guard let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [AnyHashable: Any],
               let primaryIcon = icons["CFBundlePrimaryIcon"] as? [AnyHashable: Any],
               let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
@@ -34,23 +36,23 @@ import UIKit
     }
 #endif
     
-    public static var appDisplayName: String?  {
+    static var appDisplayName: String?  {
         (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? (Bundle.main.infoDictionary?["CFBundleName"] as? String)
     }
     
-    public static var appVersion: String? {
+    static var appVersion: String? {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
-    public static var appBuildNumber: Int? {
+    static var appBuildNumber: Int? {
         (Bundle.main.infoDictionary?["CFBundleVersion"] as? String).flatMap { Int($0) }
     }
     
-    public static var appBundleIdentifier: String? {
+    static var appBundleIdentifier: String? {
         Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
     }
     
-    public static var usedMemoryInByte: UInt64? {
+    static var usedMemoryInByte: UInt64? {
 #if canImport(Darwin)
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.stride / MemoryLayout<natural_t>.stride)
@@ -66,7 +68,7 @@ import UIKit
     }
     
     private static let gcdMemoryWarningPublisher = GCDMemoryWarningPublisher()
-    public static var memoryWarningPublisher: AnyPublisher<Void, Never> {
+    static var memoryWarningPublisher: AnyPublisher<Void, Never> {
 #if os(iOS) || os(tvOS) || os(visionOS)
         let systemNotification = NotificationCenter
             .default
