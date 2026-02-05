@@ -35,6 +35,7 @@ final public class CADisplayLinkAnimator: Sendable {
         self.preferredFrameRateRange = preferredFrameRateRange
     }
     
+    @MainActor
     deinit {
         timer?.invalidate()
         timer = nil

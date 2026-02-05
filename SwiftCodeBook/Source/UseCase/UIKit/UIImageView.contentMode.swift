@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 func contentMode() {
     let imageView = UIImageView()
     

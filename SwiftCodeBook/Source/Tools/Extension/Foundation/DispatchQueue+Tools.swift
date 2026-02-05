@@ -29,7 +29,7 @@ public extension DispatchQueue {
     }
     
     private static let onceLock = NSRecursiveLock()
-    private static var tokenSet = Set<String>()
+    nonisolated(unsafe) private static var tokenSet = Set<String>()
     static func runOnce(file: String = #file, function: String = #function, line: Int = #line, block: (() -> Void)) {
         onceLock.withLock {
             let t = "\(file)_\(function)_\(line)"

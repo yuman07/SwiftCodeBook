@@ -86,7 +86,7 @@ public extension CurrentApplication {
     }
 }
 
-private final class GCDMemoryWarningPublisher {
+private final class GCDMemoryWarningPublisher: @unchecked Sendable {
     let subject = PassthroughSubject<Void, Never>()
     private let source: DispatchSourceMemoryPressure
     

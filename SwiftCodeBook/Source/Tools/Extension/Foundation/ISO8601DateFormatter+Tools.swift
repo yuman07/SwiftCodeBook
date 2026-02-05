@@ -29,7 +29,7 @@ public extension ISO8601DateFormatter {
     
     private static let optionals: [ISO8601DateFormatter.Options] = [.withTimeZone, .withFractionalSeconds]
     
-    private static let formatters = {
+    nonisolated(unsafe) private static let formatters = {
         (0 ..< 1 << optionals.count).map { num -> ISO8601DateFormatter in
             var formatOptions = basic
             for (index, value) in optionals.enumerated() where (num >> index) & 1 == 1 {

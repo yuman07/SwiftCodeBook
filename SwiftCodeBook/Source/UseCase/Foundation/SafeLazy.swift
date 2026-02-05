@@ -14,9 +14,9 @@ import os
 // 其实可以不使用lazy，而是计算属性来解决以上需求且也是延迟初始化的
 final class SafeLazy {
     // 线程安全 + 只读
-    private let readOnlyObjLock = OSAllocatedUnfairLock<NSObject?>(initialState: nil)
+    private let readOnlyObjLock = OSAllocatedUnfairLock<NSObject?>(uncheckedState: nil)
     var readOnlyObj: NSObject {
-        readOnlyObjLock.withLock { obj in
+        readOnlyObjLock.withLockUnchecked { obj in
             obj ?? {
                 let newObj = NSObject()
                 obj = newObj
@@ -26,13 +26,13 @@ final class SafeLazy {
     }
     
     // 线程安全 + 读写
-    private let readWriteObjLock = OSAllocatedUnfairLock<NSObject?>(initialState: nil)
+    private let readWriteObjLock = OSAllocatedUnfairLock<NSObject?>(uncheckedState: nil)
     var readWriteObj: NSObject {
         set {
-            readWriteObjLock.withLock { $0 = newValue }
+            readWriteObjLock.withLockUnchecked { $0 = newValue }
         }
         get {
-            readWriteObjLock.withLock { obj in
+            readWriteObjLock.withLockUnchecked { obj in
                 obj ?? {
                     let newObj = NSObject()
                     obj = newObj

@@ -9,9 +9,9 @@ import Foundation
 
 final class AsyncOperation: Operation, @unchecked Sendable {
     private enum AssociatedKeys {
-        static var isExecuting: Void?
-        static var isFinished: Void?
-        static var isCancelled: Void?
+        nonisolated(unsafe) static var isExecuting: Void?
+        nonisolated(unsafe) static var isFinished: Void?
+        nonisolated(unsafe) static var isCancelled: Void?
     }
     
     private let lock = NSRecursiveLock()

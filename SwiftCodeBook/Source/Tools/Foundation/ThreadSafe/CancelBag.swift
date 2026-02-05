@@ -4,13 +4,13 @@
 //
 //  Created by yuman on 2022/11/24.
 //
-
+ 
 import Combine
 import Foundation
 import os
 
 public final class CancelBag: Sendable {
-    private let tokens = OSAllocatedUnfairLock(initialState: Set<AnyCancellable>())
+    private let tokens = OSAllocatedUnfairLock(uncheckedState: Set<AnyCancellable>())
     
     public init() {}
     
@@ -19,7 +19,7 @@ public final class CancelBag: Sendable {
     }
     
     public func store(_ cancellable: AnyCancellable) {
-        tokens.withLock { token in
+        tokens.withLockUnchecked { token in
             cancellable.store(in: &token)
         }
     }

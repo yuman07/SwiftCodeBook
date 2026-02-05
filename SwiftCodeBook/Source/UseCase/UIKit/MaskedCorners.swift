@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 private func MaskedCorners() {
     let view = UIView()
     

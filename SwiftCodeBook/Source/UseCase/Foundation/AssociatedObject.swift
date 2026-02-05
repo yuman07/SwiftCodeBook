@@ -20,9 +20,9 @@ final class AssociatedObjectItem {
 extension AssociatedObjectItem {
     // https://github.com/atrick/swift-evolution/blob/diagnose-implicit-raw-bitwise/proposals/nnnn-implicit-raw-bitwise-conversion.md#associated-object-string-keys
     private enum AssociatedKeys {
-        static var age: Void?
-        static var block: Void?
-        static var content: Void?
+        nonisolated(unsafe) static var age: Void?
+        nonisolated(unsafe) static var block: Void?
+        nonisolated(unsafe) static var content: Void?
     }
     
     var age: Int {
@@ -50,7 +50,7 @@ extension AssociatedObjectItem {
 protocol SomeObjectProtocol: AnyObject {}
 
 enum SomeAssociatedKeys {
-    static var name: Void?
+    nonisolated(unsafe) static var name: Void?
 }
 
 extension SomeObjectProtocol {

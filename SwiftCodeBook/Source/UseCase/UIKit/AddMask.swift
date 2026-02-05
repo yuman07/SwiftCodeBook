@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 func makeMaskView() -> UIView {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
     let layer = CAShapeLayer()

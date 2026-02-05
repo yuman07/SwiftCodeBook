@@ -16,6 +16,7 @@ import WatchKit
 @frozen public enum CurrentDevice: Sendable {}
 
 public extension CurrentDevice {
+    @MainActor
     static var systemName: String {
 #if os(macOS)
         "macOS"
