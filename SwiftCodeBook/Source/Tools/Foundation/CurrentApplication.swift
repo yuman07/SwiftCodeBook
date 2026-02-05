@@ -89,13 +89,9 @@ private final class GCDMemoryWarningPublisher {
     private let source: DispatchSourceMemoryPressure
     
     init() {
-        source = DispatchSource.makeMemoryPressureSource(eventMask: .all, queue: .main)
+        source = DispatchSource.makeMemoryPressureSource(eventMask: [.warning, .critical], queue: .main)
         source.setEventHandler { [weak self] in
-            guard let self else { return }
-            let level = source.data
-            if level.contains(.warning) || level.contains(.critical) {
-                subject.send()
-            }
+            self?.subject.send()
         }
         source.resume()
     }
