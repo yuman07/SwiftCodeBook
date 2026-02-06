@@ -67,7 +67,7 @@ public extension CurrentApplication {
 #endif
     }
     
-    private static let gcdMemoryWarningPublisher = GCDMemoryWarningPublisher()
+    private static let dispatchSourceMemoryPressurePublisher = DispatchSourceMemoryPressurePublisher()
     static var memoryWarningPublisher: AnyPublisher<Void, Never> {
 #if os(iOS) || os(tvOS) || os(visionOS)
         let didReceiveMemoryWarningNotification = NotificationCenter
@@ -78,7 +78,7 @@ public extension CurrentApplication {
 #else
         let didReceiveMemoryWarningNotification = Empty().eraseToAnyPublisher()
 #endif
-        return gcdMemoryWarningPublisher.subject
+        return dispatchSourceMemoryPressurePublisher.subject
             .eraseToAnyPublisher()
             .merge(with: didReceiveMemoryWarningNotification)
             .receive(on: DispatchQueue.main)
@@ -86,7 +86,7 @@ public extension CurrentApplication {
     }
 }
 
-private final class GCDMemoryWarningPublisher: @unchecked Sendable {
+private final class DispatchSourceMemoryPressurePublisher: @unchecked Sendable {
     let subject = PassthroughSubject<Void, Never>()
     private let source: DispatchSourceMemoryPressure
     
