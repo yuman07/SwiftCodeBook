@@ -99,14 +99,14 @@ extension XMLNodeParserImp: XMLParserDelegate {
             stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
             return
         }
-        if case let string = string.trimmingCharacters(in: .whitespacesAndNewlines), !string.isEmpty {
+        if case let string = string, !string.isEmpty {
             lastNode.text.append(string)
         }
         stack.append(lastNode)
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        guard let lastNode = stack.popLast() else {
+        guard let lastNode = stack.popLast(), lastNode.name == elementName else {
             stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
             return
         }
