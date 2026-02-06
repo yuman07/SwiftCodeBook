@@ -8,81 +8,83 @@
 import Foundation
 
 // 有些时候在一个Model中我们只知道一个属性是json的一种value，但不知道具体类型，此时可以用AnyJSONValue
-public struct AnyJSONValue: Codable {
-    private let value: Any
+@frozen public enum AnyJSONValue: Codable, Equatable, Sendable {
+    case null
+    case string(String)
+    case int(Int)
+    case double(Double)
+    case bool(Bool)
+    case array([AnyJSONValue])
+    case dictionary([String: AnyJSONValue])
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        
         if container.decodeNil() {
-            self.value = NSNull()
-        } else if let string = try? container.decode(String.self) {
-            self.value = string
-        } else if let int = try? container.decode(Int.self) {
-            self.value = int
-        } else if let double = try? container.decode(Double.self) {
-            self.value = double
-        } else if let bool = try? container.decode(Bool.self) {
-            self.value = bool
-        } else if let array = try? container.decode([Self].self) {
-            self.value = array
-        } else if let dictionary = try? container.decode([String: Self].self) {
-            self.value = dictionary
+            self = .null
+        } else if let value = try? container.decode(Bool.self) {
+            self = .bool(value)
+        } else if let value = try? container.decode(Int.self) {
+            self = .int(value)
+        } else if let value = try? container.decode(Double.self) {
+            self = .double(value)
+        } else if let value = try? container.decode(String.self) {
+            self = .string(value)
+        } else if let value = try? container.decode([AnyJSONValue].self) {
+            self = .array(value)
+        } else if let value = try? container.decode([String: AnyJSONValue].self) {
+            self = .dictionary(value)
         } else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported type found")
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported JSON type")
         }
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
-        switch value {
-        case is NSNull:
-            try container.encodeNil()
-        case let string as String:
-            try container.encode(string)
-        case let int as Int:
-            try container.encode(int)
-        case let double as Double:
-            try container.encode(double)
-        case let bool as Bool:
-            try container.encode(bool)
-        case let array as [Self]:
-            try container.encode(array)
-        case let dictionary as [String: Self]:
-            try container.encode(dictionary)
-        default:
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Unsupported type found"))
+        switch self {
+        case .null: try container.encodeNil()
+        case let .bool(value): try container.encode(value)
+        case let .int(value): try container.encode(value)
+        case let .double(value): try container.encode(value)
+        case let .string(value): try container.encode(value)
+        case let .array(value): try container.encode(value)
+        case let .dictionary(value): try container.encode(value)
         }
     }
 }
 
 public extension AnyJSONValue {
     var isNull: Bool {
-        value is NSNull
+        guard case .null = self else { return false }
+        return true
     }
     
     var stringValue: String? {
-        value as? String
+        guard case let .string(value) = self else { return nil }
+        return value
     }
     
     var intValue: Int? {
-        value as? Int
+        guard case let .int(value) = self else { return nil }
+        return value
     }
     
     var doubleValue: Double? {
-        value as? Double
+        guard case let .double(value) = self else { return nil }
+        return value
     }
     
     var boolValue: Bool? {
-        value as? Bool
+        guard case let .bool(value) = self else { return nil }
+        return value
     }
     
     var arrayValue: [Self]? {
-        value as? [Self]
+        guard case let .array(value) = self else { return nil }
+        return value
     }
     
     var dictionaryValue: [String: Self]? {
-        value as? [String: Self]
+        guard case let .dictionary(value) = self else { return nil }
+        return value
     }
 }
