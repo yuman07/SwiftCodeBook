@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct XMLNode: Sendable {
+public struct XMLNode: Sendable, Hashable {
     public let name: String
     public let attributes: [String: String]
     public let text: [String]
