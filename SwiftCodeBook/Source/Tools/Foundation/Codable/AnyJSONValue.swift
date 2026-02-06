@@ -8,7 +8,7 @@
 import Foundation
 
 // 有些时候在一个Model中我们只知道一个属性是json的一种value，但不知道具体类型，此时可以用AnyJSONValue
-@frozen public enum AnyJSONValue: Codable, Equatable, Sendable {
+@frozen public enum AnyJSONValue: Codable, Hashable, Sendable {
     case null
     case string(String)
     case int(Int)
