@@ -68,8 +68,7 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
 
     func parse() {
         guard let parser else {
-            stop(.failure(NSError(reason: "DataSource error: Unable to initialize parser")))
-            return
+            return stop(.failure(NSError(reason: "DataSource error: Unable to initialize parser")))
         }
         parser.parse()
     }
@@ -96,8 +95,7 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         guard var lastNode = stack.popLast() else {
-            stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
-            return
+            return stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
         }
         if case let string = string, !string.isEmpty {
             lastNode.text.append(string)
@@ -107,8 +105,7 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         guard let lastNode = stack.popLast(), lastNode.name == elementName else {
-            stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
-            return
+            return stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
         }
         if var parentNode = stack.popLast() {
             parentNode.childNodes.append(lastNode)
@@ -120,8 +117,7 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parserDidEndDocument(_ parser: XMLParser) {
         guard let root = stack.popLast(), stack.isEmpty else {
-            stop(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
-            return
+            return stop(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
         }
         stop(.success(root.toXMLNode()))
     }
