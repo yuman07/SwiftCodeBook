@@ -8,6 +8,6 @@
 import Foundation
 
 public final class WeakObject<T: AnyObject> {
-    public private(set) weak var value: T?
+    public weak let value: T?
     public init(_ value: T) { self.value = value }
 }
