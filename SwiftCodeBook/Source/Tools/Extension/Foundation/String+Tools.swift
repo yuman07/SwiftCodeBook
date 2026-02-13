@@ -8,52 +8,23 @@
 import Foundation
 
 public extension String {
-    func validatedRange(_ range: Range<Index>) -> Range<Index>? {
-        guard let lower = Index(range.lowerBound, within: self),
-              let upper = Index(range.upperBound, within: self),
-              lower >= startIndex, upper <= endIndex, lower < upper
-        else { return nil }
-        return lower ..< upper
-    }
-    
-    func validatedRange(_ range: ClosedRange<Index>) -> ClosedRange<Index>? {
-        guard let lower = Index(range.lowerBound, within: self),
-              let upper = Index(range.upperBound, within: self),
-              lower >= startIndex, upper < endIndex, lower <= upper
-        else { return nil }
-        return lower ... upper
-    }
-    
-    func validatedRange(_ range: PartialRangeFrom<Index>) -> PartialRangeFrom<Index>? {
-        guard let lower = Index(range.lowerBound, within: self),
-              lower >= startIndex, lower < endIndex
-        else { return nil }
-        return lower...
-    }
-    
-    func validatedRange(_ range: PartialRangeUpTo<Index>) -> PartialRangeUpTo<Index>? {
-        guard let upper = Index(range.upperBound, within: self),
-              upper >= startIndex, upper <= endIndex
-        else { return nil }
-        return ..<upper
-    }
-    
-    func validatedRange(_ range: PartialRangeThrough<Index>) -> PartialRangeThrough<Index>? {
-        guard let upper = Index(range.upperBound, within: self),
-              upper >= startIndex, upper < endIndex
-        else { return nil }
-        return ...upper
+    func isValidRange(_ rangeExpression: any RangeExpression<Index>) -> Bool {
+        let range = rangeExpression.relative(to: self)
+        return range.lowerBound >= startIndex && range.upperBound <= endIndex
     }
 
-    func validatedRange(_ range: NSRange) -> Range<Index>? {
-        guard range.location >= 0, range.length >= 0, range.location != NSNotFound, range.length != NSNotFound, NSMaxRange(range) <= utf16.count,
-              let lowerUTF16 = utf16.index(utf16.startIndex, offsetBy: range.location, limitedBy: utf16.endIndex), lowerUTF16 < utf16.endIndex,
-              let upperUTF16 = utf16.index(lowerUTF16, offsetBy: range.length, limitedBy: utf16.endIndex), upperUTF16 < utf16.endIndex,
-              let lower = Index(lowerUTF16, within: self),
-              let upper = Index(upperUTF16, within: self),
-              lower >= startIndex, upper <= endIndex, lower < upper
-        else { return nil }
-        return lower ..< upper
+    func isValidRange(_ nsRange: NSRange) -> Bool {
+        range(from: nsRange) != nil
+    }
+
+    func range(from nsRange: NSRange) -> Range<Index>? {
+        guard nsRange.isValid else { return nil }
+        return Range(nsRange, in: self)
+    }
+
+    func nsRange(from range: any RangeExpression<Index>) -> NSRange? {
+        guard isValidRange(range) else { return nil }
+        return NSRange(range, in: self)
     }
 }
 
