@@ -47,12 +47,13 @@ public extension String {
 
     func validatedRange(_ range: NSRange) -> Range<Index>? {
         guard range.location >= 0, range.length >= 0, range.location != NSNotFound, range.length != NSNotFound, NSMaxRange(range) <= utf16.count,
-              let lower = utf16.index(utf16.startIndex, offsetBy: range.location, limitedBy: utf16.endIndex), lower < utf16.endIndex,
-              let upper = utf16.index(lower, offsetBy: range.length, limitedBy: utf16.endIndex), upper < utf16.endIndex, lower < upper,
-              let from = Index(lower, within: self), from >= startIndex, from < endIndex,
-              let end = Index(upper, within: self), end >= startIndex, end <= endIndex, from < end
+              let lowerUTF16 = utf16.index(utf16.startIndex, offsetBy: range.location, limitedBy: utf16.endIndex), lowerUTF16 < utf16.endIndex,
+              let upperUTF16 = utf16.index(lowerUTF16, offsetBy: range.length, limitedBy: utf16.endIndex), upperUTF16 < utf16.endIndex,
+              let lower = Index(lowerUTF16, within: self),
+              let upper = Index(upperUTF16, within: self),
+              lower >= startIndex, upper <= endIndex, lower < upper
         else { return nil }
-        return from ..< end
+        return lower ..< upper
     }
 }
 
