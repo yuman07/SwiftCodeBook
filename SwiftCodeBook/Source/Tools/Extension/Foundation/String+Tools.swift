@@ -22,7 +22,7 @@ public extension String {
         return self[lowerIndex ... upperIndex]
     }
     
-    subscript(_ range: CountableRange<Int>) -> Substring? {
+    subscript(_ range: Range<Int>) -> Substring? {
         guard range.lowerBound >= 0,
               let lowerIndex = index(startIndex, offsetBy: range.lowerBound, limitedBy: endIndex),
               let upperIndex = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex),
@@ -96,6 +96,55 @@ public extension StringProtocol {
             lastUpperBound = range.upperBound
         }
         return ranges
+    }
+}
+
+public extension String {
+    func validatedRange(_ range: Range<Index>) -> Range<Index>? {
+        guard let lower = Index(range.lowerBound, within: self),
+              let upper = Index(range.upperBound, within: self),
+              lower >= startIndex, upper <= endIndex, lower < upper
+        else { return nil }
+        return lower ..< upper
+    }
+    
+    func validatedRange(_ range: ClosedRange<Index>) -> ClosedRange<Index>? {
+        guard let lower = Index(range.lowerBound, within: self),
+              let upper = Index(range.upperBound, within: self),
+              lower >= startIndex, upper < endIndex, lower <= upper
+        else { return nil }
+        return lower ... upper
+    }
+    
+    func validatedRange(_ range: PartialRangeFrom<Index>) -> PartialRangeFrom<Index>? {
+        guard let lower = Index(range.lowerBound, within: self),
+              lower >= startIndex, lower < endIndex
+        else { return nil }
+        return lower...
+    }
+    
+    func validatedRange(_ range: PartialRangeUpTo<Index>) -> PartialRangeUpTo<Index>? {
+        guard let upper = Index(range.upperBound, within: self),
+              upper >= startIndex, upper <= endIndex
+        else { return nil }
+        return ..<upper
+    }
+    
+    func validatedRange(_ range: PartialRangeThrough<Index>) -> PartialRangeThrough<Index>? {
+        guard let upper = Index(range.upperBound, within: self),
+              upper >= startIndex, upper < endIndex
+        else { return nil }
+        return ...upper
+    }
+
+    func validatedRange(_ range: NSRange) -> Range<Index>? {
+        guard range.location >= 0, range.length >= 0, range.location != NSNotFound, range.length != NSNotFound, NSMaxRange(range) <= utf16.count,
+              let lower = utf16.index(utf16.startIndex, offsetBy: range.location, limitedBy: utf16.endIndex), lower < utf16.endIndex,
+              let upper = utf16.index(lower, offsetBy: range.length, limitedBy: utf16.endIndex), upper < utf16.endIndex, lower < upper,
+              let from = Index(lower, within: self), from >= startIndex, from < endIndex,
+              let end = Index(upper, within: self), end >= startIndex, end <= endIndex, from < end
+        else { return nil }
+        return from ..< end
     }
 }
 
