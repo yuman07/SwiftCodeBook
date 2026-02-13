@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension String {
+public extension StringProtocol {
     func isValidRange(_ rangeExpression: any RangeExpression<Index>) -> Bool {
         if let range = rangeExpression as? Range<Index> {
             return range.lowerBound >= startIndex && range.upperBound <= endIndex
@@ -39,34 +39,6 @@ public extension String {
 }
 
 public extension StringProtocol {
-    // 对给定的index进行移动，正数向后，负数向前，最终结果在[startIndex, endIndex)即有效
-    func indexSafely(_ i: Index, offsetBy distance: Int) -> Index? {
-        var currentIndex = i
-        var count = abs(distance)
-        
-        while count > 0 {
-            if distance > 0 {
-                guard currentIndex < endIndex else { return nil }
-                currentIndex = index(after: currentIndex)
-            } else {
-                guard currentIndex > startIndex else { return nil }
-                currentIndex = index(before: currentIndex)
-            }
-            count -= 1
-        }
-        
-        guard currentIndex >= startIndex && currentIndex < endIndex else { return nil }
-        return currentIndex
-    }
-    
-    func forEachWithIndexAndChar(_ body: (Index, Character) throws -> Void) rethrows {
-        var currentIndex = startIndex
-        while currentIndex < endIndex {
-            try body(currentIndex, self[currentIndex])
-            currentIndex = index(after: currentIndex)
-        }
-    }
-    
     func ranges<T>(of aString: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
         var ranges = [Range<Index>]()
         var lastUpperBound = startIndex
