@@ -79,6 +79,7 @@
 		7ADC0BE82F1E0D430005E6CC /* Data+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */; };
 		7ADC0BEA2F1E136C0005E6CC /* CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */; };
 		7ADC0BEC2F1E14EF0005E6CC /* CurrentApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */; };
+		7ADE355F2F40241500828A29 /* NSString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE355E2F40241500828A29 /* NSString+Tools.swift */; };
 		7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */; };
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
@@ -166,6 +167,7 @@
 		7ADC0BE72F1E0D430005E6CC /* Data+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Tools.swift"; sourceTree = "<group>"; };
 		7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDevice.swift; sourceTree = "<group>"; };
 		7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentApplication.swift; sourceTree = "<group>"; };
+		7ADE355E2F40241500828A29 /* NSString+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSString+Tools.swift"; sourceTree = "<group>"; };
 		7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformGuide.swift; sourceTree = "<group>"; };
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */,
 				7A34972829EE71A100A692C7 /* NSNumber+Tools.swift */,
 				7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */,
+				7ADE355E2F40241500828A29 /* NSString+Tools.swift */,
 				7A107B0829091E1400C13362 /* Publisher+Tools.swift */,
 				7A1074B429091CAD00C13362 /* Result+Tools.swift */,
 				7A1074942908FAEF00C13362 /* String+Tools.swift */,
@@ -522,6 +525,7 @@
 				7A8A00A729309BE0001A3345 /* PropertyWrapper.swift in Sources */,
 				7ACBC0202A160836007A8C13 /* SpecificLocalizedString.swift in Sources */,
 				7A1074992908FB6300C13362 /* UIBezierPath+Tools.swift in Sources */,
+				7ADE355F2F40241500828A29 /* NSString+Tools.swift in Sources */,
 				7AAFB70D2CDE055E00525A44 /* CombineNote.swift in Sources */,
 				7A0ACC272A4D569D00F8F19A /* NSAttributedString+Tools.swift in Sources */,
 				7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */,

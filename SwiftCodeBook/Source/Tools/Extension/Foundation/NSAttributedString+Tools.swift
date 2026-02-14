@@ -31,28 +31,28 @@ public extension NSAttributedString {
         return NSAttributedString(attributedString: attributedString)
     }
 
-    func split<T>(
-        separator: T,
+    func split(
+        separator: String,
         options: String.CompareOptions = [],
         locale: Locale? = nil,
         keepSeparator: Bool = false,
         omittingEmptySubsequences: Bool = true
-    ) -> [NSAttributedString] where T: StringProtocol {
-        let ranges = string.ranges(of: separator, options: options, locale: locale)
+    ) -> [NSAttributedString] {
+        let ranges = (string as NSString).ranges(of: separator, options: options, locale: locale)
         var components = [NSAttributedString]()
-        var lastUpperBound = string.startIndex
+        var lastEndLocation = 0
 
         for range in ranges {
-            if lastUpperBound < range.lowerBound || !omittingEmptySubsequences {
-                components.append(attributedSubstring(from: NSRange(lastUpperBound ..< range.lowerBound, in: string)))
+            if lastEndLocation < range.location || !omittingEmptySubsequences {
+                components.append(attributedSubstring(from: NSRange(location: lastEndLocation, length: range.location - lastEndLocation)))
             }
             if keepSeparator {
-                components.append(attributedSubstring(from: NSRange(range, in: string)))
+                components.append(attributedSubstring(from: range))
             }
-            lastUpperBound = range.upperBound
+            lastEndLocation = range.endLocation
         }
-        if lastUpperBound < string.endIndex || !omittingEmptySubsequences {
-            components.append(attributedSubstring(from: NSRange(lastUpperBound ..< string.endIndex, in: string)))
+        if lastEndLocation < length || !omittingEmptySubsequences {
+            components.append(attributedSubstring(from: NSRange(location: lastEndLocation, length: length - lastEndLocation)))
         }
 
         return components

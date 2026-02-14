@@ -33,8 +33,8 @@ public extension StringProtocol {
     }
 
     func nsRange(from range: any RangeExpression<Index>) -> NSRange? {
-        guard isValidRange(range) else { return nil }
-        return NSRange(range, in: self)
+        guard isValidRange(range), case let nsRange = NSRange(range, in: self), isValidRange(nsRange) else { return nil }
+        return nsRange
     }
 }
 
