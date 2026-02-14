@@ -40,19 +40,19 @@ public extension NSAttributedString {
     ) -> [NSAttributedString] {
         let ranges = (string as NSString).ranges(of: separator, options: options, locale: locale)
         var components = [NSAttributedString]()
-        var lastEndLocation = 0
+        var location = 0
 
         for range in ranges {
-            if lastEndLocation < range.location || !omittingEmptySubsequences {
-                components.append(attributedSubstring(from: NSRange(location: lastEndLocation, length: range.location - lastEndLocation)))
+            if location < range.location || !omittingEmptySubsequences {
+                components.append(attributedSubstring(from: NSRange(location: location, length: range.location - location)))
             }
             if keepSeparator {
                 components.append(attributedSubstring(from: range))
             }
-            lastEndLocation = range.endLocation
+            location = range.endLocation
         }
-        if lastEndLocation < length || !omittingEmptySubsequences {
-            components.append(attributedSubstring(from: NSRange(location: lastEndLocation, length: length - lastEndLocation)))
+        if location < length || !omittingEmptySubsequences {
+            components.append(attributedSubstring(from: NSRange(location: location, length: length - location)))
         }
 
         return components
