@@ -33,7 +33,7 @@ public extension NSAttributedString {
 
     func split(
         separator: String,
-        options: String.CompareOptions = [],
+        options: NSString.CompareOptions = [],
         locale: Locale? = nil,
         keepSeparator: Bool = false,
         omittingEmptySubsequences: Bool = true

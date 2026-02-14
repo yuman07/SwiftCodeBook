@@ -16,11 +16,11 @@ public extension NSString {
         (self as String).nsRange(from: range)
     }
     
-    func ranges(of aString: String, options: String.CompareOptions = [], locale: Locale? = nil) -> [NSRange] {
+    func ranges(of searchString: String, options: NSString.CompareOptions = [], locale: Locale? = nil) -> [NSRange] {
         var ranges = [NSRange]()
         var lastEndLocation = 0
         while lastEndLocation < length,
-              case let range = range(of: aString, options: options, range: NSRange(location: lastEndLocation, length: length - lastEndLocation), locale: locale),
+              case let range = range(of: searchString, options: options, range: NSRange(location: lastEndLocation, length: length - lastEndLocation), locale: locale),
               isValidRange(range) {
             ranges.append(range)
             lastEndLocation = range.endLocation
