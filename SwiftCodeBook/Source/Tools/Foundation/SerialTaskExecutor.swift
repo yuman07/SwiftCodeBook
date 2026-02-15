@@ -11,8 +11,8 @@ import Foundation
 public final class SerialTaskExecutor: Sendable {
     private enum TaskItem {
         case async(Task<Void, Never>)
-        case sync(Task<Sendable, Never>, UnsafeContinuation<Sendable, Never>)
-        case syncWithThrowing(Task<Sendable, Error>, UnsafeContinuation<Sendable, Error>)
+        case sync(Task<Sendable, Never>, UnsafeContinuation<Void, Never>)
+        case syncWithThrowing(Task<Sendable, Error>, UnsafeContinuation<Void, Never>)
     }
     
     private let (stream, continuation) = AsyncStream<TaskItem>.makeStream()
@@ -25,13 +25,11 @@ public final class SerialTaskExecutor: Sendable {
                 case let .async(task):
                     await task.value
                 case let .sync(task, unsafeContinuation):
-                    await unsafeContinuation.resume(returning: task.value)
+                    let _ = await task.value
+                    unsafeContinuation.resume()
                 case let .syncWithThrowing(task, unsafeContinuation):
-                    do {
-                        try await unsafeContinuation.resume(returning: task.value)
-                    } catch {
-                        unsafeContinuation.resume(throwing: error)
-                    }
+                    let _ = await task.result
+                    unsafeContinuation.resume()
                 }
             }
         }
@@ -45,18 +43,20 @@ public final class SerialTaskExecutor: Sendable {
         return cancelToken
     }
     
-    public func sync(_ task: Task<Sendable, Never>) async -> Sendable {
+    public func sync<Value: Sendable>(_ task: Task<Value, Never>) async -> Value {
         cancelBag.store(task.toAnyCancellable)
-        return await withUnsafeContinuation {
-            continuation.yield(.sync(task, $0))
+        await withUnsafeContinuation {
+            continuation.yield(.sync(Task { await task.value }, $0))
         }
+        return await task.value
     }
     
-    public func syncWithThrowing(_ task: Task<Sendable, any Error>) async throws -> Sendable {
+    public func syncWithThrowing<Value: Sendable>(_ task: Task<Value, Error>) async throws -> Value {
         cancelBag.store(task.toAnyCancellable)
-        return try await withUnsafeThrowingContinuation {
-            continuation.yield(.syncWithThrowing(task, $0))
+        await withUnsafeContinuation {
+            continuation.yield(.syncWithThrowing(Task { try await task.value }, $0))
         }
+        return try await task.value
     }
     
     public func cancelAll() {
