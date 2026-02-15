@@ -37,6 +37,7 @@ public final class SerialTaskExecutor: Sendable {
         }
     }
     
+    @discardableResult
     public func async(_ task: Task<Void, Never>) -> AnyCancellable {
         continuation.yield(.async(task))
         let cancelToken = task.toAnyCancellable
