@@ -80,6 +80,7 @@
 		7ADC0BEA2F1E136C0005E6CC /* CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */; };
 		7ADC0BEC2F1E14EF0005E6CC /* CurrentApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */; };
 		7ADE355F2F40241500828A29 /* NSString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE355E2F40241500828A29 /* NSString+Tools.swift */; };
+		7ADE35612F41CE1600828A29 /* SerialTaskExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE35602F41CE1600828A29 /* SerialTaskExecutor.swift */; };
 		7AE1E4A32949BA28001B3671 /* CGAffineTransformGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */; };
 		7AE1E4A72949BECC001B3671 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A62949BECC001B3671 /* Shadow.swift */; };
 		7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */; };
@@ -168,6 +169,7 @@
 		7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDevice.swift; sourceTree = "<group>"; };
 		7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentApplication.swift; sourceTree = "<group>"; };
 		7ADE355E2F40241500828A29 /* NSString+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSString+Tools.swift"; sourceTree = "<group>"; };
+		7ADE35602F41CE1600828A29 /* SerialTaskExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialTaskExecutor.swift; sourceTree = "<group>"; };
 		7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformGuide.swift; sourceTree = "<group>"; };
 		7AE1E4A62949BECC001B3671 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricHighlightingLabel.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
 				7AD0DC5E290C1C5C0010BBC8 /* HashHandler.swift */,
 				7A772A3B2BDB97180008828B /* MemoryCache.swift */,
+				7ADE35602F41CE1600828A29 /* SerialTaskExecutor.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 				7AD0C0E92E336221009B4437 /* XMLNodeParser.swift */,
 			);
@@ -558,6 +561,7 @@
 				7A3757D92F3365AB00FAAC50 /* UIViewController+Tools.swift in Sources */,
 				7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */,
 				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
+				7ADE35612F41CE1600828A29 /* SerialTaskExecutor.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */,
 				7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */,
