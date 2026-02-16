@@ -41,6 +41,7 @@ public final class SerialTaskExecutor: Sendable {
         continuation.finish()
     }
     
+    @discardableResult
     public func async(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let lazyTask = LazyTask(operation)
         let cancelToken = lazyTask.toAnyCancellable
