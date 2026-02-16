@@ -15,9 +15,9 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     private enum TaskItem: Sendable {
-        case async(LazyTask<Void, Never>, CancelToken)
-        case sync(LazyTask<Sendable, Never>, UnsafeContinuation<Void, Never>, CancelToken)
-        case syncWithThrowing(LazyTask<Sendable, Error>, UnsafeContinuation<Void, Never>, CancelToken)
+        case async(LazyTask<Void, Never>)
+        case sync(LazyTask<Sendable, Never>, UnsafeContinuation<Void, Never>)
+        case syncWithThrowing(LazyTask<Sendable, Error>, UnsafeContinuation<Void, Never>)
     }
     
     private let (stream, continuation) = AsyncStream<TaskItem>.makeStream()
@@ -25,20 +25,16 @@ public final class SerialTaskExecutor: Sendable {
     
     public init() {
         let taskStream = stream
-        let bag = cancelBag
         Task(executorPreference: globalConcurrentExecutor) {
             for await item in taskStream {
                 switch item {
-                case let .async(task, cancelToken):
+                case let .async(task):
                     await task.start().value
-                    bag.cancel(cancelToken.token)
-                case let .sync(task, unsafeContinuation, cancelToken):
+                case let .sync(task, unsafeContinuation):
                     let _ = await task.start().value
-                    bag.cancel(cancelToken.token)
                     unsafeContinuation.resume()
-                case let .syncWithThrowing(task, unsafeContinuation, cancelToken):
+                case let .syncWithThrowing(task, unsafeContinuation):
                     let _ = await task.start().result
-                    bag.cancel(cancelToken.token)
                     unsafeContinuation.resume()
                 }
             }
@@ -52,31 +48,26 @@ public final class SerialTaskExecutor: Sendable {
     @discardableResult
     public func async(_ operation: @Sendable @escaping () async -> Void) -> CancelToken {
         let lazyTask = LazyTask(operation)
-        let anyCancellable = lazyTask.toAnyCancellable
-        let cancelToken = CancelToken(token: anyCancellable)
-        continuation.yield(.async(lazyTask, cancelToken))
-        cancelBag.store(anyCancellable)
+        let cancelToken = CancelToken(token: lazyTask.toAnyCancellable)
+        continuation.yield(.async(lazyTask))
+        cancelBag.store(cancelToken.token)
         return cancelToken
     }
     
     public func sync<Value: Sendable>(_ operation: @Sendable @escaping () async -> Value) async -> Value {
         let lazyTask = LazyTask(operation)
-        let anyCancellable = lazyTask.toAnyCancellable
-        let cancelToken = CancelToken(token: anyCancellable)
-        cancelBag.store(anyCancellable)
+        cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.sync(LazyTask { await lazyTask.start().value }, $0, cancelToken))
+            continuation.yield(.sync(LazyTask { await lazyTask.start().value }, $0))
         }
         return await lazyTask.start().value
     }
     
     public func syncWithThrowing<Value: Sendable>(_ operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
         let lazyTask = LazyTask(operation)
-        let anyCancellable = lazyTask.toAnyCancellable
-        let cancelToken = CancelToken(token: anyCancellable)
-        cancelBag.store(anyCancellable)
+        cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.syncWithThrowing(LazyTask { try await lazyTask.start().value }, $0, cancelToken))
+            continuation.yield(.syncWithThrowing(LazyTask { try await lazyTask.start().value }, $0))
         }
         return try await lazyTask.start().value
     }
