@@ -20,8 +20,8 @@ public final class SerialTaskExecutor: Sendable {
     private let cancelBag = CancelBag()
     
     public init() {
-        let emptyStream = AsyncStream<TaskItem>.makeStream()
         Task(executorPreference: globalConcurrentExecutor) { [weak self] in
+            let emptyStream = AsyncStream<TaskItem>.makeStream()
             for await item in self?.stream ?? emptyStream.stream {
                 guard self != nil else { return }
                 switch item {
@@ -49,20 +49,18 @@ public final class SerialTaskExecutor: Sendable {
     
     public func sync<Value: Sendable>(_ operation: @escaping () async -> Value) async -> Value {
         let lazyTask = LazyTask(operation)
-        let sendableLazyTask = LazyTask<Sendable> { await lazyTask.start().value }
         cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.sync(sendableLazyTask, $0))
+            continuation.yield(.sync(LazyTask { await lazyTask.start().value }, $0))
         }
         return await lazyTask.start().value
     }
     
     public func syncWithThrowing<Value: Sendable>(_ operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
         let lazyTask = LazyThrowingTask(operation)
-        let sendableLazyTask = LazyThrowingTask<Sendable> { try await lazyTask.start().value }
         cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.syncWithThrowing(sendableLazyTask, $0))
+            continuation.yield(.syncWithThrowing(LazyThrowingTask { try await lazyTask.start().value }, $0))
         }
         return try await lazyTask.start().value
     }
