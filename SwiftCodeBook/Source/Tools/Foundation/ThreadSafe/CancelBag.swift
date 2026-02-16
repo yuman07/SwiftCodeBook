@@ -15,19 +15,26 @@ public final class CancelBag: Sendable {
     public init() {}
     
     deinit {
-        cancel()
+        cancelAll()
     }
     
-    public func store(_ cancellable: AnyCancellable) {
-        tokens.withLockUnchecked { token in
-            cancellable.store(in: &token)
+    public func store(_ cancelToken: AnyCancellable) {
+        tokens.withLockUnchecked { set in
+            cancelToken.store(in: &set)
         }
     }
     
-    public func cancel() {
-        tokens.withLock { tokens in
-            for token in tokens { token.cancel() }
-            tokens.removeAll()
+    public func cancelAll() {
+        tokens.withLock { set in
+            for token in set { token.cancel() }
+            set.removeAll()
+        }
+    }
+    
+    public func cancel(_ cancelToken: AnyCancellable) {
+        tokens.withLockUnchecked { set in
+            set.remove(cancelToken)
+            cancelToken.cancel()
         }
     }
 }

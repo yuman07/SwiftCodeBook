@@ -10,10 +10,14 @@ import Foundation
 import os
 
 public final class SerialTaskExecutor: Sendable {
+    public struct CancelToken: @unchecked Sendable, Hashable {
+        let token: AnyCancellable
+    }
+    
     private enum TaskItem: Sendable {
-        case async(LazyTask<Void, Never>)
-        case sync(LazyTask<Sendable, Never>, UnsafeContinuation<Void, Never>)
-        case syncWithThrowing(LazyTask<Sendable, Error>, UnsafeContinuation<Void, Never>)
+        case async(LazyTask<Void, Never>, CancelToken)
+        case sync(LazyTask<Sendable, Never>, UnsafeContinuation<Void, Never>, CancelToken)
+        case syncWithThrowing(LazyTask<Sendable, Error>, UnsafeContinuation<Void, Never>, CancelToken)
     }
     
     private let (stream, continuation) = AsyncStream<TaskItem>.makeStream()
@@ -21,16 +25,20 @@ public final class SerialTaskExecutor: Sendable {
     
     public init() {
         let taskStream = stream
+        let bag = cancelBag
         Task(executorPreference: globalConcurrentExecutor) {
             for await item in taskStream {
                 switch item {
-                case let .async(task):
+                case let .async(task, cancelToken):
                     await task.start().value
-                case let .sync(task, unsafeContinuation):
+                    bag.cancel(cancelToken.token)
+                case let .sync(task, unsafeContinuation, cancelToken):
                     let _ = await task.start().value
+                    bag.cancel(cancelToken.token)
                     unsafeContinuation.resume()
-                case let .syncWithThrowing(task, unsafeContinuation):
+                case let .syncWithThrowing(task, unsafeContinuation, cancelToken):
                     let _ = await task.start().result
+                    bag.cancel(cancelToken.token)
                     unsafeContinuation.resume()
                 }
             }
@@ -42,34 +50,43 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     @discardableResult
-    public func async(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
+    public func async(_ operation: @Sendable @escaping () async -> Void) -> CancelToken {
         let lazyTask = LazyTask(operation)
-        let cancelToken = lazyTask.toAnyCancellable
-        continuation.yield(.async(lazyTask))
-        cancelBag.store(cancelToken)
+        let anyCancellable = lazyTask.toAnyCancellable
+        let cancelToken = CancelToken(token: anyCancellable)
+        continuation.yield(.async(lazyTask, cancelToken))
+        cancelBag.store(anyCancellable)
         return cancelToken
     }
     
     public func sync<Value: Sendable>(_ operation: @Sendable @escaping () async -> Value) async -> Value {
         let lazyTask = LazyTask(operation)
-        cancelBag.store(lazyTask.toAnyCancellable)
+        let anyCancellable = lazyTask.toAnyCancellable
+        let cancelToken = CancelToken(token: anyCancellable)
+        cancelBag.store(anyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.sync(LazyTask { await lazyTask.start().value }, $0))
+            continuation.yield(.sync(LazyTask { await lazyTask.start().value }, $0, cancelToken))
         }
         return await lazyTask.start().value
     }
     
     public func syncWithThrowing<Value: Sendable>(_ operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
         let lazyTask = LazyTask(operation)
-        cancelBag.store(lazyTask.toAnyCancellable)
+        let anyCancellable = lazyTask.toAnyCancellable
+        let cancelToken = CancelToken(token: anyCancellable)
+        cancelBag.store(anyCancellable)
         await withUnsafeContinuation {
-            continuation.yield(.syncWithThrowing(LazyTask { try await lazyTask.start().value }, $0))
+            continuation.yield(.syncWithThrowing(LazyTask { try await lazyTask.start().value }, $0, cancelToken))
         }
         return try await lazyTask.start().value
     }
     
     public func cancelAll() {
-        cancelBag.cancel()
+        cancelBag.cancelAll()
+    }
+    
+    public func cancel(_ cancelToken: CancelToken) {
+        cancelBag.cancel(cancelToken.token)
     }
 }
 
