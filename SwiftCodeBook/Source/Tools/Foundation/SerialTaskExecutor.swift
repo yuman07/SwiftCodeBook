@@ -118,10 +118,10 @@ private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
 
 private extension LazyTask where Failure == Never {
     func start() -> Task<Success, Never> {
-        state.withLock { curState in
-            let task = curState.task ?? Task { await operation() }
-            curState.task = task
-            if curState.isCancelled {
+        state.withLock { state in
+            let task = state.task ?? Task { await operation() }
+            state.task = task
+            if state.isCancelled {
                 task.cancel()
             }
             return task
@@ -131,10 +131,10 @@ private extension LazyTask where Failure == Never {
 
 private extension LazyTask where Failure == Error {
     func start() -> Task<Success, Failure> {
-        state.withLock { curState in
-            let task = curState.task ?? Task { try await operation() }
-            curState.task = task
-            if curState.isCancelled {
+        state.withLock { state in
+            let task = state.task ?? Task { try await operation() }
+            state.task = task
+            if state.isCancelled {
                 task.cancel()
             }
             return task
