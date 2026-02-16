@@ -7,8 +7,9 @@
 
 import CryptoKit
 import Foundation
+import os
 
-public final class HashHandler {
+public final class HashHandler: Sendable {
     @frozen public enum Algorithm: Sendable {
         case md5
         case sha1
@@ -18,23 +19,23 @@ public final class HashHandler {
     }
     
     private let algorithm: Algorithm
-    private var hasher: any HashFunction
+    private let hasher: OSAllocatedUnfairLock<any HashFunction>
     
     public init(algorithm: Algorithm) {
         self.algorithm = algorithm
-        hasher = algorithm.hasher
+        self.hasher = .init(uncheckedState: algorithm.hasher)
     }
     
     public func update(data: Data) {
-        hasher.update(data: data)
+        hasher.withLock { $0.update(data: data) }
     }
     
     public func finalize() -> String {
-        hasher.finalize().toHashString()
+        hasher.withLock { $0.finalize().toHashString() }
     }
     
     public func reset() {
-        hasher = algorithm.hasher
+        hasher.withLock { $0 = algorithm.hasher }
     }
 }
 
