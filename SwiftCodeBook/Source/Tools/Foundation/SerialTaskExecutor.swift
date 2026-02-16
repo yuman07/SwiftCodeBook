@@ -20,10 +20,9 @@ public final class SerialTaskExecutor: Sendable {
     private let cancelBag = CancelBag()
     
     public init() {
-        Task(executorPreference: globalConcurrentExecutor) { [weak self] in
-            let emptyStream = AsyncStream<TaskItem>.makeStream()
-            for await item in self?.stream ?? emptyStream.stream {
-                guard self != nil else { return }
+        let taskStream = stream
+        Task(executorPreference: globalConcurrentExecutor) {
+            for await item in taskStream {
                 switch item {
                 case let .async(task):
                     await task.start().value
@@ -36,6 +35,10 @@ public final class SerialTaskExecutor: Sendable {
                 }
             }
         }
+    }
+    
+    deinit {
+        continuation.finish()
     }
     
     @discardableResult
