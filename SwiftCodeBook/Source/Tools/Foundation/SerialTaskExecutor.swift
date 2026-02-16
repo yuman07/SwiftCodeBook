@@ -20,6 +20,7 @@ public final class SerialTaskExecutor: Sendable {
         case syncWithThrowing(LazyTask<Sendable, Error>, UnsafeContinuation<Void, Never>)
     }
     
+    @TaskLocal static var isOnExecutor = false
     private let (stream, continuation) = AsyncStream<TaskItem>.makeStream()
     private let cancelBag = CancelBag()
     
@@ -27,15 +28,17 @@ public final class SerialTaskExecutor: Sendable {
         let taskStream = stream
         Task(executorPreference: globalConcurrentExecutor) {
             for await item in taskStream {
-                switch item {
-                case let .async(task):
-                    await task.start().value
-                case let .sync(task, unsafeContinuation):
-                    let _ = await task.start().value
-                    unsafeContinuation.resume()
-                case let .syncWithThrowing(task, unsafeContinuation):
-                    let _ = await task.start().result
-                    unsafeContinuation.resume()
+                await Self.$isOnExecutor.withValue(true) {
+                    switch item {
+                    case let .async(task):
+                        await task.start().value
+                    case let .sync(task, unsafeContinuation):
+                        let _ = await task.start().value
+                        unsafeContinuation.resume()
+                    case let .syncWithThrowing(task, unsafeContinuation):
+                        let _ = await task.start().result
+                        unsafeContinuation.resume()
+                    }
                 }
             }
         }
@@ -55,6 +58,10 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     public func sync<Value: Sendable>(_ operation: @Sendable @escaping () async -> Value) async -> Value {
+        guard !Self.isOnExecutor else {
+            fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
+        }
+        
         let lazyTask = LazyTask(operation)
         cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
@@ -64,6 +71,10 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     public func syncWithThrowing<Value: Sendable>(_ operation: @Sendable @escaping () async throws -> Value) async throws -> Value {
+        guard !Self.isOnExecutor else {
+            fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
+        }
+        
         let lazyTask = LazyTask(operation)
         cancelBag.store(lazyTask.toAnyCancellable)
         await withUnsafeContinuation {
