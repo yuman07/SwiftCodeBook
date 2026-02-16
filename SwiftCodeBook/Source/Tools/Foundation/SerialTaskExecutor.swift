@@ -41,8 +41,8 @@ public final class SerialTaskExecutor: Sendable {
     @discardableResult
     public func async(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let lazyTask = LazyTask(operation)
-        continuation.yield(.async(lazyTask))
         let cancelToken = lazyTask.toAnyCancellable
+        continuation.yield(.async(lazyTask))
         cancelBag.store(cancelToken)
         return cancelToken
     }
@@ -82,7 +82,7 @@ private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
         cancel()
     }
     
-    func cancel() {
+    private func cancel() {
         state.withLock { curState in
             curState.isCancelled = true
             curState.task?.cancel()
@@ -90,7 +90,7 @@ private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
     }
     
     var toAnyCancellable: AnyCancellable {
-        AnyCancellable({ [weak self] in self?.cancel() })
+        AnyCancellable { [weak self] in self?.cancel() }
     }
 }
 

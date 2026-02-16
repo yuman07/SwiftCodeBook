@@ -10,7 +10,7 @@ import Foundation
 
 public extension Task {
     var toAnyCancellable: AnyCancellable {
-        AnyCancellable({ cancel() })
+        AnyCancellable { cancel() }
     }
     
     func store(in cancelBag: CancelBag) {
