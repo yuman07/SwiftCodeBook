@@ -10,7 +10,7 @@ import Foundation
 import os
 
 public final class SerialTaskExecutor: Sendable {
-    public struct CancelToken: @unchecked Sendable, Hashable {
+    public struct CancelToken: @unchecked Sendable {
         let token: AnyCancellable
     }
     
