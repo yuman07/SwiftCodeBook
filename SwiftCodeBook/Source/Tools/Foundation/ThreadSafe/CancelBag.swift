@@ -15,7 +15,9 @@ public final class CancelBag: Sendable {
     public init() {}
     
     deinit {
-        cancelAll()
+        tokens.withLock { set in
+            set.removeAll()
+        }
     }
     
     public func store(_ cancelToken: AnyCancellable) {
