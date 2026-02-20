@@ -47,8 +47,10 @@ public final class SerialTaskExecutor: Sendable {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
+        let lazyTask = LazyTask(operation)
+        cancelBag.store(lazyTask.toAnyCancellable)
         return await withUnsafeContinuation { cont in
-            continuation.yield { await cont.resume(returning: operation()) }
+            continuation.yield { await cont.resume(returning: lazyTask.start().value) }
         }
     }
     
@@ -57,10 +59,12 @@ public final class SerialTaskExecutor: Sendable {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
+        let lazyTask = LazyTask(operation)
+        cancelBag.store(lazyTask.toAnyCancellable)
         return try await withUnsafeThrowingContinuation { cont in
             continuation.yield {
                 do {
-                    try await cont.resume(returning: operation())
+                    try await cont.resume(returning: lazyTask.start().value)
                 } catch {
                     cont.resume(throwing: error)
                 }
