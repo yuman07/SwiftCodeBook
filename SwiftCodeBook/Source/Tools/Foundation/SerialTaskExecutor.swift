@@ -15,7 +15,7 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     @TaskLocal static private var isOnExecutor = false
-    private let (stream, continuation) = AsyncStream<@Sendable () async -> Void>.makeStream()
+    private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
     private let cancelBag = CancelBag()
     
     public init() {
@@ -23,7 +23,7 @@ public final class SerialTaskExecutor: Sendable {
         Task(executorPreference: globalConcurrentExecutor) {
             for await task in taskStream {
                 await Self.$isOnExecutor.withValue(true) {
-                    await task()
+                    await task.start().result
                 }
             }
         }
@@ -37,8 +37,8 @@ public final class SerialTaskExecutor: Sendable {
     public func async(_ operation: @Sendable @escaping () async -> Void) -> CancelToken {
         let lazyTask = LazyTask(operation)
         let token = CancelToken(token: lazyTask.toAnyCancellable)
-        continuation.yield { await lazyTask.start().value }
         cancelBag.store(token.token)
+        continuation.yield(lazyTask)
         return token
     }
     
@@ -47,10 +47,10 @@ public final class SerialTaskExecutor: Sendable {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
-        let lazyTask = LazyTask(operation)
-        cancelBag.store(lazyTask.toAnyCancellable)
         return await withUnsafeContinuation { cont in
-            continuation.yield { await cont.resume(returning: lazyTask.start().value) }
+            let lazyTask = LazyTask { await cont.resume(returning: operation()) }
+            cancelBag.store(lazyTask.toAnyCancellable)
+            continuation.yield(lazyTask)
         }
     }
     
@@ -59,16 +59,16 @@ public final class SerialTaskExecutor: Sendable {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
-        let lazyTask = LazyTask(operation)
-        cancelBag.store(lazyTask.toAnyCancellable)
         return try await withUnsafeThrowingContinuation { cont in
-            continuation.yield {
+            let lazyTask = LazyTask {
                 do {
-                    try await cont.resume(returning: lazyTask.start().value)
+                    try await cont.resume(returning: operation())
                 } catch {
                     cont.resume(throwing: error)
                 }
             }
+            cancelBag.store(lazyTask.toAnyCancellable)
+            continuation.yield(lazyTask)
         }
     }
     
@@ -81,11 +81,11 @@ public final class SerialTaskExecutor: Sendable {
     }
 }
 
-private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
-    private let operation: @Sendable () async throws(Failure) -> Success
-    private let state = OSAllocatedUnfairLock<(task: Task<Success, Failure>?, isCancelled: Bool)>(initialState: (nil, false))
+private final class LazyTask: Sendable {
+    private let operation: @Sendable () async -> Void
+    private let state = OSAllocatedUnfairLock<(task: Task<Void, Never>?, isCancelled: Bool)>(initialState: (nil, false))
     
-    init(_ operation: @Sendable @escaping () async throws(Failure) -> Success) {
+    init(_ operation: @Sendable @escaping () async -> Void) {
         self.operation = operation
     }
     
@@ -100,13 +100,7 @@ private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
         }
     }
     
-    var toAnyCancellable: AnyCancellable {
-        AnyCancellable { [weak self] in self?.cancel() }
-    }
-}
-
-private extension LazyTask where Failure == Never {
-    func start() -> Task<Success, Never> {
+    func start() -> Task<Void, Never> {
         state.withLock { state in
             let task = state.task ?? Task { await operation() }
             state.task = task
@@ -114,15 +108,8 @@ private extension LazyTask where Failure == Never {
             return task
         }
     }
-}
-
-private extension LazyTask where Failure == Error {
-    func start() -> Task<Success, Failure> {
-        state.withLock { state in
-            let task = state.task ?? Task { try await operation() }
-            state.task = task
-            if state.isCancelled { task.cancel() }
-            return task
-        }
+    
+    var toAnyCancellable: AnyCancellable {
+        AnyCancellable { [weak self] in self?.cancel() }
     }
 }
