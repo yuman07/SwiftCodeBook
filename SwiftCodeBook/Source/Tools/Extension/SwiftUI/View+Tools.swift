@@ -41,9 +41,7 @@ public extension View {
             action(edgeInsets)
         }
     }
-}
-
-public extension View {
+    
     func onWindowSizeChanged(_ handler: @escaping @MainActor (CGSize?) -> Void) -> some View {
 #if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
         background(WindowExtractor(onChange: handler).allowsHitTesting(false).accessibilityHidden(true))
