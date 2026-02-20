@@ -48,9 +48,7 @@ public final class SerialTaskExecutor: Sendable {
         }
         
         return await withUnsafeContinuation { cont in
-            continuation.yield {
-                await cont.resume(returning: operation())
-            }
+            continuation.yield { await cont.resume(returning: operation()) }
         }
     }
     
@@ -62,8 +60,7 @@ public final class SerialTaskExecutor: Sendable {
         return try await withUnsafeThrowingContinuation { cont in
             continuation.yield {
                 do {
-                    let value = try await operation()
-                    cont.resume(returning: value)
+                    try await cont.resume(returning: operation())
                 } catch {
                     cont.resume(throwing: error)
                 }
@@ -93,9 +90,9 @@ private final class LazyTask<Success: Sendable, Failure: Error>: Sendable {
     }
     
     private func cancel() {
-        state.withLock { curState in
-            curState.isCancelled = true
-            curState.task?.cancel()
+        state.withLock { state in
+            state.isCancelled = true
+            state.task?.cancel()
         }
     }
     
@@ -109,9 +106,7 @@ private extension LazyTask where Failure == Never {
         state.withLock { state in
             let task = state.task ?? Task { await operation() }
             state.task = task
-            if state.isCancelled {
-                task.cancel()
-            }
+            if state.isCancelled { task.cancel() }
             return task
         }
     }
@@ -122,9 +117,7 @@ private extension LazyTask where Failure == Error {
         state.withLock { state in
             let task = state.task ?? Task { try await operation() }
             state.task = task
-            if state.isCancelled {
-                task.cancel()
-            }
+            if state.isCancelled { task.cancel() }
             return task
         }
     }
