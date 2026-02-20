@@ -14,16 +14,17 @@ public final class SerialTaskExecutor: Sendable {
         let token: AnyCancellable
     }
     
-    @TaskLocal static private var isOnExecutor = false
+    @TaskLocal private static var currentExecutorID: ObjectIdentifier?
     private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
     private let cancelBag = CancelBag()
     
     public init() {
         let taskStream = stream
+        let selfID = ObjectIdentifier(self)
         Task(executorPreference: globalConcurrentExecutor) {
             for await task in taskStream {
-                await Self.$isOnExecutor.withValue(true) {
-                    await task.start().result
+                await Self.$currentExecutorID.withValue(selfID) {
+                    await task.start().value
                 }
             }
         }
@@ -43,7 +44,7 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     public func sync<T: Sendable>(_ operation: @Sendable @escaping () async -> T) async -> T {
-        guard !Self.isOnExecutor else {
+        guard Self.currentExecutorID != ObjectIdentifier(self) else {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
@@ -55,7 +56,7 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     public func sync<T: Sendable>(_ operation: @Sendable @escaping () async throws -> T) async throws -> T {
-        guard !Self.isOnExecutor else {
+        guard Self.currentExecutorID != ObjectIdentifier(self) else {
             fatalError("Attempting to synchronously execute a task on the same executor results in deadlock.")
         }
         
