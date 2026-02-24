@@ -58,6 +58,7 @@
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
 		7AA13DBF2F4D87E100A5A4BA /* JSONCoder+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */; };
 		7AA13DC12F4D939400A5A4BA /* SendablePassthroughSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DC02F4D939400A5A4BA /* SendablePassthroughSubject.swift */; };
+		7AA13DC32F4D997F00A5A4BA /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DC22F4D997F00A5A4BA /* DataReader.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
 		7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */; };
@@ -147,6 +148,7 @@
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
 		7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONCoder+Tools.swift"; sourceTree = "<group>"; };
 		7AA13DC02F4D939400A5A4BA /* SendablePassthroughSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendablePassthroughSubject.swift; sourceTree = "<group>"; };
+		7AA13DC22F4D997F00A5A4BA /* DataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
 		7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodResourceBundles.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				7ADE35602F41CE1600828A29 /* SerialTaskExecutor.swift */,
 				7A1074B229091B1700C13362 /* WeakObject.swift */,
 				7AD0C0E92E336221009B4437 /* XMLNodeParser.swift */,
+				7AA13DC22F4D997F00A5A4BA /* DataReader.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -493,6 +496,7 @@
 				7A1074A12909012D00C13362 /* DispatchQueue+Tools.swift in Sources */,
 				7A4CB27A2CCA37F300820147 /* Spacer+Tools.swift in Sources */,
 				7A39349C2E06D3F700428D41 /* NoZoomWKWebView.swift in Sources */,
+				7AA13DC32F4D997F00A5A4BA /* DataReader.swift in Sources */,
 				7A1074A92909061700C13362 /* Array+Tools.swift in Sources */,
 				7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */,
 				7A1074952908FAEF00C13362 /* String+Tools.swift in Sources */,
