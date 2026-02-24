@@ -1,8 +1,8 @@
 //
-//  ISO8601Codable.swift
+//  JSONCoder+Tools.swift
 //  SwiftCodeBook
 //
-//  Created by yuman on 2023/3/23.
+//  Created by yuman on 2026/2/24.
 //
 
 import Foundation
@@ -29,3 +29,4 @@ public extension JSONEncoder.DateEncodingStrategy {
         }
     }
 }
+

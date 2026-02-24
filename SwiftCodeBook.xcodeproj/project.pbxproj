@@ -42,7 +42,6 @@
 		7A4D412F2977D668002C58B4 /* UIStackView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */; };
 		7A501A2C2914EEEB00512E32 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */; };
 		7A501A2E2914F43000512E32 /* KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A501A2D2914F43000512E32 /* KVO.swift */; };
-		7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */; };
 		7A6227C52BCD0A4E00E33417 /* ConvertNSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */; };
 		7A6227C82BCD121800E33417 /* WillDidMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6227C72BCD121800E33417 /* WillDidMove.swift */; };
 		7A6618152935CF8100DD738A /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */; };
@@ -57,6 +56,7 @@
 		7A914DB429ADDFB7008AD58C /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */; };
 		7A9CAD74291E105E00046466 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CAD73291E105E00046466 /* Date+Tools.swift */; };
 		7A9CC0BC2920D19200046466 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */; };
+		7AA13DBF2F4D87E100A5A4BA /* JSONCoder+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
 		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
 		7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */; };
@@ -130,7 +130,6 @@
 		7A4D412E2977D668002C58B4 /* UIStackView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tools.swift"; sourceTree = "<group>"; };
 		7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		7A501A2D2914F43000512E32 /* KVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVO.swift; sourceTree = "<group>"; };
-		7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601Codable.swift; sourceTree = "<group>"; };
 		7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertNSAttributedString.swift; sourceTree = "<group>"; };
 		7A6227C72BCD121800E33417 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
 		7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValuePublisher.swift; sourceTree = "<group>"; };
@@ -145,6 +144,7 @@
 		7A914DB329ADDFB7008AD58C /* NSRange+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+Tools.swift"; sourceTree = "<group>"; };
 		7A9CAD73291E105E00046466 /* Date+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Tools.swift"; sourceTree = "<group>"; };
 		7A9CC0BB2920D19200046466 /* UIScrollView.isScrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.isScrolling.swift; sourceTree = "<group>"; };
+		7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONCoder+Tools.swift"; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
 		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
 		7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodResourceBundles.swift; sourceTree = "<group>"; };
@@ -252,8 +252,9 @@
 		7A10748B2908C08500C13362 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7A20D006294DA9400076F89A /* View */,
 				7A2A472E2ED80F39005140E1 /* CADisplayLinkAnimator.swift */,
+				7A1074A22909019300C13362 /* GradientView.swift */,
+				7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -261,9 +262,9 @@
 		7A10748C2908C08A00C13362 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				7A9CBA09291E42C300046466 /* Codable */,
-				7A10748D2908C0B300C13362 /* ThreadSafe */,
+				7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */,
 				7AFC48F42EFD100F007F4F4C /* AsyncSemaphore.swift */,
+				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 				7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */,
 				7ADC0BE92F1E136C0005E6CC /* CurrentDevice.swift */,
 				7A6618142935CF8100DD738A /* CurrentValuePublisher.swift */,
@@ -274,14 +275,6 @@
 				7AD0C0E92E336221009B4437 /* XMLNodeParser.swift */,
 			);
 			path = Foundation;
-			sourceTree = "<group>";
-		};
-		7A10748D2908C0B300C13362 /* ThreadSafe */ = {
-			isa = PBXGroup;
-			children = (
-				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
-			);
-			path = ThreadSafe;
 			sourceTree = "<group>";
 		};
 		7A1074A6290905E500C13362 /* Foundation */ = {
@@ -299,6 +292,7 @@
 				7A1074A02909012D00C13362 /* DispatchQueue+Tools.swift */,
 				7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */,
 				7A10749C2908FBDD00C13362 /* FileManager+Tools.swift */,
+				7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */,
 				7AB2F855299E23400058D526 /* ISO8601DateFormatter+Tools.swift */,
 				7A7720C12BDB91620008828B /* Locale+Tools.swift */,
 				7A0ACC262A4D569D00F8F19A /* NSAttributedString+Tools.swift */,
@@ -328,15 +322,6 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
-		7A20D006294DA9400076F89A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				7A1074A22909019300C13362 /* GradientView.swift */,
-				7AE1E4A82949C5B7001B3671 /* LyricHighlightingLabel.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		7A501A2A2914EECB00512E32 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,15 +338,6 @@
 				7A6227C42BCD0A4E00E33417 /* ConvertNSAttributedString.swift */,
 			);
 			path = SwiftUI;
-			sourceTree = "<group>";
-		};
-		7A9CBA09291E42C300046466 /* Codable */ = {
-			isa = PBXGroup;
-			children = (
-				7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */,
-				7A51D2AC29CC4394007C3684 /* ISO8601Codable.swift */,
-			);
-			path = Codable;
 			sourceTree = "<group>";
 		};
 		7A9CC08E2920BFCB00046466 /* Tools */ = {
@@ -556,8 +532,8 @@
 				7A1074772908C01900C13362 /* SceneDelegate.swift in Sources */,
 				7A3757D92F3365AB00FAAC50 /* UIViewController+Tools.swift in Sources */,
 				7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */,
-				7A51D2AD29CC4394007C3684 /* ISO8601Codable.swift in Sources */,
 				7ADE35612F41CE1600828A29 /* SerialTaskExecutor.swift in Sources */,
+				7AA13DBF2F4D87E100A5A4BA /* JSONCoder+Tools.swift in Sources */,
 				7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */,
 				7A7720C22BDB91620008828B /* Locale+Tools.swift in Sources */,
 				7A6A55062A08EB6E00BDC719 /* WarningSwitch.swift in Sources */,
