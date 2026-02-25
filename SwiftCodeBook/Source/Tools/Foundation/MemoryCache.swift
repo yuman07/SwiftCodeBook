@@ -17,7 +17,7 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     public init() {
         cancelToken = CurrentApplication.memoryWarningPublisher
             .sink { [weak self] in
-                self?.removeAllValues()
+                self?.removeAll()
             }
     }
     
@@ -33,7 +33,7 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
         cache.removeObject(forKey: KeyObject(key))
     }
     
-    public func removeAllValues() {
+    public func removeAll() {
         cache.removeAllObjects()
     }
     
