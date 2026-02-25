@@ -32,13 +32,6 @@ public final class CancelBag: Sendable {
             tokens.removeAll()
         }
     }
-    
-    public func cancel(_ cancelToken: AnyCancellable) {
-        tokens.withLockUnchecked { tokens in
-            tokens.remove(cancelToken)
-            cancelToken.cancel()
-        }
-    }
 }
 
 public extension AnyCancellable {

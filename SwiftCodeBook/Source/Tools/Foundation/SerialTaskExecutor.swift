@@ -78,7 +78,7 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     public func cancel(_ cancelToken: CancelToken) {
-        cancelBag.cancel(cancelToken.token)
+        cancelToken.token.cancel()
     }
 }
 
