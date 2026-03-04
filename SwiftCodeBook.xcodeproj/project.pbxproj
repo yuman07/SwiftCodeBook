@@ -265,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */,
+				7AB21C1A29A32F900058D526 /* AsyncOperation.swift */,
 				7AFC48F42EFD100F007F4F4C /* AsyncSemaphore.swift */,
 				7A6EB345292F24E300BAF448 /* CancelBag.swift */,
 				7ADC0BEB2F1E14EF0005E6CC /* CurrentApplication.swift */,
@@ -366,7 +367,6 @@
 			isa = PBXGroup;
 			children = (
 				7A501A2B2914EEEB00512E32 /* AssociatedObject.swift */,
-				7AB21C1A29A32F900058D526 /* AsyncOperation.swift */,
 				7AAFB70C2CDE055E00525A44 /* CombineNote.swift */,
 				7A08D2192B16DDFC00DE9BCC /* CompareEnum.swift */,
 				7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */,
