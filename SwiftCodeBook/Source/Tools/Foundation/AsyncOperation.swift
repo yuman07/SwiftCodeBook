@@ -31,17 +31,6 @@ open class AsyncOperation: Operation, @unchecked Sendable {
         }
     }
     
-    private let _cancelled = OSAllocatedUnfairLock(initialState: false)
-    public private(set) final override var isCancelled: Bool {
-        get { _cancelled.withLock { $0 } }
-        set {
-            guard isCancelled != newValue else { return }
-            willChangeValue(forKey: "isCancelled")
-            _cancelled.withLock { $0 = newValue }
-            didChangeValue(forKey: "isCancelled")
-        }
-    }
-    
     public final override var isAsynchronous: Bool {
         true
     }
@@ -59,23 +48,14 @@ open class AsyncOperation: Operation, @unchecked Sendable {
     }
     
     public final override func cancel() {
-        isCancelled = true
+        super.cancel()
     }
     
     public final func finish() {
         state = .finished
     }
 
-    public final override func start() {
-        if isCancelled {
-            finish()
-            return
-        }
-        state = .executing
-        execute()
-    }
-
-    open func execute() {
-        fatalError("Subclasses must implement execute() and call finish() when done.")
+    open override func start() {
+        fatalError("Subclasses must implement start() and call finish() when done.")
     }
 }
