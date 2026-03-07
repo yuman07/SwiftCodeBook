@@ -10,12 +10,9 @@ import os
 
 open class AsyncOperation: Operation, @unchecked Sendable {
     private enum State: String {
-        case ready
-        case executing
-        case finished
-        var keyPath: String {
-            "is" + rawValue.capitalized
-        }
+        case ready = "isReady"
+        case executing = "isExecuting"
+        case finished = "isFinished"
     }
     
     private let _state = OSAllocatedUnfairLock(initialState: State.ready)
@@ -23,11 +20,11 @@ open class AsyncOperation: Operation, @unchecked Sendable {
         get { _state.withLock { $0 } }
         set {
             guard case let oldValue = state, oldValue != newValue else { return }
-            willChangeValue(forKey: oldValue.keyPath)
-            willChangeValue(forKey: newValue.keyPath)
+            willChangeValue(forKey: oldValue.rawValue)
+            willChangeValue(forKey: newValue.rawValue)
             _state.withLock { $0 = newValue }
-            didChangeValue(forKey: newValue.keyPath)
-            didChangeValue(forKey: oldValue.keyPath)
+            didChangeValue(forKey: newValue.rawValue)
+            didChangeValue(forKey: oldValue.rawValue)
         }
     }
     
