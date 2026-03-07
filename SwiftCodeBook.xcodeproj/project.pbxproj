@@ -59,7 +59,6 @@
 		7AA13DBF2F4D87E100A5A4BA /* JSONCoder+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */; };
 		7AA13DC12F4D939400A5A4BA /* SendablePassthroughSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA13DC02F4D939400A5A4BA /* SendablePassthroughSubject.swift */; };
 		7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */; };
-		7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCA8B2928B0FF00059782 /* AddMask.swift */; };
 		7AAFB70B2CDDDCC500525A44 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */; };
 		7AAFB70D2CDE055E00525A44 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAFB70C2CDE055E00525A44 /* CombineNote.swift */; };
 		7AB206A4299F66310058D526 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB206A3299F66310058D526 /* PointerInSwift.swift */; };
@@ -88,7 +87,6 @@
 		7AEA3A6D2CD3CE6A00E92F3E /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */; };
 		7AEA3A6F2CD3E06500E92F3E /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */; };
 		7AF129B52D1D0C42009B7556 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */; };
-		7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF831E529E65E9800021A08 /* MaskedCorners.swift */; };
 		7AFC48F12EFB8D50007F4F4C /* Duration+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */; };
 		7AFC48F52EFD100F007F4F4C /* AsyncSemaphore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC48F42EFD100F007F4F4C /* AsyncSemaphore.swift */; };
 /* End PBXBuildFile section */
@@ -148,7 +146,6 @@
 		7AA13DBE2F4D87E100A5A4BA /* JSONCoder+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONCoder+Tools.swift"; sourceTree = "<group>"; };
 		7AA13DC02F4D939400A5A4BA /* SendablePassthroughSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendablePassthroughSubject.swift; sourceTree = "<group>"; };
 		7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncreaseHotZone.swift; sourceTree = "<group>"; };
-		7AABCA8B2928B0FF00059782 /* AddMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMask.swift; sourceTree = "<group>"; };
 		7AAFB70A2CDDDCC500525A44 /* PodResourceBundles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodResourceBundles.swift; sourceTree = "<group>"; };
 		7AAFB70C2CDE055E00525A44 /* CombineNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineNote.swift; sourceTree = "<group>"; };
 		7AB206A3299F66310058D526 /* PointerInSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerInSwift.swift; sourceTree = "<group>"; };
@@ -177,7 +174,6 @@
 		7AEA3A6C2CD3CE6A00E92F3E /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		7AEA3A6E2CD3E06500E92F3E /* DispatchNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchNote.swift; sourceTree = "<group>"; };
 		7AF129B42D1D0C42009B7556 /* AnyJSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyJSONValue.swift; sourceTree = "<group>"; };
-		7AF831E529E65E9800021A08 /* MaskedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedCorners.swift; sourceTree = "<group>"; };
 		7AFC48F02EFB8D50007F4F4C /* Duration+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Duration+Tools.swift"; sourceTree = "<group>"; };
 		7AFC48F42EFD100F007F4F4C /* AsyncSemaphore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSemaphore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -386,12 +382,10 @@
 		7AE1E49D2949B72A001B3671 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7AABCA8B2928B0FF00059782 /* AddMask.swift */,
 				7A20D004294DA8730076F89A /* AutoLayoutDoAnimation.swift */,
 				7AE1E4A22949BA28001B3671 /* CGAffineTransformGuide.swift */,
 				7A8A00A429308F5D001A3345 /* HitTest.swift */,
 				7AABCA892928AFAF00059782 /* IncreaseHotZone.swift */,
-				7AF831E529E65E9800021A08 /* MaskedCorners.swift */,
 				7A39349B2E06D3F700428D41 /* NoZoomWKWebView.swift */,
 				7AE1E4A62949BECC001B3671 /* Shadow.swift */,
 				7A20D002294D9C560076F89A /* UIImageView.contentMode.swift */,
@@ -471,7 +465,6 @@
 			files = (
 				7A1074792908C01900C13362 /* ViewController.swift in Sources */,
 				7A1074B129090C4F00C13362 /* Dictionary+Tools.swift in Sources */,
-				7AF831E629E65E9800021A08 /* MaskedCorners.swift in Sources */,
 				7A1087B129097C2800C13362 /* UIView+Tools.swift in Sources */,
 				7ADC0BEA2F1E136C0005E6CC /* CurrentDevice.swift in Sources */,
 				7AABCA8A2928AFAF00059782 /* IncreaseHotZone.swift in Sources */,
@@ -546,7 +539,6 @@
 				7AD0DC5F290C1C5C0010BBC8 /* HashHandler.swift in Sources */,
 				7A2A472F2ED80F39005140E1 /* CADisplayLinkAnimator.swift in Sources */,
 				7A1074A52909041E00C13362 /* UIImage+Tools.swift in Sources */,
-				7AABCA8C2928B0FF00059782 /* AddMask.swift in Sources */,
 				7AB21C1B29A32F900058D526 /* AsyncOperation.swift in Sources */,
 				7AE1E4A92949C5B7001B3671 /* LyricHighlightingLabel.swift in Sources */,
 				7A501A2E2914F43000512E32 /* KVO.swift in Sources */,
