@@ -17,7 +17,7 @@ open class AsyncOperation: Operation, @unchecked Sendable {
             "is" + rawValue.capitalized
         }
     }
-
+    
     private let _state = OSAllocatedUnfairLock(initialState: State.ready)
     private var state: State {
         get { _state.withLock { $0 } }
@@ -34,28 +34,28 @@ open class AsyncOperation: Operation, @unchecked Sendable {
     public final override var isAsynchronous: Bool {
         true
     }
-
+    
     public final override var isReady: Bool {
         super.isReady && state == .ready
     }
-
+    
     public final override var isExecuting: Bool {
         state == .executing
     }
-
+    
     public final override var isFinished: Bool {
         state == .finished
     }
     
-    public final override func cancel() {
-        super.cancel()
+    public final override func start() {
+        state = .executing
     }
     
     public final func finish() {
         state = .finished
     }
-
-    open override func start() {
-        fatalError("Subclasses must implement start() and call finish() when done.")
+    
+    open override func main() {
+        fatalError("Subclasses must implement main() and call finish() when done.")
     }
 }
