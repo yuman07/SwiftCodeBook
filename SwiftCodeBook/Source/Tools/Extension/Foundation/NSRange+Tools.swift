@@ -9,10 +9,6 @@ import Foundation
 
 public extension NSRange {
     var isValid: Bool {
-        location >= 0 && location != NSNotFound && length >= 0 && endLocation >= location && endLocation - location == length
-    }
-
-    var endLocation: Int {
-        NSMaxRange(self)
+        location >= 0 && location != NSNotFound && length >= 0 && upperBound >= location && upperBound - location == length
     }
 }

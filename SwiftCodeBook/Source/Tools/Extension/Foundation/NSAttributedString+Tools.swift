@@ -18,13 +18,13 @@ public extension NSAttributedString {
         
         while true {
             let range = nsString.rangeOfCharacter(from: characterSet)
-            guard range.location == 0 && range.endLocation <= nsString.length else { break }
+            guard range.location == 0 && range.upperBound <= nsString.length else { break }
             attributedString.deleteCharacters(in: range)
         }
         
         while true {
             let range = nsString.rangeOfCharacter(from: characterSet, options: .backwards)
-            guard range.endLocation == nsString.length && range.location >= 0 else { break }
+            guard range.upperBound == nsString.length && range.location >= 0 else { break }
             attributedString.deleteCharacters(in: range)
         }
         
@@ -49,7 +49,7 @@ public extension NSAttributedString {
             if keepSeparator {
                 components.append(attributedSubstring(from: range))
             }
-            location = range.endLocation
+            location = range.upperBound
         }
         if location < length || !omittingEmptySubsequences {
             components.append(attributedSubstring(from: NSRange(location: location, length: length - location)))
