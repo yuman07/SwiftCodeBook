@@ -27,7 +27,7 @@ public final class SerialTaskExecutor: Sendable {
     }
     
     @discardableResult
-    public func async(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
+    public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let lazyTask = LazyTask(operation)
         let token = lazyTask.toAnyCancellable
         cancelBag.store(token)
