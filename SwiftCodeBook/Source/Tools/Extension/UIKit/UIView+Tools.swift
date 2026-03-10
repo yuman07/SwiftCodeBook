@@ -57,10 +57,11 @@ public extension UIView {
     
     var parentWindowSizePublisher: AnyPublisher<CGSize?, Never> {
         parentWindowPublisher
-            .flatMap({ window -> AnyPublisher<CGSize?, Never> in
+            .map({ window -> AnyPublisher<CGSize?, Never> in
                 guard let window else { return Just(nil).eraseToAnyPublisher() }
-                return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
+                return window.publisher(for: \.frame).map(\.size).prepend(window.frame.size).eraseToAnyPublisher()
             })
+            .switchToLatest()
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -68,10 +69,15 @@ public extension UIView {
     
     var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
         parentWindowPublisher
-            .flatMap({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
+            .map({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
                 guard let windowScene = window?.windowScene else { return Just(.unknown).eraseToAnyPublisher() }
-                return windowScene.publisher(for: \.effectiveGeometry).map(\.interfaceOrientation).eraseToAnyPublisher()
+                return windowScene
+                    .publisher(for: \.effectiveGeometry)
+                    .map(\.interfaceOrientation)
+                    .prepend(windowScene.effectiveGeometry.interfaceOrientation)
+                    .eraseToAnyPublisher()
             })
+            .switchToLatest()
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

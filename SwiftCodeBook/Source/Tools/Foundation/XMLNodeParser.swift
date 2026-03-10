@@ -22,11 +22,10 @@ public struct XMLNode: Sendable, Hashable {
 }
 
 @frozen public enum XMLNodeParser: Sendable {
-    @frozen public enum DataSource: @unchecked Sendable {
+    @frozen public enum DataSource: Sendable {
         case string(String)
         case data(Data)
         case url(URL)
-        case stream(InputStream)
     }
 
     @concurrent
@@ -61,7 +60,6 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
         case let .string(string): parser = XMLParser(data: Data(string.utf8))
         case let .data(data): parser = XMLParser(data: data)
         case let .url(url): parser = XMLParser(contentsOf: url)
-        case let .stream(inputStream): parser = XMLParser(stream: inputStream)
         }
         parser?.delegate = self
     }
@@ -80,6 +78,7 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
         }
         continuation = nil
         parser?.abortParsing()
+        parser?.delegate = nil
         parser = nil
         stack.removeAll()
     }
@@ -94,13 +93,10 @@ extension XMLNodeParserImp: XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        guard var lastNode = stack.popLast() else {
+        guard !stack.isEmpty else {
             return finish(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
         }
-        if case let string = string, !string.isEmpty {
-            lastNode.text.append(string)
-        }
-        stack.append(lastNode)
+        stack[stack.count - 1].text.append(string)
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
