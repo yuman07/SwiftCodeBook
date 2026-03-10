@@ -18,13 +18,13 @@ public extension NSAttributedString {
         
         while true {
             let range = nsString.rangeOfCharacter(from: characterSet)
-            guard range.location == 0 && range.upperBound <= nsString.length else { break }
+            guard range.location == 0 && range.length > 0 && range.upperBound <= nsString.length else { break }
             attributedString.deleteCharacters(in: range)
         }
         
         while true {
             let range = nsString.rangeOfCharacter(from: characterSet, options: .backwards)
-            guard range.upperBound == nsString.length && range.location >= 0 else { break }
+            guard range.upperBound == nsString.length && range.length > 0 && range.location >= 0 else { break }
             attributedString.deleteCharacters(in: range)
         }
         
