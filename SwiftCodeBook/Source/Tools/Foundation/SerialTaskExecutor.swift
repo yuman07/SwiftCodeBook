@@ -17,9 +17,11 @@ public final class SerialTaskExecutor: Sendable {
         let taskStream = stream
         Task(executorPreference: globalConcurrentExecutor, priority: priority) {
             for await task in taskStream {
-                await task.start().value
+                if let startTask = task.start() {
+                    await startTask.value
+                }
             }
-        }
+        }.store(in: cancelBag)
     }
     
     deinit {
@@ -59,8 +61,11 @@ private final class LazyTask: Sendable {
         }
     }
     
-    func start() -> Task<Void, Never> {
+    func start() -> Task<Void, Never>? {
         context.withLock { context in
+            if context.task == nil && context.isCancelled {
+                return nil
+            }
             let task = context.task ?? Task { await operation() }
             context.task = task
             if context.isCancelled { task.cancel() }
