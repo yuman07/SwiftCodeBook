@@ -19,7 +19,7 @@ import WatchKit
 
 public extension View {
     @ViewBuilder func modify(@ViewBuilder _ transform: (Self) -> (some View)?) -> some View {
-        if let view = transform(self), !(view is EmptyView) {
+        if let view = transform(self) {
             view
         } else {
             self
@@ -42,12 +42,12 @@ public extension View {
         }
     }
     
-    func onWindowSizeChange(_ handler: @escaping @MainActor (CGSize?) -> Void) -> some View {
+    func onWindowSizeChange(_ action: @escaping @MainActor (CGSize?) -> Void) -> some View {
 #if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
-        background(WindowExtractor(onChange: handler).allowsHitTesting(false).accessibilityHidden(true))
+        background(WindowObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
 #elseif os(watchOS)
-        DispatchQueue.main.async {
-            handler(WKInterfaceDevice.current().screenBounds.size)
+        DispatchQueue.runOnce {
+            action(WKInterfaceDevice.current().screenBounds.size)
         }
         return self
 #else
@@ -57,7 +57,7 @@ public extension View {
 }
 
 #if os(iOS) || os(tvOS) || os(visionOS)
-private struct WindowExtractor: UIViewRepresentable {
+private struct WindowObserver: UIViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
     func makeUIView(context: Context) -> WindowObserverView {
@@ -83,10 +83,11 @@ private struct WindowExtractor: UIViewRepresentable {
             accessibilityElementsHidden = true
             
             cancelToken = $parentWindow
-                .flatMap({ window -> AnyPublisher<CGSize?, Never> in
+                .map({ window -> AnyPublisher<CGSize?, Never> in
                     guard let window else { return Just(nil).eraseToAnyPublisher() }
-                    return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
+                    return window.publisher(for: \.frame).map(\.size).prepend(window.frame.size).eraseToAnyPublisher()
                 })
+                .switchToLatest()
                 .removeDuplicates()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] size in
@@ -105,7 +106,7 @@ private struct WindowExtractor: UIViewRepresentable {
     }
 }
 #elseif os(macOS)
-private struct WindowExtractor: NSViewRepresentable {
+private struct WindowObserver: NSViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
     func makeNSView(context: Context) -> WindowObserverView {
@@ -125,7 +126,6 @@ private struct WindowExtractor: NSViewRepresentable {
             self.onChange = onChange
             super.init(frame: .zero)
             isHidden = true
-            layer?.backgroundColor = .clear
             
             cancelToken = $parentWindow
                 .flatMap({ window -> AnyPublisher<CGSize?, Never> in
