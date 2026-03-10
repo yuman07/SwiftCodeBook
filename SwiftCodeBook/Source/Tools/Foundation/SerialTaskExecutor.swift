@@ -11,19 +11,21 @@ import os
 
 public final class SerialTaskExecutor: Sendable {
     private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
+    private let worker: Task<Void, Never>
     private let cancelBag = CancelBag()
     
     public init(priority: TaskPriority? = nil) {
         let taskStream = stream
-        Task(executorPreference: globalConcurrentExecutor, priority: priority) {
+        worker = Task(executorPreference: globalConcurrentExecutor, priority: priority) {
             for await task in taskStream {
                 await task.start()?.value
             }
-        }.store(in: cancelBag)
+        }
     }
     
     deinit {
         continuation.finish()
+        worker.cancel()
     }
     
     @discardableResult
