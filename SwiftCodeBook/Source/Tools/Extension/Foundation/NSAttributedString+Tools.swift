@@ -14,15 +14,16 @@ public extension NSAttributedString {
 
     func trimmingCharacters(in characterSet: CharacterSet) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
-        let nsString = attributedString.string as NSString
         
         while true {
+            let nsString = attributedString.string as NSString
             let range = nsString.rangeOfCharacter(from: characterSet)
             guard range.location == 0 && range.length > 0 && range.upperBound <= nsString.length else { break }
             attributedString.deleteCharacters(in: range)
         }
         
         while true {
+            let nsString = attributedString.string as NSString
             let range = nsString.rangeOfCharacter(from: characterSet, options: .backwards)
             guard range.upperBound == nsString.length && range.length > 0 && range.location >= 0 else { break }
             attributedString.deleteCharacters(in: range)
