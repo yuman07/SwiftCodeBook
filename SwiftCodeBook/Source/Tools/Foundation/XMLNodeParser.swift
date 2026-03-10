@@ -68,12 +68,12 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
 
     func parse() {
         guard let parser else {
-            return stop(.failure(NSError(reason: "DataSource error: Unable to initialize parser")))
+            return finish(.failure(NSError(reason: "DataSource error: Unable to initialize parser")))
         }
         parser.parse()
     }
     
-    func stop(_ result: Result<XMLNode, Error>) {
+    func finish(_ result: Result<XMLNode, Error>) {
         switch result {
         case let .success(node): continuation?.resume(with: .success(node))
         case let .failure(error): continuation?.resume(throwing: error)
@@ -95,7 +95,7 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         guard var lastNode = stack.popLast() else {
-            return stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
+            return finish(.failure(NSError(reason: "Parsing error: No corresponding node was found when running foundCharacters")))
         }
         if case let string = string, !string.isEmpty {
             lastNode.text.append(string)
@@ -105,7 +105,7 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         guard let lastNode = stack.popLast(), lastNode.name == elementName else {
-            return stop(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
+            return finish(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
         }
         if var parentNode = stack.popLast() {
             parentNode.childNodes.append(lastNode)
@@ -117,17 +117,17 @@ extension XMLNodeParserImp: XMLParserDelegate {
     
     func parserDidEndDocument(_ parser: XMLParser) {
         guard let root = stack.popLast(), stack.isEmpty else {
-            return stop(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
+            return finish(.failure(NSError(reason: "Parsing error: There should be only one root node.")))
         }
-        stop(.success(root.toXMLNode()))
+        finish(.success(root.toXMLNode()))
     }
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: any Error) {
-        stop(.failure(parseError))
+        finish(.failure(parseError))
     }
     
     func parser(_ parser: XMLParser, validationErrorOccurred validationError: any Error) {
-        stop(.failure(validationError))
+        finish(.failure(validationError))
     }
 }
 
