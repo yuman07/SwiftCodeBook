@@ -8,7 +8,7 @@
 import Foundation
 
 public extension StringProtocol {
-    func isValidRange(_ rangeExpression: any RangeExpression<Index>) -> Bool {
+    func isValidRange<T: RangeExpression<Index>>(_ rangeExpression: T) -> Bool {
         if let range = rangeExpression as? Range<Index> {
             return range.lowerBound >= startIndex && range.upperBound <= endIndex
         } else if let range = rangeExpression as? ClosedRange<Index> {
@@ -32,7 +32,7 @@ public extension StringProtocol {
         return Range(nsRange, in: self)
     }
 
-    func nsRange(from range: any RangeExpression<Index>) -> NSRange? {
+    func nsRange<T: RangeExpression<Index>>(from range: T) -> NSRange? {
         guard isValidRange(range), case let nsRange = NSRange(range, in: self), isValidRange(nsRange) else { return nil }
         return nsRange
     }
@@ -57,10 +57,10 @@ public extension StringProtocol {
 }
 
 public extension StringProtocol {
-    var languageDirection: Locale.LanguageDirection {
+    var guessedLanguageDirection: Locale.LanguageDirection {
         // CFStringTokenizerCopyBestStringLanguage documentation says 200-400 characters are required to reliably guess the language
         // Use the lower end(200) for speed
-        let cfStr = String(self) as CFString
+        let cfStr = String(prefix(200)) as CFString
         let range = CFRange(location: 0, length: Swift.min(200, CFStringGetLength(cfStr)))
         guard let localeId = CFStringTokenizerCopyBestStringLanguage(cfStr, range) else { return .unknown }
         return Locale(identifier: String(localeId)).language.characterDirection
