@@ -17,9 +17,7 @@ public final class SerialTaskExecutor: Sendable {
         let taskStream = stream
         Task(executorPreference: globalConcurrentExecutor, priority: priority) {
             for await task in taskStream {
-                if let startTask = task.start() {
-                    await startTask.value
-                }
+                await task.start()?.value
             }
         }.store(in: cancelBag)
     }
