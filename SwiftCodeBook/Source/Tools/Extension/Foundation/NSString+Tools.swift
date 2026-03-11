@@ -19,12 +19,12 @@ public extension NSString {
     func ranges(of searchString: String, options: NSString.CompareOptions = [], locale: Locale? = nil) -> [NSRange] {
         guard !searchString.isEmpty else { return [] }
         var ranges = [NSRange]()
-        var location = 0
-        while location < length,
-              case let range = range(of: searchString, options: options, range: NSRange(location: location, length: length - location), locale: locale),
+        var lastUpperBound = 0
+        while lastUpperBound < length,
+              case let range = range(of: searchString, options: options, range: NSRange(location: lastUpperBound, length: length - lastUpperBound), locale: locale),
               isValidRange(range) {
             ranges.append(range)
-            location = range.upperBound
+            lastUpperBound = range.upperBound
         }
         return ranges
     }
