@@ -115,6 +115,7 @@ public extension UIView {
 private final class WindowObserverView: UIView {
     @Published var parentWindow: UIWindow?
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
