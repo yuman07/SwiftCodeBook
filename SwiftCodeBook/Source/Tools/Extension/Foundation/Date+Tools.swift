@@ -13,7 +13,7 @@ public extension Date {
     }
     
     var century: Int {
-        year / 100 + 1
+        (year - 1) / 100 + 1
     }
     
     var year: Int {
@@ -55,10 +55,6 @@ public extension Date {
     
     var weekOfYear: Int {
         calendar.component(.weekOfYear, from: self)
-    }
-    
-    var startDateOfThisDay: Date {
-        calendar.startOfDay(for: self)
     }
     
     var isInWeekend: Bool {
