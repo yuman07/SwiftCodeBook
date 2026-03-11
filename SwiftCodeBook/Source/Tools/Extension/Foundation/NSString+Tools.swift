@@ -17,6 +17,7 @@ public extension NSString {
     }
     
     func ranges(of searchString: String, options: NSString.CompareOptions = [], locale: Locale? = nil) -> [NSRange] {
+        guard !searchString.isEmpty else { return [] }
         var ranges = [NSRange]()
         var location = 0
         while location < length,

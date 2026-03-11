@@ -13,6 +13,7 @@ public extension AttributedStringProtocol {
     }
     
     func ranges<T>(of stringToFind: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<AttributedString.Index>] where T: StringProtocol {
+        guard !stringToFind.isEmpty else { return [] }
         var ranges = [Range<AttributedString.Index>]()
         var lastUpperBound = startIndex
         while lastUpperBound < endIndex, let range = self[lastUpperBound ..< endIndex].range(of: stringToFind, options: options, locale: locale) {
