@@ -11,14 +11,14 @@ import UIKit
 public extension UIFont {
     // bold: addTraits(.traitBold)
     // boldAndItalic: addTraits([.traitBold, .traitItalic])
-    func addTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+    func addingTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
         guard let descriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.union(traits)) else {
             return self
         }
         return UIFont(descriptor: descriptor, size: pointSize)
     }
     
-    func removeTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+    func removingTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
         guard let descriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.subtracting(traits)) else {
             return self
         }
@@ -26,7 +26,7 @@ public extension UIFont {
     }
     
     // isBold: containsTraits(.traitBold)
-    func containsTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> Bool {
+    func containsAllTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> Bool {
         fontDescriptor.symbolicTraits.contains(traits)
     }
 }

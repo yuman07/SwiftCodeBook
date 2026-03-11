@@ -22,17 +22,19 @@ public extension UIColor {
         )
     }
     
-    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
         var r = CGFloat.zero
         var g = CGFloat.zero
         var b = CGFloat.zero
         var a = CGFloat.zero
-        getRed(&r, green: &g, blue: &b, alpha: &a)
-        return (r, g, b, a)
+        if getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return (r, g, b, a)
+        }
+        return nil
     }
     
-    var rgbaString: String {
-        let rgba = rgba
+    var rgbaString: String? {
+        guard let rgba = rgba else { return nil }
         let r = String(Int(round(rgba.red * 255.0)), radix: 16, uppercase: true)
         let g = String(Int(round(rgba.green * 255.0)), radix: 16, uppercase: true)
         let b = String(Int(round(rgba.blue * 255.0)), radix: 16, uppercase: true)
