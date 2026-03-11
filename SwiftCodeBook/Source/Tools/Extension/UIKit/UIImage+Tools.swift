@@ -11,15 +11,17 @@ import UIKit
 public extension UIImage {
     static func color(_ color: UIColor, size: CGSize = .one) -> UIImage {
 #if os(iOS) || os(tvOS) || os(visionOS)
-        UIGraphicsImageRenderer(size: size.validSelfOrOne).image { context in
+        let realSize = size.validSelfOrOne
+        return UIGraphicsImageRenderer(size: realSize).image { context in
             color.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
+            context.fill(CGRect(origin: .zero, size: realSize))
         }
 #else
-        UIGraphicsBeginImageContext(size)
+        let realSize = size.validSelfOrOne
+        UIGraphicsBeginImageContext(realSize)
         defer { UIGraphicsEndImageContext() }
         color.setFill()
-        UIRectFill(CGRect(origin: .zero, size: size))
+        UIRectFill(CGRect(origin: .zero, size: realSize))
         return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
 #endif
     }
@@ -44,7 +46,7 @@ public extension UIImage {
     }
     
     convenience init?(symbolName: String, pointSize: CGFloat) {
-        guard pointSize.isFinite else { return nil }
+        guard pointSize.isFinite, pointSize > 0 else { return nil }
         self.init(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: pointSize))
     }
 }
