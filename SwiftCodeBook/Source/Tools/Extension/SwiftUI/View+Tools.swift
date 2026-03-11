@@ -128,10 +128,11 @@ private struct WindowObserver: NSViewRepresentable {
             isHidden = true
             
             cancelToken = $parentWindow
-                .flatMap({ window -> AnyPublisher<CGSize?, Never> in
+                .map({ window -> AnyPublisher<CGSize?, Never> in
                     guard let window else { return Just(nil).eraseToAnyPublisher() }
-                    return window.publisher(for: \.frame).map(\.size).eraseToAnyPublisher()
+                    return window.publisher(for: \.frame).map(\.size).prepend(window.frame.size).eraseToAnyPublisher()
                 })
+                .switchToLatest()
                 .removeDuplicates()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] size in
