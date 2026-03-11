@@ -29,6 +29,38 @@ public extension CurrentDevice {
 #endif
     }()
     
+    @frozen enum DeviceType: Sendable, Hashable {
+        case unknown
+        case iPhone
+        case iPad
+        case iPod
+        case mac
+        case tv
+        case watch
+        case vision
+    }
+    
+    static let deviceType: DeviceType = {
+        let deviceModel = Self.deviceModel.lowercased()
+        if deviceModel.contains("iphone") {
+            return .iPhone
+        } else if deviceModel.contains("ipad") {
+            return .iPad
+        } else if deviceModel.contains("ipod") {
+            return .iPod
+        } else if deviceModel.contains("mac") {
+            return .mac
+        } else if deviceModel.contains("tv") {
+            return .tv
+        } else if deviceModel.contains("watch") {
+            return .watch
+        } else if deviceModel.contains("vision") {
+            return .vision
+        } else {
+            return .unknown
+        }
+    }()
+    
     static let systemVersion = {
         let info = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(info.majorVersion).\(info.minorVersion)"
