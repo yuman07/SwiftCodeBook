@@ -9,8 +9,19 @@ import Foundation
 
 public extension StringProtocol {
     func isValidRange<T: RangeExpression<Index>>(_ rangeExpression: T) -> Bool {
-        let range = rangeExpression.relative(to: self)
-        return range.lowerBound >= startIndex && range.upperBound <= endIndex
+        if let range = rangeExpression as? Range<Index> {
+            return range.lowerBound >= startIndex && range.upperBound <= endIndex
+        } else if let range = rangeExpression as? ClosedRange<Index> {
+            return range.lowerBound >= startIndex && range.upperBound < endIndex
+        } else if let range = rangeExpression as? PartialRangeFrom<Index> {
+            return range.lowerBound >= startIndex
+        } else if let range = rangeExpression as? PartialRangeUpTo<Index> {
+            return range.upperBound <= endIndex
+        } else if let range = rangeExpression as? PartialRangeThrough<Index> {
+            return range.upperBound < endIndex
+        } else {
+            return false
+        }
     }
 
     func isValidRange(_ nsRange: NSRange) -> Bool {
