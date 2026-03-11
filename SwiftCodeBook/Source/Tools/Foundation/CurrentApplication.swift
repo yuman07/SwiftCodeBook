@@ -20,7 +20,24 @@ import UIKit
 @frozen public enum CurrentApplication: Sendable {}
 
 public extension CurrentApplication {
+#if os(macOS)
+    @MainActor
+    static var keyWindow: NSWindow? {
+        NSApplication.shared.keyWindow
+    }
+#elseif os(iOS) || os(tvOS) || os(visionOS)
+    @MainActor
+    static var keyWindow: UIWindow? {
+        UIApplication.shared
+            .connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
+#endif
+    
 #if canImport(AppKit)
+    @MainActor
     static var appIcon: NSImage? {
         NSApplication.shared.applicationIconImage
     }
