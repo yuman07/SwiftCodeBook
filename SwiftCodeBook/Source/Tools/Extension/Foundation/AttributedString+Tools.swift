@@ -54,10 +54,10 @@ public extension AttributedStringProtocol {
 public extension AttributedString {
     func trimmingWhitespacesAndNewlines() -> Self {
         var attributedString = self
-        if let range = attributedString.range(of: #"\s+$"#, options: .regularExpression) {
+        if let range = attributedString.range(of: #"\s+$"#, options: .regularExpression), !range.isEmpty {
             attributedString.removeSubrange(range)
         }
-        if let range = attributedString.range(of: #"^\s+"#, options: .regularExpression) {
+        if let range = attributedString.range(of: #"^\s+"#, options: .regularExpression), !range.isEmpty {
             attributedString.removeSubrange(range)
         }
         return attributedString
