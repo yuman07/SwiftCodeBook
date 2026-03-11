@@ -11,7 +11,7 @@ import UIKit
 public extension UIViewController {
     func addChildSafely(_ child: UIViewController, layout: @MainActor (_ child: UIViewController, _ parent: UIViewController) -> Void) {
         guard child !== self && child.parent !== self else { return }
-        if child.parent != nil { child.removeFromParentSafely() }
+        child.removeFromParentSafely()
         addChild(child)
         view.addSubview(child.view)
         layout(child, self)
