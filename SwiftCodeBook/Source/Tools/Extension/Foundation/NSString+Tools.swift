@@ -12,7 +12,7 @@ public extension NSString {
         nsRange.isValid && nsRange.location < length && nsRange.upperBound <= length
     }
 
-    func nsRange(from range: any RangeExpression<String.Index>) -> NSRange? {
+    func nsRange<T: RangeExpression<String.Index>>(from range: T) -> NSRange? {
         (self as String).nsRange(from: range)
     }
     

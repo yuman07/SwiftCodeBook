@@ -9,22 +9,13 @@ import Foundation
 
 public extension StringProtocol {
     func isValidRange<T: RangeExpression<Index>>(_ rangeExpression: T) -> Bool {
-        if let range = rangeExpression as? Range<Index> {
-            return range.lowerBound >= startIndex && range.upperBound <= endIndex
-        } else if let range = rangeExpression as? ClosedRange<Index> {
-            return range.lowerBound >= startIndex && range.upperBound < endIndex
-        } else if let range = rangeExpression as? PartialRangeFrom<Index> {
-            return range.lowerBound >= startIndex
-        } else if let range = rangeExpression as? PartialRangeUpTo<Index> {
-            return range.upperBound <= endIndex
-        } else if let range = rangeExpression as? PartialRangeThrough<Index> {
-            return range.upperBound < endIndex
-        }
-        return false
+        let range = rangeExpression.relative(to: self)
+        return range.lowerBound >= startIndex && range.upperBound <= endIndex
     }
 
     func isValidRange(_ nsRange: NSRange) -> Bool {
-        range(from: nsRange) != nil
+        guard let range = range(from: nsRange), isValidRange(range) else { return false }
+        return true
     }
 
     func range(from nsRange: NSRange) -> Range<Index>? {
@@ -33,7 +24,7 @@ public extension StringProtocol {
     }
 
     func nsRange<T: RangeExpression<Index>>(from range: T) -> NSRange? {
-        guard isValidRange(range), case let nsRange = NSRange(range, in: self), isValidRange(nsRange) else { return nil }
+        guard isValidRange(range), case let nsRange = NSRange(range, in: self), nsRange.isValid else { return nil }
         return nsRange
     }
 }
@@ -61,7 +52,7 @@ public extension StringProtocol {
         // CFStringTokenizerCopyBestStringLanguage documentation says 200-400 characters are required to reliably guess the language
         // Use the lower end(200) for speed
         let cfStr = String(prefix(200)) as CFString
-        let range = CFRange(location: 0, length: Swift.min(200, CFStringGetLength(cfStr)))
+        let range = CFRange(location: 0, length: CFStringGetLength(cfStr))
         guard let localeId = CFStringTokenizerCopyBestStringLanguage(cfStr, range) else { return .unknown }
         return Locale(identifier: String(localeId)).language.characterDirection
     }
