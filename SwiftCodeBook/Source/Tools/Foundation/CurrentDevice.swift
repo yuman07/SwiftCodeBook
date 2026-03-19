@@ -81,7 +81,7 @@ public extension CurrentDevice {
         var model = ""
         if isSimulator {
             if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
-                model = String(format: "%s", env)
+                model = String(cString: env, encoding: .utf8) ?? ""
             }
         } else {
             var info = utsname()
