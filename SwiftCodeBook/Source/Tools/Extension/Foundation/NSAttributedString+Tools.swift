@@ -13,23 +13,21 @@ public extension NSAttributedString {
     }
 
     func trimmingCharacters(in characterSet: CharacterSet) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(attributedString: self)
+        let nsString = string as NSString
+        let invertedSet = characterSet.inverted
         
-        while true {
-            let nsString = attributedString.string as NSString
-            let range = nsString.rangeOfCharacter(from: characterSet)
-            guard range.location == 0 && range.length > 0 && range.upperBound <= nsString.length else { break }
-            attributedString.deleteCharacters(in: range)
+        let leadingRange = nsString.rangeOfCharacter(from: invertedSet)
+        guard nsString.isValidRange(leadingRange), leadingRange.length > 0 else {
+            return NSAttributedString()
         }
         
-        while true {
-            let nsString = attributedString.string as NSString
-            let range = nsString.rangeOfCharacter(from: characterSet, options: .backwards)
-            guard range.upperBound == nsString.length && range.length > 0 && range.location >= 0 else { break }
-            attributedString.deleteCharacters(in: range)
+        let trailingRange = nsString.rangeOfCharacter(from: invertedSet, options: .backwards)
+        guard nsString.isValidRange(trailingRange), trailingRange.length > 0 else {
+            return NSAttributedString()
         }
         
-        return NSAttributedString(attributedString: attributedString)
+        let range = NSRange(location: leadingRange.location, length: trailingRange.upperBound - leadingRange.location)
+        return range.length > 0 ? attributedSubstring(from: range) : NSAttributedString()
     }
 
     func split(
