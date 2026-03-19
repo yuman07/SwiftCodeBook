@@ -78,14 +78,18 @@ public extension CurrentDevice {
     // https://www.hubweb.cn
     // https://theapplewiki.com/wiki/Main_Page
     static let deviceModel = {
+        var model = ""
         if isSimulator {
-            return String(format: "%s", getenv("SIMULATOR_MODEL_IDENTIFIER"))
+            if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
+                model = String(format: "%s", env)
+            }
         } else {
             var info = utsname()
             uname(&info)
             let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            return String(cString: chars, encoding: .utf8) ?? "unknown"
+            model = String(cString: chars, encoding: .utf8) ?? ""
         }
+        return model.isEmpty ? "unknown" : model
     }()
     
     static let is64BitDevice = {

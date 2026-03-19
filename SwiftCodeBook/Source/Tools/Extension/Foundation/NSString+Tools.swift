@@ -17,14 +17,17 @@ public extension NSString {
     }
     
     func ranges(of searchString: String, options: NSString.CompareOptions = [], locale: Locale? = nil) -> [NSRange] {
-        guard !searchString.isEmpty else { return [] }
         var ranges = [NSRange]()
         var lastUpperBound = 0
         while lastUpperBound < length,
               case let range = range(of: searchString, options: options, range: NSRange(location: lastUpperBound, length: length - lastUpperBound), locale: locale),
               isValidRange(range) {
             ranges.append(range)
-            lastUpperBound = range.upperBound
+            if range.length == 0 {
+                lastUpperBound += 1
+            } else {
+                lastUpperBound = range.upperBound
+            }
         }
         return ranges
     }

@@ -42,12 +42,15 @@ public extension StringProtocol {
 
 public extension StringProtocol {
     func ranges<T>(of aString: T, options: String.CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] where T: StringProtocol {
-        guard !aString.isEmpty else { return [] }
         var ranges = [Range<Index>]()
         var lastUpperBound = startIndex
         while lastUpperBound < endIndex, let range = range(of: aString, options: options, range: lastUpperBound ..< endIndex, locale: locale) {
             ranges.append(range)
-            lastUpperBound = range.upperBound
+            if range.isEmpty {
+                lastUpperBound = index(after: lastUpperBound)
+            } else {
+                lastUpperBound = range.upperBound
+            }
         }
         return ranges
     }
