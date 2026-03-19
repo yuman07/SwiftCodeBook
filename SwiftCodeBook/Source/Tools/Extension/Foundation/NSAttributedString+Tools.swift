@@ -27,7 +27,7 @@ public extension NSAttributedString {
         }
         
         let range = NSRange(location: leadingRange.location, length: trailingRange.upperBound - leadingRange.location)
-        return range.length > 0 ? attributedSubstring(from: range) : NSAttributedString()
+        return range == fullRange ? self : attributedSubstring(from: range)
     }
 
     func split(
