@@ -58,19 +58,19 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     }
 }
 
-private final class KeyObject<Key: Hashable>: Hashable {
+private final class KeyObject<Key: Hashable>: NSObject {
     private let key: Key
-    
+
     init(_ key: Key) {
         self.key = key
     }
-    
-    static func == (lhs: KeyObject<Key>, rhs: KeyObject<Key>) -> Bool {
-        lhs.key == rhs.key
+
+    override func isEqual(_ object: Any?) -> Bool {
+        (object as? KeyObject)?.key == key
     }
-    
-    func hash(into hasher: inout Hasher) {
-        key.hash(into: &hasher)
+
+    override var hash: Int {
+        key.hashValue
     }
 }
 

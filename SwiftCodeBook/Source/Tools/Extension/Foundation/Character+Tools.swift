@@ -16,8 +16,4 @@ public extension Character {
         guard let scalar = unicodeScalars.first else { return false }
         return scalar.properties.isEmoji && (scalar.value > 0x238C || unicodeScalars.count > 1)
     }
-    
-    var isChinese: Bool {
-        "\u{4E00}" <= self && self <= "\u{9FA5}"
-    }
 }
