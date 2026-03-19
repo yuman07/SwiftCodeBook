@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIViewController {
     func addChildSafely(_ child: UIViewController, layout: (@MainActor (_ child: UIViewController, _ parent: UIViewController) -> Void)? = nil) {
-        guard child !== self && child.parent !== self else { return }
+        guard child != self && child.parent != self else { return }
         child.removeFromParentSafely()
         addChild(child)
         view.addSubview(child.view)
