@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public extension DispatchQueue {
     static var currentQueueLabel: String {
@@ -28,15 +29,17 @@ public extension DispatchQueue {
         }
     }
     
-    private static let onceLock = NSRecursiveLock()
-    nonisolated(unsafe) private static var tokenSet = Set<String>()
-    static func runOnce(file: String = #file, function: String = #function, line: Int = #line, block: (() -> Void)) {
-        onceLock.withLock {
-            let t = "\(file)_\(function)_\(line)"
-            if !tokenSet.contains(t) {
-                tokenSet.insert(t)
-                block()
+    private static let tokenSet = OSAllocatedUnfairLock(initialState: Set<String>())
+    static func runOnce(file: String = #file, line: Int = #line, function: String = #function, customKey: String? = nil, operation: (() -> Void)) {
+        if tokenSet.withLock({ tokenSet in
+            let token = customKey ?? "\(file)_\(line)_\(function)"
+            if !tokenSet.contains(token) {
+                tokenSet.insert(token)
+                return true
             }
+            return false
+        }) {
+            operation()
         }
     }
 }
