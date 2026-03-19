@@ -25,7 +25,7 @@ final public class CADisplayLinkAnimator: Sendable {
     private let preferredFrameRateRange: CAFrameRateRange?
     
     private var timer: CADisplayLink?
-    private var finishedDuration = TimeInterval.zero
+    private var startTimestamp: CFTimeInterval?
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
@@ -42,7 +42,7 @@ final public class CADisplayLinkAnimator: Sendable {
     }
     
     public func startAnimation() {
-        finishedDuration = 0
+        startTimestamp = nil
         timer?.invalidate()
         timer = CADisplayLink(target: self, selector: #selector(updateAnimation))
         preferredFrameRateRange.flatMap { timer?.preferredFrameRateRange = $0 }
@@ -85,7 +85,13 @@ final public class CADisplayLinkAnimator: Sendable {
     }
     
     @objc private func updateAnimation(_ link: CADisplayLink) {
-        finishedDuration += TimeInterval(link.targetTimestamp - link.timestamp)
+        let finishedDuration: TimeInterval
+        if let start = startTimestamp {
+            finishedDuration = TimeInterval(link.timestamp - start)
+        } else {
+            startTimestamp = link.timestamp
+            finishedDuration = 0
+        }
         let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration.seconds))
         
         if progress >= 1 {
