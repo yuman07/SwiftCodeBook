@@ -81,13 +81,16 @@ public extension CurrentDevice {
         var model = ""
         if isSimulator {
             if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
-                model = String(cString: env, encoding: .utf8) ?? ""
+                model = String(cString: env)
             }
         } else {
             var info = utsname()
             uname(&info)
-            let chars = (Mirror(reflecting: info.machine).children.map(\.value) as? [CChar]) ?? []
-            model = String(cString: chars, encoding: .utf8) ?? ""
+            model = withUnsafePointer(to: info.machine) { ptr in
+                ptr.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+                    String(cString: $0)
+                }
+            }
         }
         return model.isEmpty ? "unknown" : model
     }()
