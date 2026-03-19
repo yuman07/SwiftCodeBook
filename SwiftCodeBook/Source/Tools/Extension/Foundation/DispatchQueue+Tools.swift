@@ -30,7 +30,7 @@ public extension DispatchQueue {
     }
     
     private static let tokenSet = OSAllocatedUnfairLock(initialState: Set<String>())
-    static func runOnce(file: String = #file, line: Int = #line, function: String = #function, customKey: String? = nil, operation: (() -> Void)) {
+    static func runOnce(file: String = #file, line: Int = #line, function: String = #function, customKey: String? = nil, operation: (() throws -> Void)) rethrows {
         if tokenSet.withLock({ tokenSet in
             let token = customKey ?? "\(file)_\(line)_\(function)"
             if !tokenSet.contains(token) {
@@ -39,7 +39,7 @@ public extension DispatchQueue {
             }
             return false
         }) {
-            operation()
+            try operation()
         }
     }
 }
