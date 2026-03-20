@@ -24,8 +24,7 @@ final public class CADisplayLinkAnimator: Sendable {
     private let cubicBezier: CubicBezier
     private let preferredFrameRateRange: CAFrameRateRange?
     
-    private var timer: CADisplayLink?
-    private var startTimestamp: CFTimeInterval?
+    private var timer: CADisplayLinkTimer?
     private var animations = [(CGFloat) -> Void]()
     private var completions = [(UIViewAnimatingPosition) -> Void]()
     
@@ -37,20 +36,19 @@ final public class CADisplayLinkAnimator: Sendable {
     
     @MainActor
     deinit {
-        timer?.invalidate()
+        timer?.stop()
         timer = nil
     }
     
     public func startAnimation() {
-        startTimestamp = nil
-        timer?.invalidate()
-        timer = CADisplayLink(target: CADisplayLinkProxy(self), selector: #selector(CADisplayLinkProxy.updateAnimation))
-        preferredFrameRateRange.flatMap { timer?.preferredFrameRateRange = $0 }
-        timer?.add(to: .main, forMode: .common)
+        timer = CADisplayLinkTimer(preferredFrameRateRange: preferredFrameRateRange) { [weak self] elapsedTime in
+            self?.updateAnimation(elapsedTime)
+        }
+        timer?.start()
     }
     
     public func finishAnimation(at finalPosition: UIViewAnimatingPosition) {
-        timer?.invalidate()
+        timer?.stop()
         timer = nil
         switch finalPosition {
         case .end:
@@ -84,19 +82,12 @@ final public class CADisplayLinkAnimator: Sendable {
         completions.append(completion)
     }
     
-    private func updateAnimation(_ link: CADisplayLink) {
+    private func updateAnimation(_ elapsedTime: TimeInterval) {
         guard case let seconds = duration.seconds, seconds.isFinite && seconds > 0 else {
             finishAnimation(at: .end)
             return
         }
-        let finishedDuration: TimeInterval
-        if let start = startTimestamp {
-            finishedDuration = TimeInterval(link.timestamp - start)
-        } else {
-            startTimestamp = link.timestamp
-            finishedDuration = 0
-        }
-        let progress = cubicBezier.value(at: CGFloat(finishedDuration / duration.seconds))
+        let progress = cubicBezier.value(at: CGFloat(elapsedTime / duration.seconds))
         
         if progress >= 1 {
             finishAnimation(at: .end)
@@ -104,19 +95,6 @@ final public class CADisplayLinkAnimator: Sendable {
             for animation in animations {
                 animation(progress)
             }
-        }
-    }
-    
-    @MainActor
-    private final class CADisplayLinkProxy {
-        private weak let target: CADisplayLinkAnimator?
-        
-        init(_ target: CADisplayLinkAnimator?) {
-            self.target = target
-        }
-        
-        @objc func updateAnimation(_ link: CADisplayLink) {
-            target?.updateAnimation(link)
         }
     }
 }
