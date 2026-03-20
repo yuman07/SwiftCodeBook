@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public extension DateFormatter {
     struct Format: Hashable, Sendable {
@@ -21,17 +22,20 @@ public extension DateFormatter {
     }
     
     private static let dateFormatterMap = MemoryCache<DateFormatter.Format, DateFormatter>()
+    private static let lock = OSAllocatedUnfairLock<Void>()
     
     private static func dateFormatter(with format: DateFormatter.Format) -> DateFormatter {
-        if let dateFormatter = dateFormatterMap.value(forKey: format) {
+        lock.withLock {
+            if let dateFormatter = dateFormatterMap.value(forKey: format) {
+                return dateFormatter
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = format.dateFormat
+            dateFormatter.locale = format.locale
+            dateFormatter.timeZone = format.timeZone
+            dateFormatterMap.setValue(dateFormatter, forKey: format)
             return dateFormatter
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format.dateFormat
-        dateFormatter.locale = format.locale
-        dateFormatter.timeZone = format.timeZone
-        dateFormatterMap.setValue(dateFormatter, forKey: format)
-        return dateFormatter
     }
     
     static func string(from date: Date, format: DateFormatter.Format) -> String {
