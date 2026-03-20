@@ -27,11 +27,11 @@ public final class CADisplayLinkTimer {
     private var displayLink: CADisplayLink?
     private var startTimestamp: CFTimeInterval?
     private let preferredFrameRateRange: CAFrameRateRange?
-    private let operation: (_ elapsedTime: TimeInterval) -> Void
+    private let block: @MainActor (_ elapsedTime: TimeInterval) -> Void
     
-    public init(preferredFrameRateRange: CAFrameRateRange? = nil, operation: @escaping (_ elapsedTime: TimeInterval) -> Void) {
+    public init(preferredFrameRateRange: CAFrameRateRange? = nil, block: @escaping @MainActor (_ elapsedTime: TimeInterval) -> Void) {
         self.preferredFrameRateRange = preferredFrameRateRange
-        self.operation = operation
+        self.block = block
     }
     
     @MainActor
@@ -54,10 +54,10 @@ public final class CADisplayLinkTimer {
     
     private func updateDisplayLink(_ displayLink: CADisplayLink) {
         if let start = startTimestamp {
-            operation(TimeInterval(displayLink.timestamp - start))
+            block(TimeInterval(displayLink.timestamp - start))
         } else {
             startTimestamp = displayLink.timestamp
-            operation(0)
+            block(0)
         }
     }
 }
