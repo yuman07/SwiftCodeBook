@@ -46,10 +46,9 @@ public extension View {
 #if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
         background(WindowObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
 #elseif os(watchOS)
-        DispatchQueue.runOnce {
+        onAppear {
             action(WKInterfaceDevice.current().screenBounds.size)
         }
-        return self
 #else
         self
 #endif

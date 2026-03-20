@@ -44,7 +44,7 @@ final public class CADisplayLinkAnimator: Sendable {
     public func startAnimation() {
         startTimestamp = nil
         timer?.invalidate()
-        timer = CADisplayLink(target: self, selector: #selector(updateAnimation))
+        timer = CADisplayLink(target: CADisplayLinkProxy(self), selector: #selector(CADisplayLinkProxy.updateAnimation))
         preferredFrameRateRange.flatMap { timer?.preferredFrameRateRange = $0 }
         timer?.add(to: .main, forMode: .common)
     }
@@ -84,7 +84,7 @@ final public class CADisplayLinkAnimator: Sendable {
         completions.append(completion)
     }
     
-    @objc private func updateAnimation(_ link: CADisplayLink) {
+    private func updateAnimation(_ link: CADisplayLink) {
         guard case let seconds = duration.seconds, seconds.isFinite && seconds > 0 else {
             finishAnimation(at: .end)
             return
@@ -104,6 +104,19 @@ final public class CADisplayLinkAnimator: Sendable {
             for animation in animations {
                 animation(progress)
             }
+        }
+    }
+    
+    @MainActor
+    private final class CADisplayLinkProxy {
+        private weak let target: CADisplayLinkAnimator?
+        
+        init(_ target: CADisplayLinkAnimator?) {
+            self.target = target
+        }
+        
+        @objc func updateAnimation(_ link: CADisplayLink) {
+            target?.updateAnimation(link)
         }
     }
 }
