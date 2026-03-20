@@ -108,7 +108,7 @@ public extension CurrentDevice {
     static var freeDiskSpaceInByte: UInt64? {
         let url = URL(fileURLWithPath: NSHomeDirectory())
         let values = try? url.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-        return values?.volumeAvailableCapacityForImportantUsage.flatMap { UInt64($0) }
+        return values?.volumeAvailableCapacityForImportantUsage.flatMap { $0 >= 0 ? UInt64($0) : nil }
     }
 }
 

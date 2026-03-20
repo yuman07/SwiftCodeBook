@@ -9,13 +9,13 @@ import Foundation
 
 public extension URL {
     var queryDictionary: [String: String] {
-        (URLComponents(string: absoluteString)?.queryItems ?? []).reduce(into: [:]) { dict, item in
+        (URLComponents(url: self, resolvingAgainstBaseURL: true)?.queryItems ?? []).reduce(into: [:]) { dict, item in
             if let value = item.value { dict[item.name] = value }
         }
     }
     
     func removingQueryItems(where shouldBeRemoved: (URLQueryItem) throws -> Bool) rethrows -> URL {
-        guard var components = URLComponents(string: absoluteString) else {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return self
         }
         
@@ -28,7 +28,7 @@ public extension URL {
     }
     
     func removingAllQueryItems() -> URL {
-        guard var components = URLComponents(string: absoluteString) else {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return self
         }
         
