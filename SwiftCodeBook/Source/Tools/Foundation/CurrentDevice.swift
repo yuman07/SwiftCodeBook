@@ -106,7 +106,9 @@ public extension CurrentDevice {
     }()
     
     static var freeDiskSpaceInByte: UInt64? {
-        (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
+        let url = URL(fileURLWithPath: NSHomeDirectory())
+        let values = try? url.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        return values?.volumeAvailableCapacityForImportantUsage.flatMap { UInt64($0) }
     }
 }
 

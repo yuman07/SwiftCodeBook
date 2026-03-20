@@ -17,6 +17,8 @@ final class WarningSwitch: UISwitch {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(tapAction))
+        view.addGestureRecognizer(pan)
         view.addGestureRecognizer(tap)
         return view
     }()

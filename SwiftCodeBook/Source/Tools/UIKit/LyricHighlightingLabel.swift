@@ -21,6 +21,7 @@ public final class LyricHighlightingLabel: UILabel {
     
     public var progress = 0.0 {
         didSet {
+            progress = max(0, min(1, progress))
             setNeedsDisplay()
         }
     }

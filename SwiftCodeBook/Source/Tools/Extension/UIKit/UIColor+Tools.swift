@@ -38,7 +38,7 @@ public extension UIColor {
         let r = String(Int(round(max(0, min(1, rgba.red)) * 255.0)), radix: 16, uppercase: true)
         let g = String(Int(round(max(0, min(1, rgba.green)) * 255.0)), radix: 16, uppercase: true)
         let b = String(Int(round(max(0, min(1, rgba.blue)) * 255.0)), radix: 16, uppercase: true)
-        let a = rgba.alpha == 1 ? "" : String(Int(round(max(0, min(1, rgba.alpha)) * 255.0)), radix: 16, uppercase: true)   
+        let a = rgba.alpha >= 1 ? "" : String(Int(round(max(0, min(1, rgba.alpha)) * 255.0)), radix: 16, uppercase: true)   
         return [r, g, b, a].reduce(into: "#") { partialResult, hex in
             partialResult += hex.count == 1 ? "0\(hex)" : hex
         }

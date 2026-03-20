@@ -19,9 +19,11 @@ public extension URL {
             return self
         }
         
-        components.queryItems = try (components.queryItems ?? []).compactMap { item in
+        let queryItems = try (components.queryItems ?? []).compactMap { item in
             try shouldBeRemoved(item) ? nil : URLQueryItem(name: item.name, value: item.value)
         }
+        
+        components.queryItems = queryItems.isEmpty ? nil : queryItems
         return components.url ?? self
     }
     

@@ -23,29 +23,3 @@ public extension Dictionary {
         self = dict
     }
 }
-
-public extension Dictionary {
-    func removingAll(where shouldBeRemoved: (Key, Value) throws -> Bool) rethrows -> Self {
-        var dict = self
-        let keys = try dict.reduce(into: [Key]()) { partialResult, element in
-            if try shouldBeRemoved(element.key, element.value) {
-                partialResult.append(element.key)
-            }
-        }
-        for key in keys {
-            dict.removeValue(forKey: key)
-        }
-        return dict
-    }
-    
-    mutating func removeAll(where shouldBeRemoved: (Key, Value) throws -> Bool) rethrows {
-        let keys = try reduce(into: [Key]()) { partialResult, element in
-            if try shouldBeRemoved(element.key, element.value) {
-                partialResult.append(element.key)
-            }
-        }
-        for key in keys {
-            removeValue(forKey: key)
-        }
-    }
-}
