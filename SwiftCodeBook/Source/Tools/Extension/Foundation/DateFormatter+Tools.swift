@@ -21,11 +21,10 @@ public extension DateFormatter {
         }
     }
     
-    private static let dateFormatterMap = MemoryCache<DateFormatter.Format, DateFormatter>()
-    private static let lock = OSAllocatedUnfairLock<Void>()
+    private static let dateFormatterMap = OSAllocatedUnfairLock<MemoryCache<DateFormatter.Format, DateFormatter>>(initialState: .init())
     
     private static func dateFormatter(with format: DateFormatter.Format) -> DateFormatter {
-        lock.withLock {
+        dateFormatterMap.withLock { dateFormatterMap in
             if let dateFormatter = dateFormatterMap.value(forKey: format) {
                 return dateFormatter
             }
