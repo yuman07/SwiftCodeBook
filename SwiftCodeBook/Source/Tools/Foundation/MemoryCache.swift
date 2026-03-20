@@ -25,8 +25,8 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
         cache.object(forKey: KeyObject(key))?.value
     }
     
-    public func setValue(_ value: Value, forKey key: Key, cost g: Int = 0) {
-        cache.setObject(ValueObject(value), forKey: KeyObject(key), cost: g)
+    public func setValue(_ value: Value, forKey key: Key, cost: Int = 0) {
+        cache.setObject(ValueObject(value), forKey: KeyObject(key), cost: cost)
     }
     
     public func removeValue(forKey key: Key) {

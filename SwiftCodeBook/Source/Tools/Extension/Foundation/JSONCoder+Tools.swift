@@ -8,7 +8,7 @@
 import Foundation
 
 public extension JSONDecoder.DateDecodingStrategy {
-    static var ISO8601Decode: JSONDecoder.DateDecodingStrategy {
+    static var iso8601Decode: JSONDecoder.DateDecodingStrategy {
         .custom { decoder in
             let container = try decoder.singleValueContainer()
             let string = try container.decode(String.self)
@@ -21,7 +21,7 @@ public extension JSONDecoder.DateDecodingStrategy {
 }
 
 public extension JSONEncoder.DateEncodingStrategy {
-    static func ISO8601Encode(options: ISO8601DateFormatter.Options = [.withTimeZone, .withFractionalSeconds]) -> JSONEncoder.DateEncodingStrategy {
+    static func iso8601Encode(options: ISO8601DateFormatter.Options = [.withTimeZone, .withFractionalSeconds]) -> JSONEncoder.DateEncodingStrategy {
         .custom { date, encoder in
             let string = ISO8601DateFormatter.string(from: date, options: options)
             var container = encoder.singleValueContainer()

@@ -13,7 +13,12 @@ public extension Date {
     }
     
     var century: Int {
-        (year - 1) / 100 + 1
+        let y = year
+        if y > 0 {
+            return (y - 1) / 100 + 1
+        } else {
+            return y / 100 - 1
+        }
     }
     
     var year: Int {

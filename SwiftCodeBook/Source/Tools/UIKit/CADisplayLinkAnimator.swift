@@ -85,6 +85,10 @@ final public class CADisplayLinkAnimator: Sendable {
     }
     
     @objc private func updateAnimation(_ link: CADisplayLink) {
+        guard case let seconds = duration.seconds, seconds.isFinite && seconds > 0 else {
+            finishAnimation(at: .end)
+            return
+        }
         let finishedDuration: TimeInterval
         if let start = startTimestamp {
             finishedDuration = TimeInterval(link.timestamp - start)
