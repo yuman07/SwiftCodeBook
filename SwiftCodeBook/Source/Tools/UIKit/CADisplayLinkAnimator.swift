@@ -49,7 +49,6 @@ final public class CADisplayLinkAnimator {
     
     public func finishAnimation(at finalPosition: UIViewAnimatingPosition) {
         timer?.stop()
-        timer = nil
         switch finalPosition {
         case .end:
             for animation in animations {
