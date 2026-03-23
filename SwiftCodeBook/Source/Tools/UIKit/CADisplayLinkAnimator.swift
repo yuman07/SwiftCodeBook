@@ -25,8 +25,8 @@ final public class CADisplayLinkAnimator: Sendable {
     private let preferredFrameRateRange: CAFrameRateRange?
     
     private var timer: CADisplayLinkTimer?
-    private var animations = [(CGFloat) -> Void]()
-    private var completions = [(UIViewAnimatingPosition) -> Void]()
+    private var animations = [@MainActor (CGFloat) -> Void]()
+    private var completions = [@MainActor (UIViewAnimatingPosition) -> Void]()
     
     public init(duration: Duration, timingFunctionName: CAMediaTimingFunctionName = .default, preferredFrameRateRange: CAFrameRateRange? = nil) {
         self.duration = duration
