@@ -54,7 +54,7 @@ public extension CurrentDevice {
             return .tv
         } else if deviceModel.contains("watch") {
             return .watch
-        } else if deviceModel.contains("RealityDevice") {
+        } else if deviceModel.contains("realitydevice") {
             return .vision
         } else {
             return .unknown
