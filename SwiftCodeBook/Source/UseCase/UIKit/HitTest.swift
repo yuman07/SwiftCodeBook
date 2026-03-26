@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/11/25.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 class HitTest1View: UIView {
@@ -37,3 +38,4 @@ class HitTest2View: UIView {
         return nil
     }
 }
+#endif

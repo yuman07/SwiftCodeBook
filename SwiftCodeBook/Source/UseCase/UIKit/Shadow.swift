@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/12/14.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 class shadowViewController: UIViewController {
@@ -55,3 +56,4 @@ class shadowViewController: UIViewController {
         contentView.layer.masksToBounds = true
     }
 }
+#endif

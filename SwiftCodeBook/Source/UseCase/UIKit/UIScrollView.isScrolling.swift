@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/11/13.
 //
 
+#if canImport(UIKit)
 import Combine
 import UIKit
 
@@ -54,3 +55,4 @@ extension TestViewController: UIScrollViewDelegate {
         if !decelerate && dragToDragStop && isScrolling { isScrolling = false }
     }
 }
+#endif

@@ -5,6 +5,7 @@
 //  Created by yuman on 2024/4/15.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 // 当一个VC在navStack中时，当从该VC push到另一个VC，会调用viewWill/DidAppear方法，我们有时会在里面做一些清理操作
@@ -39,3 +40,4 @@ final class SampleWillDidMoveViewController: UIViewController {
         }
     }
 }
+#endif

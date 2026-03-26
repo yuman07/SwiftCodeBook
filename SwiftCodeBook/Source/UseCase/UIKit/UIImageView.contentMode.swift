@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/12/17.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 @MainActor
@@ -27,3 +28,4 @@ func contentMode() {
     // 注意：如果选用AspectFill，该view需要设置clipsToBounds为YES，否则会超过区域
     imageView.contentMode = .scaleAspectFill
 }
+#endif

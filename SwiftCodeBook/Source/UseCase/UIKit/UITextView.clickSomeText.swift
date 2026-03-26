@@ -5,6 +5,7 @@
 //  Created by yuman on 2023/2/28.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 private final class ClickTextVC: UIViewController {
@@ -35,3 +36,4 @@ private final class ClickTextVC: UIViewController {
         print("clicked")
     }
 }
+#endif

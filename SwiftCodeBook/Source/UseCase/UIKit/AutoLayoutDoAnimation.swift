@@ -5,6 +5,7 @@
 //  Created by yuman on 2022/12/17.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 final class AutoLayoutDoAnimationVC: UIViewController {
@@ -51,3 +52,4 @@ final class AutoLayoutDoAnimationVC: UIViewController {
         }
     }
 }
+#endif

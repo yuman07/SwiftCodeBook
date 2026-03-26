@@ -93,7 +93,7 @@ public extension CurrentApplication {
             .map({ _ in })
             .eraseToAnyPublisher()
 #else
-        let didReceiveMemoryWarningNotification = Empty().eraseToAnyPublisher()
+        let didReceiveMemoryWarningNotification = Empty<Void, Never>().eraseToAnyPublisher()
 #endif
         return dispatchSourceMemoryPressurePublisher.subject
             .eraseToAnyPublisher()

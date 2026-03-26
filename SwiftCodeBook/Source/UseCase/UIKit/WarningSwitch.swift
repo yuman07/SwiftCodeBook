@@ -5,6 +5,7 @@
 //  Created by yuman on 2023/5/8.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 // 在开发中，我们可能有这种需求：
@@ -46,3 +47,4 @@ final class WarningSwitch: UISwitch {
         tapSwitchAction?()
     }
 }
+#endif
