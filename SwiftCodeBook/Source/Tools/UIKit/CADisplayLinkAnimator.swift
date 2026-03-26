@@ -86,6 +86,13 @@ final public class CADisplayLinkAnimator {
         completions.append(completion)
     }
     
+    public func reset() {
+        timer?.stop()
+        timer = nil
+        animations.removeAll()
+        completions.removeAll()
+    }
+    
     private func updateAnimation(_ elapsedTime: TimeInterval) {
         guard case let seconds = duration.seconds, seconds.isFinite && seconds > 0 else {
             finishAnimation(at: .end)
