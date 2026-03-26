@@ -15,9 +15,12 @@ public final class CancelBag: Sendable {
     public init() {}
     
     deinit {
-        tokens.withLock { tokens in
+        var allTokens = tokens.withLockUnchecked { tokens in
+            let copy = tokens
             tokens.removeAll()
+            return copy
         }
+        allTokens.removeAll()
     }
     
     public func store(_ cancelToken: AnyCancellable) {
@@ -27,10 +30,12 @@ public final class CancelBag: Sendable {
     }
     
     public func cancelAll() {
-        tokens.withLock { tokens in
-            for token in tokens { token.cancel() }
+        let allTokens = tokens.withLockUnchecked { tokens in
+            let copy = tokens
             tokens.removeAll()
+            return copy
         }
+        for token in allTokens { token.cancel() }
     }
 }
 
