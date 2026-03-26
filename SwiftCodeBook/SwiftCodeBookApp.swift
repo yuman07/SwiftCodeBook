@@ -12,6 +12,11 @@ struct SwiftCodeBookApp: App {
     var body: some Scene {
         WindowGroup {
             Text("Hello, world!").padding()
+            let _ = TestSwiftCodeBookApp()
         }
+    }
+    
+    private func TestSwiftCodeBookApp() {
+        // code here
     }
 }
