@@ -43,7 +43,7 @@ public extension View {
     }
     
     func onWindowSizeChange(_ action: @escaping @MainActor (CGSize?) -> Void) -> some View {
-#if os(iOS) || os(tvOS) || os(visionOS) || os(macOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         background(WindowObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
 #elseif os(watchOS)
         onAppear {

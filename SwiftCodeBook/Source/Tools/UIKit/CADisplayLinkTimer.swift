@@ -5,7 +5,10 @@
 //  Created by yuman on 2026/3/20.
 //
 
-#if os(iOS) || os(tvOS) || os(visionOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+#if canImport(AppKit)
+import AppKit
+#endif
 import Foundation
 import QuartzCore
 
@@ -41,7 +44,11 @@ public final class CADisplayLinkTimer {
     
     public func start() {
         stop()
+        #if os(macOS)
+        displayLink = NSApplication.shared.keyWindow?.contentView?.displayLink(target: CADisplayLinkProxy(self), selector: #selector(CADisplayLinkProxy.updateDisplayLink(_:)))
+        #else
         displayLink = CADisplayLink(target: CADisplayLinkProxy(self), selector: #selector(CADisplayLinkProxy.updateDisplayLink(_:)))
+        #endif
         preferredFrameRateRange.flatMap { displayLink?.preferredFrameRateRange = $0 }
         displayLink?.add(to: .main, forMode: .common)
     }

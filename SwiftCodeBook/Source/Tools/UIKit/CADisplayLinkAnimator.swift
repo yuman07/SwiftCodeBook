@@ -5,7 +5,7 @@
 //  Created by yuman on 2025/11/27.
 //
 
-#if os(iOS) || os(tvOS) || os(visionOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
 import Foundation
 import QuartzCore
 #if canImport(UIKit)
