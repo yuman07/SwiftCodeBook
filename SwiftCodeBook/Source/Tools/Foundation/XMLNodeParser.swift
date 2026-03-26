@@ -72,11 +72,12 @@ private final class XMLNodeParserImp: NSObject, @unchecked Sendable {
     }
     
     func finish(_ result: Result<XMLNode, Error>) {
+        guard let continuation else { return }
+        self.continuation = nil
         switch result {
-        case let .success(node): continuation?.resume(with: .success(node))
-        case let .failure(error): continuation?.resume(throwing: error)
+        case let .success(node): continuation.resume(with: .success(node))
+        case let .failure(error): continuation.resume(throwing: error)
         }
-        continuation = nil
         parser?.abortParsing()
         parser?.delegate = nil
         parser = nil

@@ -17,7 +17,7 @@ public extension Date {
         if y > 0 {
             return (y - 1) / 100 + 1
         } else {
-            return y / 100 - 1
+            return (y + 1) / 100 - 1
         }
     }
     
