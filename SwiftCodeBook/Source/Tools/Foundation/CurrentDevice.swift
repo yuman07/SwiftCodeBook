@@ -30,7 +30,6 @@ public extension CurrentDevice {
     }()
     
     @frozen enum DeviceType: Sendable, Hashable {
-        case unknown
         case iPhone
         case iPad
         case iPod
@@ -38,6 +37,7 @@ public extension CurrentDevice {
         case tv
         case watch
         case vision
+        case unknown
     }
     
     static let deviceType: DeviceType = {
