@@ -36,8 +36,7 @@ final public class CADisplayLinkAnimator {
     
     @MainActor
     deinit {
-        timer?.stop()
-        timer = nil
+        reset()
     }
     
     public func startAnimation() {
@@ -48,12 +47,9 @@ final public class CADisplayLinkAnimator {
     }
     
     public func finishAnimation(at finalPosition: UIViewAnimatingPosition) {
-        timer?.stop()
-        timer = nil
         let animations = self.animations
         let completions = self.completions
-        self.animations.removeAll()
-        self.completions.removeAll()
+        reset()
         switch finalPosition {
         case .end:
             for animation in animations {
