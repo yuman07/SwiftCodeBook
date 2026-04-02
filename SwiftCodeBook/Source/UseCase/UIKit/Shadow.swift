@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/12/14.
 //
 
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 class shadowViewController: UIViewController {

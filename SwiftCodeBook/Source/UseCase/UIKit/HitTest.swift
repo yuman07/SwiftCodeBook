@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/11/25.
 //
 
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 class HitTest1View: UIView {

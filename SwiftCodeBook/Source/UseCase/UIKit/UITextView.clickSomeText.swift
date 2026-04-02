@@ -5,7 +5,7 @@
 //  Created by yuman on 2023/2/28.
 //
 
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 private final class ClickTextVC: UIViewController {

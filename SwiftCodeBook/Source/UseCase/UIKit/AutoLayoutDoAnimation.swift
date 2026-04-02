@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/12/17.
 //
 
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 final class AutoLayoutDoAnimationVC: UIViewController {
