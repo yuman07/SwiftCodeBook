@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/11/19.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(visionOS)
 import UIKit
 
 // if need increase hot zone, pass negative number, otherwise, pass positive number

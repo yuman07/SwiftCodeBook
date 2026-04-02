@@ -33,10 +33,11 @@ public extension UIImage {
             draw(at: .zero)
         }
 #else
-        UIGraphicsBeginImageContextWithOptions(size, imageRendererFormat.opaque, imageRendererFormat.scale)
-        defer { UIGraphicsEndImageContext() }
-        draw(at: .zero)
-        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+        return UIImage()
+//        UIGraphicsBeginImageContextWithOptions(size, imageRendererFormat.opaque, imageRendererFormat.scale)
+//        defer { UIGraphicsEndImageContext() }
+//        draw(at: .zero)
+//        return UIGraphicsGetImageFromCurrentImageContext() ?? self
 #endif
     }
     

@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/11/13.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(visionOS)
 import Combine
 import UIKit
 

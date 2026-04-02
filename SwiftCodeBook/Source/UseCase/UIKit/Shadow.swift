@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/12/14.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(visionOS)
 import UIKit
 
 class shadowViewController: UIViewController {

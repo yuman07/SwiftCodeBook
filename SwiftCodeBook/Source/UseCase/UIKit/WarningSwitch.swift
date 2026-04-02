@@ -5,7 +5,7 @@
 //  Created by yuman on 2023/5/8.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(visionOS)
 import UIKit
 
 // 在开发中，我们可能有这种需求：

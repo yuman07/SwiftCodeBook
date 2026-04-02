@@ -5,6 +5,7 @@
 //  Created by yuman on 2025/6/21.
 //
 
+#if canImport(WebKit)
 import WebKit
 
 final class NoZoomWKWebView: WKWebView {
@@ -27,3 +28,4 @@ final class NoZoomWKWebView: WKWebView {
     super.init(frame: .zero, configuration: config)
   }
 }
+#endif

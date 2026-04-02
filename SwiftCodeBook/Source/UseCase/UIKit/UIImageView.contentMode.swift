@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/12/17.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(visionOS)
 import UIKit
 
 @MainActor

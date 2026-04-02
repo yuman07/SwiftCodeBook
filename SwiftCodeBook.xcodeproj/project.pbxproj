@@ -7,6 +7,79 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilters = (ios, macos, xros, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDA2F7501D8002EDF68 /* CombineNote.swift */; };
+		7A4B515C2F7E3C0E002FC607 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC82F7501D8002EDF68 /* CancelBag.swift */; };
+		7A4B515D2F7E3C27002FC607 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD92F7501D8002EDF68 /* AssociatedObject.swift */; };
+		7A4B515E2F7E3C2F002FC607 /* CompareEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDB2F7501D8002EDF68 /* CompareEnum.swift */; };
+		7A4B515F2F7E3C33002FC607 /* DispatchNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDC2F7501D8002EDF68 /* DispatchNote.swift */; };
+		7A4B51602F7E3C3C002FC607 /* KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDD2F7501D8002EDF68 /* KVO.swift */; };
+		7A4B51612F7E3C4B002FC607 /* CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCA2F7501D8002EDF68 /* CurrentDevice.swift */; };
+		7A4B51622F7E3C58002FC607 /* PodResourceBundles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDE2F7501D8002EDF68 /* PodResourceBundles.swift */; };
+		7A4B51632F7E3C5C002FC607 /* PointerInSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDF2F7501D8002EDF68 /* PointerInSwift.swift */; };
+		7A4B51642F7E3C5F002FC607 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE02F7501D8002EDF68 /* PropertyWrapper.swift */; };
+		7A4B51652F7E3C63002FC607 /* SafeLazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE12F7501D8002EDF68 /* SafeLazy.swift */; };
+		7A4B51662F7E3C69002FC607 /* SpecificLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE22F7501D8002EDF68 /* SpecificLocalizedString.swift */; };
+		7A4B51672F7E3C6D002FC607 /* SwitchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE32F7501D8002EDF68 /* SwitchType.swift */; };
+		7A4B51682F7E3C74002FC607 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA02F7501CB002EDF68 /* Note.swift */; };
+		7A4B51692F7E3C7C002FC607 /* TaskNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE42F7501D8002EDF68 /* TaskNote.swift */; };
+		7A4B516A2F7E3C7F002FC607 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE52F7501D8002EDF68 /* UseOptionSet.swift */; };
+		7A4B516B2F7E3C86002FC607 /* ConvertNSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE72F7501D8002EDF68 /* ConvertNSAttributedString.swift */; };
+		7A4B516C2F7E3C8A002FC607 /* AutoLayoutDoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE92F7501D8002EDF68 /* AutoLayoutDoAnimation.swift */; };
+		7A4B516D2F7E3C8D002FC607 /* HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEA2F7501D8002EDF68 /* HitTest.swift */; };
+		7A4B516E2F7E3C92002FC607 /* IncreaseHotZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEB2F7501D8002EDF68 /* IncreaseHotZone.swift */; };
+		7A4B516F2F7E3C96002FC607 /* NoZoomWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEC2F7501D8002EDF68 /* NoZoomWKWebView.swift */; };
+		7A4B51702F7E3C9A002FC607 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECED2F7501D8002EDF68 /* Shadow.swift */; };
+		7A4B51712F7E3CA7002FC607 /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEE2F7501D8002EDF68 /* UIImageView.contentMode.swift */; };
+		7A4B51722F7E3CAA002FC607 /* UIScrollView.isScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEF2F7501D8002EDF68 /* UIScrollView.isScrolling.swift */; };
+		7A4B51732F7E3CAE002FC607 /* UITextView.clickSomeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECF02F7501D8002EDF68 /* UITextView.clickSomeText.swift */; };
+		7A4B51742F7E3CB2002FC607 /* WarningSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECF12F7501D8002EDF68 /* WarningSwitch.swift */; };
+		7A4B51752F7E3CC5002FC607 /* WillDidMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECF22F7501D8002EDF68 /* WillDidMove.swift */; };
+		7A4B51762F7E3CCE002FC607 /* Array+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA22F7501D8002EDF68 /* Array+Tools.swift */; };
+		7A4B51772F7E3CD2002FC607 /* AttributedString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA32F7501D8002EDF68 /* AttributedString+Tools.swift */; };
+		7A4B51782F7E3CD7002FC607 /* CGSize+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA42F7501D8002EDF68 /* CGSize+Tools.swift */; };
+		7A4B51792F7E3CDB002FC607 /* Character+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA52F7501D8002EDF68 /* Character+Tools.swift */; };
+		7A4B517A2F7E3CDE002FC607 /* Data+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA62F7501D8002EDF68 /* Data+Tools.swift */; };
+		7A4B517B2F7E3CE2002FC607 /* Date+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA72F7501D8002EDF68 /* Date+Tools.swift */; };
+		7A4B517C2F7E3CE6002FC607 /* DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA82F7501D8002EDF68 /* DateFormatter+Tools.swift */; };
+		7A4B517D2F7E3CEA002FC607 /* Dictionary+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA92F7501D8002EDF68 /* Dictionary+Tools.swift */; };
+		7A4B517E2F7E3CEE002FC607 /* DispatchQueue+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAA2F7501D8002EDF68 /* DispatchQueue+Tools.swift */; };
+		7A4B517F2F7E3CF2002FC607 /* Duration+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAB2F7501D8002EDF68 /* Duration+Tools.swift */; };
+		7A4B51802F7E3CF8002FC607 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAC2F7501D8002EDF68 /* FileManager+Tools.swift */; };
+		7A4B51812F7E3CFC002FC607 /* ISO8601DateFormatter+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAD2F7501D8002EDF68 /* ISO8601DateFormatter+Tools.swift */; };
+		7A4B51822F7E3D00002FC607 /* JSONCoder+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAE2F7501D8002EDF68 /* JSONCoder+Tools.swift */; };
+		7A4B51832F7E3D04002FC607 /* Locale+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAF2F7501D8002EDF68 /* Locale+Tools.swift */; };
+		7A4B51842F7E3D08002FC607 /* NSAttributedString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB02F7501D8002EDF68 /* NSAttributedString+Tools.swift */; };
+		7A4B51852F7E3D0C002FC607 /* NSNumber+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB12F7501D8002EDF68 /* NSNumber+Tools.swift */; };
+		7A4B51862F7E3D10002FC607 /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB22F7501D8002EDF68 /* NSRange+Tools.swift */; };
+		7A4B51872F7E3D13002FC607 /* NSString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB32F7501D8002EDF68 /* NSString+Tools.swift */; };
+		7A4B51882F7E3D17002FC607 /* Publisher+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB42F7501D8002EDF68 /* Publisher+Tools.swift */; };
+		7A4B51892F7E3D1B002FC607 /* Result+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB52F7501D8002EDF68 /* Result+Tools.swift */; };
+		7A4B518A2F7E3D1F002FC607 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB62F7501D8002EDF68 /* String+Tools.swift */; };
+		7A4B518B2F7E3D22002FC607 /* Task+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB72F7501D8002EDF68 /* Task+Tools.swift */; };
+		7A4B518C2F7E3D26002FC607 /* URL+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB82F7501D8002EDF68 /* URL+Tools.swift */; };
+		7A4B518D2F7E3D2A002FC607 /* Spacer+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBA2F7501D8002EDF68 /* Spacer+Tools.swift */; };
+		7A4B518E2F7E3D2E002FC607 /* View+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBB2F7501D8002EDF68 /* View+Tools.swift */; };
+		7A4B518F2F7E3D32002FC607 /* UIBezierPath+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBD2F7501D8002EDF68 /* UIBezierPath+Tools.swift */; };
+		7A4B51902F7E3D35002FC607 /* UIColor+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBE2F7501D8002EDF68 /* UIColor+Tools.swift */; };
+		7A4B51912F7E3D39002FC607 /* UIFont+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBF2F7501D8002EDF68 /* UIFont+Tools.swift */; };
+		7A4B51922F7E3D3C002FC607 /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC02F7501D8002EDF68 /* UIImage+Tools.swift */; };
+		7A4B51932F7E3D41002FC607 /* UIStackView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC12F7501D8002EDF68 /* UIStackView+Tools.swift */; };
+		7A4B51942F7E3D46002FC607 /* UIView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC22F7501D8002EDF68 /* UIView+Tools.swift */; };
+		7A4B51952F7E3D4D002FC607 /* UIViewController+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC32F7501D8002EDF68 /* UIViewController+Tools.swift */; };
+		7A4B51962F7E3D52002FC607 /* AnyJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC62F7501D8002EDF68 /* AnyJSONValue.swift */; };
+		7A4B51972F7E3D56002FC607 /* AsyncSemaphore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC72F7501D8002EDF68 /* AsyncSemaphore.swift */; };
+		7A4B51982F7E3D5D002FC607 /* CurrentApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC92F7501D8002EDF68 /* CurrentApplication.swift */; };
+		7A4B51992F7E3D61002FC607 /* CurrentValuePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCB2F7501D8002EDF68 /* CurrentValuePublisher.swift */; };
+		7A4B519A2F7E3D65002FC607 /* HashHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCC2F7501D8002EDF68 /* HashHandler.swift */; };
+		7A4B519B2F7E3D69002FC607 /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCD2F7501D8002EDF68 /* MemoryCache.swift */; };
+		7A4B519C2F7E3D6D002FC607 /* SendablePassthroughSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCE2F7501D8002EDF68 /* SendablePassthroughSubject.swift */; };
+		7A4B519D2F7E3D70002FC607 /* SerialTaskExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */; };
+		7A4B519E2F7E3D74002FC607 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */; };
+		7A4B519F2F7E3D79002FC607 /* XMLNodeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */; };
+		7A4B51A02F7E3D7D002FC607 /* CADisplayLinkAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD32F7501D8002EDF68 /* CADisplayLinkAnimator.swift */; };
+		7A4B51A12F7E3D81002FC607 /* CADisplayLinkTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD42F7501D8002EDF68 /* CADisplayLinkTimer.swift */; };
+		7A4B51A22F7E3D85002FC607 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD52F7501D8002EDF68 /* GradientView.swift */; };
 		7AA7EC902F7500DA002EDF68 /* SwiftCodeBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7EC8F2F7500DA002EDF68 /* SwiftCodeBookApp.swift */; };
 		7AA7EC942F7500DC002EDF68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AA7EC932F7500DC002EDF68 /* Assets.xcassets */; };
 		7AA7ECA12F7501CB002EDF68 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECA02F7501CB002EDF68 /* Note.swift */; };
@@ -84,7 +157,30 @@
 		7AA7ED3C2F7501D8002EDF68 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAC2F7501D8002EDF68 /* FileManager+Tools.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7A4B51532F7E3656002FC607 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AA7EC842F7500DA002EDF68 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A4B514A2F7E3655002FC607;
+			remoteInfo = "Watch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7A4B51592F7E3656002FC607 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolder = Product;
+			files = (
+				7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		7A4B514B2F7E3655002FC607 /* Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8F2F7500DA002EDF68 /* SwiftCodeBookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeBookApp.swift; sourceTree = "<group>"; };
 		7AA7EC932F7500DC002EDF68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -163,7 +259,20 @@
 		7AA7ECF22F7501D8002EDF68 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7A4B514C2F7E3655002FC607 /* Watch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Watch Watch App";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		7A4B51482F7E3655002FC607 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
 		7AA7EC892F7500DA002EDF68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
@@ -176,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				7AA7EC9D2F750162002EDF68 /* SwiftCodeBook */,
+				7A4B514C2F7E3655002FC607 /* Watch Watch App */,
 				7AA7EC8D2F7500DA002EDF68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -184,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */,
+				7A4B514B2F7E3655002FC607 /* Watch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -377,6 +488,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7A4B514A2F7E3655002FC607 /* Watch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A4B51562F7E3656002FC607 /* Build configuration list for PBXNativeTarget "Watch Watch App" */;
+			buildPhases = (
+				7A4B51472F7E3655002FC607 /* Sources */,
+				7A4B51482F7E3655002FC607 /* Frameworks */,
+				7A4B51492F7E3655002FC607 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				7A4B514C2F7E3655002FC607 /* Watch Watch App */,
+			);
+			name = "Watch Watch App";
+			productName = "Watch Watch App";
+			productReference = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 		7AA7EC8B2F7500DA002EDF68 /* SwiftCodeBook */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AA7EC972F7500DC002EDF68 /* Build configuration list for PBXNativeTarget "SwiftCodeBook" */;
@@ -384,8 +513,12 @@
 				7AA7EC882F7500DA002EDF68 /* Sources */,
 				7AA7EC892F7500DA002EDF68 /* Frameworks */,
 				7AA7EC8A2F7500DA002EDF68 /* Resources */,
+				7A4B51592F7E3656002FC607 /* Embed Watch Content */,
 			);
 			buildRules = (
+			);
+			dependencies = (
+				7A4B51542F7E3656002FC607 /* PBXTargetDependency */,
 			);
 			name = SwiftCodeBook;
 			productName = SwiftCodeBook;
@@ -402,6 +535,9 @@
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
+					7A4B514A2F7E3655002FC607 = {
+						CreatedOnToolsVersion = 26.4;
+					};
 					7AA7EC8B2F7500DA002EDF68 = {
 						CreatedOnToolsVersion = 26.4;
 					};
@@ -422,11 +558,17 @@
 			projectRoot = "";
 			targets = (
 				7AA7EC8B2F7500DA002EDF68 /* SwiftCodeBook */,
+				7A4B514A2F7E3655002FC607 /* Watch Watch App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7A4B51492F7E3655002FC607 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
 		7AA7EC8A2F7500DA002EDF68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
@@ -436,6 +578,83 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7A4B51472F7E3655002FC607 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				7A4B51862F7E3D10002FC607 /* NSRange+Tools.swift in Sources */,
+				7A4B51672F7E3C6D002FC607 /* SwitchType.swift in Sources */,
+				7A4B519D2F7E3D70002FC607 /* SerialTaskExecutor.swift in Sources */,
+				7A4B51942F7E3D46002FC607 /* UIView+Tools.swift in Sources */,
+				7A4B51692F7E3C7C002FC607 /* TaskNote.swift in Sources */,
+				7A4B51852F7E3D0C002FC607 /* NSNumber+Tools.swift in Sources */,
+				7A4B51892F7E3D1B002FC607 /* Result+Tools.swift in Sources */,
+				7A4B51932F7E3D41002FC607 /* UIStackView+Tools.swift in Sources */,
+				7A4B51A02F7E3D7D002FC607 /* CADisplayLinkAnimator.swift in Sources */,
+				7A4B51652F7E3C63002FC607 /* SafeLazy.swift in Sources */,
+				7A4B516C2F7E3C8A002FC607 /* AutoLayoutDoAnimation.swift in Sources */,
+				7A4B51982F7E3D5D002FC607 /* CurrentApplication.swift in Sources */,
+				7A4B51912F7E3D39002FC607 /* UIFont+Tools.swift in Sources */,
+				7A4B516F2F7E3C96002FC607 /* NoZoomWKWebView.swift in Sources */,
+				7A4B516E2F7E3C92002FC607 /* IncreaseHotZone.swift in Sources */,
+				7A4B515D2F7E3C27002FC607 /* AssociatedObject.swift in Sources */,
+				7A4B51812F7E3CFC002FC607 /* ISO8601DateFormatter+Tools.swift in Sources */,
+				7A4B51642F7E3C5F002FC607 /* PropertyWrapper.swift in Sources */,
+				7A4B51802F7E3CF8002FC607 /* FileManager+Tools.swift in Sources */,
+				7A4B51922F7E3D3C002FC607 /* UIImage+Tools.swift in Sources */,
+				7A4B516B2F7E3C86002FC607 /* ConvertNSAttributedString.swift in Sources */,
+				7A4B51902F7E3D35002FC607 /* UIColor+Tools.swift in Sources */,
+				7A4B51792F7E3CDB002FC607 /* Character+Tools.swift in Sources */,
+				7A4B516D2F7E3C8D002FC607 /* HitTest.swift in Sources */,
+				7A4B518C2F7E3D26002FC607 /* URL+Tools.swift in Sources */,
+				7A4B515F2F7E3C33002FC607 /* DispatchNote.swift in Sources */,
+				7A4B517B2F7E3CE2002FC607 /* Date+Tools.swift in Sources */,
+				7A4B517C2F7E3CE6002FC607 /* DateFormatter+Tools.swift in Sources */,
+				7A4B51822F7E3D00002FC607 /* JSONCoder+Tools.swift in Sources */,
+				7A4B51622F7E3C58002FC607 /* PodResourceBundles.swift in Sources */,
+				7A4B51712F7E3CA7002FC607 /* UIImageView.contentMode.swift in Sources */,
+				7A4B517E2F7E3CEE002FC607 /* DispatchQueue+Tools.swift in Sources */,
+				7A4B51782F7E3CD7002FC607 /* CGSize+Tools.swift in Sources */,
+				7A4B51602F7E3C3C002FC607 /* KVO.swift in Sources */,
+				7A4B519C2F7E3D6D002FC607 /* SendablePassthroughSubject.swift in Sources */,
+				7A4B51882F7E3D17002FC607 /* Publisher+Tools.swift in Sources */,
+				7A4B517F2F7E3CF2002FC607 /* Duration+Tools.swift in Sources */,
+				7A4B518D2F7E3D2A002FC607 /* Spacer+Tools.swift in Sources */,
+				7A4B51842F7E3D08002FC607 /* NSAttributedString+Tools.swift in Sources */,
+				7A4B51662F7E3C69002FC607 /* SpecificLocalizedString.swift in Sources */,
+				7A4B51992F7E3D61002FC607 /* CurrentValuePublisher.swift in Sources */,
+				7A4B516A2F7E3C7F002FC607 /* UseOptionSet.swift in Sources */,
+				7A4B519F2F7E3D79002FC607 /* XMLNodeParser.swift in Sources */,
+				7A4B517D2F7E3CEA002FC607 /* Dictionary+Tools.swift in Sources */,
+				7A4B515C2F7E3C0E002FC607 /* CancelBag.swift in Sources */,
+				7A4B51682F7E3C74002FC607 /* Note.swift in Sources */,
+				7A4B51722F7E3CAA002FC607 /* UIScrollView.isScrolling.swift in Sources */,
+				7A4B518B2F7E3D22002FC607 /* Task+Tools.swift in Sources */,
+				7A4B51772F7E3CD2002FC607 /* AttributedString+Tools.swift in Sources */,
+				7A4B51632F7E3C5C002FC607 /* PointerInSwift.swift in Sources */,
+				7A4B51A22F7E3D85002FC607 /* GradientView.swift in Sources */,
+				7A4B51962F7E3D52002FC607 /* AnyJSONValue.swift in Sources */,
+				7A4B515E2F7E3C2F002FC607 /* CompareEnum.swift in Sources */,
+				7A4B518F2F7E3D32002FC607 /* UIBezierPath+Tools.swift in Sources */,
+				7A4B518E2F7E3D2E002FC607 /* View+Tools.swift in Sources */,
+				7A4B519A2F7E3D65002FC607 /* HashHandler.swift in Sources */,
+				7A4B51972F7E3D56002FC607 /* AsyncSemaphore.swift in Sources */,
+				7A4B519E2F7E3D74002FC607 /* WeakObject.swift in Sources */,
+				7A4B51702F7E3C9A002FC607 /* Shadow.swift in Sources */,
+				7A4B51612F7E3C4B002FC607 /* CurrentDevice.swift in Sources */,
+				7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */,
+				7A4B519B2F7E3D69002FC607 /* MemoryCache.swift in Sources */,
+				7A4B51742F7E3CB2002FC607 /* WarningSwitch.swift in Sources */,
+				7A4B51952F7E3D4D002FC607 /* UIViewController+Tools.swift in Sources */,
+				7A4B51832F7E3D04002FC607 /* Locale+Tools.swift in Sources */,
+				7A4B51752F7E3CC5002FC607 /* WillDidMove.swift in Sources */,
+				7A4B51732F7E3CAE002FC607 /* UITextView.clickSomeText.swift in Sources */,
+				7A4B51A12F7E3D81002FC607 /* CADisplayLinkTimer.swift in Sources */,
+				7A4B518A2F7E3D1F002FC607 /* String+Tools.swift in Sources */,
+				7A4B51762F7E3CCE002FC607 /* Array+Tools.swift in Sources */,
+				7A4B517A2F7E3CDE002FC607 /* Data+Tools.swift in Sources */,
+				7A4B51872F7E3D13002FC607 /* NSString+Tools.swift in Sources */,
+			);
+		};
 		7AA7EC882F7500DA002EDF68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
@@ -517,7 +736,91 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7A4B51542F7E3656002FC607 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				macos,
+				xros,
+			);
+			target = 7A4B514A2F7E3655002FC607 /* Watch Watch App */;
+			targetProxy = 7A4B51532F7E3656002FC607 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		7A4B51572F7E3656002FC607 /* Debug configuration for PBXNativeTarget "Watch Watch App" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Watch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = SwiftCodeBook.SwiftCodeBook;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftCodeBook.SwiftCodeBook.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		7A4B51582F7E3656002FC607 /* Release configuration for PBXNativeTarget "Watch Watch App" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Watch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = SwiftCodeBook.SwiftCodeBook;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftCodeBook.SwiftCodeBook.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
 		7AA7EC952F7500DC002EDF68 /* Debug configuration for PBXProject "SwiftCodeBook" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -727,6 +1030,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7A4B51562F7E3656002FC607 /* Build configuration list for PBXNativeTarget "Watch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A4B51572F7E3656002FC607 /* Debug configuration for PBXNativeTarget "Watch Watch App" */,
+				7A4B51582F7E3656002FC607 /* Release configuration for PBXNativeTarget "Watch Watch App" */,
+			);
+			defaultConfigurationName = Release;
+		};
 		7AA7EC872F7500DA002EDF68 /* Build configuration list for PBXProject "SwiftCodeBook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

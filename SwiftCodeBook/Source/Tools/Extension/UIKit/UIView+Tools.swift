@@ -5,7 +5,7 @@
 //  Created by yuman on 2022/10/26.
 //
 
-#if os(iOS) || os(tvOS) || os(visionOS)
+#if os(iOS) || os(visionOS)
 import Combine
 import UIKit
 
