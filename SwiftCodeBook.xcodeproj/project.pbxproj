@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilters = (ios, macos, xros, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDA2F7501D8002EDF68 /* CombineNote.swift */; };
 		7A4B515C2F7E3C0E002FC607 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC82F7501D8002EDF68 /* CancelBag.swift */; };
 		7A4B515D2F7E3C27002FC607 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD92F7501D8002EDF68 /* AssociatedObject.swift */; };
@@ -739,11 +739,7 @@
 /* Begin PBXTargetDependency section */
 		7A4B51542F7E3656002FC607 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilters = (
-				ios,
-				macos,
-				xros,
-			);
+			platformFilter = ios;
 			target = 7A4B514A2F7E3655002FC607 /* Watch Watch App */;
 			targetProxy = 7A4B51532F7E3656002FC607 /* PBXContainerItemProxy */;
 		};
