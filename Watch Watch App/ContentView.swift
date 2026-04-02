@@ -5,6 +5,7 @@
 //  Created by yuman on 2026/4/2.
 //
 
+import WatchKit
 import SwiftUI
 
 struct ContentView: View {
@@ -16,5 +17,8 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+            WKInterfaceDevice.current().play(.retry)
+        }
     }
 }
