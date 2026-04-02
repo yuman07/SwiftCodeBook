@@ -5,6 +5,7 @@
 //  Created by yuman on 2026/1/19.
 //
 
+import Darwin
 import Foundation
 #if canImport(UIKit)
 import UIKit

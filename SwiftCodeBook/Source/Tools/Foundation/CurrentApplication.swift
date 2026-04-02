@@ -9,9 +9,7 @@
 import AppKit
 #endif
 import Combine
-#if canImport(Darwin)
 import Darwin
-#endif
 import Foundation
 #if canImport(UIKit)
 import UIKit
@@ -70,7 +68,6 @@ public extension CurrentApplication {
     }()
     
     static var usedMemoryInByte: UInt64? {
-#if canImport(Darwin)
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.stride / MemoryLayout<natural_t>.stride)
         let result = withUnsafeMutablePointer(to: &info) { infoPtr in
@@ -79,9 +76,6 @@ public extension CurrentApplication {
             }
         }
         return (result == KERN_SUCCESS) ? UInt64(info.phys_footprint) : nil
-#else
-        nil
-#endif
     }
     
     private static let dispatchSourceMemoryPressurePublisher = DispatchSourceMemoryPressurePublisher()
