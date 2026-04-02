@@ -30,14 +30,13 @@ public extension UIImage {
         guard imageOrientation != .up else { return self }
 #if os(iOS) || os(tvOS) || os(visionOS)
         return UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in
-            draw(at: .zero)
+            draw(in: CGRect(origin: .zero, size: size))
         }
 #else
-        return UIImage()
-//        UIGraphicsBeginImageContextWithOptions(size, imageRendererFormat.opaque, imageRendererFormat.scale)
-//        defer { UIGraphicsEndImageContext() }
-//        draw(at: .zero)
-//        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+        UIGraphicsBeginImageContext(size)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? self
 #endif
     }
     
