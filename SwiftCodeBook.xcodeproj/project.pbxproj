@@ -285,7 +285,6 @@
 			isa = PBXGroup;
 			children = (
 				7AA7EC9D2F750162002EDF68 /* SwiftCodeBook */,
-				7A4B514C2F7E3655002FC607 /* Watch Watch App */,
 				7AA7EC8D2F7500DA002EDF68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -303,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				7AA7EC8F2F7500DA002EDF68 /* SwiftCodeBookApp.swift */,
+				7A4B514C2F7E3655002FC607 /* Watch Watch App */,
 				7AA7EC9F2F7501AF002EDF68 /* Source */,
 				7AA7EC9E2F750175002EDF68 /* Support */,
 			);
