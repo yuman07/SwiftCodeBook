@@ -115,11 +115,11 @@ public extension CurrentDevice {
 }
 
 public extension CurrentDevice {
-    static let totalDiskSpaceInByte = {
+    static let totalDiskSpaceInBytes = {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemSize] as? UInt64
     }()
     
-    static var freeDiskSpaceInByte: UInt64? {
+    static var freeDiskSpaceInBytes: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
     }
 }

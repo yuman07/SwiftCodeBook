@@ -29,7 +29,7 @@ public extension FileManager {
     }
     
     @concurrent
-    func sizeInByte(at path: String) async throws -> (logicalBytes: UInt64, physicalBytes: UInt64) {
+    func sizeInBytes(at path: String) async throws -> (logicalBytes: UInt64, physicalBytes: UInt64) {
         try Task.checkCancellation()
         
         guard case let root = URL(fileURLWithPath: path),
