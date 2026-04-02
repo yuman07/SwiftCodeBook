@@ -98,7 +98,7 @@ public extension CurrentDevice {
         }
 #else
         var size = 0
-        if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 1 {
+        if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 0 {
             var buffer = [CChar](repeating: 0, count: size)
             if sysctlbyname(selector, &buffer, &size, nil, 0) == 0 {
                 model = String(cString: buffer, encoding: .utf8) ?? ""
