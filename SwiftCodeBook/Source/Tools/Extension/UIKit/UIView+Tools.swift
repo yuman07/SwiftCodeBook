@@ -5,9 +5,27 @@
 //  Created by yuman on 2022/10/26.
 //
 
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import Combine
 import UIKit
+
+#if os(tvOS)
+public enum UIInterfaceOrientation : Int, @unchecked Sendable {
+    case unknown = 0
+    case portrait = 1
+    case portraitUpsideDown = 2
+    case landscapeLeft = 4
+    case landscapeRight = 3
+    
+    public var isLandscape: Bool {
+        self == .landscapeLeft || self == .landscapeRight
+    }
+    
+    public var isPortrait: Bool {
+        self == .portrait || self == .portraitUpsideDown
+    }
+}
+#endif
 
 public extension UIView {
     func removeAllSubviews() {
@@ -34,7 +52,11 @@ public extension UIView {
     }
     
     var interfaceOrientation: UIInterfaceOrientation {
+#if os(tvOS)
+        .unknown
+#else
         window?.windowScene?.effectiveGeometry.interfaceOrientation ?? .unknown
+#endif
     }
 }
 
@@ -68,6 +90,11 @@ public extension UIView {
     }
     
     var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
+#if os(tvOS)
+        Just<UIInterfaceOrientation>(.unknown)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+#else
         parentWindowPublisher
             .map({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
                 guard let windowScene = window?.windowScene else { return Just(.unknown).eraseToAnyPublisher() }
@@ -81,6 +108,7 @@ public extension UIView {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+#endif
     }
     
     var userInterfaceSizeClassPublisher: AnyPublisher<(horizontal: UIUserInterfaceSizeClass, vertical: UIUserInterfaceSizeClass), Never> {
