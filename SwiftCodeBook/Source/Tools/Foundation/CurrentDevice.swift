@@ -92,19 +92,19 @@ public extension CurrentDevice {
         }()
         
         var model = ""
-        if isSimulator {
-            if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
-                model = String(cString: env)
-            }
-        } else {
-            var size = 0
-            if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 1 {
-                var buffer = [CChar](repeating: 0, count: size)
-                if sysctlbyname(selector, &buffer, &size, nil, 0) == 0 {
-                    model = String(cString: buffer, encoding: .utf8) ?? ""
-                }
+#if targetEnvironment(simulator)
+        if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
+            model = String(cString: env)
+        }
+#else
+        var size = 0
+        if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 1 {
+            var buffer = [CChar](repeating: 0, count: size)
+            if sysctlbyname(selector, &buffer, &size, nil, 0) == 0 {
+                model = String(cString: buffer, encoding: .utf8) ?? ""
             }
         }
+#endif
         return model.isEmpty ? "unknown" : model
     }()
     
@@ -120,36 +120,5 @@ public extension CurrentDevice {
     
     static var freeDiskSpaceInByte: UInt64? {
         (try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()))?[.systemFreeSize] as? UInt64
-    }
-}
-
-public extension CurrentDevice {
-    @frozen enum HapticFeedbackStyle: Sendable {
-        case light
-        case medium
-        case heavy
-        case soft
-        case rigid
-#if os(iOS)
-        public var uikitFeedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle {
-            switch self {
-            case .light: .light
-            case .medium: .medium
-            case .heavy: .heavy
-            case .soft: .soft
-            case .rigid: .rigid
-            }
-        }
-#endif
-    }
-    
-    static func triggerHapticFeedbackIfCould(_ style: CurrentDevice.HapticFeedbackStyle) {
-#if os(iOS)
-        DispatchQueue.dispatchToMainIfNeeded {
-            let generator = UIImpactFeedbackGenerator(style: style.uikitFeedbackStyle)
-            generator.prepare()
-            generator.impactOccurred()
-        }
-#endif
     }
 }
