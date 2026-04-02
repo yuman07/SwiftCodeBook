@@ -76,19 +76,32 @@ public extension CurrentDevice {
     }()
     
     // https://www.hubweb.cn
-    // https://theapplewiki.com/wiki/Main_Page
     static let deviceModel = {
+        let selector = {
+#if os(macOS) || targetEnvironment(macCatalyst)
+            return "hw.model"
+#elseif os(iOS)
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                return "hw.model"
+            } else {
+                return "hw.machine"
+            }
+#else
+            return "hw.machine"
+#endif
+        }()
+        
         var model = ""
         if isSimulator {
             if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
                 model = String(cString: env)
             }
         } else {
-            var info = utsname()
-            uname(&info)
-            model = withUnsafePointer(to: info.machine) { ptr in
-                ptr.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
-                    String(cString: $0)
+            var size = 0
+            if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 1 {
+                var buffer = [CChar](repeating: 0, count: size)
+                if sysctlbyname(selector, &buffer, &size, nil, 0) == 0 {
+                    model = String(cString: buffer, encoding: .utf8) ?? ""
                 }
             }
         }
