@@ -17,8 +17,8 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
-        .onAppear {
-            WKInterfaceDevice.current().play(.retry)
+        .task {
+            // code here
         }
     }
 }
