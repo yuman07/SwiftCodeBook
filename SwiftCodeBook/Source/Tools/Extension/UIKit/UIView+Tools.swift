@@ -9,24 +9,6 @@
 import Combine
 import UIKit
 
-#if os(tvOS)
-public enum UIInterfaceOrientation : Int, @unchecked Sendable {
-    case unknown = 0
-    case portrait = 1
-    case portraitUpsideDown = 2
-    case landscapeLeft = 4
-    case landscapeRight = 3
-    
-    public var isLandscape: Bool {
-        self == .landscapeLeft || self == .landscapeRight
-    }
-    
-    public var isPortrait: Bool {
-        self == .portrait || self == .portraitUpsideDown
-    }
-}
-#endif
-
 public extension UIView {
     func removeAllSubviews() {
         while let last = subviews.last {

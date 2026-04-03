@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
+		7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDA2F7501D8002EDF68 /* CombineNote.swift */; };
 		7A4B515C2F7E3C0E002FC607 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC82F7501D8002EDF68 /* CancelBag.swift */; };
@@ -180,6 +182,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIInterfaceOrientation.swift; sourceTree = "<group>"; };
 		7A4B514B2F7E3655002FC607 /* Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8F2F7500DA002EDF68 /* SwiftCodeBookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeBookApp.swift; sourceTree = "<group>"; };
@@ -416,6 +419,7 @@
 				7AA7ECD42F7501D8002EDF68 /* CADisplayLinkTimer.swift */,
 				7AA7ECD52F7501D8002EDF68 /* GradientView.swift */,
 				7AA7ECD62F7501D8002EDF68 /* LyricHighlightingLabel.swift */,
+				7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -601,6 +605,7 @@
 				7A4B51642F7E3C5F002FC607 /* PropertyWrapper.swift in Sources */,
 				7A4B51802F7E3CF8002FC607 /* FileManager+Tools.swift in Sources */,
 				7A4B51922F7E3D3C002FC607 /* UIImage+Tools.swift in Sources */,
+				7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */,
 				7A4B516B2F7E3C86002FC607 /* ConvertNSAttributedString.swift in Sources */,
 				7A4B51902F7E3D35002FC607 /* UIColor+Tools.swift in Sources */,
 				7A4B51792F7E3CDB002FC607 /* Character+Tools.swift in Sources */,
@@ -680,6 +685,7 @@
 				7AA7ED062F7501D8002EDF68 /* DispatchNote.swift in Sources */,
 				7AA7ED072F7501D8002EDF68 /* CADisplayLinkAnimator.swift in Sources */,
 				7AA7ED082F7501D8002EDF68 /* Task+Tools.swift in Sources */,
+				7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */,
 				7AA7ED092F7501D8002EDF68 /* LyricHighlightingLabel.swift in Sources */,
 				7AA7ED0A2F7501D8002EDF68 /* XMLNodeParser.swift in Sources */,
 				7AA7ED0B2F7501D8002EDF68 /* Character+Tools.swift in Sources */,
