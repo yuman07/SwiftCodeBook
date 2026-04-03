@@ -5,9 +5,9 @@
 //  Created by yuman on 2026/4/3.
 //
 
+#if os(macOS) || os(tvOS) || os(watchOS)
 import Foundation
 
-#if os(macOS) || os(tvOS) || os(watchOS)
 public enum UIInterfaceOrientation: Int, Sendable {
     case unknown = 0
     case portrait = 1
