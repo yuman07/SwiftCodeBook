@@ -44,7 +44,7 @@ public extension View {
     
     func onWindowSizeChange(_ action: @escaping @MainActor (CGSize?) -> Void) -> some View {
 #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-        background(WindowObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
+        background(WindowSizeObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
 #elseif os(watchOS)
         onAppear {
             action(WKInterfaceDevice.current().screenBounds.size)
@@ -53,21 +53,29 @@ public extension View {
         self
 #endif
     }
+    
+    func onInterfaceOrientationChange(_ action: @escaping @MainActor (UIInterfaceOrientation) -> Void) -> some View {
+#if os(iOS) || os(visionOS)
+        background(WindowInterfaceOrientationObserver(onChange: action).allowsHitTesting(false).accessibilityHidden(true))
+#else
+        self
+#endif
+    }
 }
 
 #if os(iOS) || os(tvOS) || os(visionOS)
-private struct WindowObserver: UIViewRepresentable {
+private struct WindowSizeObserver: UIViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
-    func makeUIView(context: Context) -> WindowObserverView {
-        WindowObserverView(onChange: onChange)
+    func makeUIView(context: Context) -> WindowSizeObserverView {
+        WindowSizeObserverView(onChange: onChange)
     }
 
-    func updateUIView(_ uiView: WindowObserverView, context: Context) {
+    func updateUIView(_ uiView: WindowSizeObserverView, context: Context) {
         uiView.onChange = onChange
     }
 
-    final class WindowObserverView: UIView {
+    final class WindowSizeObserverView: UIView {
         var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: UIWindow?
         private var cancelToken: AnyCancellable?
@@ -106,18 +114,18 @@ private struct WindowObserver: UIViewRepresentable {
     }
 }
 #elseif os(macOS)
-private struct WindowObserver: NSViewRepresentable {
+private struct WindowSizeObserver: NSViewRepresentable {
     let onChange: @MainActor (CGSize?) -> Void
 
-    func makeNSView(context: Context) -> WindowObserverView {
-        WindowObserverView(onChange: onChange)
+    func makeNSView(context: Context) -> WindowSizeObserverView {
+        WindowSizeObserverView(onChange: onChange)
     }
 
-    func updateNSView(_ nsView: WindowObserverView, context: Context) {
+    func updateNSView(_ nsView: WindowSizeObserverView, context: Context) {
         nsView.onChange = onChange
     }
 
-    final class WindowObserverView: NSView {
+    final class WindowSizeObserverView: NSView {
         var onChange: @MainActor (CGSize?) -> Void
         @Published private var parentWindow: NSWindow?
         private var cancelToken: AnyCancellable?
@@ -152,6 +160,62 @@ private struct WindowObserver: NSViewRepresentable {
         
         override func isAccessibilityHidden() -> Bool {
             true
+        }
+    }
+}
+#endif
+
+#if os(iOS) || os(visionOS)
+private struct WindowInterfaceOrientationObserver: UIViewRepresentable {
+    let onChange: @MainActor (UIInterfaceOrientation) -> Void
+
+    func makeUIView(context: Context) -> WindowInterfaceOrientationObserverView {
+        WindowInterfaceOrientationObserverView(onChange: onChange)
+    }
+
+    func updateUIView(_ uiView: WindowInterfaceOrientationObserverView, context: Context) {
+        uiView.onChange = onChange
+    }
+
+    final class WindowInterfaceOrientationObserverView: UIView {
+        var onChange: @MainActor (UIInterfaceOrientation) -> Void
+        @Published private var parentWindow: UIWindow?
+        private var cancelToken: AnyCancellable?
+
+        init(onChange: @escaping @MainActor (UIInterfaceOrientation) -> Void) {
+            self.onChange = onChange
+            super.init(frame: .zero)
+            isHidden = true
+            backgroundColor = .clear
+            isUserInteractionEnabled = false
+            isAccessibilityElement = false
+            accessibilityElementsHidden = true
+            
+            cancelToken = $parentWindow
+                .map({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
+                    guard let windowScene = window?.windowScene else { return Just(.unknown).eraseToAnyPublisher() }
+                    return windowScene
+                        .publisher(for: \.effectiveGeometry)
+                        .map(\.interfaceOrientation)
+                        .prepend(windowScene.effectiveGeometry.interfaceOrientation)
+                        .eraseToAnyPublisher()
+                })
+                .switchToLatest()
+                .removeDuplicates()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] interfaceOrientation in
+                    self?.onChange(interfaceOrientation)
+                }
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            preconditionFailure("init(coder:) has not been implemented")
+        }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            parentWindow = window
         }
     }
 }
