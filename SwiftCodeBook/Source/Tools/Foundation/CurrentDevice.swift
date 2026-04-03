@@ -78,6 +78,12 @@ public extension CurrentDevice {
     
     // https://www.hubweb.cn
     static let deviceModel = {
+        var model = ""
+#if targetEnvironment(simulator)
+        if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
+            model = String(cString: env)
+        }
+#else
         let selector = {
 #if os(macOS) || targetEnvironment(macCatalyst)
             return "hw.model"
@@ -91,13 +97,6 @@ public extension CurrentDevice {
             return "hw.machine"
 #endif
         }()
-        
-        var model = ""
-#if targetEnvironment(simulator)
-        if let env = getenv("SIMULATOR_MODEL_IDENTIFIER") {
-            model = String(cString: env)
-        }
-#else
         var size = 0
         if sysctlbyname(selector, nil, &size, nil, 0) == 0 && size > 0 {
             var buffer = [CChar](repeating: 0, count: size)
