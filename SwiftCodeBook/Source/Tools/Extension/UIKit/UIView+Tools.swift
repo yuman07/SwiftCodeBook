@@ -73,7 +73,7 @@ public extension UIView {
     
     var interfaceOrientationPublisher: AnyPublisher<UIInterfaceOrientation, Never> {
 #if os(tvOS)
-        Just(.unknown).receive(on: DispatchQueue.main).eraseToAnyPublisher()
+        Empty().eraseToAnyPublisher()
 #else
         parentWindowPublisher
             .map({ window -> AnyPublisher<UIInterfaceOrientation, Never> in
