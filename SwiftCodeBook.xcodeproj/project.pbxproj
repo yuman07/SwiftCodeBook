@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A0AE9B72F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
+		7A0AE9B82F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
 		7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -182,6 +184,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryFloatingPoint+Tools.swift"; sourceTree = "<group>"; };
 		7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIInterfaceOrientation.swift; sourceTree = "<group>"; };
 		7A4B514B2F7E3655002FC607 /* Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,6 +338,7 @@
 			children = (
 				7AA7ECA22F7501D8002EDF68 /* Array+Tools.swift */,
 				7AA7ECA32F7501D8002EDF68 /* AttributedString+Tools.swift */,
+				7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */,
 				7AA7ECA42F7501D8002EDF68 /* CGSize+Tools.swift */,
 				7AA7ECA52F7501D8002EDF68 /* Character+Tools.swift */,
 				7AA7ECA62F7501D8002EDF68 /* Data+Tools.swift */,
@@ -594,6 +598,7 @@
 				7A4B51892F7E3D1B002FC607 /* Result+Tools.swift in Sources */,
 				7A4B51932F7E3D41002FC607 /* UIStackView+Tools.swift in Sources */,
 				7A4B51A02F7E3D7D002FC607 /* CADisplayLinkAnimator.swift in Sources */,
+				7A0AE9B82F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */,
 				7A4B51652F7E3C63002FC607 /* SafeLazy.swift in Sources */,
 				7A4B516C2F7E3C8A002FC607 /* AutoLayoutDoAnimation.swift in Sources */,
 				7A4B51982F7E3D5D002FC607 /* CurrentApplication.swift in Sources */,
@@ -672,6 +677,7 @@
 				7AA7ECF92F7501D8002EDF68 /* PodResourceBundles.swift in Sources */,
 				7AA7ECFA2F7501D8002EDF68 /* SendablePassthroughSubject.swift in Sources */,
 				7AA7ECFB2F7501D8002EDF68 /* HashHandler.swift in Sources */,
+				7A0AE9B72F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */,
 				7AA7ECFC2F7501D8002EDF68 /* TaskNote.swift in Sources */,
 				7AA7ECFD2F7501D8002EDF68 /* CombineNote.swift in Sources */,
 				7AA7ECFE2F7501D8002EDF68 /* ConvertNSAttributedString.swift in Sources */,
