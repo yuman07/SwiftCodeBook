@@ -82,7 +82,7 @@ SwiftCodeBook/Source/
 | `CurrentDevice` | 设备信息（型号、系统版本、磁盘空间、模拟器检测） |
 | `HashHandler` | 多算法哈希（MD5、SHA1、SHA256、SHA384、SHA512），支持流式处理 |
 | `MemoryCache` | 类型安全的 NSCache 封装，支持内存警告自动清理 |
-| `SerialTaskExecutor` | 基于 Actor 的串行任务队列 |
+| `SerialTaskExecutor` | 基于 AsyncStream 的串行任务队列 |
 | `SendablePassthroughSubject` | 线程安全的 Combine Subject |
 | `WeakObject` | 泛型弱引用包装器 |
 | `XMLNodeParser` | XML 解析工具 |

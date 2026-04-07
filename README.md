@@ -82,7 +82,7 @@ SwiftCodeBook/Source/
 | `CurrentDevice` | Device info (model, OS version, disk space, simulator detection) |
 | `HashHandler` | Multi-algorithm hashing (MD5, SHA1, SHA256, SHA384, SHA512) with streaming |
 | `MemoryCache` | Type-safe NSCache wrapper with memory warning cleanup |
-| `SerialTaskExecutor` | Actor-based serial task queue |
+| `SerialTaskExecutor` | AsyncStream-based serial task queue |
 | `SendablePassthroughSubject` | Thread-safe Combine subject |
 | `WeakObject` | Generic weak reference wrapper |
 | `XMLNodeParser` | XML parsing utilities |
