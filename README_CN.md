@@ -15,7 +15,7 @@
 ## 环境要求
 
 - Swift 6.0+
-- Xcode 16+
+- Xcode 26+
 - iOS 26.0+ / macOS 26.0+ / tvOS 26.0+ / watchOS 26.0+ / visionOS 26.0+
 
 ## 项目结构
