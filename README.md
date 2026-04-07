@@ -1,22 +1,41 @@
+<div align="center">
+
 # SwiftCodeBook
+
+**A comprehensive Swift utility library and learning resource for Apple platform development.**
+
+Zero external dependencies — built entirely on Apple's native frameworks.
+
+[![Swift](https://img.shields.io/badge/Swift-6.0-F05138?logo=swift&logoColor=white)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS_|_macOS_|_tvOS_|_watchOS_|_visionOS-blue)](https://developer.apple.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Xcode](https://img.shields.io/badge/Xcode-26+-147EFB?logo=xcode&logoColor=white)](https://developer.apple.com/xcode/)
 
 [中文文档](README_CN.md)
 
-A comprehensive Swift utility library and learning resource for Apple platform development. Zero external dependencies — built entirely on Apple's native frameworks.
+</div>
 
-## Features
+---
 
-- Production-ready utilities for iOS, macOS, tvOS, watchOS, and visionOS
-- Educational use-case examples demonstrating best practices and patterns
-- Full Swift 6.0 support with async/await, actors, and Sendable conformance
-- Thread-safe implementations throughout
-- Zero third-party dependencies
+## Highlights
+
+- **Production-ready** utilities for iOS, macOS, tvOS, watchOS, and visionOS
+- **Educational examples** demonstrating best practices and design patterns
+- **Swift 6.0** with full async/await, actors, and Sendable conformance
+- **Thread-safe** implementations throughout
+- **Zero** third-party dependencies
 
 ## Requirements
 
-- Swift 6.0+
-- Xcode 26+
-- iOS 26.0+ / macOS 26.0+ / tvOS 26.0+ / watchOS 26.0+ / visionOS 26.0+
+| Requirement | Minimum Version |
+|:---|:---|
+| Swift | 6.0+ |
+| Xcode | 26+ |
+| iOS | 26.0+ |
+| macOS | 26.0+ |
+| tvOS | 26.0+ |
+| watchOS | 26.0+ |
+| visionOS | 26.0+ |
 
 ## Project Structure
 
@@ -24,24 +43,25 @@ A comprehensive Swift utility library and learning resource for Apple platform d
 SwiftCodeBook/Source/
 ├── Tools/
 │   ├── Extension/
-│   │   ├── Foundation/    # Extensions on Foundation types
-│   │   ├── UIKit/         # Extensions on UIKit types
-│   │   └── SwiftUI/       # Extensions on SwiftUI types
-│   ├── Foundation/        # Foundation utility classes
-│   └── UIKit/             # UIKit utility classes
+│   │   ├── Foundation/        # Extensions on Foundation types
+│   │   ├── UIKit/             # Extensions on UIKit types
+│   │   └── SwiftUI/           # Extensions on SwiftUI types
+│   ├── Foundation/            # Foundation utility classes
+│   └── UIKit/                 # UIKit utility classes
 ├── UseCase/
-│   ├── Foundation/        # Foundation patterns & examples
-│   ├── UIKit/             # UIKit patterns & examples
-│   └── SwiftUI/           # SwiftUI patterns & examples
-└── Note.swift             # iOS/macOS development pitfalls & best practices
+│   ├── Foundation/            # Foundation patterns & examples
+│   ├── UIKit/                 # UIKit patterns & examples
+│   └── SwiftUI/               # SwiftUI patterns & examples
+└── Note.swift                 # Development pitfalls & best practices
 ```
 
 ## Utilities
 
-### Foundation Extensions
+<details open>
+<summary><strong>Foundation Extensions</strong></summary>
 
 | Extension | Highlights |
-|---|---|
+|:---|:---|
 | `Array+Tools` | Safe subscript, JSON conversion, plist loading, duplicate removal |
 | `String+Tools` | Range conversion (NSRange ↔ Range), language direction detection |
 | `Dictionary+Tools` | JSON serialization, plist file loading |
@@ -55,26 +75,35 @@ SwiftCodeBook/Source/
 | `BinaryFloatingPoint+Tools` | Floating-point utilities |
 | `CGSize+Tools` | CGSize manipulation |
 
-### UIKit Extensions
+</details>
+
+<details open>
+<summary><strong>UIKit Extensions</strong></summary>
 
 | Extension | Highlights |
-|---|---|
+|:---|:---|
 | `UIColor+Tools` | Hex string parsing, RGBA extraction, hex generation |
 | `UIImage+Tools` | Color-based creation, orientation fix, symbol init |
 | `UIView+Tools` | View manipulation and layout helpers |
 | `UIStackView+Tools` | Stack view configuration |
 
-### SwiftUI Extensions
+</details>
+
+<details open>
+<summary><strong>SwiftUI Extensions</strong></summary>
 
 | Extension | Highlights |
-|---|---|
+|:---|:---|
 | `View+Tools` | `modify()`, `onSizeChange()`, `onSafeAreaInsetsChange()`, `onWindowSizeChange()`, `onInterfaceOrientationChange()` |
 | `Spacer+Tools` | Spacer utilities |
 
-### Foundation Utilities
+</details>
+
+<details open>
+<summary><strong>Foundation Utilities</strong></summary>
 
 | Utility | Description |
-|---|---|
+|:---|:---|
 | `AnyJSONValue` | Type-erased JSON value with safe accessors |
 | `AsyncSemaphore` | Actor-based async/await semaphore |
 | `CancelBag` | Thread-safe Combine subscription management |
@@ -87,44 +116,44 @@ SwiftCodeBook/Source/
 | `WeakObject` | Generic weak reference wrapper |
 | `XMLNodeParser` | XML parsing utilities |
 
-### UIKit Utilities
+</details>
+
+<details open>
+<summary><strong>UIKit Utilities</strong></summary>
 
 | Utility | Description |
-|---|---|
+|:---|:---|
 | `CADisplayLinkTimer` | Display link-based timer |
 | `CADisplayLinkAnimator` | Display link-based animator |
 | `GradientView` | UIView with CAGradientLayer |
 | `LyricHighlightingLabel` | Specialized label for lyric highlighting |
 
+</details>
+
 ## Use Cases & Examples
 
 The `UseCase` directory contains educational examples covering:
 
-- **Concurrency** — Structured concurrency patterns, Task execution order, GCD
-- **Memory** — Pointer usage, memory layout, unsafe operations
-- **Combine** — Publisher patterns and best practices
-- **Property Wrappers** — Range limiting, UserDefaults binding
-- **KVO** — Key-Value Observation patterns
-- **UIKit Patterns** — Hit testing, touch target expansion, scroll state detection, layout animations, shadow rendering
-- **SwiftUI Patterns** — NSAttributedString conversion
+| Topic | Content |
+|:---|:---|
+| **Concurrency** | Structured concurrency patterns, Task execution order, GCD |
+| **Memory** | Pointer usage, memory layout, unsafe operations |
+| **Combine** | Publisher patterns and best practices |
+| **Property Wrappers** | Range limiting, UserDefaults binding |
+| **KVO** | Key-Value Observation patterns |
+| **UIKit Patterns** | Hit testing, touch target expansion, scroll state detection, layout animations, shadow rendering |
+| **SwiftUI Patterns** | NSAttributedString conversion |
 
 ## Development Notes
 
 `Note.swift` contains a curated collection of iOS/macOS development pitfalls and best practices (bilingual Chinese/English), covering topics like:
 
-- Signed/unsigned number edge cases
-- Floating-point pitfalls (NaN, Infinity)
-- File system case sensitivity
-- Memory management in dealloc
-- UIControl vs Cell selected state
-- SwiftUI view refresh optimization
-- Lock usage patterns
-- And more
+> Signed/unsigned number edge cases, floating-point pitfalls (NaN, Infinity), file system case sensitivity, memory management in dealloc, UIControl vs Cell selected state, SwiftUI view refresh optimization, lock usage patterns, and more.
 
 ## License
 
-MIT License
+This project is licensed under the [MIT License](LICENSE).
 
 ## Author
 
-[yuman07](https://github.com/yuman07)
+Created by [yuman07](https://github.com/yuman07)
