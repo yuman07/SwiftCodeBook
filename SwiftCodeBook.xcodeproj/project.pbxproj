@@ -11,7 +11,6 @@
 		7A0AE9B82F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
 		7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
-		7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A4B514B2F7E3655002FC607 /* Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDA2F7501D8002EDF68 /* CombineNote.swift */; };
 		7A4B515C2F7E3C0E002FC607 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECC82F7501D8002EDF68 /* CancelBag.swift */; };
 		7A4B515D2F7E3C27002FC607 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD92F7501D8002EDF68 /* AssociatedObject.swift */; };
@@ -170,18 +169,6 @@
 			remoteInfo = "Watch Watch App";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		7A4B51592F7E3656002FC607 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolder = Product;
-			files = (
-				7A4B51552F7E3656002FC607 /* Watch Watch App.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryFloatingPoint+Tools.swift"; sourceTree = "<group>"; };
@@ -521,7 +508,6 @@
 				7AA7EC882F7500DA002EDF68 /* Sources */,
 				7AA7EC892F7500DA002EDF68 /* Frameworks */,
 				7AA7EC8A2F7500DA002EDF68 /* Resources */,
-				7A4B51592F7E3656002FC607 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
