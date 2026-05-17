@@ -12,40 +12,47 @@ import os
 public final class SerialTaskExecutor: Sendable {
     private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
     private let worker: Task<Void, Never>
-    private let cancelBag = CancelBag()
-    
+    private let tokens = OSAllocatedUnfairLock(uncheckedState: [LazyTask: AnyCancellable]())
+
     public init(priority: TaskPriority? = nil) {
+        let tokens = tokens
         let taskStream = stream
         worker = Task(executorPreference: globalConcurrentExecutor, priority: priority) {
             for await task in taskStream {
                 await task.start()?.value
+                tokens.withLockUnchecked { $0[task] = nil }
             }
         }
     }
-    
+
     deinit {
+        cancelAll()
         continuation.finish()
         worker.cancel()
     }
-    
+
     @discardableResult
     public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let task = LazyTask(operation)
         let token = task.toAnyCancellable
-        cancelBag.store(token)
+        tokens.withLockUnchecked { $0[task] = token }
         continuation.yield(task)
         return token
     }
-    
+
     public func cancelAll() {
-        cancelBag.cancelAll()
+        let all = tokens.withLockUnchecked { dict in
+            defer { dict.removeAll() }
+            return Array(dict.values)
+        }
+        for token in all { token.cancel() }
     }
 }
 
-private final class LazyTask: Sendable {
+private final class LazyTask: Sendable, Hashable {
     private let operation: @Sendable () async -> Void
     private let context = OSAllocatedUnfairLock<(task: Task<Void, Never>?, isCancelled: Bool)>(initialState: (nil, false))
-    
+
     init(_ operation: @Sendable @escaping () async -> Void) {
         self.operation = operation
     }
@@ -75,5 +82,13 @@ private final class LazyTask: Sendable {
     
     var toAnyCancellable: AnyCancellable {
         AnyCancellable { [weak self] in self?.cancel() }
+    }
+
+    static func == (lhs: LazyTask, rhs: LazyTask) -> Bool {
+        lhs === rhs
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self)) 
     }
 }
