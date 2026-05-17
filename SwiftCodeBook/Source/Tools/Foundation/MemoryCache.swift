@@ -12,13 +12,12 @@ import Foundation
 // 这样的要求和Swift中推崇ValueType的设计相冲突，这里进行一个简单封装
 public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     private let cache = NSCache<KeyObject<Key>, ValueObject<Value>>()
-    private var cancelToken: AnyCancellable?
-    
+    private let cancelToken: AnyCancellable
+
     public init() {
+        let cache = cache
         cancelToken = CurrentApplication.memoryWarningPublisher
-            .sink { [weak self] in
-                self?.removeAll()
-            }
+            .sink { cache.removeAllObjects() }
     }
     
     public func value(forKey key: Key) -> Value? {

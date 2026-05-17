@@ -13,10 +13,9 @@ struct SwiftCodeBookApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Text("Hello, world!").padding()
-            let _ = DispatchQueue.main.async {
-                tester.testSwiftCodeBookApp()
-            }
+            Text("Hello, world!")
+                .padding()
+                .task { tester.testSwiftCodeBookApp() }
         }
     }
 }

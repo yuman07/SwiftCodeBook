@@ -9,7 +9,7 @@ import Foundation
 
 public extension NSString {
     func isValidRange(_ nsRange: NSRange) -> Bool {
-        nsRange.isValid && nsRange.location < length && nsRange.upperBound <= length
+        nsRange.isValid && nsRange.location <= length && nsRange.upperBound <= length
     }
 
     func nsRange<T: RangeExpression<String.Index>>(from range: T) -> NSRange? {
@@ -23,11 +23,7 @@ public extension NSString {
               case let range = range(of: searchString, options: options, range: NSRange(location: lastUpperBound, length: length - lastUpperBound), locale: locale),
               isValidRange(range) {
             ranges.append(range)
-            if range.length == 0 {
-                lastUpperBound += 1
-            } else {
-                lastUpperBound = range.upperBound
-            }
+            lastUpperBound = range.length == 0 ? range.location + 1 : range.upperBound
         }
         return ranges
     }

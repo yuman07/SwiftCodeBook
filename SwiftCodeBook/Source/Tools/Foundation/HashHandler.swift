@@ -62,7 +62,10 @@ public extension HashHandler {
         while !isEnd {
             try Task.checkCancellation()
             try autoreleasepool {
-                guard let data = try handler.read(upToCount: 16384), !data.isEmpty else { return isEnd = true }
+                guard let data = try handler.read(upToCount: 16384), !data.isEmpty else {
+                    isEnd = true
+                    return
+                }
                 hasher.update(data: data)
             }
             count += 1

@@ -34,7 +34,11 @@ import Foundation
         } else if let value = try? container.decode([String: AnyJSONValue].self) {
             self = .dictionary(value)
         } else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported JSON type")
+            let path = decoder.codingPath.map(\.stringValue).joined(separator: ".")
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Unsupported JSON type at codingPath: \(path.isEmpty ? "<root>" : path)"
+            )
         }
     }
     

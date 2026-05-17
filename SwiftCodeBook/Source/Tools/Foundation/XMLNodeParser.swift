@@ -104,11 +104,10 @@ extension XMLNodeParserImp: XMLParserDelegate {
         guard let lastNode = stack.popLast(), lastNode.name == elementName else {
             return finish(.failure(NSError(reason: "Parsing error: No corresponding node was found when running didEndElement")))
         }
-        if var parentNode = stack.popLast() {
-            parentNode.childNodes.append(lastNode)
-            stack.append(parentNode)
-        } else {
+        if stack.isEmpty {
             stack.append(lastNode)
+        } else {
+            stack[stack.count - 1].childNodes.append(lastNode)
         }
     }
     

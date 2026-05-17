@@ -15,37 +15,43 @@ public extension UIBezierPath {
         self.init()
         
         let rect = CGRect(origin: .zero, size: size)
-        move(to: CGPoint(x: rectangleCornerRadii.topLeading, y: 0))
+        let maxRadius = max(0, min(size.width, size.height) / 2)
+        let topLeading = max(0, min(rectangleCornerRadii.topLeading, maxRadius))
+        let topTrailing = max(0, min(rectangleCornerRadii.topTrailing, maxRadius))
+        let bottomLeading = max(0, min(rectangleCornerRadii.bottomLeading, maxRadius))
+        let bottomTrailing = max(0, min(rectangleCornerRadii.bottomTrailing, maxRadius))
+        
+        move(to: CGPoint(x: topLeading, y: 0))
         addArc(
-            withCenter: CGPoint(x: rectangleCornerRadii.topLeading, y: rectangleCornerRadii.topLeading),
-            radius: rectangleCornerRadii.topLeading,
+            withCenter: CGPoint(x: topLeading, y: topLeading),
+            radius: topLeading,
             startAngle: .pi * 1.5,
             endAngle: .pi,
             clockwise: false
         )
-        
-        addLine(to: CGPoint(x: 0, y: rect.height - rectangleCornerRadii.bottomLeading))
+
+        addLine(to: CGPoint(x: 0, y: rect.height - bottomLeading))
         addArc(
-            withCenter: CGPoint(x: rectangleCornerRadii.bottomLeading, y: rect.height - rectangleCornerRadii.bottomLeading),
-            radius: rectangleCornerRadii.bottomLeading,
+            withCenter: CGPoint(x: bottomLeading, y: rect.height - bottomLeading),
+            radius: bottomLeading,
             startAngle: .pi,
             endAngle: .pi * 0.5,
             clockwise: false
         )
-        
-        addLine(to: CGPoint(x: rect.width - rectangleCornerRadii.bottomTrailing, y: rect.height))
+
+        addLine(to: CGPoint(x: rect.width - bottomTrailing, y: rect.height))
         addArc(
-            withCenter: CGPoint(x: rect.width - rectangleCornerRadii.bottomTrailing, y: rect.height - rectangleCornerRadii.bottomTrailing),
-            radius: rectangleCornerRadii.bottomTrailing,
+            withCenter: CGPoint(x: rect.width - bottomTrailing, y: rect.height - bottomTrailing),
+            radius: bottomTrailing,
             startAngle: .pi * 0.5,
             endAngle: 0,
             clockwise: false
         )
-        
-        addLine(to: CGPoint(x: rect.width, y: rectangleCornerRadii.topTrailing))
+
+        addLine(to: CGPoint(x: rect.width, y: topTrailing))
         addArc(
-            withCenter: CGPoint(x: rect.width - rectangleCornerRadii.topTrailing, y: rectangleCornerRadii.topTrailing),
-            radius: rectangleCornerRadii.topTrailing,
+            withCenter: CGPoint(x: rect.width - topTrailing, y: topTrailing),
+            radius: topTrailing,
             startAngle: 0,
             endAngle: .pi * 1.5,
             clockwise: false
