@@ -43,19 +43,19 @@ public extension CurrentDevice {
     
     static let deviceType: DeviceType = {
         let deviceModel = Self.deviceModel.lowercased()
-        if deviceModel.contains("iphone") {
+        if deviceModel.hasPrefix("iphone") {
             return .iPhone
-        } else if deviceModel.contains("ipad") {
+        } else if deviceModel.hasPrefix("ipad") {
             return .iPad
-        } else if deviceModel.contains("ipod") {
+        } else if deviceModel.hasPrefix("ipod") {
             return .iPod
-        } else if deviceModel.contains("mac") {
+        } else if deviceModel.hasPrefix("mac") {
             return .mac
-        } else if deviceModel.contains("tv") {
+        } else if deviceModel.hasPrefix("tv") {
             return .tv
-        } else if deviceModel.contains("watch") {
+        } else if deviceModel.hasPrefix("watch") {
             return .watch
-        } else if deviceModel.contains("realitydevice") {
+        } else if deviceModel.hasPrefix("realitydevice") {
             return .vision
         } else {
             return .unknown
