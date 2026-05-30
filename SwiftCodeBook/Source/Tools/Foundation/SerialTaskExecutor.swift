@@ -12,15 +12,15 @@ import os
 public final class SerialTaskExecutor: Sendable {
     private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
     private let worker: Task<Void, Never>
-    private let tokens = OSAllocatedUnfairLock(uncheckedState: [LazyTask: AnyCancellable]())
+    private let tokensMap = OSAllocatedUnfairLock(uncheckedState: [LazyTask: AnyCancellable]())
 
     public init(priority: TaskPriority? = nil) {
-        let tokens = tokens
-        let taskStream = stream
+        let thisStream = stream
+        let thisTokensMap = tokensMap
         worker = Task(executorPreference: globalConcurrentExecutor, priority: priority) {
-            for await task in taskStream {
+            for await task in thisStream {
                 await task.start()?.value
-                tokens.withLockUnchecked { $0[task] = nil }
+                thisTokensMap.withLockUnchecked { $0[task] = nil }
             }
         }
     }
@@ -35,13 +35,13 @@ public final class SerialTaskExecutor: Sendable {
     public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let task = LazyTask(operation)
         let token = task.toAnyCancellable
-        tokens.withLockUnchecked { $0[task] = token }
+        tokensMap.withLockUnchecked { $0[task] = token }
         continuation.yield(task)
         return token
     }
 
     public func cancelAll() {
-        let allTokens = tokens.withLockUnchecked { dict in
+        let allTokens = tokensMap.withLockUnchecked { dict in
             defer { dict.removeAll() }
             return Array(dict.values)
         }
