@@ -41,11 +41,11 @@ public final class SerialTaskExecutor: Sendable {
     }
 
     public func cancelAll() {
-        let all = tokens.withLockUnchecked { dict in
+        let allTokens = tokens.withLockUnchecked { dict in
             defer { dict.removeAll() }
             return Array(dict.values)
         }
-        for token in all { token.cancel() }
+        for token in allTokens { token.cancel() }
     }
 }
 
