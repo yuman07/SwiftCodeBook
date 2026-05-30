@@ -15,9 +15,9 @@ public final class MemoryCache<Key: Hashable, Value>: @unchecked Sendable {
     private let cancelToken: AnyCancellable
 
     public init() {
-        let cache = cache
+        let thisCache = cache
         cancelToken = CurrentApplication.memoryWarningPublisher
-            .sink { cache.removeAllObjects() }
+            .sink { thisCache.removeAllObjects() }
     }
     
     public func value(forKey key: Key) -> Value? {
