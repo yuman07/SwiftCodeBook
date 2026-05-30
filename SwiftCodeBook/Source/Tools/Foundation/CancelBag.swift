@@ -16,9 +16,8 @@ public final class CancelBag: Sendable {
     
     deinit {
         var allTokens = tokens.withLockUnchecked { tokens in
-            let copy = tokens
-            tokens.removeAll()
-            return copy
+            defer { tokens.removeAll() }
+            return Array(tokens)
         }
         allTokens.removeAll()
     }
@@ -31,9 +30,8 @@ public final class CancelBag: Sendable {
     
     public func cancelAll() {
         let allTokens = tokens.withLockUnchecked { tokens in
-            let copy = tokens
-            tokens.removeAll()
-            return copy
+            defer { tokens.removeAll() }
+            return Array(tokens)
         }
         for token in allTokens { token.cancel() }
     }
