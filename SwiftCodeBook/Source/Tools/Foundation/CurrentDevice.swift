@@ -27,6 +27,7 @@ public extension CurrentDevice {
 #endif
     }()
     
+    // iPod最后支持的iOS版本是15，等基本所有app的最低版本为iOS16后可删除该type
     @frozen enum DeviceType: Sendable, Hashable {
         case iPhone
         case iPad
