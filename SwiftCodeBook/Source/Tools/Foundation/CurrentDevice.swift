@@ -7,9 +7,6 @@
 
 import Darwin
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#endif
 
 @frozen public enum CurrentDevice: Sendable {}
 
