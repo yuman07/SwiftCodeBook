@@ -21,6 +21,10 @@ public actor AsyncSemaphore {
         self.value = value
     }
 
+    /// The number of tasks currently suspended waiting for a permit.
+    /// Exposed for diagnostics and deterministic testing of queue ordering.
+    var waiterCount: Int { waiters.count }
+
     /// Waits for a permit. This wait is NOT interrupted by cancellation
     /// (classic semaphore semantics).
     public func wait() async {
@@ -37,10 +41,15 @@ public actor AsyncSemaphore {
         }
     }
 
-    /// Waits for a permit, throwing `CancellationError` if the task is cancelled
-    /// before a permit becomes available. On cancellation the waiter is removed
-    /// without consuming a permit.
+    /// Waits for a permit, throwing `CancellationError` if the task is cancelled.
+    /// A cancelled task never consumes a permit: if cancellation is observed while
+    /// enqueued — even when it races a `signal()` and `release()` wins — the waiter
+    /// is removed and any just-granted permit is handed back to the next waiter.
     public func waitUnlessCancelled() async throws {
+        // Honor cancellation up front: a cancelled task never acquires a permit,
+        // even when one is immediately available.
+        try Task.checkCancellation()
+
         if value > 0 {
             value -= 1
             return
@@ -57,6 +66,15 @@ public actor AsyncSemaphore {
             }
         } onCancel: {
             Task { await self.cancelWaiter(id: id) }
+        }
+
+        // We were resumed normally by release(). If the task was cancelled while
+        // enqueued and release() won the race against cancelWaiter(), honor the
+        // cancellation: hand the just-acquired permit back so a cancelled wait
+        // never silently consumes one.
+        if Task.isCancelled {
+            release()
+            throw CancellationError()
         }
     }
 

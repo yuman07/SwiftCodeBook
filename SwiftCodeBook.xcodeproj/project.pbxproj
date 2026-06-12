@@ -168,6 +168,13 @@
 			remoteGlobalIDString = 7A4B514A2F7E3655002FC607;
 			remoteInfo = "Watch Watch App";
 		};
+		7B7E5700000000000000000B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AA7EC842F7500DA002EDF68 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7AA7EC8B2F7500DA002EDF68;
+			remoteInfo = SwiftCodeBook;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -250,12 +257,18 @@
 		7AA7ECF02F7501D8002EDF68 /* UITextView.clickSomeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.clickSomeText.swift; sourceTree = "<group>"; };
 		7AA7ECF12F7501D8002EDF68 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
 		7AA7ECF22F7501D8002EDF68 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
+		7B7E57000000000000000009 /* SwiftCodeBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCodeBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7A4B514C2F7E3655002FC607 /* Watch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Watch Watch App";
+			sourceTree = "<group>";
+		};
+		7B7E57000000000000000008 /* SwiftCodeBookTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SwiftCodeBookTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -271,6 +284,11 @@
 			files = (
 			);
 		};
+		7B7E57000000000000000006 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -278,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				7AA7EC9D2F750162002EDF68 /* SwiftCodeBook */,
+				7B7E57000000000000000008 /* SwiftCodeBookTests */,
 				7AA7EC8D2F7500DA002EDF68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -287,6 +306,7 @@
 			children = (
 				7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */,
 				7A4B514B2F7E3655002FC607 /* Watch Watch App.app */,
+				7B7E57000000000000000009 /* SwiftCodeBookTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -519,6 +539,27 @@
 			productReference = 7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7B7E57000000000000000001 /* SwiftCodeBookTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B7E57000000000000000002 /* Build configuration list for PBXNativeTarget "SwiftCodeBookTests" */;
+			buildPhases = (
+				7B7E57000000000000000005 /* Sources */,
+				7B7E57000000000000000006 /* Frameworks */,
+				7B7E57000000000000000007 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B7E5700000000000000000A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7B7E57000000000000000008 /* SwiftCodeBookTests */,
+			);
+			name = SwiftCodeBookTests;
+			productName = SwiftCodeBookTests;
+			productReference = 7B7E57000000000000000009 /* SwiftCodeBookTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -534,6 +575,10 @@
 					};
 					7AA7EC8B2F7500DA002EDF68 = {
 						CreatedOnToolsVersion = 26.4;
+					};
+					7B7E57000000000000000001 = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = 7AA7EC8B2F7500DA002EDF68;
 					};
 				};
 			};
@@ -553,6 +598,7 @@
 			targets = (
 				7AA7EC8B2F7500DA002EDF68 /* SwiftCodeBook */,
 				7A4B514A2F7E3655002FC607 /* Watch Watch App */,
+				7B7E57000000000000000001 /* SwiftCodeBookTests */,
 			);
 		};
 /* End PBXProject section */
@@ -567,6 +613,11 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				7AA7EC942F7500DC002EDF68 /* Assets.xcassets in Resources */,
+			);
+		};
+		7B7E57000000000000000007 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -732,6 +783,11 @@
 				7AA7ED3C2F7501D8002EDF68 /* FileManager+Tools.swift in Sources */,
 			);
 		};
+		7B7E57000000000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -740,6 +796,11 @@
 			platformFilter = ios;
 			target = 7A4B514A2F7E3655002FC607 /* Watch Watch App */;
 			targetProxy = 7A4B51532F7E3656002FC607 /* PBXContainerItemProxy */;
+		};
+		7B7E5700000000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7AA7EC8B2F7500DA002EDF68 /* SwiftCodeBook */;
+			targetProxy = 7B7E5700000000000000000B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1021,6 +1082,56 @@
 			};
 			name = Release;
 		};
+		7B7E57000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftCodeBook.SwiftCodeBookTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftCodeBook.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwiftCodeBook";
+			};
+			name = Debug;
+		};
+		7B7E57000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftCodeBook.SwiftCodeBookTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftCodeBook.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwiftCodeBook";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1045,6 +1156,14 @@
 			buildConfigurations = (
 				7AA7EC982F7500DC002EDF68 /* Debug configuration for PBXNativeTarget "SwiftCodeBook" */,
 				7AA7EC992F7500DC002EDF68 /* Release configuration for PBXNativeTarget "SwiftCodeBook" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		7B7E57000000000000000002 /* Build configuration list for PBXNativeTarget "SwiftCodeBookTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B7E57000000000000000003 /* Debug */,
+				7B7E57000000000000000004 /* Release */,
 			);
 			defaultConfigurationName = Release;
 		};
