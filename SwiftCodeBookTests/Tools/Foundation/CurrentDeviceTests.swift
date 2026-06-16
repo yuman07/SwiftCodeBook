@@ -21,16 +21,16 @@ import Testing
     // compile into the same test module.
     private static func derivedType(from rawModel: String) -> CurrentDevice.DeviceType {
         let model = rawModel.lowercased()
-        if model.contains("iphone") {
-            return .iPhone
-        } else if model.contains("ipad") {
-            return .iPad
-        } else if model.contains("ipod") {
-            return .iPod
-        } else if model.contains("mac") {
-            return .mac
+        if model.contains("phone") {
+            return .phone
+        } else if model.contains("pad") {
+            return .pad
+        } else if model.contains("pod") {
+            return .pod
         } else if model.contains("tv") {
             return .tv
+        } else if model.contains("mac") {
+            return .mac
         } else if model.contains("watch") {
             return .watch
         } else if model.contains("realitydevice") {
@@ -41,7 +41,7 @@ import Testing
     }
 
     private static let allDeviceTypes: [CurrentDevice.DeviceType] = [
-        .iPhone, .iPad, .iPod, .mac, .tv, .watch, .vision, .unknown,
+        .phone, .pad, .pod, .mac, .tv, .watch, .vision, .unknown,
     ]
 
     // MARK: - systemName
@@ -128,7 +128,7 @@ import Testing
     @Test func deviceTypeIsAPhoneOrPadOnIOSSimulator() {
         // The iOS Simulator only ships iPhone / iPad device identifiers.
         let type = CurrentDevice.deviceType
-        #expect(type == .iPhone || type == .iPad)
+        #expect(type == .phone || type == .pad)
     }
 
     @Test func deviceTypeIsNotUnknownOnIOSSimulator() {
@@ -144,12 +144,12 @@ import Testing
     }
 
     // Exercise the exact branch-ordering of the source's classifier with synthetic
-    // identifiers. This pins the documented precedence (e.g. "mac" is matched
-    // before "tv"/"watch", "iphone" before "ipad") without touching source.
+    // identifiers. This pins the documented precedence ("phone" before "pad"/"pod",
+    // "tv" before "mac") without touching source.
     @Test(arguments: [
-        ("iPhone18,3", CurrentDevice.DeviceType.iPhone),
-        ("iPad13,1", .iPad),
-        ("iPod9,1", .iPod),
+        ("iPhone18,3", CurrentDevice.DeviceType.phone),
+        ("iPad13,1", .pad),
+        ("iPod9,1", .pod),
         ("Mac15,3", .mac),
         ("MacBookPro18,1", .mac),
         ("AppleTV11,1", .tv),
@@ -157,7 +157,7 @@ import Testing
         ("RealityDevice14,1", .vision),
         ("", .unknown),
         ("totally-unrecognized", .unknown),
-        ("IPHONE-UPPERCASE", .iPhone),       // case-insensitive
+        ("IPHONE-UPPERCASE", .phone),       // case-insensitive
     ] as [(String, CurrentDevice.DeviceType)])
     func deviceTypeClassifierPrecedence(_ raw: String, _ expected: CurrentDevice.DeviceType) {
         #expect(Self.derivedType(from: raw) == expected)
@@ -174,8 +174,8 @@ import Testing
     }
 
     @Test func deviceTypeEqualityAndHashing() {
-        #expect(CurrentDevice.DeviceType.iPhone == CurrentDevice.DeviceType.iPhone)
-        #expect(CurrentDevice.DeviceType.iPhone != CurrentDevice.DeviceType.iPad)
+        #expect(CurrentDevice.DeviceType.phone == CurrentDevice.DeviceType.phone)
+        #expect(CurrentDevice.DeviceType.phone != CurrentDevice.DeviceType.pad)
         // Equal cases must hash equally.
         #expect(
             CurrentDevice.DeviceType.vision.hashValue
@@ -187,9 +187,9 @@ import Testing
     }
 
     @Test(arguments: [
-        CurrentDevice.DeviceType.iPhone,
-        .iPad,
-        .iPod,
+        CurrentDevice.DeviceType.phone,
+        .pad,
+        .pod,
         .mac,
         .tv,
         .watch,
@@ -215,6 +215,71 @@ import Testing
         for (index, type) in Self.allDeviceTypes.enumerated() {
             #expect(dict[type] == index)
         }
+    }
+
+    // MARK: - userInterfaceIdiom
+
+    @Test func userInterfaceIdiomIsPhoneOrPadOnIOSSimulator() {
+        // On the iOS Simulator (not Mac Catalyst, isiOSAppOnMac == false) the idiom is
+        // derived purely from deviceType, which is iPhone/iPad here.
+        let idiom = CurrentDevice.userInterfaceIdiom
+        #expect(idiom == .phone || idiom == .pad)
+    }
+
+    @Test func userInterfaceIdiomMatchesDeviceTypeOnIOSSimulator() {
+        // Re-derive from deviceType using the same mapping the source applies on the
+        // iOS (non-Catalyst, non-iOSAppOnMac) path.
+        let expected: CurrentDevice.UserInterfaceIdiom
+        switch CurrentDevice.deviceType {
+        case .phone, .pod:
+            expected = .phone
+        case .pad:
+            expected = .pad
+        default:
+            expected = .unspecified
+        }
+        #expect(CurrentDevice.userInterfaceIdiom == expected)
+    }
+
+    @Test func userInterfaceIdiomIsStableAcrossReads() {
+        // Backed by a UIKit-free `static let`: capture once, then confirm repeated
+        // reads return that exact captured value.
+        let snapshot = CurrentDevice.userInterfaceIdiom
+        for _ in 0..<100 {
+            #expect(CurrentDevice.userInterfaceIdiom == snapshot)
+        }
+    }
+
+    @Test func userInterfaceIdiomIsReadableOffMainThread() async {
+        // It's a UIKit-free, Sendable `static let`, so it must be observable off the
+        // main thread with a consistent value (no @MainActor / UIKit dependency).
+        let expected = CurrentDevice.userInterfaceIdiom
+        let value = await Task.detached { CurrentDevice.userInterfaceIdiom }.value
+        #expect(value == expected)
+    }
+
+    @Test func userInterfaceIdiomIsConcurrencySafe() async {
+        let expected = CurrentDevice.userInterfaceIdiom
+        let taskCount = 1000
+        let okCount = await withTaskGroup(of: Bool.self) { group in
+            for _ in 0..<taskCount {
+                group.addTask { CurrentDevice.userInterfaceIdiom == expected }
+            }
+            var count = 0
+            for await ok in group where ok {
+                count += 1
+            }
+            return count
+        }
+        #expect(okCount == taskCount)
+    }
+
+    @Test func userInterfaceIdiomAllCasesAreDistinct() {
+        let all: [CurrentDevice.UserInterfaceIdiom] = [
+            .unspecified, .phone, .pad, .tv, .mac, .watch, .vision,
+        ]
+        #expect(Set(all).count == all.count)
+        #expect(Set(all).count == 7)
     }
 
     // MARK: - systemVersion
@@ -367,6 +432,6 @@ import Testing
         requireSendable(CurrentDevice.self)
         requireSendable(CurrentDevice.DeviceType.self)
         // CurrentDevice has no cases; this just confirms the metatype usage works.
-        #expect(CurrentDevice.DeviceType.iPhone == .iPhone)
+        #expect(CurrentDevice.DeviceType.phone == .phone)
     }
 }

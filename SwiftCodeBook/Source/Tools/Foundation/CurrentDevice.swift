@@ -14,14 +14,14 @@ public extension CurrentDevice {
     static let systemName = {
 #if os(iOS)
         "iOS"
-#elseif os(macOS)
-        "macOS"
 #elseif os(tvOS)
         "tvOS"
-#elseif os(visionOS)
-        "visionOS"
+#elseif os(macOS)
+        "macOS"
 #elseif os(watchOS)
         "watchOS"
+#elseif os(visionOS)
+        "visionOS"
 #else
         "unknown"
 #endif
@@ -29,28 +29,28 @@ public extension CurrentDevice {
     
     // iPod最后支持的iOS版本是15，等基本所有app的最低版本为iOS16后可删除该type
     @frozen enum DeviceType: Sendable, Hashable {
-        case iPhone
-        case iPad
-        case iPod
-        case mac
+        case unknown
+        case phone
+        case pad
+        case pod
         case tv
+        case mac
         case watch
         case vision
-        case unknown
     }
     
     static let deviceType: DeviceType = {
         let deviceModel = Self.deviceModel.lowercased()
-        if deviceModel.contains("iphone") {
-            return .iPhone
-        } else if deviceModel.contains("ipad") {
-            return .iPad
-        } else if deviceModel.contains("ipod") {
-            return .iPod
-        } else if deviceModel.contains("mac") {
-            return .mac
+        if deviceModel.contains("phone") {
+            return .phone
+        } else if deviceModel.contains("pad") {
+            return .pad
+        } else if deviceModel.contains("pod") {
+            return .pod
         } else if deviceModel.contains("tv") {
             return .tv
+        } else if deviceModel.contains("mac") {
+            return .mac
         } else if deviceModel.contains("watch") {
             return .watch
         } else if deviceModel.contains("realitydevice") {
@@ -58,6 +58,45 @@ public extension CurrentDevice {
         } else {
             return .unknown
         }
+    }()
+    
+    @frozen enum UserInterfaceIdiom: Sendable, Hashable {
+        case unspecified
+        case phone
+        case pad
+        case tv
+        case mac
+        case watch
+        case vision
+    }
+
+    static let userInterfaceIdiom: UserInterfaceIdiom = {
+#if targetEnvironment(macCatalyst)
+        .mac
+#elseif os(iOS)
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            guard let families = Bundle.main.infoDictionary?["UIDeviceFamily"] as? [Int],
+                  !families.isEmpty else {
+                return .unspecified
+            }
+            return families.contains(2) ? .pad : .phone
+        }
+        switch Self.deviceType {
+        case .phone, .pod: return .phone
+        case .pad: return .pad
+        default: return .unspecified
+        }
+#elseif os(tvOS)
+        .tv
+#elseif os(macOS)
+        .mac
+#elseif os(watchOS)
+        .watch
+#elseif os(visionOS)
+        .vision
+#else
+        .unspecified
+#endif
     }()
     
     static let systemVersion = {

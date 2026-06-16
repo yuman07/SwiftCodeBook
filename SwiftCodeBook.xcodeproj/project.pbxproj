@@ -1082,7 +1082,7 @@
 			};
 			name = Release;
 		};
-		7B7E57000000000000000003 /* Debug */ = {
+		7B7E57000000000000000003 /* Debug configuration for PBXNativeTarget "SwiftCodeBookTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1107,7 +1107,7 @@
 			};
 			name = Debug;
 		};
-		7B7E57000000000000000004 /* Release */ = {
+		7B7E57000000000000000004 /* Release configuration for PBXNativeTarget "SwiftCodeBookTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1162,8 +1162,8 @@
 		7B7E57000000000000000002 /* Build configuration list for PBXNativeTarget "SwiftCodeBookTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7B7E57000000000000000003 /* Debug */,
-				7B7E57000000000000000004 /* Release */,
+				7B7E57000000000000000003 /* Debug configuration for PBXNativeTarget "SwiftCodeBookTests" */,
+				7B7E57000000000000000004 /* Release configuration for PBXNativeTarget "SwiftCodeBookTests" */,
 			);
 			defaultConfigurationName = Release;
 		};
