@@ -213,7 +213,7 @@
  使用await MainActor.run {} 来执行代码时，如果当前已经处于main actor则不会切换actor，即会先执行{}里的代码然后继续往下执行
  
  
- 在iPad中使用SplitView时，一定要测试最大和最小的iPad设备。
+ 当需要做iPad适配时，一定要同时测最大和最小的iPad。因为两者size差异巨大系统可能会有不一样的默认行为
  */
 
 
