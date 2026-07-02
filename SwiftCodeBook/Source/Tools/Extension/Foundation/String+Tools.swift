@@ -60,6 +60,10 @@ public extension StringProtocol {
     var utf8Data: Data {
         Data(utf8)
     }
+
+    var nilIfEmpty: Self? {
+        isEmpty ? nil : self
+    }
 }
 
 public extension StringProtocol {
