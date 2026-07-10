@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B7E58000000000000000002 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
+		7B7E58000000000000000003 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
 		7A0AE9B72F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
 		7A0AE9B82F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
 		7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
@@ -229,6 +231,7 @@
 		7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialTaskExecutor.swift; sourceTree = "<group>"; };
 		7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
 		7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLNodeParser.swift; sourceTree = "<group>"; };
+		7B7E58000000000000000001 /* AESCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCrypto.swift; sourceTree = "<group>"; };
 		7AA7ECD32F7501D8002EDF68 /* CADisplayLinkAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkAnimator.swift; sourceTree = "<group>"; };
 		7AA7ECD42F7501D8002EDF68 /* CADisplayLinkTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkTimer.swift; sourceTree = "<group>"; };
 		7AA7ECD52F7501D8002EDF68 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -407,6 +410,7 @@
 		7AA7ECD22F7501D8002EDF68 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				7B7E58000000000000000001 /* AESCrypto.swift */,
 				7AA7ECC62F7501D8002EDF68 /* AnyJSONValue.swift */,
 				7AA7ECC72F7501D8002EDF68 /* AsyncSemaphore.swift */,
 				7AA7ECC82F7501D8002EDF68 /* CancelBag.swift */,
@@ -626,6 +630,7 @@
 		7A4B51472F7E3655002FC607 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				7B7E58000000000000000003 /* AESCrypto.swift in Sources */,
 				7A4B51862F7E3D10002FC607 /* NSRange+Tools.swift in Sources */,
 				7A4B51672F7E3C6D002FC607 /* SwitchType.swift in Sources */,
 				7A4B519D2F7E3D70002FC607 /* SerialTaskExecutor.swift in Sources */,
@@ -705,6 +710,7 @@
 		7AA7EC882F7500DA002EDF68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				7B7E58000000000000000002 /* AESCrypto.swift in Sources */,
 				7AA7EC902F7500DA002EDF68 /* SwiftCodeBookApp.swift in Sources */,
 				7AA7ECA12F7501CB002EDF68 /* Note.swift in Sources */,
 				7AA7ECF52F7501D8002EDF68 /* UIBezierPath+Tools.swift in Sources */,
