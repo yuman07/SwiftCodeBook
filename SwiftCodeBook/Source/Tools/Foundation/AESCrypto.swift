@@ -13,7 +13,6 @@ import Security
 @frozen public enum AESMode: String, CaseIterable, Codable, Sendable {
     case gcm
     case cbc
-    /// ECB exposes repeating plaintext patterns and should only be used for interoperability.
     case ecb
     case cfb
     case cfb8
