@@ -21,19 +21,19 @@ import Security
         case ofb
     }
 
-    /// GCM with optional authenticated data. Omit `nonce` to generate a fresh one.
+    /// Generates a secure random 12-byte nonce when `nonce` is `nil`.
     case gcm(nonce: Data? = nil, authenticating: Data = Data())
-    /// CBC with an optional IV and PKCS#7 padding by default.
+    /// Generates a secure random 16-byte IV when `iv` is `nil`.
     case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
-    /// ECB with PKCS#7 padding by default. ECB does not use an IV.
+    /// ECB does not use an IV.
     case ecb(padding: AESPadding = .pkcs7)
-    /// CFB with an optional IV. CFB does not use padding.
+    /// Generates a secure random 16-byte IV when `iv` is `nil`.
     case cfb(iv: Data? = nil)
-    /// CFB8 with an optional IV. CFB8 does not use padding.
+    /// Generates a secure random 16-byte IV when `iv` is `nil`.
     case cfb8(iv: Data? = nil)
-    /// CTR with an optional initial counter block. CTR does not use padding.
+    /// Generates a secure random 16-byte counter block when `initialCounter` is `nil`.
     case ctr(initialCounter: Data? = nil)
-    /// OFB with an optional IV. OFB does not use padding.
+    /// Generates a secure random 16-byte IV when `iv` is `nil`.
     case ofb(iv: Data? = nil)
 
     public var kind: Kind {
