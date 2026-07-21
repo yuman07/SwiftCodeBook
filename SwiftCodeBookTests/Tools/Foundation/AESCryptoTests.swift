@@ -11,7 +11,7 @@ import Testing
 
 @Suite struct AESCryptoTests {
     struct ModeVector: Sendable {
-        let mode: AESMode
+        let mode: AESMode.Kind
         let ivHex: String?
         let ciphertextHex: String
     }
@@ -23,6 +23,15 @@ import Testing
     private static let nistPlaintext = "6bc1bee22e409f96e93d7e117393172a"
     private static let nistKey = "2b7e151628aed2a6abf7158809cf4f3c"
     private static let nistIV = "000102030405060708090a0b0c0d0e0f"
+    private static let defaultModes: [AESMode] = [
+        .gcm(),
+        .cbc(),
+        .ecb(),
+        .cfb(),
+        .cfb8(),
+        .ctr(),
+        .ofb(),
+    ]
 
     // NIST SP 800-38A first-block vectors. CFB8 is section F.3.7.
     private static let modeVectors: [ModeVector] = [
@@ -62,17 +71,19 @@ import Testing
     func allModesAndKeySizesRoundTrip() throws {
         let plaintext = Data((0..<37).map { UInt8(truncatingIfNeeded: $0 * 11) })
 
-        for mode in AESMode.allCases {
+        for mode in Self.defaultModes {
             for keySize in AESKeySize.allCases {
                 let key = try AESCrypto.generateKey(size: keySize)
                 let payload = try plaintext.aesEncrypted(using: key, mode: mode)
                 let decrypted = try payload.decrypted(using: key)
 
                 #expect(decrypted == plaintext)
-                #expect(payload.mode == mode)
-                #expect(payload.padding == (mode == .cbc || mode == .ecb ? .pkcs7 : .none))
-                #expect(payload.iv?.count == (mode == .gcm ? 12 : mode == .ecb ? nil : 16))
-                #expect(payload.authenticationTag?.count == (mode == .gcm ? 16 : nil))
+                #expect(payload.mode == mode.kind)
+                #expect(
+                    payload.padding == (mode.kind == .cbc || mode.kind == .ecb ? .pkcs7 : .none)
+                )
+                #expect(payload.iv?.count == (mode.kind == .gcm ? 12 : mode.kind == .ecb ? nil : 16))
+                #expect(payload.authenticationTag?.count == (mode.kind == .gcm ? 16 : nil))
             }
         }
     }
@@ -87,7 +98,7 @@ import Testing
             #expect(first != second)
         }
 
-        for mode in AESMode.allCases {
+        for mode in AESMode.Kind.allCases {
             let iv = try AESCrypto.generateIV(for: mode)
             #expect(iv?.count == (mode == .gcm ? 12 : mode == .ecb ? nil : 16))
         }
@@ -98,13 +109,12 @@ import Testing
         let key = try AESCrypto.generateKey(size: .bits256)
         let alignedPlaintext = Data((0..<32).map { UInt8($0) })
 
-        for mode in [AESMode.cbc, .ecb] {
+        for mode in [AESMode.Kind.cbc, .ecb] {
             for padding in [AESPadding.pkcs7, .none] {
                 let payload = try AESCrypto.encrypt(
                     alignedPlaintext,
                     using: key,
-                    mode: mode,
-                    padding: padding
+                    mode: Self.configuredMode(mode, padding: padding)
                 )
                 #expect(payload.padding == padding)
                 #expect(try AESCrypto.decrypt(payload, using: key) == alignedPlaintext)
@@ -117,7 +127,7 @@ import Testing
         let key = try AESCrypto.generateKey()
         let unalignedPlaintext = Data("PKCS#7 is the block-mode default".utf8)
 
-        for mode in [AESMode.cbc, .ecb] {
+        for mode in [AESMode.cbc(), .ecb()] {
             let payload = try AESCrypto.encrypt(unalignedPlaintext, using: key, mode: mode)
             #expect(payload.padding == .pkcs7)
             #expect(try AESCrypto.decrypt(payload, using: key) == unalignedPlaintext)
@@ -129,7 +139,7 @@ import Testing
         let key = try AESCrypto.generateKey()
         let unalignedPlaintext = Data(repeating: 0xA5, count: 15)
 
-        for mode in [AESMode.cbc, .ecb] {
+        for mode in [AESMode.Kind.cbc, .ecb] {
             #expect(
                 throws: AESCryptoError.invalidInputLength(
                     mode: mode,
@@ -140,8 +150,7 @@ import Testing
                 _ = try AESCrypto.encrypt(
                     unalignedPlaintext,
                     using: key,
-                    mode: mode,
-                    padding: .none
+                    mode: Self.configuredMode(mode, padding: .none)
                 )
             }
 
@@ -165,17 +174,17 @@ import Testing
     }
 
     @Test
-    func streamModesRejectPKCS7() throws {
+    func nonGCMDecryptionRejectsAuthenticatedData() throws {
         let key = try AESCrypto.generateKey()
-        let plaintext = Data("stream modes do not pad".utf8)
+        let authenticatedData = Data("header".utf8)
 
-        for mode in [AESMode.cfb, .cfb8, .ctr, .ofb] {
-            #expect(throws: AESCryptoError.unsupportedPadding(.pkcs7, mode: mode)) {
-                _ = try AESCrypto.encrypt(
-                    plaintext,
+        for mode in [AESMode.cbc(), .ecb(), .cfb(), .cfb8(), .ctr(), .ofb()] {
+            let payload = try AESCrypto.encrypt(Data("plaintext".utf8), using: key, mode: mode)
+            #expect(throws: AESCryptoError.unsupportedAuthenticatedData(mode: mode.kind)) {
+                _ = try AESCrypto.decrypt(
+                    payload,
                     using: key,
-                    mode: mode,
-                    padding: .pkcs7
+                    authenticating: authenticatedData
                 )
             }
         }
@@ -209,7 +218,7 @@ import Testing
         let key = try AESCrypto.generateKey()
         let alignedCiphertext = Data(repeating: 0, count: 16)
 
-        for mode in [AESMode.cbc, .cfb, .cfb8, .ctr, .ofb] {
+        for mode in [AESMode.Kind.cbc, .cfb, .cfb8, .ctr, .ofb] {
             let missingIV = AESEncryptedPayload(
                 ciphertext: alignedCiphertext,
                 iv: nil,
@@ -260,20 +269,15 @@ import Testing
             _ = try AESCrypto.encrypt(
                 Data(),
                 using: key,
-                mode: .gcm,
-                iv: Data(repeating: 0, count: 11)
+                mode: .gcm(nonce: Data(repeating: 0, count: 11))
             )
         }
     }
 
     @Test
-    func ecbRejectsAnIV() throws {
+    func ecbPayloadRejectsAnIV() throws {
         let key = try AESCrypto.generateKey()
         let iv = Data(repeating: 0, count: 16)
-
-        #expect(throws: AESCryptoError.unexpectedIV(mode: .ecb)) {
-            _ = try AESCrypto.encrypt(Data(), using: key, mode: .ecb, iv: iv)
-        }
 
         let payload = AESEncryptedPayload(
             ciphertext: Data(repeating: 0, count: 16),
@@ -327,7 +331,7 @@ import Testing
         let payload = try AESCrypto.encrypt(
             Data("secret payload".utf8),
             using: key,
-            authenticating: authenticatedData
+            mode: .gcm(authenticating: authenticatedData)
         )
         let tag = try #require(payload.authenticationTag)
 
@@ -380,9 +384,7 @@ import Testing
         let payload = try AESCrypto.encrypt(
             plaintext,
             using: key,
-            mode: vector.mode,
-            padding: .none,
-            iv: iv
+            mode: Self.configuredMode(vector.mode, iv: iv, padding: .none)
         )
         #expect(payload.ciphertext == expectedCiphertext)
 
@@ -402,7 +404,7 @@ import Testing
         let nonce = Data(repeating: 0, count: 12)
         let expectedTag = try Self.data(hex: "58e2fccefa7e3061367f1d57a4e7455a")
 
-        let payload = try AESCrypto.encrypt(Data(), using: key, mode: .gcm, iv: nonce)
+        let payload = try AESCrypto.encrypt(Data(), using: key, mode: .gcm(nonce: nonce))
         #expect(payload.ciphertext.isEmpty)
         #expect(payload.iv == nonce)
         #expect(payload.authenticationTag == expectedTag)
@@ -418,6 +420,27 @@ import Testing
 
         #expect(decoded == payload)
         #expect(try AESCrypto.decrypt(decoded, using: key) == Data("persisted payload".utf8))
+    }
+
+    @Test
+    func payloadDecodesExistingModeRepresentation() throws {
+        let encoded = Data(
+            #"""
+            {
+              "authenticationTag": "AAAAAAAAAAAAAAAAAAAAAA==",
+              "ciphertext": "",
+              "iv": "AAAAAAAAAAAAAAAA",
+              "mode": "gcm",
+              "padding": "none"
+            }
+            """#.utf8
+        )
+
+        let payload = try JSONDecoder().decode(AESEncryptedPayload.self, from: encoded)
+
+        #expect(payload.mode == .gcm)
+        #expect(payload.iv == Data(repeating: 0, count: 12))
+        #expect(payload.authenticationTag == Data(repeating: 0, count: 16))
     }
 
     private static func data(hex: String) throws -> Data {
@@ -437,6 +460,29 @@ import Testing
             index = nextIndex
         }
         return Data(bytes)
+    }
+
+    private static func configuredMode(
+        _ mode: AESMode.Kind,
+        iv: Data? = nil,
+        padding: AESPadding
+    ) -> AESMode {
+        switch mode {
+        case .gcm:
+            .gcm(nonce: iv)
+        case .cbc:
+            .cbc(iv: iv, padding: padding)
+        case .ecb:
+            .ecb(padding: padding)
+        case .cfb:
+            .cfb(iv: iv)
+        case .cfb8:
+            .cfb8(iv: iv)
+        case .ctr:
+            .ctr(initialCounter: iv)
+        case .ofb:
+            .ofb(iv: iv)
+        }
     }
 
     private static func togglingFirstByte(of data: Data) -> Data {

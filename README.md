@@ -87,7 +87,7 @@ The project is organized into three parts:
 
 | Utility | Description |
 |:---|:---|
-| `AESCrypto` | Native AES-GCM (default), CBC, ECB (interoperability only), CFB, CFB8, CTR, and OFB with secure key/IV generation and Codable payloads |
+| `AESCrypto` | Native AES-GCM (default), CBC, ECB (interoperability only), CFB, CFB8, CTR, and OFB with type-safe mode parameters, secure key/IV generation, and Codable payloads |
 | `AnyJSONValue` | Type-erased JSON value with Codable/Hashable conformance and safe accessors |
 | `AsyncSemaphore` | Actor-based async/await semaphore |
 | `CancelBag` | Thread-safe Combine subscription management via `OSAllocatedUnfairLock` |

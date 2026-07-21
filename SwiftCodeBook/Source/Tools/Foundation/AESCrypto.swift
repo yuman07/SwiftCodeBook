@@ -10,14 +10,50 @@ import CryptoKit
 import Foundation
 import Security
 
-@frozen public enum AESMode: String, CaseIterable, Codable, Sendable {
-    case gcm
-    case cbc
-    case ecb
-    case cfb
-    case cfb8
-    case ctr
-    case ofb
+@frozen public enum AESMode: Equatable, Sendable {
+    @frozen public enum Kind: String, CaseIterable, Codable, Sendable {
+        case gcm
+        case cbc
+        case ecb
+        case cfb
+        case cfb8
+        case ctr
+        case ofb
+    }
+
+    /// GCM with optional authenticated data. Omit `nonce` to generate a fresh one.
+    case gcm(nonce: Data? = nil, authenticating: Data = Data())
+    /// CBC with an optional IV and PKCS#7 padding by default.
+    case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
+    /// ECB with PKCS#7 padding by default. ECB does not use an IV.
+    case ecb(padding: AESPadding = .pkcs7)
+    /// CFB with an optional IV. CFB does not use padding.
+    case cfb(iv: Data? = nil)
+    /// CFB8 with an optional IV. CFB8 does not use padding.
+    case cfb8(iv: Data? = nil)
+    /// CTR with an optional initial counter block. CTR does not use padding.
+    case ctr(initialCounter: Data? = nil)
+    /// OFB with an optional IV. OFB does not use padding.
+    case ofb(iv: Data? = nil)
+
+    public var kind: Kind {
+        switch self {
+        case .gcm:
+            .gcm
+        case .cbc:
+            .cbc
+        case .ecb:
+            .ecb
+        case .cfb:
+            .cfb
+        case .cfb8:
+            .cfb8
+        case .ctr:
+            .ctr
+        case .ofb:
+            .ofb
+        }
+    }
 }
 
 @frozen public enum AESPadding: String, CaseIterable, Codable, Sendable {
@@ -40,14 +76,14 @@ public struct AESEncryptedPayload: Codable, Equatable, Sendable {
     /// A 12-byte nonce for GCM, no value for ECB, or a 16-byte IV for other modes.
     public let iv: Data?
     public let authenticationTag: Data?
-    public let mode: AESMode
+    public let mode: AESMode.Kind
     public let padding: AESPadding
 
     public init(
         ciphertext: Data,
         iv: Data?,
         authenticationTag: Data?,
-        mode: AESMode,
+        mode: AESMode.Kind,
         padding: AESPadding
     ) {
         self.ciphertext = ciphertext
@@ -60,14 +96,15 @@ public struct AESEncryptedPayload: Codable, Equatable, Sendable {
 
 public enum AESCryptoError: Error, Equatable, Sendable {
     case invalidKeyLength(actual: Int)
-    case missingIV(mode: AESMode)
-    case unexpectedIV(mode: AESMode)
-    case invalidIVLength(mode: AESMode, expected: Int, actual: Int)
+    case missingIV(mode: AESMode.Kind)
+    case unexpectedIV(mode: AESMode.Kind)
+    case invalidIVLength(mode: AESMode.Kind, expected: Int, actual: Int)
     case missingAuthenticationTag
-    case unexpectedAuthenticationTag(mode: AESMode)
+    case unexpectedAuthenticationTag(mode: AESMode.Kind)
     case invalidAuthenticationTagLength(expected: Int, actual: Int)
-    case unsupportedPadding(AESPadding, mode: AESMode)
-    case invalidInputLength(mode: AESMode, blockSize: Int, actual: Int)
+    case unsupportedAuthenticatedData(mode: AESMode.Kind)
+    case unsupportedPadding(AESPadding, mode: AESMode.Kind)
+    case invalidInputLength(mode: AESMode.Kind, blockSize: Int, actual: Int)
     case authenticationFailed
     case randomGenerationFailed(status: OSStatus)
     case commonCryptoFailed(status: CCCryptorStatus)
@@ -90,6 +127,8 @@ extension AESCryptoError: LocalizedError {
             "AES-\(mode.rawValue.uppercased()) does not use an authentication tag."
         case .invalidAuthenticationTagLength(let expected, let actual):
             "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
+        case .unsupportedAuthenticatedData(let mode):
+            "AES-\(mode.rawValue.uppercased()) does not support authenticated data."
         case .unsupportedPadding(let padding, let mode):
             "AES-\(mode.rawValue.uppercased()) does not support \(padding.rawValue) padding."
         case .invalidInputLength(let mode, let blockSize, let actual):
@@ -114,7 +153,7 @@ public enum AESCrypto {
     }
 
     /// Generates a mode-appropriate nonce or IV. ECB returns `nil`.
-    public static func generateIV(for mode: AESMode) throws -> Data? {
+    public static func generateIV(for mode: AESMode.Kind) throws -> Data? {
         switch mode {
         case .gcm:
             try randomData(count: gcmNonceSize)
@@ -125,57 +164,19 @@ public enum AESCrypto {
         }
     }
 
-    /// Encrypts data using GCM by default. Prefer GCM when interoperability does not require another mode.
+    /// Encrypts data using GCM by default. Each mode exposes only its supported parameters.
     public static func encrypt(
         _ plaintext: Data,
         using key: Data,
-        mode: AESMode = .gcm,
-        iv requestedIV: Data? = nil,
-        authenticating authenticatedData: Data = Data()
-    ) throws -> AESEncryptedPayload {
-        try encrypt(
-            plaintext,
-            using: key,
-            mode: mode,
-            requestedPadding: nil,
-            iv: requestedIV,
-            authenticating: authenticatedData
-        )
-    }
-
-    public static func encrypt(
-        _ plaintext: Data,
-        using key: Data,
-        mode: AESMode,
-        padding: AESPadding,
-        iv requestedIV: Data? = nil,
-        authenticating authenticatedData: Data = Data()
-    ) throws -> AESEncryptedPayload {
-        try encrypt(
-            plaintext,
-            using: key,
-            mode: mode,
-            requestedPadding: padding,
-            iv: requestedIV,
-            authenticating: authenticatedData
-        )
-    }
-
-    private static func encrypt(
-        _ plaintext: Data,
-        using key: Data,
-        mode: AESMode,
-        requestedPadding: AESPadding?,
-        iv requestedIV: Data?,
-        authenticating authenticatedData: Data
+        mode: AESMode = .gcm()
     ) throws -> AESEncryptedPayload {
         try validateKey(key)
-        let padding = try resolvedPadding(requestedPadding, for: mode)
 
-        if mode == .gcm {
-            let nonceData = try encryptionIV(for: mode, requestedIV: requestedIV)
+        switch mode {
+        case .gcm(let requestedNonce, let authenticatedData):
+            let nonceData = try encryptionIV(for: .gcm, requestedIV: requestedNonce)
             guard let nonceData else {
-                throw AESCryptoError.missingIV(mode: mode)
+                throw AESCryptoError.missingIV(mode: .gcm)
             }
             let nonce = try AES.GCM.Nonce(data: nonceData)
             let sealedBox = try AES.GCM.seal(
@@ -191,27 +192,55 @@ public enum AESCrypto {
                 mode: .gcm,
                 padding: .none
             )
+        case .cbc(let requestedIV, let padding):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .cbc,
+                padding: padding,
+                requestedIV: requestedIV
+            )
+        case .ecb(let padding):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .ecb,
+                padding: padding,
+                requestedIV: nil
+            )
+        case .cfb(let requestedIV):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .cfb,
+                padding: .none,
+                requestedIV: requestedIV
+            )
+        case .cfb8(let requestedIV):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .cfb8,
+                padding: .none,
+                requestedIV: requestedIV
+            )
+        case .ctr(let requestedCounter):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .ctr,
+                padding: .none,
+                requestedIV: requestedCounter
+            )
+        case .ofb(let requestedIV):
+            return try makeCommonCryptoPayload(
+                plaintext,
+                using: key,
+                mode: .ofb,
+                padding: .none,
+                requestedIV: requestedIV
+            )
         }
-
-        if padding == .none {
-            try validateBlockAlignment(of: plaintext, for: mode)
-        }
-        let iv = try encryptionIV(for: mode, requestedIV: requestedIV)
-        let ciphertext = try commonCrypto(
-            plaintext,
-            operation: CCOperation(kCCEncrypt),
-            key: key,
-            mode: mode,
-            padding: padding,
-            iv: iv
-        )
-        return AESEncryptedPayload(
-            ciphertext: ciphertext,
-            iv: iv,
-            authenticationTag: nil,
-            mode: mode,
-            padding: padding
-        )
     }
 
     public static func decrypt(
@@ -220,7 +249,10 @@ public enum AESCrypto {
         authenticating authenticatedData: Data = Data()
     ) throws -> Data {
         try validateKey(key)
-        _ = try resolvedPadding(payload.padding, for: payload.mode)
+        _ = try validatedPadding(payload.padding, for: payload.mode)
+        guard payload.mode == .gcm || authenticatedData.isEmpty else {
+            throw AESCryptoError.unsupportedAuthenticatedData(mode: payload.mode)
+        }
 
         if payload.mode == .gcm {
             let nonceData = try decryptionIV(for: .gcm, payloadIV: payload.iv)
@@ -273,34 +305,9 @@ public enum AESCrypto {
 public extension Data {
     func aesEncrypted(
         using key: Data,
-        mode: AESMode = .gcm,
-        iv: Data? = nil,
-        authenticating authenticatedData: Data = Data()
+        mode: AESMode = .gcm()
     ) throws -> AESEncryptedPayload {
-        try AESCrypto.encrypt(
-            self,
-            using: key,
-            mode: mode,
-            iv: iv,
-            authenticating: authenticatedData
-        )
-    }
-
-    func aesEncrypted(
-        using key: Data,
-        mode: AESMode,
-        padding: AESPadding,
-        iv: Data? = nil,
-        authenticating authenticatedData: Data = Data()
-    ) throws -> AESEncryptedPayload {
-        try AESCrypto.encrypt(
-            self,
-            using: key,
-            mode: mode,
-            padding: padding,
-            iv: iv,
-            authenticating: authenticatedData
-        )
+        try AESCrypto.encrypt(self, using: key, mode: mode)
     }
 }
 
@@ -320,18 +327,17 @@ private extension AESCrypto {
         }
     }
 
-    static func resolvedPadding(
-        _ requestedPadding: AESPadding?,
-        for mode: AESMode
+    static func validatedPadding(
+        _ padding: AESPadding,
+        for mode: AESMode.Kind
     ) throws -> AESPadding {
-        let padding = requestedPadding ?? (mode.supportsPKCS7 ? .pkcs7 : .none)
         guard padding == .none || mode.supportsPKCS7 else {
             throw AESCryptoError.unsupportedPadding(padding, mode: mode)
         }
         return padding
     }
 
-    static func validateBlockAlignment(of input: Data, for mode: AESMode) throws {
+    static func validateBlockAlignment(of input: Data, for mode: AESMode.Kind) throws {
         guard mode.requiresBlockAlignment, !input.count.isMultiple(of: blockSize) else {
             return
         }
@@ -342,7 +348,36 @@ private extension AESCrypto {
         )
     }
 
-    static func encryptionIV(for mode: AESMode, requestedIV: Data?) throws -> Data? {
+    static func makeCommonCryptoPayload(
+        _ plaintext: Data,
+        using key: Data,
+        mode: AESMode.Kind,
+        padding requestedPadding: AESPadding,
+        requestedIV: Data?
+    ) throws -> AESEncryptedPayload {
+        let padding = try validatedPadding(requestedPadding, for: mode)
+        if padding == .none {
+            try validateBlockAlignment(of: plaintext, for: mode)
+        }
+        let iv = try encryptionIV(for: mode, requestedIV: requestedIV)
+        let ciphertext = try commonCrypto(
+            plaintext,
+            operation: CCOperation(kCCEncrypt),
+            key: key,
+            mode: mode,
+            padding: padding,
+            iv: iv
+        )
+        return AESEncryptedPayload(
+            ciphertext: ciphertext,
+            iv: iv,
+            authenticationTag: nil,
+            mode: mode,
+            padding: padding
+        )
+    }
+
+    static func encryptionIV(for mode: AESMode.Kind, requestedIV: Data?) throws -> Data? {
         if mode == .ecb {
             guard requestedIV == nil else {
                 throw AESCryptoError.unexpectedIV(mode: mode)
@@ -364,7 +399,7 @@ private extension AESCrypto {
         return try randomData(count: expectedCount)
     }
 
-    static func decryptionIV(for mode: AESMode, payloadIV: Data?) throws -> Data? {
+    static func decryptionIV(for mode: AESMode.Kind, payloadIV: Data?) throws -> Data? {
         if mode == .ecb {
             guard payloadIV == nil else {
                 throw AESCryptoError.unexpectedIV(mode: mode)
@@ -390,7 +425,7 @@ private extension AESCrypto {
         _ input: Data,
         operation: CCOperation,
         key: Data,
-        mode: AESMode,
+        mode: AESMode.Kind,
         padding: AESPadding,
         iv: Data?
     ) throws -> Data {
@@ -490,7 +525,7 @@ private extension AESCrypto {
     }
 }
 
-private extension AESMode {
+private extension AESMode.Kind {
     var supportsPKCS7: Bool {
         self == .cbc || self == .ecb
     }
