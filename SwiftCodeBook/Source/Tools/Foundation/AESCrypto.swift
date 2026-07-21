@@ -11,7 +11,7 @@ import Foundation
 import Security
 
 @frozen public enum AESMode: Sendable {
-    @frozen public enum Kind: Equatable, Sendable {
+    @frozen public enum Kind: Sendable {
         case gcm
         case cbc
         case ecb
@@ -49,7 +49,7 @@ import Security
     }
 }
 
-@frozen public enum AESPadding: Equatable, Sendable {
+@frozen public enum AESPadding: Sendable {
     case none
     case pkcs7
 }
