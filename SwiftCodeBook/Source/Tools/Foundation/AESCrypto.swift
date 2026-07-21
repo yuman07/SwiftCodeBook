@@ -11,7 +11,7 @@ import Foundation
 import Security
 
 @frozen public enum AESMode: Sendable {
-    @frozen public enum Kind: String, Sendable {
+    @frozen public enum Kind: Equatable, Sendable {
         case gcm
         case cbc
         case ecb
@@ -49,18 +49,22 @@ import Security
     }
 }
 
-@frozen public enum AESPadding: String, Sendable {
+@frozen public enum AESPadding: Equatable, Sendable {
     case none
     case pkcs7
 }
 
-@frozen public enum AESKeySize: Int, CaseIterable, Sendable {
-    case bits128 = 128
-    case bits192 = 192
-    case bits256 = 256
+@frozen public enum AESKeySize: CaseIterable, Sendable {
+    case bits128
+    case bits192
+    case bits256
 
     public var byteCount: Int {
-        rawValue / 8
+        switch self {
+        case .bits128: 16
+        case .bits192: 24
+        case .bits256: 32
+        }
     }
 }
 
@@ -107,15 +111,15 @@ extension AESCryptoError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidKeyLength(let actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
-        case .missingIV(let mode): "AES-\(mode.rawValue.uppercased()) requires an IV or nonce."
-        case .unexpectedIV(let mode): "AES-\(mode.rawValue.uppercased()) does not accept an IV."
-        case .invalidIVLength(let mode, let expected, let actual): "AES-\(mode.rawValue.uppercased()) requires a \(expected)-byte IV or nonce; received \(actual)."
+        case .missingIV(let mode): "AES-\(mode) requires an IV or nonce."
+        case .unexpectedIV(let mode): "AES-\(mode) does not accept an IV."
+        case .invalidIVLength(let mode, let expected, let actual): "AES-\(mode) requires a \(expected)-byte IV or nonce; received \(actual)."
         case .missingAuthenticationTag: "AES-GCM requires an authentication tag."
-        case .unexpectedAuthenticationTag(let mode): "AES-\(mode.rawValue.uppercased()) does not use an authentication tag."
+        case .unexpectedAuthenticationTag(let mode): "AES-\(mode) does not use an authentication tag."
         case .invalidAuthenticationTagLength(let expected, let actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
-        case .unsupportedAuthenticatedData(let mode): "AES-\(mode.rawValue.uppercased()) does not support authenticated data."
-        case .unsupportedPadding(let padding, let mode): "AES-\(mode.rawValue.uppercased()) does not support \(padding.rawValue) padding."
-        case .invalidInputLength(let mode, let blockSize, let actual): "AES-\(mode.rawValue.uppercased()) input must be a multiple of \(blockSize) bytes; received \(actual)."
+        case .unsupportedAuthenticatedData(let mode): "AES-\(mode) does not support authenticated data."
+        case .unsupportedPadding(let padding, let mode): "AES-\(mode) does not support \(padding) padding."
+        case .invalidInputLength(let mode, let blockSize, let actual): "AES-\(mode) input must be a multiple of \(blockSize) bytes; received \(actual)."
         case .authenticationFailed: "AES-GCM authentication failed."
         case .randomGenerationFailed(let status): "Secure random generation failed with OSStatus \(status)."
         case .commonCryptoFailed(let status): "CommonCrypto failed with status \(status)."
