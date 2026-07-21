@@ -10,7 +10,7 @@ import CryptoKit
 import Foundation
 import Security
 
-@frozen public enum AESMode: Equatable, Sendable {
+@frozen public enum AESMode: Sendable {
     @frozen public enum Kind: String, Sendable {
         case gcm
         case cbc
