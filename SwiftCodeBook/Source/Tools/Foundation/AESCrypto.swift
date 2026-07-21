@@ -11,7 +11,7 @@ import Foundation
 import Security
 
 @frozen public enum AESMode: Equatable, Sendable {
-    @frozen public enum Kind: String, CaseIterable, Codable, Sendable {
+    @frozen public enum Kind: String, Codable, Sendable {
         case gcm
         case cbc
         case ecb
@@ -49,12 +49,12 @@ import Security
     }
 }
 
-@frozen public enum AESPadding: String, CaseIterable, Codable, Sendable {
+@frozen public enum AESPadding: String, Codable, Sendable {
     case none
     case pkcs7
 }
 
-@frozen public enum AESKeySize: Int, CaseIterable, Codable, Sendable {
+@frozen public enum AESKeySize: Int, CaseIterable, Sendable {
     case bits128 = 128
     case bits192 = 192
     case bits256 = 256

@@ -98,7 +98,7 @@ import Testing
             #expect(first != second)
         }
 
-        for mode in AESMode.Kind.allCases {
+        for mode in Self.defaultModes.map(\.kind) {
             let iv = try AESCrypto.generateIV(for: mode)
             #expect(iv?.count == (mode == .gcm ? 12 : mode == .ecb ? nil : 16))
         }
