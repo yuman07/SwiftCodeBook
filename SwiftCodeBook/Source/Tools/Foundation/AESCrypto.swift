@@ -38,20 +38,13 @@ import Security
 
     public var kind: Kind {
         switch self {
-        case .gcm:
-            .gcm
-        case .cbc:
-            .cbc
-        case .ecb:
-            .ecb
-        case .cfb:
-            .cfb
-        case .cfb8:
-            .cfb8
-        case .ctr:
-            .ctr
-        case .ofb:
-            .ofb
+        case .gcm: .gcm
+        case .cbc: .cbc
+        case .ecb: .ecb
+        case .cfb: .cfb
+        case .cfb8: .cfb8
+        case .ctr: .ctr
+        case .ofb: .ofb
         }
     }
 }
@@ -113,32 +106,19 @@ public enum AESCryptoError: Error, Equatable, Sendable {
 extension AESCryptoError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .invalidKeyLength(let actual):
-            "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
-        case .missingIV(let mode):
-            "AES-\(mode.rawValue.uppercased()) requires an IV or nonce."
-        case .unexpectedIV(let mode):
-            "AES-\(mode.rawValue.uppercased()) does not accept an IV."
-        case .invalidIVLength(let mode, let expected, let actual):
-            "AES-\(mode.rawValue.uppercased()) requires a \(expected)-byte IV or nonce; received \(actual)."
-        case .missingAuthenticationTag:
-            "AES-GCM requires an authentication tag."
-        case .unexpectedAuthenticationTag(let mode):
-            "AES-\(mode.rawValue.uppercased()) does not use an authentication tag."
-        case .invalidAuthenticationTagLength(let expected, let actual):
-            "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
-        case .unsupportedAuthenticatedData(let mode):
-            "AES-\(mode.rawValue.uppercased()) does not support authenticated data."
-        case .unsupportedPadding(let padding, let mode):
-            "AES-\(mode.rawValue.uppercased()) does not support \(padding.rawValue) padding."
-        case .invalidInputLength(let mode, let blockSize, let actual):
-            "AES-\(mode.rawValue.uppercased()) input must be a multiple of \(blockSize) bytes; received \(actual)."
-        case .authenticationFailed:
-            "AES-GCM authentication failed."
-        case .randomGenerationFailed(let status):
-            "Secure random generation failed with OSStatus \(status)."
-        case .commonCryptoFailed(let status):
-            "CommonCrypto failed with status \(status)."
+        case .invalidKeyLength(let actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
+        case .missingIV(let mode): "AES-\(mode.rawValue.uppercased()) requires an IV or nonce."
+        case .unexpectedIV(let mode): "AES-\(mode.rawValue.uppercased()) does not accept an IV."
+        case .invalidIVLength(let mode, let expected, let actual): "AES-\(mode.rawValue.uppercased()) requires a \(expected)-byte IV or nonce; received \(actual)."
+        case .missingAuthenticationTag: "AES-GCM requires an authentication tag."
+        case .unexpectedAuthenticationTag(let mode): "AES-\(mode.rawValue.uppercased()) does not use an authentication tag."
+        case .invalidAuthenticationTagLength(let expected, let actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
+        case .unsupportedAuthenticatedData(let mode): "AES-\(mode.rawValue.uppercased()) does not support authenticated data."
+        case .unsupportedPadding(let padding, let mode): "AES-\(mode.rawValue.uppercased()) does not support \(padding.rawValue) padding."
+        case .invalidInputLength(let mode, let blockSize, let actual): "AES-\(mode.rawValue.uppercased()) input must be a multiple of \(blockSize) bytes; received \(actual)."
+        case .authenticationFailed: "AES-GCM authentication failed."
+        case .randomGenerationFailed(let status): "Secure random generation failed with OSStatus \(status)."
+        case .commonCryptoFailed(let status): "CommonCrypto failed with status \(status)."
         }
     }
 }
@@ -155,12 +135,9 @@ public enum AESCrypto {
     /// Generates a mode-appropriate nonce or IV. ECB returns `nil`.
     public static func generateIV(for mode: AESMode.Kind) throws -> Data? {
         switch mode {
-        case .gcm:
-            try randomData(count: gcmNonceSize)
-        case .ecb:
-            nil
-        case .cbc, .cfb, .cfb8, .ctr, .ofb:
-            try randomData(count: blockSize)
+        case .gcm: try randomData(count: gcmNonceSize)
+        case .ecb: nil
+        case .cbc, .cfb, .cfb8, .ctr, .ofb: try randomData(count: blockSize)
         }
     }
 
@@ -536,20 +513,13 @@ private extension AESMode.Kind {
 
     var commonCryptoMode: CCMode? {
         switch self {
-        case .gcm:
-            nil
-        case .cbc:
-            CCMode(kCCModeCBC)
-        case .ecb:
-            CCMode(kCCModeECB)
-        case .cfb:
-            CCMode(kCCModeCFB)
-        case .cfb8:
-            CCMode(kCCModeCFB8)
-        case .ctr:
-            CCMode(kCCModeCTR)
-        case .ofb:
-            CCMode(kCCModeOFB)
+        case .gcm: nil
+        case .cbc: CCMode(kCCModeCBC)
+        case .ecb: CCMode(kCCModeECB)
+        case .cfb: CCMode(kCCModeCFB)
+        case .cfb8: CCMode(kCCModeCFB8)
+        case .ctr: CCMode(kCCModeCTR)
+        case .ofb: CCMode(kCCModeOFB)
         }
     }
 }
@@ -557,10 +527,8 @@ private extension AESMode.Kind {
 private extension AESPadding {
     var commonCryptoPadding: CCPadding {
         switch self {
-        case .none:
-            CCPadding(ccNoPadding)
-        case .pkcs7:
-            CCPadding(ccPKCS7Padding)
+        case .none: CCPadding(ccNoPadding)
+        case .pkcs7: CCPadding(ccPKCS7Padding)
         }
     }
 }
