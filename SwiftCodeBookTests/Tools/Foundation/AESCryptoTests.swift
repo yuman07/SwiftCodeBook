@@ -180,7 +180,7 @@ import Testing
         for byteCount in [0, 15, 17, 23, 25, 31, 33] {
             let key = Data(repeating: 0, count: byteCount)
             #expect(throws: AESCryptoError.invalidKeyLength(actual: byteCount)) {
-                _ = try AESCrypto.encrypt(plaintext, using: key)
+                _ = try AESCrypto.encrypt(plaintext, using: key, mode: .gcm())
             }
         }
     }
@@ -189,7 +189,11 @@ import Testing
     func wrongGCMKeyFailsAuthentication() throws {
         let firstKey = try AESCrypto.generateKey()
         let secondKey = try AESCrypto.generateKey()
-        let payload = try AESCrypto.encrypt(Data("authenticated".utf8), using: firstKey)
+        let payload = try AESCrypto.encrypt(
+            Data("authenticated".utf8),
+            using: firstKey,
+            mode: .gcm()
+        )
 
         #expect(throws: AESCryptoError.authenticationFailed) {
             _ = try AESCrypto.decrypt(payload, using: secondKey)

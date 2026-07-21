@@ -132,11 +132,11 @@ public enum AESCrypto {
         }
     }
 
-    /// Encrypts data using GCM by default. Each mode exposes only its supported parameters.
+    /// Encrypts data using the selected mode.
     public static func encrypt(
-        _ plaintext: Data,
+        _ data: Data,
         using key: Data,
-        mode: AESMode = .gcm()
+        mode: AESMode
     ) throws -> AESEncryptedPayload {
         try validateKey(key)
 
@@ -148,7 +148,7 @@ public enum AESCrypto {
             )
             let nonce = try AES.GCM.Nonce(data: nonceData)
             let sealedBox = try AES.GCM.seal(
-                plaintext,
+                data,
                 using: SymmetricKey(data: key),
                 nonce: nonce,
                 authenticating: authenticatedData
@@ -162,7 +162,7 @@ public enum AESCrypto {
             )
         case .cbc(let requestedIV, let padding):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .cbc,
                 padding: padding,
@@ -170,7 +170,7 @@ public enum AESCrypto {
             )
         case .ecb(let padding):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .ecb,
                 padding: padding,
@@ -178,7 +178,7 @@ public enum AESCrypto {
             )
         case .cfb(let requestedIV):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .cfb,
                 padding: .none,
@@ -186,7 +186,7 @@ public enum AESCrypto {
             )
         case .cfb8(let requestedIV):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .cfb8,
                 padding: .none,
@@ -194,7 +194,7 @@ public enum AESCrypto {
             )
         case .ctr(let requestedCounter):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .ctr,
                 padding: .none,
@@ -202,7 +202,7 @@ public enum AESCrypto {
             )
         case .ofb(let requestedIV):
             return try makeCommonCryptoPayload(
-                plaintext,
+                data,
                 using: key,
                 mode: .ofb,
                 padding: .none,
@@ -259,7 +259,7 @@ public enum AESCrypto {
 public extension Data {
     func aesEncrypted(
         using key: Data,
-        mode: AESMode = .gcm()
+        mode: AESMode
     ) throws -> AESEncryptedPayload {
         try AESCrypto.encrypt(self, using: key, mode: mode)
     }
@@ -293,14 +293,14 @@ private extension AESCrypto {
     }
 
     static func makeCommonCryptoPayload(
-        _ plaintext: Data,
+        _ data: Data,
         using key: Data,
         mode: AESMode.Kind,
         padding requestedPadding: AESPadding,
         requestedIV: Data?
     ) throws -> AESEncryptedPayload {
         if requestedPadding == .none {
-            try validateBlockAlignment(of: plaintext, for: mode)
+            try validateBlockAlignment(of: data, for: mode)
         }
         let iv: Data?
         if mode == .ecb {
@@ -312,7 +312,7 @@ private extension AESCrypto {
             )
         }
         let ciphertext = try commonCrypto(
-            plaintext,
+            data,
             operation: CCOperation(kCCEncrypt),
             key: key,
             mode: mode,
