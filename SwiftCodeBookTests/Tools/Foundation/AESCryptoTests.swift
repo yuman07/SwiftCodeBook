@@ -153,23 +153,6 @@ import Testing
                     mode: Self.configuredMode(mode, padding: .none)
                 )
             }
-
-            let malformedPayload = AESEncryptedPayload(
-                ciphertext: unalignedPlaintext,
-                iv: mode == .ecb ? nil : Data(repeating: 0, count: 16),
-                authenticationTag: nil,
-                mode: mode,
-                padding: .none
-            )
-            #expect(
-                throws: AESCryptoError.invalidInputLength(
-                    mode: mode,
-                    blockSize: 16,
-                    actual: 15
-                )
-            ) {
-                _ = try AESCrypto.decrypt(malformedPayload, using: key)
-            }
         }
     }
 
@@ -214,118 +197,33 @@ import Testing
     }
 
     @Test
-    func missingAndInvalidIVsAreRejected() throws {
+    func invalidInitializationValueLengthsAreRejected() throws {
         let key = try AESCrypto.generateKey()
-        let alignedCiphertext = Data(repeating: 0, count: 16)
+        let invalidIV = Data(repeating: 0, count: 15)
+        let invalidModes: [(AESMode, AESMode.Kind, Int, Int)] = [
+            (.gcm(nonce: Data(repeating: 0, count: 11)), .gcm, 12, 11),
+            (.cbc(iv: invalidIV), .cbc, 16, 15),
+            (.cfb(iv: invalidIV), .cfb, 16, 15),
+            (.cfb8(iv: invalidIV), .cfb8, 16, 15),
+            (.ctr(initialCounter: invalidIV), .ctr, 16, 15),
+            (.ofb(iv: invalidIV), .ofb, 16, 15),
+        ]
 
-        for mode in [AESMode.Kind.cbc, .cfb, .cfb8, .ctr, .ofb] {
-            let missingIV = AESEncryptedPayload(
-                ciphertext: alignedCiphertext,
-                iv: nil,
-                authenticationTag: nil,
-                mode: mode,
-                padding: .none
-            )
-            #expect(throws: AESCryptoError.missingIV(mode: mode)) {
-                _ = try AESCrypto.decrypt(missingIV, using: key)
-            }
-
-            let invalidIV = AESEncryptedPayload(
-                ciphertext: alignedCiphertext,
-                iv: Data(repeating: 0, count: 15),
-                authenticationTag: nil,
-                mode: mode,
-                padding: .none
-            )
+        for (mode, kind, expected, actual) in invalidModes {
             #expect(
                 throws: AESCryptoError.invalidIVLength(
-                    mode: mode,
-                    expected: 16,
-                    actual: 15
+                    mode: kind,
+                    expected: expected,
+                    actual: actual
                 )
             ) {
-                _ = try AESCrypto.decrypt(invalidIV, using: key)
+                _ = try AESCrypto.encrypt(Data(), using: key, mode: mode)
             }
         }
-
-        let missingNonce = AESEncryptedPayload(
-            ciphertext: Data(),
-            iv: nil,
-            authenticationTag: Data(repeating: 0, count: 16),
-            mode: .gcm,
-            padding: .none
-        )
-        #expect(throws: AESCryptoError.missingIV(mode: .gcm)) {
-            _ = try AESCrypto.decrypt(missingNonce, using: key)
-        }
-
-        #expect(
-            throws: AESCryptoError.invalidIVLength(
-                mode: .gcm,
-                expected: 12,
-                actual: 11
-            )
-        ) {
-            _ = try AESCrypto.encrypt(
-                Data(),
-                using: key,
-                mode: .gcm(nonce: Data(repeating: 0, count: 11))
-            )
-        }
     }
 
     @Test
-    func ecbPayloadRejectsAnIV() throws {
-        let key = try AESCrypto.generateKey()
-        let iv = Data(repeating: 0, count: 16)
-
-        let payload = AESEncryptedPayload(
-            ciphertext: Data(repeating: 0, count: 16),
-            iv: iv,
-            authenticationTag: nil,
-            mode: .ecb,
-            padding: .none
-        )
-        #expect(throws: AESCryptoError.unexpectedIV(mode: .ecb)) {
-            _ = try AESCrypto.decrypt(payload, using: key)
-        }
-    }
-
-    @Test
-    func missingAndInvalidGCMTagsAreRejected() throws {
-        let key = try AESCrypto.generateKey()
-        let nonce = Data(repeating: 0, count: 12)
-
-        let missingTag = AESEncryptedPayload(
-            ciphertext: Data(),
-            iv: nonce,
-            authenticationTag: nil,
-            mode: .gcm,
-            padding: .none
-        )
-        #expect(throws: AESCryptoError.missingAuthenticationTag) {
-            _ = try AESCrypto.decrypt(missingTag, using: key)
-        }
-
-        let invalidTag = AESEncryptedPayload(
-            ciphertext: Data(),
-            iv: nonce,
-            authenticationTag: Data(repeating: 0, count: 15),
-            mode: .gcm,
-            padding: .none
-        )
-        #expect(
-            throws: AESCryptoError.invalidAuthenticationTagLength(
-                expected: 16,
-                actual: 15
-            )
-        ) {
-            _ = try AESCrypto.decrypt(invalidTag, using: key)
-        }
-    }
-
-    @Test
-    func tamperedGCMTagCiphertextAndAuthenticatedDataFail() throws {
+    func wrongGCMAuthenticatedDataFails() throws {
         let key = try AESCrypto.generateKey()
         let authenticatedData = Data("header".utf8)
         let payload = try AESCrypto.encrypt(
@@ -333,37 +231,6 @@ import Testing
             using: key,
             mode: .gcm(authenticating: authenticatedData)
         )
-        let tag = try #require(payload.authenticationTag)
-
-        let tamperedTagPayload = AESEncryptedPayload(
-            ciphertext: payload.ciphertext,
-            iv: payload.iv,
-            authenticationTag: Self.togglingFirstByte(of: tag),
-            mode: .gcm,
-            padding: .none
-        )
-        #expect(throws: AESCryptoError.authenticationFailed) {
-            _ = try AESCrypto.decrypt(
-                tamperedTagPayload,
-                using: key,
-                authenticating: authenticatedData
-            )
-        }
-
-        let tamperedCiphertextPayload = AESEncryptedPayload(
-            ciphertext: Self.togglingFirstByte(of: payload.ciphertext),
-            iv: payload.iv,
-            authenticationTag: tag,
-            mode: .gcm,
-            padding: .none
-        )
-        #expect(throws: AESCryptoError.authenticationFailed) {
-            _ = try AESCrypto.decrypt(
-                tamperedCiphertextPayload,
-                using: key,
-                authenticating: authenticatedData
-            )
-        }
 
         #expect(throws: AESCryptoError.authenticationFailed) {
             _ = try AESCrypto.decrypt(
@@ -387,15 +254,7 @@ import Testing
             mode: Self.configuredMode(vector.mode, iv: iv, padding: .none)
         )
         #expect(payload.ciphertext == expectedCiphertext)
-
-        let vectorPayload = AESEncryptedPayload(
-            ciphertext: expectedCiphertext,
-            iv: iv,
-            authenticationTag: nil,
-            mode: vector.mode,
-            padding: .none
-        )
-        #expect(try AESCrypto.decrypt(vectorPayload, using: key) == plaintext)
+        #expect(try AESCrypto.decrypt(payload, using: key) == plaintext)
     }
 
     @Test
@@ -453,12 +312,4 @@ import Testing
         }
     }
 
-    private static func togglingFirstByte(of data: Data) -> Data {
-        var result = data
-        guard let firstIndex = result.indices.first else {
-            return Data([1])
-        }
-        result[firstIndex] ^= 1
-        return result
-    }
 }
