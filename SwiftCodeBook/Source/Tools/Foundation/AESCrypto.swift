@@ -21,19 +21,19 @@ import Security
         case ofb
     }
 
-    /// Generates a secure random 12-byte nonce when `nonce` is `nil`.
+    /// Uses a secure random 12-byte nonce when `nonce` is `nil`.
     case gcm(nonce: Data? = nil, authenticating: Data = Data())
-    /// Generates a secure random 16-byte IV when `iv` is `nil`.
+    /// Uses a secure random 16-byte IV when `iv` is `nil`.
     case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
     /// ECB does not use an IV.
     case ecb(padding: AESPadding = .pkcs7)
-    /// CFB uses 128-bit segments and generates a secure random 16-byte IV when `iv` is `nil`.
+    /// CFB uses 128-bit segments and a secure random 16-byte IV when `iv` is `nil`.
     case cfb(iv: Data? = nil)
-    /// CFB8 uses 8-bit segments and generates a secure random 16-byte IV when `iv` is `nil`.
+    /// CFB8 uses 8-bit segments and a secure random 16-byte IV when `iv` is `nil`.
     case cfb8(iv: Data? = nil)
-    /// Generates a secure random 16-byte counter block when `initialCounter` is `nil`.
+    /// Uses a secure random 16-byte counter block when `initialCounter` is `nil`.
     case ctr(initialCounter: Data? = nil)
-    /// Generates a secure random 16-byte IV when `iv` is `nil`.
+    /// Uses a secure random 16-byte IV when `iv` is `nil`.
     case ofb(iv: Data? = nil)
 
     public var kind: Kind {
