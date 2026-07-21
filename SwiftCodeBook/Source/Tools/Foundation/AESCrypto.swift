@@ -11,7 +11,7 @@ import Foundation
 import Security
 
 @frozen public enum AESMode: Equatable, Sendable {
-    @frozen public enum Kind: String, Codable, Sendable {
+    @frozen public enum Kind: String, Sendable {
         case gcm
         case cbc
         case ecb
@@ -49,7 +49,7 @@ import Security
     }
 }
 
-@frozen public enum AESPadding: String, Codable, Sendable {
+@frozen public enum AESPadding: String, Sendable {
     case none
     case pkcs7
 }
@@ -64,7 +64,7 @@ import Security
     }
 }
 
-public struct AESEncryptedPayload: Codable, Equatable, Sendable {
+public struct AESEncryptedPayload: Equatable, Sendable {
     public let ciphertext: Data
     /// A 12-byte nonce for GCM, no value for ECB, or a 16-byte IV for other modes.
     public let iv: Data?

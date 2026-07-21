@@ -411,38 +411,6 @@ import Testing
         #expect(try AESCrypto.decrypt(payload, using: key).isEmpty)
     }
 
-    @Test
-    func payloadCodableRoundTrips() throws {
-        let key = try AESCrypto.generateKey()
-        let payload = try AESCrypto.encrypt(Data("persisted payload".utf8), using: key)
-        let encoded = try JSONEncoder().encode(payload)
-        let decoded = try JSONDecoder().decode(AESEncryptedPayload.self, from: encoded)
-
-        #expect(decoded == payload)
-        #expect(try AESCrypto.decrypt(decoded, using: key) == Data("persisted payload".utf8))
-    }
-
-    @Test
-    func payloadDecodesExistingModeRepresentation() throws {
-        let encoded = Data(
-            #"""
-            {
-              "authenticationTag": "AAAAAAAAAAAAAAAAAAAAAA==",
-              "ciphertext": "",
-              "iv": "AAAAAAAAAAAAAAAA",
-              "mode": "gcm",
-              "padding": "none"
-            }
-            """#.utf8
-        )
-
-        let payload = try JSONDecoder().decode(AESEncryptedPayload.self, from: encoded)
-
-        #expect(payload.mode == .gcm)
-        #expect(payload.iv == Data(repeating: 0, count: 12))
-        #expect(payload.authenticationTag == Data(repeating: 0, count: 16))
-    }
-
     private static func data(hex: String) throws -> Data {
         guard hex.count.isMultiple(of: 2) else {
             throw TestDataError.invalidHex
