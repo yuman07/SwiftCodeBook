@@ -146,23 +146,6 @@ import Testing
     }
 
     @Test
-    func nonGCMDecryptionRejectsAuthenticatedData() throws {
-        let key = try AESCrypto.generateRandomKey()
-        let authenticatedData = Data("header".utf8)
-
-        for mode in [AESMode.cbc(), .ecb(), .cfb(), .cfb8(), .ctr(), .ofb()] {
-            let payload = try AESCrypto.encrypt(Data("plaintext".utf8), using: key, mode: mode)
-            #expect(throws: AESCryptoError.unsupportedAuthenticatedData) {
-                _ = try AESCrypto.decrypt(
-                    payload,
-                    using: key,
-                    authenticating: authenticatedData
-                )
-            }
-        }
-    }
-
-    @Test
     func invalidKeyLengthsAreRejected() throws {
         let plaintext = Data("invalid key".utf8)
 
@@ -215,21 +198,29 @@ import Testing
     }
 
     @Test
-    func wrongGCMAuthenticatedDataFails() throws {
+    func tamperedGCMAuthenticatedDataFails() throws {
         let key = try AESCrypto.generateRandomKey()
+        let data = Data("secret payload".utf8)
         let authenticatedData = Data("header".utf8)
         let payload = try AESCrypto.encrypt(
-            Data("secret payload".utf8),
+            data,
             using: key,
             mode: .gcm(authenticating: authenticatedData)
         )
+        #expect(try AESCrypto.decrypt(payload, using: key) == data)
 
+        guard case let .gcm(encryptedData, nonce, authenticationTag, _) = payload else {
+            Issue.record("Expected a GCM payload.")
+            return
+        }
+        let tamperedPayload = AESEncryptedPayload.gcm(
+            encryptedData: encryptedData,
+            nonce: nonce,
+            authenticationTag: authenticationTag,
+            authenticatedData: Data("different header".utf8)
+        )
         #expect(throws: AESCryptoError.authenticationFailed) {
-            _ = try AESCrypto.decrypt(
-                payload,
-                using: key,
-                authenticating: Data("different header".utf8)
-            )
+            _ = try AESCrypto.decrypt(tamperedPayload, using: key)
         }
     }
 
@@ -308,7 +299,7 @@ import Testing
             using: key,
             mode: .gcm()
         )
-        guard case let .gcm(encryptedData, nonce, authenticationTag) = payload else {
+        guard case let .gcm(encryptedData, nonce, authenticationTag, authenticatedData) = payload else {
             Issue.record("Expected a GCM payload.")
             return
         }
@@ -317,12 +308,14 @@ import Testing
             AESEncryptedPayload.gcm(
                 encryptedData: Self.togglingFirstByte(of: encryptedData),
                 nonce: nonce,
-                authenticationTag: authenticationTag
+                authenticationTag: authenticationTag,
+                authenticatedData: authenticatedData
             ),
             .gcm(
                 encryptedData: encryptedData,
                 nonce: nonce,
-                authenticationTag: Self.togglingFirstByte(of: authenticationTag)
+                authenticationTag: Self.togglingFirstByte(of: authenticationTag),
+                authenticatedData: authenticatedData
             ),
         ]
 
@@ -357,12 +350,13 @@ import Testing
 
         let payload = try AESCrypto.encrypt(Data(), using: key, mode: .gcm(nonce: nonce))
         #expect(payload.encryptedData.isEmpty)
-        guard case let .gcm(_, actualNonce, authenticationTag) = payload else {
+        guard case let .gcm(_, actualNonce, authenticationTag, authenticatedData) = payload else {
             Issue.record("Expected a GCM payload.")
             return
         }
         #expect(actualNonce == nonce)
         #expect(authenticationTag == expectedTag)
+        #expect(authenticatedData.isEmpty)
         #expect(try AESCrypto.decrypt(payload, using: key).isEmpty)
     }
 
@@ -413,9 +407,10 @@ import Testing
         matches mode: AESMode
     ) {
         switch (payload, mode) {
-        case let (.gcm(_, nonce, tag), .gcm):
+        case let (.gcm(_, nonce, tag, authenticatedData), .gcm(_, expectedAuthenticatedData)):
             #expect(nonce.count == 12)
             #expect(tag.count == 16)
+            #expect(authenticatedData == expectedAuthenticatedData)
         case let (.cbc(_, iv, padding), .cbc(_, expectedPadding)):
             #expect(iv.count == 16)
             #expect(padding == expectedPadding)

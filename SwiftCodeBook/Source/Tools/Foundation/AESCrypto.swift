@@ -37,7 +37,8 @@ import Security
             return .gcm(
                 encryptedData: sealedBox.ciphertext,
                 nonce: Data(sealedBox.nonce),
-                authenticationTag: sealedBox.tag
+                authenticationTag: sealedBox.tag,
+                authenticatedData: authenticatedData
             )
         case .cbc, .ecb, .cfb, .cfb8, .ctr, .ofb:
             return try encryptCommonCrypto(data, using: key, mode: mode)
@@ -46,18 +47,12 @@ import Security
 
     public static func decrypt(
         _ payload: AESEncryptedPayload,
-        using key: Data,
-        authenticating authenticatedData: Data = Data()
+        using key: Data
     ) throws -> Data {
         try validateKey(key)
-        if !authenticatedData.isEmpty {
-            guard case .gcm = payload else {
-                throw AESCryptoError.unsupportedAuthenticatedData
-            }
-        }
 
         switch payload {
-        case let .gcm(encryptedData, nonceData, authenticationTag):
+        case let .gcm(encryptedData, nonceData, authenticationTag, authenticatedData):
             try validateInitializationValue(nonceData, for: .gcm(nonce: nonceData))
             guard authenticationTag.count == gcmAuthenticationTagSize else {
                 throw AESCryptoError.invalidAuthenticationTagLength(
@@ -162,7 +157,12 @@ import Security
 }
 
 @frozen public enum AESEncryptedPayload: Sendable {
-    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data)
+    case gcm(
+        encryptedData: Data,
+        nonce: Data,
+        authenticationTag: Data,
+        authenticatedData: Data = Data()
+    )
     case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
     case ecb(encryptedData: Data, padding: AESPadding)
     case cfb(encryptedData: Data, iv: Data)
@@ -172,7 +172,7 @@ import Security
 
     public var encryptedData: Data {
         switch self {
-        case let .gcm(encryptedData, _, _): encryptedData
+        case let .gcm(encryptedData, _, _, _): encryptedData
         case let .cbc(encryptedData, _, _): encryptedData
         case let .ecb(encryptedData, _): encryptedData
         case let .cfb(encryptedData, _): encryptedData
@@ -187,7 +187,6 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
     case invalidKeyLength(actual: Int)
     case invalidInitializationValueLength(expected: Int, actual: Int)
     case invalidAuthenticationTagLength(expected: Int, actual: Int)
-    case unsupportedAuthenticatedData
     case unsupportedMode
     case missingInitializationValue
     case initializationValueNotSupported
@@ -201,7 +200,6 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
         case let .invalidKeyLength(actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
         case let .invalidInitializationValueLength(expected, actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
         case let .invalidAuthenticationTagLength(expected, actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
-        case .unsupportedAuthenticatedData: "Authenticated data is only supported by AES-GCM."
         case .unsupportedMode: "The selected AES mode is not supported by this operation."
         case .missingInitializationValue: "The selected AES mode requires an initialization value."
         case .initializationValueNotSupported: "The selected AES mode does not use an initialization value."
