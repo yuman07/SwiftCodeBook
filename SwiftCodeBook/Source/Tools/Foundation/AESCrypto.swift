@@ -10,7 +10,7 @@ import CryptoKit
 import Foundation
 import Security
 
-public enum AESCrypto {
+public enum AESCrypto: Sendable {
     private static let blockSize = kCCBlockSizeAES128
     private static let gcmNonceSize = 12
     private static let gcmAuthenticationTagSize = 16
