@@ -38,8 +38,8 @@ import Security
                 return .gcm(
                     encryptedData: sealedBox.ciphertext,
                     nonce: Data(sealedBox.nonce),
-                    authenticationTag: sealedBox.tag,
-                    authenticatedData: authenticatedData
+                    authenticatedData: authenticatedData,
+                    authenticationTag: sealedBox.tag
                 )
             } catch let error as CryptoKitError {
                 throw AESCryptoError.cryptoKitFailed(error: error)
@@ -56,7 +56,7 @@ import Security
         try validateKey(key)
 
         switch payload {
-        case let .gcm(encryptedData, nonceData, authenticationTag, authenticatedData):
+        case let .gcm(encryptedData, nonceData, authenticatedData, authenticationTag):
             try validateInitializationValue(nonceData, for: .gcm(nonce: nonceData))
             guard authenticationTag.count == gcmAuthenticationTagSize else {
                 throw AESCryptoError.invalidAuthenticationTagLength(
@@ -161,7 +161,7 @@ import Security
 }
 
 @frozen public enum AESEncryptedPayload: Sendable {
-    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data, authenticatedData: Data)
+    case gcm(encryptedData: Data, nonce: Data, authenticatedData: Data, authenticationTag: Data)
     case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
     case ecb(encryptedData: Data, padding: AESPadding)
     case cfb(encryptedData: Data, iv: Data)
