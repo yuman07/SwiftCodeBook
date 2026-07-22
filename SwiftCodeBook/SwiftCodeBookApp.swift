@@ -24,6 +24,5 @@ struct SwiftCodeBookApp: App {
 final class TestSwiftCodeBookApp {
     func testSwiftCodeBookApp() {
         // code here
-        
     }
 }
