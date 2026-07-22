@@ -11,7 +11,7 @@ import Testing
 
 @Suite struct AESCryptoTests {
     struct ModeVector: Sendable {
-        let mode: AESMode.Kind
+        let mode: AESMode
         let ivHex: String?
         let encryptedDataHex: String
     }
@@ -36,32 +36,32 @@ import Testing
     // NIST SP 800-38A first-block vectors. CFB8 is section F.3.7.
     private static let modeVectors: [ModeVector] = [
         ModeVector(
-            mode: .ecb,
+            mode: .ecb(),
             ivHex: nil,
             encryptedDataHex: "3ad77bb40d7a3660a89ecaf32466ef97"
         ),
         ModeVector(
-            mode: .cbc,
+            mode: .cbc(),
             ivHex: nistIV,
             encryptedDataHex: "7649abac8119b246cee98e9b12e9197d"
         ),
         ModeVector(
-            mode: .cfb,
+            mode: .cfb(),
             ivHex: nistIV,
             encryptedDataHex: "3b3fd92eb72dad20333449f8e83cfb4a"
         ),
         ModeVector(
-            mode: .cfb8,
+            mode: .cfb8(),
             ivHex: nistIV,
             encryptedDataHex: "3b79424c9c0dd436bace9e0ed4586a4f"
         ),
         ModeVector(
-            mode: .ctr,
+            mode: .ctr(),
             ivHex: "f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
             encryptedDataHex: "874d6191b620e3261bef6864990db6ce"
         ),
         ModeVector(
-            mode: .ofb,
+            mode: .ofb(),
             ivHex: nistIV,
             encryptedDataHex: "3b3fd92eb72dad20333449f8e83cfb4a"
         ),
@@ -99,7 +99,7 @@ import Testing
         let key = try AESCrypto.generateRandomKey(size: .bits256)
         let alignedPlaintext = Data((0..<32).map { UInt8($0) })
 
-        for mode in [AESMode.Kind.cbc, .ecb] {
+        for mode in [AESMode.cbc(), .ecb()] {
             for padding in [AESPadding.pkcs7, .none] {
                 let payload = try AESCrypto.encrypt(
                     alignedPlaintext,
@@ -129,10 +129,9 @@ import Testing
         let key = try AESCrypto.generateRandomKey()
         let unalignedPlaintext = Data(repeating: 0xA5, count: 15)
 
-        for mode in [AESMode.Kind.cbc, .ecb] {
+        for mode in [AESMode.cbc(), .ecb()] {
             #expect(
                 throws: AESCryptoError.invalidInputLength(
-                    mode: mode,
                     blockSize: 16,
                     actual: 15
                 )
@@ -153,7 +152,7 @@ import Testing
 
         for mode in [AESMode.cbc(), .ecb(), .cfb(), .cfb8(), .ctr(), .ofb()] {
             let payload = try AESCrypto.encrypt(Data("plaintext".utf8), using: key, mode: mode)
-            #expect(throws: AESCryptoError.unsupportedAuthenticatedData(mode: mode.kind)) {
+            #expect(throws: AESCryptoError.unsupportedAuthenticatedData) {
                 _ = try AESCrypto.decrypt(
                     payload,
                     using: key,
@@ -194,19 +193,18 @@ import Testing
     func invalidInitializationValueLengthsAreRejected() throws {
         let key = try AESCrypto.generateRandomKey()
         let invalidIV = Data(repeating: 0, count: 15)
-        let invalidModes: [(AESMode, AESMode.Kind, Int, Int)] = [
-            (.gcm(nonce: Data(repeating: 0, count: 11)), .gcm, 12, 11),
-            (.cbc(iv: invalidIV), .cbc, 16, 15),
-            (.cfb(iv: invalidIV), .cfb, 16, 15),
-            (.cfb8(iv: invalidIV), .cfb8, 16, 15),
-            (.ctr(initialCounter: invalidIV), .ctr, 16, 15),
-            (.ofb(iv: invalidIV), .ofb, 16, 15),
+        let invalidModes: [(AESMode, Int, Int)] = [
+            (.gcm(nonce: Data(repeating: 0, count: 11)), 12, 11),
+            (.cbc(iv: invalidIV), 16, 15),
+            (.cfb(iv: invalidIV), 16, 15),
+            (.cfb8(iv: invalidIV), 16, 15),
+            (.ctr(initialCounter: invalidIV), 16, 15),
+            (.ofb(iv: invalidIV), 16, 15),
         ]
 
-        for (mode, kind, expected, actual) in invalidModes {
+        for (mode, expected, actual) in invalidModes {
             #expect(
-                throws: AESCryptoError.invalidIVLength(
-                    mode: kind,
+                throws: AESCryptoError.invalidInitializationValueLength(
                     expected: expected,
                     actual: actual
                 )
@@ -241,29 +239,28 @@ import Testing
         let alignedCiphertext = Data(repeating: 0, count: 16)
         let validIV = Data(repeating: 0, count: 16)
         let invalidIV = Data(repeating: 0, count: 15)
-        let invalidInitializationValues: [(AESEncryptedPayload, AESMode.Kind, Int)] = [
+        let invalidInitializationValues: [(AESEncryptedPayload, Int, Int)] = [
             (
                 .gcm(
                     encryptedData: Data(),
                     nonce: Data(repeating: 0, count: 11),
                     authenticationTag: Data(repeating: 0, count: 16)
                 ),
-                .gcm,
-                12
+                12,
+                11
             ),
-            (.cbc(encryptedData: alignedCiphertext, iv: invalidIV, padding: .none), .cbc, 16),
-            (.cfb(encryptedData: Data(), iv: invalidIV), .cfb, 16),
-            (.cfb8(encryptedData: Data(), iv: invalidIV), .cfb8, 16),
-            (.ctr(encryptedData: Data(), initialCounter: invalidIV), .ctr, 16),
-            (.ofb(encryptedData: Data(), iv: invalidIV), .ofb, 16),
+            (.cbc(encryptedData: alignedCiphertext, iv: invalidIV, padding: .none), 16, 15),
+            (.cfb(encryptedData: Data(), iv: invalidIV), 16, 15),
+            (.cfb8(encryptedData: Data(), iv: invalidIV), 16, 15),
+            (.ctr(encryptedData: Data(), initialCounter: invalidIV), 16, 15),
+            (.ofb(encryptedData: Data(), iv: invalidIV), 16, 15),
         ]
 
-        for (payload, mode, expected) in invalidInitializationValues {
+        for (payload, expected, actual) in invalidInitializationValues {
             #expect(
-                throws: AESCryptoError.invalidIVLength(
-                    mode: mode,
+                throws: AESCryptoError.invalidInitializationValueLength(
                     expected: expected,
-                    actual: mode == .gcm ? 11 : 15
+                    actual: actual
                 )
             ) {
                 _ = try AESCrypto.decrypt(payload, using: key)
@@ -294,7 +291,6 @@ import Testing
         ] {
             #expect(
                 throws: AESCryptoError.invalidInputLength(
-                    mode: Self.kind(of: payload),
                     blockSize: 16,
                     actual: 15
                 )
@@ -390,13 +386,13 @@ import Testing
     }
 
     private static func configuredMode(
-        _ mode: AESMode.Kind,
+        _ mode: AESMode,
         iv: Data? = nil,
         padding: AESPadding
     ) -> AESMode {
         switch mode {
-        case .gcm:
-            .gcm(nonce: iv)
+        case .gcm(_, let authenticatedData):
+            .gcm(nonce: iv, authenticating: authenticatedData)
         case .cbc:
             .cbc(iv: iv, padding: padding)
         case .ecb:
@@ -442,18 +438,6 @@ import Testing
         switch payload {
         case .cbc(_, _, let padding), .ecb(_, let padding): padding
         default: nil
-        }
-    }
-
-    private static func kind(of payload: AESEncryptedPayload) -> AESMode.Kind {
-        switch payload {
-        case .gcm: .gcm
-        case .cbc: .cbc
-        case .ecb: .ecb
-        case .cfb: .cfb
-        case .cfb8: .cfb8
-        case .ctr: .ctr
-        case .ofb: .ofb
         }
     }
 
