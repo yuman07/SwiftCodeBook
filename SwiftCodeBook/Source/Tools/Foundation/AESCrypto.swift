@@ -182,7 +182,7 @@ import Security
     }
 }
 
-public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
+@frozen public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
     case invalidKeyLength(actual: Int)
     case invalidInitializationValueLength(expected: Int, actual: Int)
     case invalidAuthenticationTagLength(expected: Int, actual: Int)
