@@ -68,32 +68,32 @@ import Security
     }
 }
 
-public struct AESEncryptedPayload: Sendable {
-    public let ciphertext: Data
-    /// A 12-byte nonce for GCM, no value for ECB, or a 16-byte IV for other modes.
-    public let iv: Data?
-    public let authenticationTag: Data?
-    public let mode: AESMode.Kind
-    public let padding: AESPadding
+public enum AESEncryptedPayload: Sendable {
+    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data)
+    case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
+    case ecb(encryptedData: Data, padding: AESPadding)
+    case cfb(encryptedData: Data, iv: Data)
+    case cfb8(encryptedData: Data, iv: Data)
+    case ctr(encryptedData: Data, initialCounter: Data)
+    case ofb(encryptedData: Data, iv: Data)
 
-    fileprivate init(
-        ciphertext: Data,
-        iv: Data?,
-        authenticationTag: Data?,
-        mode: AESMode.Kind,
-        padding: AESPadding
-    ) {
-        self.ciphertext = ciphertext
-        self.iv = iv
-        self.authenticationTag = authenticationTag
-        self.mode = mode
-        self.padding = padding
+    public var encryptedData: Data {
+        switch self {
+        case .gcm(let encryptedData, _, _): encryptedData
+        case .cbc(let encryptedData, _, _): encryptedData
+        case .ecb(let encryptedData, _): encryptedData
+        case .cfb(let encryptedData, _): encryptedData
+        case .cfb8(let encryptedData, _): encryptedData
+        case .ctr(let encryptedData, _): encryptedData
+        case .ofb(let encryptedData, _): encryptedData
+        }
     }
 }
 
 public enum AESCryptoError: Error, Equatable, Sendable {
     case invalidKeyLength(actual: Int)
     case invalidIVLength(mode: AESMode.Kind, expected: Int, actual: Int)
+    case invalidAuthenticationTagLength(expected: Int, actual: Int)
     case unsupportedAuthenticatedData(mode: AESMode.Kind)
     case invalidInputLength(mode: AESMode.Kind, blockSize: Int, actual: Int)
     case authenticationFailed
@@ -106,6 +106,7 @@ extension AESCryptoError: LocalizedError {
         switch self {
         case .invalidKeyLength(let actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
         case .invalidIVLength(let mode, let expected, let actual): "AES-\(mode) requires a \(expected)-byte IV or nonce; received \(actual)."
+        case .invalidAuthenticationTagLength(let expected, let actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
         case .unsupportedAuthenticatedData(let mode): "AES-\(mode) does not support authenticated data."
         case .invalidInputLength(let mode, let blockSize, let actual): "AES-\(mode) input must be a multiple of \(blockSize) bytes; received \(actual)."
         case .authenticationFailed: "AES-GCM authentication failed."
@@ -118,6 +119,7 @@ extension AESCryptoError: LocalizedError {
 public enum AESCrypto {
     private static let blockSize = kCCBlockSizeAES128
     private static let gcmNonceSize = 12
+    private static let gcmAuthenticationTagSize = 16
 
     /// Generates a cryptographically secure random AES key.
     public static func generateRandomKey(size: AESKeySize = .bits256) throws -> Data {
@@ -145,12 +147,10 @@ public enum AESCrypto {
                 nonce: nonce,
                 authenticating: authenticatedData
             )
-            return AESEncryptedPayload(
-                ciphertext: sealedBox.ciphertext,
-                iv: Data(sealedBox.nonce),
-                authenticationTag: sealedBox.tag,
-                mode: .gcm,
-                padding: .none
+            return .gcm(
+                encryptedData: sealedBox.ciphertext,
+                nonce: Data(sealedBox.nonce),
+                authenticationTag: sealedBox.tag
             )
         case .cbc(let requestedIV, let padding):
             return try makeCommonCryptoPayload(
@@ -209,21 +209,23 @@ public enum AESCrypto {
         authenticating authenticatedData: Data = Data()
     ) throws -> Data {
         try validateKey(key)
-        guard payload.mode == .gcm || authenticatedData.isEmpty else {
-            throw AESCryptoError.unsupportedAuthenticatedData(mode: payload.mode)
+        guard payload.kind == .gcm || authenticatedData.isEmpty else {
+            throw AESCryptoError.unsupportedAuthenticatedData(mode: payload.kind)
         }
 
-        if payload.mode == .gcm {
-            guard let nonceData = payload.iv,
-                  let authenticationTag = payload.authenticationTag
-            else {
-                preconditionFailure("AESCrypto created an invalid GCM payload.")
+        switch payload {
+        case .gcm(let encryptedData, let nonceData, let authenticationTag):
+            try validateInitializationValue(nonceData, for: .gcm)
+            guard authenticationTag.count == gcmAuthenticationTagSize else {
+                throw AESCryptoError.invalidAuthenticationTagLength(
+                    expected: gcmAuthenticationTagSize,
+                    actual: authenticationTag.count
+                )
             }
-
             let nonce = try AES.GCM.Nonce(data: nonceData)
             let sealedBox = try AES.GCM.SealedBox(
                 nonce: nonce,
-                ciphertext: payload.ciphertext,
+                ciphertext: encryptedData,
                 tag: authenticationTag
             )
             do {
@@ -235,16 +237,55 @@ public enum AESCrypto {
             } catch CryptoKitError.authenticationFailure {
                 throw AESCryptoError.authenticationFailed
             }
+        case .cbc(let encryptedData, let iv, let padding):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .cbc,
+                padding: padding,
+                iv: iv
+            )
+        case .ecb(let encryptedData, let padding):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .ecb,
+                padding: padding,
+                iv: nil
+            )
+        case .cfb(let encryptedData, let iv):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .cfb,
+                padding: .none,
+                iv: iv
+            )
+        case .cfb8(let encryptedData, let iv):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .cfb8,
+                padding: .none,
+                iv: iv
+            )
+        case .ctr(let encryptedData, let initialCounter):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .ctr,
+                padding: .none,
+                iv: initialCounter
+            )
+        case .ofb(let encryptedData, let iv):
+            return try decryptCommonCrypto(
+                encryptedData,
+                using: key,
+                mode: .ofb,
+                padding: .none,
+                iv: iv
+            )
         }
-
-        return try commonCrypto(
-            payload.ciphertext,
-            operation: CCOperation(kCCDecrypt),
-            key: key,
-            mode: payload.mode,
-            padding: payload.padding,
-            iv: payload.iv
-        )
     }
 }
 
@@ -303,7 +344,7 @@ private extension AESCrypto {
                 requestedValue: requestedIV
             )
         }
-        let ciphertext = try commonCrypto(
+        let encryptedData = try commonCrypto(
             data,
             operation: CCOperation(kCCEncrypt),
             key: key,
@@ -311,31 +352,87 @@ private extension AESCrypto {
             padding: requestedPadding,
             iv: iv
         )
-        return AESEncryptedPayload(
-            ciphertext: ciphertext,
-            iv: iv,
-            authenticationTag: nil,
-            mode: mode,
-            padding: requestedPadding
-        )
+        switch mode {
+        case .gcm:
+            preconditionFailure("AES-GCM does not use CommonCrypto.")
+        case .cbc:
+            guard let iv else {
+                preconditionFailure("AES-CBC requires an IV.")
+            }
+            return .cbc(encryptedData: encryptedData, iv: iv, padding: requestedPadding)
+        case .ecb:
+            return .ecb(encryptedData: encryptedData, padding: requestedPadding)
+        case .cfb:
+            guard let iv else {
+                preconditionFailure("AES-CFB requires an IV.")
+            }
+            return .cfb(encryptedData: encryptedData, iv: iv)
+        case .cfb8:
+            guard let iv else {
+                preconditionFailure("AES-CFB8 requires an IV.")
+            }
+            return .cfb8(encryptedData: encryptedData, iv: iv)
+        case .ctr:
+            guard let iv else {
+                preconditionFailure("AES-CTR requires an initial counter.")
+            }
+            return .ctr(encryptedData: encryptedData, initialCounter: iv)
+        case .ofb:
+            guard let iv else {
+                preconditionFailure("AES-OFB requires an IV.")
+            }
+            return .ofb(encryptedData: encryptedData, iv: iv)
+        }
     }
 
     static func encryptionInitializationValue(
         for mode: AESMode.Kind,
         requestedValue: Data?
     ) throws -> Data {
-        let expectedCount = mode == .gcm ? gcmNonceSize : blockSize
         if let requestedValue {
-            guard requestedValue.count == expectedCount else {
-                throw AESCryptoError.invalidIVLength(
-                    mode: mode,
-                    expected: expectedCount,
-                    actual: requestedValue.count
-                )
-            }
+            try validateInitializationValue(requestedValue, for: mode)
             return requestedValue
         }
-        return try randomData(count: expectedCount)
+        return try randomData(count: expectedInitializationValueSize(for: mode))
+    }
+
+    static func validateInitializationValue(
+        _ value: Data,
+        for mode: AESMode.Kind
+    ) throws {
+        let expectedCount = expectedInitializationValueSize(for: mode)
+        guard value.count == expectedCount else {
+            throw AESCryptoError.invalidIVLength(
+                mode: mode,
+                expected: expectedCount,
+                actual: value.count
+            )
+        }
+    }
+
+    static func expectedInitializationValueSize(for mode: AESMode.Kind) -> Int {
+        mode == .gcm ? gcmNonceSize : blockSize
+    }
+
+    static func decryptCommonCrypto(
+        _ encryptedData: Data,
+        using key: Data,
+        mode: AESMode.Kind,
+        padding: AESPadding,
+        iv: Data?
+    ) throws -> Data {
+        try validateBlockAlignment(of: encryptedData, for: mode)
+        if let iv {
+            try validateInitializationValue(iv, for: mode)
+        }
+        return try commonCrypto(
+            encryptedData,
+            operation: CCOperation(kCCDecrypt),
+            key: key,
+            mode: mode,
+            padding: padding,
+            iv: iv
+        )
     }
 
     static func commonCrypto(
@@ -452,6 +549,20 @@ private extension AESMode.Kind {
         case .cfb8: CCMode(kCCModeCFB8)
         case .ctr: CCMode(kCCModeCTR)
         case .ofb: CCMode(kCCModeOFB)
+        }
+    }
+}
+
+private extension AESEncryptedPayload {
+    var kind: AESMode.Kind {
+        switch self {
+        case .gcm: .gcm
+        case .cbc: .cbc
+        case .ecb: .ecb
+        case .cfb: .cfb
+        case .cfb8: .cfb8
+        case .ctr: .ctr
+        case .ofb: .ofb
         }
     }
 }

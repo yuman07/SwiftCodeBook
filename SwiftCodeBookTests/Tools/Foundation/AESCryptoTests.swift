@@ -13,7 +13,7 @@ import Testing
     struct ModeVector: Sendable {
         let mode: AESMode.Kind
         let ivHex: String?
-        let ciphertextHex: String
+        let encryptedDataHex: String
     }
 
     private enum TestDataError: Error {
@@ -38,32 +38,32 @@ import Testing
         ModeVector(
             mode: .ecb,
             ivHex: nil,
-            ciphertextHex: "3ad77bb40d7a3660a89ecaf32466ef97"
+            encryptedDataHex: "3ad77bb40d7a3660a89ecaf32466ef97"
         ),
         ModeVector(
             mode: .cbc,
             ivHex: nistIV,
-            ciphertextHex: "7649abac8119b246cee98e9b12e9197d"
+            encryptedDataHex: "7649abac8119b246cee98e9b12e9197d"
         ),
         ModeVector(
             mode: .cfb,
             ivHex: nistIV,
-            ciphertextHex: "3b3fd92eb72dad20333449f8e83cfb4a"
+            encryptedDataHex: "3b3fd92eb72dad20333449f8e83cfb4a"
         ),
         ModeVector(
             mode: .cfb8,
             ivHex: nistIV,
-            ciphertextHex: "3b79424c9c0dd436bace9e0ed4586a4f"
+            encryptedDataHex: "3b79424c9c0dd436bace9e0ed4586a4f"
         ),
         ModeVector(
             mode: .ctr,
             ivHex: "f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
-            ciphertextHex: "874d6191b620e3261bef6864990db6ce"
+            encryptedDataHex: "874d6191b620e3261bef6864990db6ce"
         ),
         ModeVector(
             mode: .ofb,
             ivHex: nistIV,
-            ciphertextHex: "3b3fd92eb72dad20333449f8e83cfb4a"
+            encryptedDataHex: "3b3fd92eb72dad20333449f8e83cfb4a"
         ),
     ]
 
@@ -78,12 +78,7 @@ import Testing
                 let decrypted = try payload.decrypted(using: key)
 
                 #expect(decrypted == plaintext)
-                #expect(payload.mode == mode.kind)
-                #expect(
-                    payload.padding == (mode.kind == .cbc || mode.kind == .ecb ? .pkcs7 : .none)
-                )
-                #expect(payload.iv?.count == (mode.kind == .gcm ? 12 : mode.kind == .ecb ? nil : 16))
-                #expect(payload.authenticationTag?.count == (mode.kind == .gcm ? 16 : nil))
+                Self.expectMetadata(of: payload, matches: mode)
             }
         }
     }
@@ -111,7 +106,7 @@ import Testing
                     using: key,
                     mode: Self.configuredMode(mode, padding: padding)
                 )
-                #expect(payload.padding == padding)
+                #expect(Self.padding(of: payload) == padding)
                 #expect(try AESCrypto.decrypt(payload, using: key) == alignedPlaintext)
             }
         }
@@ -124,7 +119,7 @@ import Testing
 
         for mode in [AESMode.cbc(), .ecb()] {
             let payload = try AESCrypto.encrypt(unalignedPlaintext, using: key, mode: mode)
-            #expect(payload.padding == .pkcs7)
+            #expect(Self.padding(of: payload) == .pkcs7)
             #expect(try AESCrypto.decrypt(payload, using: key) == unalignedPlaintext)
         }
     }
@@ -240,19 +235,121 @@ import Testing
         }
     }
 
+    @Test
+    func malformedEncryptedPayloadsAreRejected() throws {
+        let key = try AESCrypto.generateRandomKey()
+        let alignedCiphertext = Data(repeating: 0, count: 16)
+        let validIV = Data(repeating: 0, count: 16)
+        let invalidIV = Data(repeating: 0, count: 15)
+        let invalidInitializationValues: [(AESEncryptedPayload, AESMode.Kind, Int)] = [
+            (
+                .gcm(
+                    encryptedData: Data(),
+                    nonce: Data(repeating: 0, count: 11),
+                    authenticationTag: Data(repeating: 0, count: 16)
+                ),
+                .gcm,
+                12
+            ),
+            (.cbc(encryptedData: alignedCiphertext, iv: invalidIV, padding: .none), .cbc, 16),
+            (.cfb(encryptedData: Data(), iv: invalidIV), .cfb, 16),
+            (.cfb8(encryptedData: Data(), iv: invalidIV), .cfb8, 16),
+            (.ctr(encryptedData: Data(), initialCounter: invalidIV), .ctr, 16),
+            (.ofb(encryptedData: Data(), iv: invalidIV), .ofb, 16),
+        ]
+
+        for (payload, mode, expected) in invalidInitializationValues {
+            #expect(
+                throws: AESCryptoError.invalidIVLength(
+                    mode: mode,
+                    expected: expected,
+                    actual: mode == .gcm ? 11 : 15
+                )
+            ) {
+                _ = try AESCrypto.decrypt(payload, using: key)
+            }
+        }
+
+        let invalidTagPayload = AESEncryptedPayload.gcm(
+            encryptedData: Data(),
+            nonce: Data(repeating: 0, count: 12),
+            authenticationTag: Data(repeating: 0, count: 15)
+        )
+        #expect(
+            throws: AESCryptoError.invalidAuthenticationTagLength(
+                expected: 16,
+                actual: 15
+            )
+        ) {
+            _ = try AESCrypto.decrypt(invalidTagPayload, using: key)
+        }
+
+        for payload in [
+            AESEncryptedPayload.cbc(
+                encryptedData: Data(repeating: 0, count: 15),
+                iv: validIV,
+                padding: .none
+            ),
+            .ecb(encryptedData: Data(repeating: 0, count: 15), padding: .none),
+        ] {
+            #expect(
+                throws: AESCryptoError.invalidInputLength(
+                    mode: Self.kind(of: payload),
+                    blockSize: 16,
+                    actual: 15
+                )
+            ) {
+                _ = try AESCrypto.decrypt(payload, using: key)
+            }
+        }
+    }
+
+    @Test
+    func tamperedGCMPayloadFailsAuthentication() throws {
+        let key = try AESCrypto.generateRandomKey()
+        let payload = try AESCrypto.encrypt(
+            Data("secret payload".utf8),
+            using: key,
+            mode: .gcm()
+        )
+        guard case .gcm(let encryptedData, let nonce, let authenticationTag) = payload else {
+            Issue.record("Expected a GCM payload.")
+            return
+        }
+
+        let tamperedPayloads = [
+            AESEncryptedPayload.gcm(
+                encryptedData: Self.togglingFirstByte(of: encryptedData),
+                nonce: nonce,
+                authenticationTag: authenticationTag
+            ),
+            .gcm(
+                encryptedData: encryptedData,
+                nonce: nonce,
+                authenticationTag: Self.togglingFirstByte(of: authenticationTag)
+            ),
+        ]
+
+        for tamperedPayload in tamperedPayloads {
+            #expect(throws: AESCryptoError.authenticationFailed) {
+                _ = try AESCrypto.decrypt(tamperedPayload, using: key)
+            }
+        }
+    }
+
     @Test(arguments: modeVectors)
     func commonCryptoModesMatchNISTVectors(vector: ModeVector) throws {
         let key = try Self.data(hex: Self.nistKey)
         let plaintext = try Self.data(hex: Self.nistPlaintext)
         let iv = try vector.ivHex.map(Self.data(hex:))
-        let expectedCiphertext = try Self.data(hex: vector.ciphertextHex)
+        let expectedEncryptedData = try Self.data(hex: vector.encryptedDataHex)
 
         let payload = try AESCrypto.encrypt(
             plaintext,
             using: key,
             mode: Self.configuredMode(vector.mode, iv: iv, padding: .none)
         )
-        #expect(payload.ciphertext == expectedCiphertext)
+        #expect(payload.encryptedData == expectedEncryptedData)
         #expect(try AESCrypto.decrypt(payload, using: key) == plaintext)
     }
 
@@ -263,9 +360,13 @@ import Testing
         let expectedTag = try Self.data(hex: "58e2fccefa7e3061367f1d57a4e7455a")
 
         let payload = try AESCrypto.encrypt(Data(), using: key, mode: .gcm(nonce: nonce))
-        #expect(payload.ciphertext.isEmpty)
-        #expect(payload.iv == nonce)
-        #expect(payload.authenticationTag == expectedTag)
+        #expect(payload.encryptedData.isEmpty)
+        guard case .gcm(_, let actualNonce, let authenticationTag) = payload else {
+            Issue.record("Expected a GCM payload.")
+            return
+        }
+        #expect(actualNonce == nonce)
+        #expect(authenticationTag == expectedTag)
         #expect(try AESCrypto.decrypt(payload, using: key).isEmpty)
     }
 
@@ -309,6 +410,60 @@ import Testing
         case .ofb:
             .ofb(iv: iv)
         }
+    }
+
+    private static func expectMetadata(
+        of payload: AESEncryptedPayload,
+        matches mode: AESMode
+    ) {
+        switch (payload, mode) {
+        case (.gcm(_, let nonce, let tag), .gcm):
+            #expect(nonce.count == 12)
+            #expect(tag.count == 16)
+        case (.cbc(_, let iv, let padding), .cbc(_, let expectedPadding)):
+            #expect(iv.count == 16)
+            #expect(padding == expectedPadding)
+        case (.ecb(_, let padding), .ecb(let expectedPadding)):
+            #expect(padding == expectedPadding)
+        case (.cfb(_, let iv), .cfb):
+            #expect(iv.count == 16)
+        case (.cfb8(_, let iv), .cfb8):
+            #expect(iv.count == 16)
+        case (.ctr(_, let initialCounter), .ctr):
+            #expect(initialCounter.count == 16)
+        case (.ofb(_, let iv), .ofb):
+            #expect(iv.count == 16)
+        default:
+            Issue.record("Encrypted payload does not match the requested AES mode.")
+        }
+    }
+
+    private static func padding(of payload: AESEncryptedPayload) -> AESPadding? {
+        switch payload {
+        case .cbc(_, _, let padding), .ecb(_, let padding): padding
+        default: nil
+        }
+    }
+
+    private static func kind(of payload: AESEncryptedPayload) -> AESMode.Kind {
+        switch payload {
+        case .gcm: .gcm
+        case .cbc: .cbc
+        case .ecb: .ecb
+        case .cfb: .cfb
+        case .cfb8: .cfb8
+        case .ctr: .ctr
+        case .ofb: .ofb
+        }
+    }
+
+    private static func togglingFirstByte(of data: Data) -> Data {
+        var result = data
+        guard let firstIndex = result.indices.first else {
+            return Data([1])
+        }
+        result[firstIndex] ^= 1
+        return result
     }
 
 }
