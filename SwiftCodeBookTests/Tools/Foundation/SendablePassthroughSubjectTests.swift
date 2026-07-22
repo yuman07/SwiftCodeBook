@@ -361,7 +361,7 @@ import Combine
 
         #expect(collector.values == [10])
         #expect(collector.completionCount == 1)
-        if case .failure(let err) = collector.completion {
+        if case let .failure(err) = collector.completion {
             #expect(err == .boom)
         } else {
             Issue.record("Expected .failure(.boom), got \(String(describing: collector.completion))")
@@ -376,7 +376,7 @@ import Combine
 
         subject.send(completion: .failure(.other(123)))
 
-        if case .failure(let err) = collector.completion {
+        if case let .failure(err) = collector.completion {
             #expect(err == .other(123))
         } else {
             Issue.record("Expected .failure(.other(123))")
@@ -394,7 +394,7 @@ import Combine
         subject.send(completion: .failure(TestError.other(7)))
 
         #expect(collector.values == [1])
-        if case .failure(let err) = collector.completion {
+        if case let .failure(err) = collector.completion {
             #expect((err as? TestError) == .other(7))
         } else {
             Issue.record("Expected an existential .failure carrying TestError.other(7)")
@@ -413,7 +413,7 @@ import Combine
         subject.send(completion: .failure(.other(9)))
 
         #expect(collector.completionCount == 1)
-        if case .failure(let err) = collector.completion {
+        if case let .failure(err) = collector.completion {
             #expect(err == .boom)
         } else {
             Issue.record("Expected the first completion (.failure(.boom)) to win")

@@ -70,7 +70,7 @@ import Testing
         let subject = PassthroughSubject<Int, Never>()
         var values: [Int] = []
         let cancellable = subject.sinkToResult { result in
-            if case .success(let v)? = result {
+            if case let .success(v)? = result {
                 values.append(v)
             } else {
                 Issue.record("Unexpected non-success: \(String(describing: result))")
@@ -108,7 +108,7 @@ import Testing
         let cancellable = subject.sinkToResult { result in
             switch result {
             case .none: tokens.append("FINISHED")
-            case .success(let v)?: tokens.append("V:\(v)")
+            case let .success(v)?: tokens.append("V:\(v)")
             case .failure?: tokens.append("FAILURE")
             }
         }
@@ -146,7 +146,7 @@ import Testing
 
         #expect(callbackCount == 1)
         let result = try #require(captured)
-        if case .failure(let error) = result {
+        if case let .failure(error) = result {
             #expect(error == .boom)
         } else {
             Issue.record("Expected .failure(.boom), got \(String(describing: result))")
@@ -159,8 +159,8 @@ import Testing
         let cancellable = subject.sinkToResult { result in
             switch result {
             case .none: tokens.append("FINISHED")
-            case .success(let v)?: tokens.append("V:\(v)")
-            case .failure(let e)?: tokens.append("F:\(e)")
+            case let .success(v)?: tokens.append("V:\(v)")
+            case let .failure(e)?: tokens.append("F:\(e)")
             }
         }
         subject.send(7)
@@ -201,7 +201,7 @@ import Testing
         let cancellable = Just(99).sinkToResult { result in
             switch result {
             case .none: tokens.append("FINISHED")
-            case .success(let v)?: tokens.append("V:\(v)")
+            case let .success(v)?: tokens.append("V:\(v)")
             case .failure?: tokens.append("FAILURE")
             }
         }
@@ -239,7 +239,7 @@ import Testing
         cancellable.cancel()
         #expect(count == 1)
         let result = try #require(captured)
-        if case .failure(let e) = result {
+        if case let .failure(e) = result {
             #expect(e == .boom)
         } else {
             Issue.record("Expected .failure(.boom), got \(String(describing: result))")
@@ -252,7 +252,7 @@ import Testing
         let subject = PassthroughSubject<Int, Never>()
         var values: [Int] = []
         let cancellable = subject.sinkToResult { result in
-            if case .success(let v)? = result { values.append(v) }
+            if case let .success(v)? = result { values.append(v) }
         }
         subject.send(1)
         cancellable.cancel()
@@ -268,7 +268,7 @@ import Testing
         var values: [Int] = []
         do {
             let cancellable = subject.sinkToResult { result in
-                if case .success(let v)? = result { values.append(v) }
+                if case let .success(v)? = result { values.append(v) }
             }
             subject.send(10)
             _ = cancellable // keep alive within scope
@@ -283,7 +283,7 @@ import Testing
         let subject = PassthroughSubject<Point, Never>()
         var captured: Point?
         let cancellable = subject.sinkToResult { result in
-            if case .success(let p)? = result { captured = p }
+            if case let .success(p)? = result { captured = p }
         }
         subject.send(Point(x: 3, y: -4))
         cancellable.cancel()
@@ -295,7 +295,7 @@ import Testing
         let subject = PassthroughSubject<Int, Never>()
         var captured: Int?
         let cancellable = subject.sinkToResult { result in
-            if case .success(let v)? = result { captured = v }
+            if case let .success(v)? = result { captured = v }
         }
         subject.send(raw)
         cancellable.cancel()
@@ -308,7 +308,7 @@ import Testing
         let cancellable = subject.sinkToResult { result in
             switch result {
             case .none: tokens.append("FINISHED")
-            case .success(let v)?: tokens.append("V:\(String(describing: v))")
+            case let .success(v)?: tokens.append("V:\(String(describing: v))")
             case .failure?: tokens.append("FAILURE")
             }
         }
@@ -324,7 +324,7 @@ import Testing
         let subject = PassthroughSubject<String, Never>()
         var captured: [String] = []
         let cancellable = subject.sinkToResult { result in
-            if case .success(let v)? = result { captured.append(v) }
+            if case let .success(v)? = result { captured.append(v) }
         }
         let emoji = "👩‍👩‍👧‍👦"
         let combining = "e\u{0301}"
@@ -342,7 +342,7 @@ import Testing
         var sum = 0
         var count = 0
         let cancellable = subject.sinkToResult { result in
-            if case .success(let v)? = result {
+            if case let .success(v)? = result {
                 sum += v
                 count += 1
             }
@@ -499,7 +499,7 @@ import Testing
         let cancellable = subject
             .withPrevious()
             .sink(
-                receiveCompletion: { if case .failure(let e) = $0 { captured = e } },
+                receiveCompletion: { if case let .failure(e) = $0 { captured = e } },
                 receiveValue: { values.append($0.current) }
             )
         subject.send(1)
@@ -516,7 +516,7 @@ import Testing
         let cancellable = subject
             .withPrevious()
             .sink(
-                receiveCompletion: { if case .failure(let e) = $0 { captured = e } },
+                receiveCompletion: { if case let .failure(e) = $0 { captured = e } },
                 receiveValue: { _ in valueCount += 1 }
             )
         subject.send(completion: .failure(.other))
@@ -532,7 +532,7 @@ import Testing
         let cancellable = Fail<Int, SampleError>(error: .boom)
             .withPrevious()
             .sink(
-                receiveCompletion: { if case .failure(let e) = $0 { captured = e } },
+                receiveCompletion: { if case let .failure(e) = $0 { captured = e } },
                 receiveValue: { _ in valueCount += 1 }
             )
         cancellable.cancel()
@@ -656,7 +656,7 @@ import Testing
                     let subject = PassthroughSubject<Int, Never>()
                     var captured: Int?
                     let cancellable = subject.sinkToResult { result in
-                        if case .success(let v)? = result { captured = v }
+                        if case let .success(v)? = result { captured = v }
                     }
                     subject.send(i)
                     cancellable.cancel()

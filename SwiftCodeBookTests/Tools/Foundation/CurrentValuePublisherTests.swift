@@ -48,13 +48,13 @@ import Testing
     ///
     /// Combine delivers synchronously for `CurrentValueSubject` / `Just` on
     /// the calling thread, so there is no timing race and no sleeps are needed.
-    private func collect<P: Publisher>(_ publisher: P, _ body: (inout [P.Output]) -> Void) -> [P.Output] {
+    private func collect<P: Publisher>(_ publisher: P, _ body: () -> Void) -> [P.Output] {
         var values: [P.Output] = []
         let cancellable = publisher.sink(
             receiveCompletion: { _ in },
             receiveValue: { values.append($0) }
         )
-        body(&values)
+        body()
         cancellable.cancel()
         return values
     }
@@ -217,7 +217,7 @@ import Testing
     @Test func eraseToAnyCurrentValuePublisherRepublishes() {
         let subject = CurrentValueSubject<Int, Never>(1)
         let erased = subject.eraseToAnyCurrentValuePublisher()
-        let received = collect(erased) { _ in
+        let received = collect(erased) {
             subject.send(2)
             subject.send(3)
         }
@@ -228,7 +228,7 @@ import Testing
     @Test func eraseToAnyCurrentValuePublisherOnJust() {
         let erased = Just("x").eraseToAnyCurrentValuePublisher()
         #expect(erased.value == "x")
-        let received = collect(erased) { _ in }
+        let received = collect(erased) {}
         #expect(received == ["x"])
     }
 
@@ -236,7 +236,7 @@ import Testing
         let model = Model()
         let erased = model.$count.eraseToAnyCurrentValuePublisher()
         #expect(erased.value == 0)
-        let received = collect(erased) { _ in
+        let received = collect(erased) {
             model.count = 5
             model.count = 6
         }
@@ -251,7 +251,7 @@ import Testing
         let once = subject.eraseToAnyCurrentValuePublisher()
         let twice = once.eraseToAnyCurrentValuePublisher()
         #expect(twice.value == 42)
-        let received = collect(twice) { _ in subject.send(43) }
+        let received = collect(twice) { subject.send(43) }
         #expect(received == [42, 43])
     }
 
@@ -268,7 +268,7 @@ import Testing
     @Test func anyPublisherPassthroughRepublishes() {
         let subject = CurrentValueSubject<String, Never>("a")
         let any = AnyCurrentValuePublisher(subject)
-        let received = collect(any) { _ in
+        let received = collect(any) {
             subject.send("b")
             subject.send("c")
         }
@@ -288,7 +288,7 @@ import Testing
     @Test func anyPublisherTransformRepublishes() {
         let subject = CurrentValueSubject<Int, Never>(1)
         let any = AnyCurrentValuePublisher(subject) { "n=\($0)" }
-        let received = collect(any) { _ in
+        let received = collect(any) {
             subject.send(2)
             subject.send(3)
         }
@@ -325,7 +325,7 @@ import Testing
     @Test func anyPublisherKeyPathRepublishes() {
         let subject = CurrentValueSubject<Point, Never>(Point(x: 0, y: 0))
         let any = AnyCurrentValuePublisher(subject, keyPath: \.y)
-        let received = collect(any) { _ in
+        let received = collect(any) {
             subject.send(Point(x: 1, y: 10))
             subject.send(Point(x: 2, y: 20))
         }
@@ -340,7 +340,7 @@ import Testing
         #expect(any.value == 42)
         subject.value = 7
         #expect(any.value == 7)
-        let received = collect(any) { _ in subject.send(8) }
+        let received = collect(any) { subject.send(8) }
         #expect(received == [7, 8])
     }
 
@@ -354,7 +354,7 @@ import Testing
         #expect(any.value == 10)
         subject.value = 6
         #expect(any.value == 12)
-        let received = collect(any) { _ in subject.send(7) }
+        let received = collect(any) { subject.send(7) }
         #expect(received == [12, 14])
     }
 
@@ -364,7 +364,7 @@ import Testing
         let passthrough = PassthroughSubject<Int, Never>()
         let any = AnyCurrentValuePublisher(unsafeSubject: passthrough, value: { -1 })
         #expect(any.value == -1)
-        let received = collect(any) { _ in
+        let received = collect(any) {
             passthrough.send(10)
             passthrough.send(20)
         }
@@ -387,7 +387,7 @@ import Testing
         #expect(any.value == 0)
         counter = 5
         #expect(any.value == 5)
-        let received = collect(any) { _ in
+        let received = collect(any) {
             passthrough.send(1)
             passthrough.send(2)
         }
@@ -411,7 +411,7 @@ import Testing
         }
 
         #expect(values == [5, 6])
-        if case .failure(let err) = completion {
+        if case let .failure(err) = completion {
             #expect(err == .boom)
         } else {
             Issue.record("Expected failure completion, got \(String(describing: completion))")
@@ -442,7 +442,7 @@ import Testing
             subject.send(completion: .failure(.boom))
         }
         #expect(values == [100, 200])
-        if case .failure(let err) = completion {
+        if case let .failure(err) = completion {
             #expect(err == .boom)
         } else {
             Issue.record("Expected failure completion, got \(String(describing: completion))")
@@ -632,7 +632,7 @@ import Testing
         // Bounded burst of sends must replay current + all subsequent in order.
         let subject = CurrentValueSubject<Int, Never>(0)
         let any = AnyCurrentValuePublisher(subject)
-        let received = collect(any) { _ in
+        let received = collect(any) {
             for i in 1...5_000 {
                 subject.send(i)
             }

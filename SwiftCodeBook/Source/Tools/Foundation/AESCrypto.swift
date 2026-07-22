@@ -57,13 +57,13 @@ public enum AESEncryptedPayload: Sendable {
 
     public var encryptedData: Data {
         switch self {
-        case .gcm(let encryptedData, _, _): encryptedData
-        case .cbc(let encryptedData, _, _): encryptedData
-        case .ecb(let encryptedData, _): encryptedData
-        case .cfb(let encryptedData, _): encryptedData
-        case .cfb8(let encryptedData, _): encryptedData
-        case .ctr(let encryptedData, _): encryptedData
-        case .ofb(let encryptedData, _): encryptedData
+        case let .gcm(encryptedData, _, _): encryptedData
+        case let .cbc(encryptedData, _, _): encryptedData
+        case let .ecb(encryptedData, _): encryptedData
+        case let .cfb(encryptedData, _): encryptedData
+        case let .cfb8(encryptedData, _): encryptedData
+        case let .ctr(encryptedData, _): encryptedData
+        case let .ofb(encryptedData, _): encryptedData
         }
     }
 }
@@ -82,14 +82,14 @@ public enum AESCryptoError: Error, Equatable, Sendable {
 extension AESCryptoError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .invalidKeyLength(let actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
-        case .invalidInitializationValueLength(let expected, let actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
-        case .invalidAuthenticationTagLength(let expected, let actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
+        case let .invalidKeyLength(actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
+        case let .invalidInitializationValueLength(expected, actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
+        case let .invalidAuthenticationTagLength(expected, actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
         case .unsupportedAuthenticatedData: "Authenticated data is only supported by AES-GCM."
-        case .invalidInputLength(let blockSize, let actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
+        case let .invalidInputLength(blockSize, actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
         case .authenticationFailed: "AES-GCM authentication failed."
-        case .randomGenerationFailed(let status): "Secure random generation failed with OSStatus \(status)."
-        case .commonCryptoFailed(let status): "CommonCrypto failed with status \(status)."
+        case let .randomGenerationFailed(status): "Secure random generation failed with OSStatus \(status)."
+        case let .commonCryptoFailed(status): "CommonCrypto failed with status \(status)."
         }
     }
 }
@@ -113,7 +113,7 @@ public enum AESCrypto {
         try validateKey(key)
 
         switch mode {
-        case .gcm(let requestedNonce, let authenticatedData):
+        case let .gcm(requestedNonce, authenticatedData):
             let nonceData = try encryptionInitializationValue(
                 for: mode,
                 requestedValue: requestedNonce
@@ -148,7 +148,7 @@ public enum AESCrypto {
         }
 
         switch payload {
-        case .gcm(let encryptedData, let nonceData, let authenticationTag):
+        case let .gcm(encryptedData, nonceData, authenticationTag):
             try validateInitializationValue(nonceData, for: .gcm(nonce: nonceData))
             guard authenticationTag.count == gcmAuthenticationTagSize else {
                 throw AESCryptoError.invalidAuthenticationTagLength(
@@ -171,37 +171,37 @@ public enum AESCrypto {
             } catch CryptoKitError.authenticationFailure {
                 throw AESCryptoError.authenticationFailed
             }
-        case .cbc(let encryptedData, let iv, let padding):
+        case let .cbc(encryptedData, iv, padding):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
                 mode: .cbc(iv: iv, padding: padding)
             )
-        case .ecb(let encryptedData, let padding):
+        case let .ecb(encryptedData, padding):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
                 mode: .ecb(padding: padding)
             )
-        case .cfb(let encryptedData, let iv):
+        case let .cfb(encryptedData, iv):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
                 mode: .cfb(iv: iv)
             )
-        case .cfb8(let encryptedData, let iv):
+        case let .cfb8(encryptedData, iv):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
                 mode: .cfb8(iv: iv)
             )
-        case .ctr(let encryptedData, let initialCounter):
+        case let .ctr(encryptedData, initialCounter):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
                 mode: .ctr(initialCounter: initialCounter)
             )
-        case .ofb(let encryptedData, let iv):
+        case let .ofb(encryptedData, iv):
             return try decryptCommonCrypto(
                 encryptedData,
                 using: key,
@@ -277,13 +277,13 @@ private extension AESCrypto {
         switch mode {
         case .gcm:
             preconditionFailure("AES-GCM does not use CommonCrypto.")
-        case .cbc(_, let padding):
+        case let .cbc(_, padding):
             return .cbc(
                 encryptedData: encryptedData,
                 iv: requiredInitializationValue(initializationValue),
                 padding: padding
             )
-        case .ecb(let padding):
+        case let .ecb(padding):
             return .ecb(encryptedData: encryptedData, padding: padding)
         case .cfb:
             return .cfb(
@@ -481,16 +481,16 @@ private extension AESMode {
 
     var initializationValue: Data? {
         switch self {
-        case .gcm(let nonce, _): nonce
-        case .cbc(let iv, _), .cfb(let iv), .cfb8(let iv), .ofb(let iv): iv
-        case .ctr(let initialCounter): initialCounter
+        case let .gcm(nonce, _): nonce
+        case let .cbc(iv, _), let .cfb(iv), let .cfb8(iv), let .ofb(iv): iv
+        case let .ctr(initialCounter): initialCounter
         case .ecb: nil
         }
     }
 
     var padding: AESPadding {
         switch self {
-        case .cbc(_, let padding), .ecb(let padding): padding
+        case let .cbc(_, padding), let .ecb(padding): padding
         case .gcm, .cfb, .cfb8, .ctr, .ofb: .none
         }
     }

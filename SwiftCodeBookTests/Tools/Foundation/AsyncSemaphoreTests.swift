@@ -290,7 +290,7 @@ import Foundation
             // With value:0 and no signal, success is impossible under correct
             // semantics; surface any unexpected success.
             #expect(Bool(false), "Expected CancellationError but wait succeeded with no signal")
-        case .failure(let error):
+        case let .failure(error):
             #expect(error is CancellationError)
         }
     }
@@ -309,7 +309,7 @@ import Foundation
         switch result {
         case .success:
             #expect(Bool(false), "Expected CancellationError on pre-cancelled task")
-        case .failure(let error):
+        case let .failure(error):
             #expect(error is CancellationError)
         }
     }
@@ -551,7 +551,7 @@ import Foundation
         switch await t.result {
         case .success:
             #expect(Bool(false), "Cancelled task must throw even with a permit available")
-        case .failure(let error):
+        case let .failure(error):
             #expect(error is CancellationError)
         }
 

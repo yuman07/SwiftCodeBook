@@ -308,7 +308,7 @@ import Testing
             using: key,
             mode: .gcm()
         )
-        guard case .gcm(let encryptedData, let nonce, let authenticationTag) = payload else {
+        guard case let .gcm(encryptedData, nonce, authenticationTag) = payload else {
             Issue.record("Expected a GCM payload.")
             return
         }
@@ -357,7 +357,7 @@ import Testing
 
         let payload = try AESCrypto.encrypt(Data(), using: key, mode: .gcm(nonce: nonce))
         #expect(payload.encryptedData.isEmpty)
-        guard case .gcm(_, let actualNonce, let authenticationTag) = payload else {
+        guard case let .gcm(_, actualNonce, authenticationTag) = payload else {
             Issue.record("Expected a GCM payload.")
             return
         }
@@ -391,7 +391,7 @@ import Testing
         padding: AESPadding
     ) -> AESMode {
         switch mode {
-        case .gcm(_, let authenticatedData):
+        case let .gcm(_, authenticatedData):
             .gcm(nonce: iv, authenticating: authenticatedData)
         case .cbc:
             .cbc(iv: iv, padding: padding)
@@ -413,21 +413,21 @@ import Testing
         matches mode: AESMode
     ) {
         switch (payload, mode) {
-        case (.gcm(_, let nonce, let tag), .gcm):
+        case let (.gcm(_, nonce, tag), .gcm):
             #expect(nonce.count == 12)
             #expect(tag.count == 16)
-        case (.cbc(_, let iv, let padding), .cbc(_, let expectedPadding)):
+        case let (.cbc(_, iv, padding), .cbc(_, expectedPadding)):
             #expect(iv.count == 16)
             #expect(padding == expectedPadding)
-        case (.ecb(_, let padding), .ecb(let expectedPadding)):
+        case let (.ecb(_, padding), .ecb(expectedPadding)):
             #expect(padding == expectedPadding)
-        case (.cfb(_, let iv), .cfb):
+        case let (.cfb(_, iv), .cfb):
             #expect(iv.count == 16)
-        case (.cfb8(_, let iv), .cfb8):
+        case let (.cfb8(_, iv), .cfb8):
             #expect(iv.count == 16)
-        case (.ctr(_, let initialCounter), .ctr):
+        case let (.ctr(_, initialCounter), .ctr):
             #expect(initialCounter.count == 16)
-        case (.ofb(_, let iv), .ofb):
+        case let (.ofb(_, iv), .ofb):
             #expect(iv.count == 16)
         default:
             Issue.record("Encrypted payload does not match the requested AES mode.")
@@ -436,7 +436,7 @@ import Testing
 
     private static func padding(of payload: AESEncryptedPayload) -> AESPadding? {
         switch payload {
-        case .cbc(_, _, let padding), .ecb(_, let padding): padding
+        case let .cbc(_, _, padding), let .ecb(_, padding): padding
         default: nil
         }
     }
