@@ -5,6 +5,7 @@
 //  Created by yuman on 2026/7/10.
 //
 
+import CryptoKit
 import Foundation
 import Testing
 @testable import SwiftCodeBook
@@ -167,7 +168,7 @@ import Testing
             mode: .gcm()
         )
 
-        #expect(throws: AESCryptoError.authenticationFailed) {
+        #expect(throws: AESCryptoError.cryptoKitFailed(error: .authenticationFailure)) {
             _ = try AESCrypto.decrypt(payload, using: secondKey)
         }
     }
@@ -219,7 +220,7 @@ import Testing
             authenticationTag: authenticationTag,
             authenticatedData: Data("different header".utf8)
         )
-        #expect(throws: AESCryptoError.authenticationFailed) {
+        #expect(throws: AESCryptoError.cryptoKitFailed(error: .authenticationFailure)) {
             _ = try AESCrypto.decrypt(tamperedPayload, using: key)
         }
     }
@@ -320,7 +321,7 @@ import Testing
         ]
 
         for tamperedPayload in tamperedPayloads {
-            #expect(throws: AESCryptoError.authenticationFailed) {
+            #expect(throws: AESCryptoError.cryptoKitFailed(error: .authenticationFailure)) {
                 _ = try AESCrypto.decrypt(tamperedPayload, using: key)
             }
         }

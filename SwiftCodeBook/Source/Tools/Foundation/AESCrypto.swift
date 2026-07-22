@@ -27,19 +27,23 @@ import Security
                 for: mode,
                 requestedValue: requestedNonce
             )
-            let nonce = try AES.GCM.Nonce(data: nonceData)
-            let sealedBox = try AES.GCM.seal(
-                data,
-                using: SymmetricKey(data: key),
-                nonce: nonce,
-                authenticating: authenticatedData
-            )
-            return .gcm(
-                encryptedData: sealedBox.ciphertext,
-                nonce: Data(sealedBox.nonce),
-                authenticationTag: sealedBox.tag,
-                authenticatedData: authenticatedData
-            )
+            do {
+                let nonce = try AES.GCM.Nonce(data: nonceData)
+                let sealedBox = try AES.GCM.seal(
+                    data,
+                    using: SymmetricKey(data: key),
+                    nonce: nonce,
+                    authenticating: authenticatedData
+                )
+                return .gcm(
+                    encryptedData: sealedBox.ciphertext,
+                    nonce: Data(sealedBox.nonce),
+                    authenticationTag: sealedBox.tag,
+                    authenticatedData: authenticatedData
+                )
+            } catch let error as CryptoKitError {
+                throw AESCryptoError.cryptoKitFailed(error: error)
+            }
         case .cbc, .ecb, .cfb, .cfb8, .ctr, .ofb:
             return try encryptCommonCrypto(data, using: key, mode: mode)
         }
@@ -60,20 +64,20 @@ import Security
                     actual: authenticationTag.count
                 )
             }
-            let nonce = try AES.GCM.Nonce(data: nonceData)
-            let sealedBox = try AES.GCM.SealedBox(
-                nonce: nonce,
-                ciphertext: encryptedData,
-                tag: authenticationTag
-            )
             do {
+                let nonce = try AES.GCM.Nonce(data: nonceData)
+                let sealedBox = try AES.GCM.SealedBox(
+                    nonce: nonce,
+                    ciphertext: encryptedData,
+                    tag: authenticationTag
+                )
                 return try AES.GCM.open(
                     sealedBox,
                     using: SymmetricKey(data: key),
                     authenticating: authenticatedData
                 )
-            } catch CryptoKitError.authenticationFailure {
-                throw AESCryptoError.authenticationFailed
+            } catch let error as CryptoKitError {
+                throw AESCryptoError.cryptoKitFailed(error: error)
             }
         case let .cbc(encryptedData, iv, padding):
             return try decryptCommonCrypto(
@@ -191,7 +195,7 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
     case missingInitializationValue
     case initializationValueNotSupported
     case invalidInputLength(blockSize: Int, actual: Int)
-    case authenticationFailed
+    case cryptoKitFailed(error: CryptoKitError)
     case randomGenerationFailed(status: OSStatus)
     case commonCryptoFailed(status: CCCryptorStatus)
     
@@ -204,7 +208,7 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
         case .missingInitializationValue: "The selected AES mode requires an initialization value."
         case .initializationValueNotSupported: "The selected AES mode does not use an initialization value."
         case let .invalidInputLength(blockSize, actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
-        case .authenticationFailed: "AES-GCM authentication failed."
+        case let .cryptoKitFailed(error): "CryptoKit failed with error \(error)."
         case let .randomGenerationFailed(status): "Secure random generation failed with OSStatus \(status)."
         case let .commonCryptoFailed(status): "CommonCrypto failed with status \(status)."
         }
