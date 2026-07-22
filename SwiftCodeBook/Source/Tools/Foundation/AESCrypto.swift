@@ -10,7 +10,7 @@ import CryptoKit
 import Foundation
 import Security
 
-public enum AESCrypto: Sendable {
+@frozen public enum AESCrypto: Sendable {
     private static let blockSize = kCCBlockSizeAES128
     private static let gcmAuthenticationTagSize = 16
 
@@ -130,7 +130,7 @@ public enum AESCrypto: Sendable {
     case gcm(nonce: Data? = nil, authenticating: Data = Data())
     /// Uses a secure random 16-byte IV when `iv` is `nil`.
     case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
-    /// ECB does not use an IV.
+    /// ECB encrypts each block independently, so it does not use an IV.
     case ecb(padding: AESPadding = .pkcs7)
     /// CFB uses 128-bit segments and a secure random 16-byte IV when `iv` is `nil`.
     case cfb(iv: Data? = nil)
@@ -188,6 +188,9 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
     case invalidInitializationValueLength(expected: Int, actual: Int)
     case invalidAuthenticationTagLength(expected: Int, actual: Int)
     case unsupportedAuthenticatedData
+    case unsupportedMode
+    case missingInitializationValue
+    case initializationValueNotSupported
     case invalidInputLength(blockSize: Int, actual: Int)
     case authenticationFailed
     case randomGenerationFailed(status: OSStatus)
@@ -199,6 +202,9 @@ public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
         case let .invalidInitializationValueLength(expected, actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
         case let .invalidAuthenticationTagLength(expected, actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
         case .unsupportedAuthenticatedData: "Authenticated data is only supported by AES-GCM."
+        case .unsupportedMode: "The selected AES mode is not supported by this operation."
+        case .missingInitializationValue: "The selected AES mode requires an initialization value."
+        case .initializationValueNotSupported: "The selected AES mode does not use an initialization value."
         case let .invalidInputLength(blockSize, actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
         case .authenticationFailed: "AES-GCM authentication failed."
         case let .randomGenerationFailed(status): "Secure random generation failed with OSStatus \(status)."
@@ -238,9 +244,9 @@ private extension AESMode {
         }
     }
 
-    var commonCryptoMode: CCMode {
+    var commonCryptoMode: CCMode? {
         switch self {
-        case .gcm: preconditionFailure("AES-GCM does not use CommonCrypto.")
+        case .gcm: nil
         case .cbc: CCMode(kCCModeCBC)
         case .ecb: CCMode(kCCModeECB)
         case .cfb: CCMode(kCCModeCFB)
@@ -305,11 +311,11 @@ private extension AESCrypto {
 
         switch mode {
         case .gcm:
-            preconditionFailure("AES-GCM does not use CommonCrypto.")
+            throw AESCryptoError.unsupportedMode
         case let .cbc(_, padding):
             return .cbc(
                 encryptedData: encryptedData,
-                iv: requiredInitializationValue(initializationValue),
+                iv: try requiredInitializationValue(initializationValue),
                 padding: padding
             )
         case let .ecb(padding):
@@ -317,29 +323,29 @@ private extension AESCrypto {
         case .cfb:
             return .cfb(
                 encryptedData: encryptedData,
-                iv: requiredInitializationValue(initializationValue)
+                iv: try requiredInitializationValue(initializationValue)
             )
         case .cfb8:
             return .cfb8(
                 encryptedData: encryptedData,
-                iv: requiredInitializationValue(initializationValue)
+                iv: try requiredInitializationValue(initializationValue)
             )
         case .ctr:
             return .ctr(
                 encryptedData: encryptedData,
-                initialCounter: requiredInitializationValue(initializationValue)
+                initialCounter: try requiredInitializationValue(initializationValue)
             )
         case .ofb:
             return .ofb(
                 encryptedData: encryptedData,
-                iv: requiredInitializationValue(initializationValue)
+                iv: try requiredInitializationValue(initializationValue)
             )
         }
     }
 
-    static func requiredInitializationValue(_ value: Data?) -> Data {
+    static func requiredInitializationValue(_ value: Data?) throws -> Data {
         guard let value else {
-            preconditionFailure("AES mode requires an initialization value.")
+            throw AESCryptoError.missingInitializationValue
         }
         return value
     }
@@ -359,7 +365,7 @@ private extension AESCrypto {
         _ value: Data,
         for mode: AESMode
     ) throws {
-        let expectedCount = expectedInitializationValueSize(for: mode)
+        let expectedCount = try expectedInitializationValueSize(for: mode)
         guard value.count == expectedCount else {
             throw AESCryptoError.invalidInitializationValueLength(
                 expected: expectedCount,
@@ -368,11 +374,11 @@ private extension AESCrypto {
         }
     }
 
-    static func expectedInitializationValueSize(for mode: AESMode) -> Int {
+    static func expectedInitializationValueSize(for mode: AESMode) throws -> Int {
         switch mode {
         case .gcm: 12
         case .cbc, .cfb, .cfb8, .ctr, .ofb: blockSize
-        case .ecb: preconditionFailure("AES-ECB does not use an initialization value.")
+        case .ecb: throw AESCryptoError.initializationValueNotSupported
         }
     }
 
@@ -403,6 +409,10 @@ private extension AESCrypto {
         padding: AESPadding,
         iv: Data?
     ) throws -> Data {
+        guard let commonCryptoMode = mode.commonCryptoMode else {
+            throw AESCryptoError.unsupportedMode
+        }
+
         var cryptor: CCCryptorRef?
         let createStatus: CCCryptorStatus = key.withUnsafeBytes { keyBytes in
             guard let keyAddress = keyBytes.baseAddress else {
@@ -412,7 +422,7 @@ private extension AESCrypto {
             func create(ivAddress: UnsafeRawPointer?) -> CCCryptorStatus {
                 CCCryptorCreateWithMode(
                     operation,
-                    mode.commonCryptoMode,
+                    commonCryptoMode,
                     CCAlgorithm(kCCAlgorithmAES),
                     padding.commonCryptoPadding,
                     ivAddress,

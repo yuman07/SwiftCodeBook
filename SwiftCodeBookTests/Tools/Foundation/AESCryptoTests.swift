@@ -74,8 +74,8 @@ import Testing
         for mode in Self.defaultModes {
             for keySize in AESKeySize.allCases {
                 let key = try AESCrypto.generateRandomKey(size: keySize)
-                let payload = try plaintext.aesEncrypted(using: key, mode: mode)
-                let decrypted = try payload.decrypted(using: key)
+                let payload = try AESCrypto.encrypt(plaintext, using: key, mode: mode)
+                let decrypted = try AESCrypto.decrypt(payload, using: key)
 
                 #expect(decrypted == plaintext)
                 Self.expectMetadata(of: payload, matches: mode)
