@@ -236,7 +236,8 @@ import Testing
                 .gcm(
                     encryptedData: Data(),
                     nonce: Data(repeating: 0, count: 11),
-                    authenticationTag: Data(repeating: 0, count: 16)
+                    authenticationTag: Data(repeating: 0, count: 16),
+                    authenticatedData: Data()
                 ),
                 12,
                 11
@@ -262,7 +263,8 @@ import Testing
         let invalidTagPayload = AESEncryptedPayload.gcm(
             encryptedData: Data(),
             nonce: Data(repeating: 0, count: 12),
-            authenticationTag: Data(repeating: 0, count: 15)
+            authenticationTag: Data(repeating: 0, count: 15),
+            authenticatedData: Data()
         )
         #expect(
             throws: AESCryptoError.invalidAuthenticationTagLength(

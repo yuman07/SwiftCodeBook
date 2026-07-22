@@ -161,12 +161,7 @@ import Security
 }
 
 @frozen public enum AESEncryptedPayload: Sendable {
-    case gcm(
-        encryptedData: Data,
-        nonce: Data,
-        authenticationTag: Data,
-        authenticatedData: Data = Data()
-    )
+    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data, authenticatedData: Data)
     case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
     case ecb(encryptedData: Data, padding: AESPadding)
     case cfb(encryptedData: Data, iv: Data)
