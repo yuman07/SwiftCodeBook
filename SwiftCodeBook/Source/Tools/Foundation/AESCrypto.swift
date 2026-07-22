@@ -12,7 +12,6 @@ import Security
 
 public enum AESCrypto: Sendable {
     private static let blockSize = kCCBlockSizeAES128
-    private static let gcmNonceSize = 12
     private static let gcmAuthenticationTagSize = 16
 
     public static func encrypt(
@@ -371,7 +370,7 @@ private extension AESCrypto {
 
     static func expectedInitializationValueSize(for mode: AESMode) -> Int {
         switch mode {
-        case .gcm: gcmNonceSize
+        case .gcm: 12
         case .cbc, .cfb, .cfb8, .ctr, .ofb: blockSize
         case .ecb: preconditionFailure("AES-ECB does not use an initialization value.")
         }
