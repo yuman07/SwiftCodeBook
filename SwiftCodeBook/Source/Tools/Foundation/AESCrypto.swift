@@ -10,101 +10,11 @@ import CryptoKit
 import Foundation
 import Security
 
-@frozen public enum AESMode: Sendable {
-    /// Uses a secure random 12-byte nonce when `nonce` is `nil`.
-    case gcm(nonce: Data? = nil, authenticating: Data = Data())
-    /// Uses a secure random 16-byte IV when `iv` is `nil`.
-    case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
-    /// ECB does not use an IV.
-    case ecb(padding: AESPadding = .pkcs7)
-    /// CFB uses 128-bit segments and a secure random 16-byte IV when `iv` is `nil`.
-    case cfb(iv: Data? = nil)
-    /// CFB8 uses 8-bit segments and a secure random 16-byte IV when `iv` is `nil`.
-    case cfb8(iv: Data? = nil)
-    /// Uses a secure random 16-byte counter block when `initialCounter` is `nil`.
-    case ctr(initialCounter: Data? = nil)
-    /// Uses a secure random 16-byte IV when `iv` is `nil`.
-    case ofb(iv: Data? = nil)
-}
-
-@frozen public enum AESPadding: Sendable {
-    case none
-    case pkcs7
-}
-
-@frozen public enum AESKeySize: CaseIterable, Sendable {
-    case bits128
-    case bits192
-    case bits256
-
-    public var byteCount: Int {
-        switch self {
-        case .bits128: 16
-        case .bits192: 24
-        case .bits256: 32
-        }
-    }
-}
-
-public enum AESEncryptedPayload: Sendable {
-    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data)
-    case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
-    case ecb(encryptedData: Data, padding: AESPadding)
-    case cfb(encryptedData: Data, iv: Data)
-    case cfb8(encryptedData: Data, iv: Data)
-    case ctr(encryptedData: Data, initialCounter: Data)
-    case ofb(encryptedData: Data, iv: Data)
-
-    public var encryptedData: Data {
-        switch self {
-        case let .gcm(encryptedData, _, _): encryptedData
-        case let .cbc(encryptedData, _, _): encryptedData
-        case let .ecb(encryptedData, _): encryptedData
-        case let .cfb(encryptedData, _): encryptedData
-        case let .cfb8(encryptedData, _): encryptedData
-        case let .ctr(encryptedData, _): encryptedData
-        case let .ofb(encryptedData, _): encryptedData
-        }
-    }
-}
-
-public enum AESCryptoError: Error, Equatable, Sendable {
-    case invalidKeyLength(actual: Int)
-    case invalidInitializationValueLength(expected: Int, actual: Int)
-    case invalidAuthenticationTagLength(expected: Int, actual: Int)
-    case unsupportedAuthenticatedData
-    case invalidInputLength(blockSize: Int, actual: Int)
-    case authenticationFailed
-    case randomGenerationFailed(status: OSStatus)
-    case commonCryptoFailed(status: CCCryptorStatus)
-}
-
-extension AESCryptoError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case let .invalidKeyLength(actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
-        case let .invalidInitializationValueLength(expected, actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
-        case let .invalidAuthenticationTagLength(expected, actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
-        case .unsupportedAuthenticatedData: "Authenticated data is only supported by AES-GCM."
-        case let .invalidInputLength(blockSize, actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
-        case .authenticationFailed: "AES-GCM authentication failed."
-        case let .randomGenerationFailed(status): "Secure random generation failed with OSStatus \(status)."
-        case let .commonCryptoFailed(status): "CommonCrypto failed with status \(status)."
-        }
-    }
-}
-
 public enum AESCrypto {
     private static let blockSize = kCCBlockSizeAES128
     private static let gcmNonceSize = 12
     private static let gcmAuthenticationTagSize = 16
 
-    /// Generates a cryptographically secure random AES key.
-    public static func generateRandomKey(size: AESKeySize = .bits256) throws -> Data {
-        try randomData(count: size.byteCount)
-    }
-
-    /// Encrypts data using the selected mode.
     public static func encrypt(
         _ data: Data,
         using key: Data,
@@ -209,23 +119,143 @@ public enum AESCrypto {
             )
         }
     }
-}
-
-public extension Data {
-    func aesEncrypted(
-        using key: Data,
-        mode: AESMode
-    ) throws -> AESEncryptedPayload {
-        try AESCrypto.encrypt(self, using: key, mode: mode)
+    
+    /// Generates a cryptographically secure random AES key.
+    public static func generateRandomKey(size: AESKeySize = .bits256) throws -> Data {
+        try randomData(count: size.byteCount)
     }
 }
 
-public extension AESEncryptedPayload {
-    func decrypted(
-        using key: Data,
-        authenticating authenticatedData: Data = Data()
-    ) throws -> Data {
-        try AESCrypto.decrypt(self, using: key, authenticating: authenticatedData)
+@frozen public enum AESMode: Sendable {
+    /// Uses a secure random 12-byte nonce when `nonce` is `nil`.
+    case gcm(nonce: Data? = nil, authenticating: Data = Data())
+    /// Uses a secure random 16-byte IV when `iv` is `nil`.
+    case cbc(iv: Data? = nil, padding: AESPadding = .pkcs7)
+    /// ECB does not use an IV.
+    case ecb(padding: AESPadding = .pkcs7)
+    /// CFB uses 128-bit segments and a secure random 16-byte IV when `iv` is `nil`.
+    case cfb(iv: Data? = nil)
+    /// CFB8 uses 8-bit segments and a secure random 16-byte IV when `iv` is `nil`.
+    case cfb8(iv: Data? = nil)
+    /// Uses a secure random 16-byte counter block when `initialCounter` is `nil`.
+    case ctr(initialCounter: Data? = nil)
+    /// Uses a secure random 16-byte IV when `iv` is `nil`.
+    case ofb(iv: Data? = nil)
+}
+
+@frozen public enum AESPadding: Sendable {
+    case none
+    case pkcs7
+}
+
+@frozen public enum AESKeySize: CaseIterable, Sendable {
+    case bits128
+    case bits192
+    case bits256
+
+    public var byteCount: Int {
+        switch self {
+        case .bits128: 16
+        case .bits192: 24
+        case .bits256: 32
+        }
+    }
+}
+
+@frozen public enum AESEncryptedPayload: Sendable {
+    case gcm(encryptedData: Data, nonce: Data, authenticationTag: Data)
+    case cbc(encryptedData: Data, iv: Data, padding: AESPadding)
+    case ecb(encryptedData: Data, padding: AESPadding)
+    case cfb(encryptedData: Data, iv: Data)
+    case cfb8(encryptedData: Data, iv: Data)
+    case ctr(encryptedData: Data, initialCounter: Data)
+    case ofb(encryptedData: Data, iv: Data)
+
+    public var encryptedData: Data {
+        switch self {
+        case let .gcm(encryptedData, _, _): encryptedData
+        case let .cbc(encryptedData, _, _): encryptedData
+        case let .ecb(encryptedData, _): encryptedData
+        case let .cfb(encryptedData, _): encryptedData
+        case let .cfb8(encryptedData, _): encryptedData
+        case let .ctr(encryptedData, _): encryptedData
+        case let .ofb(encryptedData, _): encryptedData
+        }
+    }
+}
+
+public enum AESCryptoError: Error, Equatable, Sendable, LocalizedError {
+    case invalidKeyLength(actual: Int)
+    case invalidInitializationValueLength(expected: Int, actual: Int)
+    case invalidAuthenticationTagLength(expected: Int, actual: Int)
+    case unsupportedAuthenticatedData
+    case invalidInputLength(blockSize: Int, actual: Int)
+    case authenticationFailed
+    case randomGenerationFailed(status: OSStatus)
+    case commonCryptoFailed(status: CCCryptorStatus)
+    
+    public var errorDescription: String? {
+        switch self {
+        case let .invalidKeyLength(actual): "AES keys must contain 16, 24, or 32 bytes; received \(actual)."
+        case let .invalidInitializationValueLength(expected, actual): "AES requires a \(expected)-byte initialization value; received \(actual)."
+        case let .invalidAuthenticationTagLength(expected, actual): "AES-GCM requires a \(expected)-byte authentication tag; received \(actual)."
+        case .unsupportedAuthenticatedData: "Authenticated data is only supported by AES-GCM."
+        case let .invalidInputLength(blockSize, actual): "AES input must be a multiple of \(blockSize) bytes; received \(actual)."
+        case .authenticationFailed: "AES-GCM authentication failed."
+        case let .randomGenerationFailed(status): "Secure random generation failed with OSStatus \(status)."
+        case let .commonCryptoFailed(status): "CommonCrypto failed with status \(status)."
+        }
+    }
+}
+
+private extension AESMode {
+    var requiresBlockAlignment: Bool {
+        switch self {
+        case .cbc, .ecb: true
+        case .gcm, .cfb, .cfb8, .ctr, .ofb: false
+        }
+    }
+
+    var requiresInitializationValue: Bool {
+        switch self {
+        case .ecb: false
+        case .gcm, .cbc, .cfb, .cfb8, .ctr, .ofb: true
+        }
+    }
+
+    var initializationValue: Data? {
+        switch self {
+        case let .gcm(nonce, _): nonce
+        case let .cbc(iv, _), let .cfb(iv), let .cfb8(iv), let .ofb(iv): iv
+        case let .ctr(initialCounter): initialCounter
+        case .ecb: nil
+        }
+    }
+
+    var padding: AESPadding {
+        switch self {
+        case let .cbc(_, padding), let .ecb(padding): padding
+        case .gcm, .cfb, .cfb8, .ctr, .ofb: .none
+        }
+    }
+
+    var commonCryptoMode: CCMode {
+        switch self {
+        case .gcm: preconditionFailure("AES-GCM does not use CommonCrypto.")
+        case .cbc: CCMode(kCCModeCBC)
+        case .ecb: CCMode(kCCModeECB)
+        case .cfb: CCMode(kCCModeCFB)
+        case .cfb8: CCMode(kCCModeCFB8)
+        case .ctr: CCMode(kCCModeCTR)
+        case .ofb: CCMode(kCCModeOFB)
+        }
+    }
+
+    var commonCryptoOptions: CCModeOptions {
+        switch self {
+        case .ctr: CCModeOptions(kCCModeOptionCTR_BE)
+        case .gcm, .cbc, .ecb, .cfb, .cfb8, .ofb: CCModeOptions(0)
+        }
     }
 }
 
@@ -461,57 +491,6 @@ private extension AESCrypto {
             throw AESCryptoError.randomGenerationFailed(status: status)
         }
         return data
-    }
-}
-
-private extension AESMode {
-    var requiresBlockAlignment: Bool {
-        switch self {
-        case .cbc, .ecb: true
-        case .gcm, .cfb, .cfb8, .ctr, .ofb: false
-        }
-    }
-
-    var requiresInitializationValue: Bool {
-        switch self {
-        case .ecb: false
-        case .gcm, .cbc, .cfb, .cfb8, .ctr, .ofb: true
-        }
-    }
-
-    var initializationValue: Data? {
-        switch self {
-        case let .gcm(nonce, _): nonce
-        case let .cbc(iv, _), let .cfb(iv), let .cfb8(iv), let .ofb(iv): iv
-        case let .ctr(initialCounter): initialCounter
-        case .ecb: nil
-        }
-    }
-
-    var padding: AESPadding {
-        switch self {
-        case let .cbc(_, padding), let .ecb(padding): padding
-        case .gcm, .cfb, .cfb8, .ctr, .ofb: .none
-        }
-    }
-
-    var commonCryptoMode: CCMode {
-        switch self {
-        case .gcm: preconditionFailure("AES-GCM does not use CommonCrypto.")
-        case .cbc: CCMode(kCCModeCBC)
-        case .ecb: CCMode(kCCModeECB)
-        case .cfb: CCMode(kCCModeCFB)
-        case .cfb8: CCMode(kCCModeCFB8)
-        case .ctr: CCMode(kCCModeCTR)
-        case .ofb: CCMode(kCCModeOFB)
-        }
-    }
-
-    var commonCryptoOptions: CCModeOptions {
-        switch self {
-        case .ctr: CCModeOptions(kCCModeOptionCTR_BE)
-        case .gcm, .cbc, .ecb, .cfb, .cfb8, .ofb: CCModeOptions(0)
-        }
     }
 }
 
