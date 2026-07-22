@@ -116,20 +116,12 @@ extension AESCryptoError: LocalizedError {
 }
 
 public enum AESCrypto {
-    public static let blockSize = kCCBlockSizeAES128
-    public static let gcmNonceSize = 12
+    private static let blockSize = kCCBlockSizeAES128
+    private static let gcmNonceSize = 12
 
-    public static func generateKey(size: AESKeySize = .bits256) throws -> Data {
+    /// Generates a cryptographically secure random AES key.
+    public static func generateRandomKey(size: AESKeySize = .bits256) throws -> Data {
         try randomData(count: size.byteCount)
-    }
-
-    /// Generates a mode-appropriate nonce or IV. ECB returns `nil`.
-    public static func generateIV(for mode: AESMode.Kind) throws -> Data? {
-        switch mode {
-        case .gcm: try randomData(count: gcmNonceSize)
-        case .ecb: nil
-        case .cbc, .cfb, .cfb8, .ctr, .ofb: try randomData(count: blockSize)
-        }
     }
 
     /// Encrypts data using the selected mode.

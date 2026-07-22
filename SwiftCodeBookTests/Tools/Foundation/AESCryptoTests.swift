@@ -73,7 +73,7 @@ import Testing
 
         for mode in Self.defaultModes {
             for keySize in AESKeySize.allCases {
-                let key = try AESCrypto.generateKey(size: keySize)
+                let key = try AESCrypto.generateRandomKey(size: keySize)
                 let payload = try plaintext.aesEncrypted(using: key, mode: mode)
                 let decrypted = try payload.decrypted(using: key)
 
@@ -89,24 +89,19 @@ import Testing
     }
 
     @Test
-    func generatedKeysAndIVsUseRequiredSizes() throws {
+    func generatedRandomKeysUseRequiredSizes() throws {
         for keySize in AESKeySize.allCases {
-            let first = try AESCrypto.generateKey(size: keySize)
-            let second = try AESCrypto.generateKey(size: keySize)
+            let first = try AESCrypto.generateRandomKey(size: keySize)
+            let second = try AESCrypto.generateRandomKey(size: keySize)
             #expect(first.count == keySize.byteCount)
             #expect(second.count == keySize.byteCount)
             #expect(first != second)
-        }
-
-        for mode in Self.defaultModes.map(\.kind) {
-            let iv = try AESCrypto.generateIV(for: mode)
-            #expect(iv?.count == (mode == .gcm ? 12 : mode == .ecb ? nil : 16))
         }
     }
 
     @Test
     func cbcAndECBSupportPKCS7AndNoPadding() throws {
-        let key = try AESCrypto.generateKey(size: .bits256)
+        let key = try AESCrypto.generateRandomKey(size: .bits256)
         let alignedPlaintext = Data((0..<32).map { UInt8($0) })
 
         for mode in [AESMode.Kind.cbc, .ecb] {
@@ -124,7 +119,7 @@ import Testing
 
     @Test
     func cbcAndECBDefaultToPKCS7() throws {
-        let key = try AESCrypto.generateKey()
+        let key = try AESCrypto.generateRandomKey()
         let unalignedPlaintext = Data("PKCS#7 is the block-mode default".utf8)
 
         for mode in [AESMode.cbc(), .ecb()] {
@@ -136,7 +131,7 @@ import Testing
 
     @Test
     func noPaddingRejectsNonBlockAlignedInput() throws {
-        let key = try AESCrypto.generateKey()
+        let key = try AESCrypto.generateRandomKey()
         let unalignedPlaintext = Data(repeating: 0xA5, count: 15)
 
         for mode in [AESMode.Kind.cbc, .ecb] {
@@ -158,7 +153,7 @@ import Testing
 
     @Test
     func nonGCMDecryptionRejectsAuthenticatedData() throws {
-        let key = try AESCrypto.generateKey()
+        let key = try AESCrypto.generateRandomKey()
         let authenticatedData = Data("header".utf8)
 
         for mode in [AESMode.cbc(), .ecb(), .cfb(), .cfb8(), .ctr(), .ofb()] {
@@ -187,8 +182,8 @@ import Testing
 
     @Test
     func wrongGCMKeyFailsAuthentication() throws {
-        let firstKey = try AESCrypto.generateKey()
-        let secondKey = try AESCrypto.generateKey()
+        let firstKey = try AESCrypto.generateRandomKey()
+        let secondKey = try AESCrypto.generateRandomKey()
         let payload = try AESCrypto.encrypt(
             Data("authenticated".utf8),
             using: firstKey,
@@ -202,7 +197,7 @@ import Testing
 
     @Test
     func invalidInitializationValueLengthsAreRejected() throws {
-        let key = try AESCrypto.generateKey()
+        let key = try AESCrypto.generateRandomKey()
         let invalidIV = Data(repeating: 0, count: 15)
         let invalidModes: [(AESMode, AESMode.Kind, Int, Int)] = [
             (.gcm(nonce: Data(repeating: 0, count: 11)), .gcm, 12, 11),
@@ -228,7 +223,7 @@ import Testing
 
     @Test
     func wrongGCMAuthenticatedDataFails() throws {
-        let key = try AESCrypto.generateKey()
+        let key = try AESCrypto.generateRandomKey()
         let authenticatedData = Data("header".utf8)
         let payload = try AESCrypto.encrypt(
             Data("secret payload".utf8),
