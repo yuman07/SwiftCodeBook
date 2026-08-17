@@ -76,3 +76,16 @@ public extension StringProtocol {
         return Locale(identifier: String(localeId)).language.characterDirection
     }
 }
+
+public extension String {
+    var removingAllPercentEncoding: String {
+        var result = self
+
+        while let decoded = result.removingPercentEncoding,
+              decoded != result {
+            result = decoded
+        }
+
+        return result
+    }
+}
