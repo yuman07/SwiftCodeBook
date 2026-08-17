@@ -24,5 +24,11 @@ struct SwiftCodeBookApp: App {
 final class TestSwiftCodeBookApp {
     func testSwiftCodeBookApp() {
         // code here
+        
+        var uuu = URLComponents()
+        uuu.scheme = "https"
+        uuu.host = "www.baidu.com"
+        uuu.percentEncodedQuery = "id=2/+3"
+        print(uuu.url!)
     }
 }

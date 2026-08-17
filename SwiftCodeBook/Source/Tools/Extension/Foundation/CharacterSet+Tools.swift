@@ -8,5 +8,5 @@
 import Foundation
 
 public extension CharacterSet {
-    static let rfc3986Allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-._~"))
+    static let rfc3986Unreserved = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
 }
