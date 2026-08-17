@@ -14,6 +14,12 @@ public extension URL {
         }
     }
     
+    var percentEncodedQueryDictionary: [String: String] {
+        (URLComponents(url: self, resolvingAgainstBaseURL: true)?.percentEncodedQueryItems ?? []).reduce(into: [:]) { dict, item in
+            if let value = item.value { dict[item.name] = value }
+        }
+    }
+    
     func removingQueryItems(where shouldBeRemoved: (URLQueryItem) throws -> Bool) rethrows -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return self
