@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B7E58000000000000000002 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
-		7B7E58000000000000000003 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
 		7A0AE9B72F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
 		7A0AE9B82F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */; };
+		7A25AC993032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25AC983032FABE00B1C25C /* CharacterSet+Tools.swift */; };
+		7A25AC9A3032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25AC983032FABE00B1C25C /* CharacterSet+Tools.swift */; };
+		7A25AC9B3032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25AC983032FABE00B1C25C /* CharacterSet+Tools.swift */; };
 		7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */; };
 		7A4B515B2F7E3BF4002FC607 /* CombineNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECDA2F7501D8002EDF68 /* CombineNote.swift */; };
@@ -160,6 +161,8 @@
 		7AA7ED3A2F7501D8002EDF68 /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEE2F7501D8002EDF68 /* UIImageView.contentMode.swift */; };
 		7AA7ED3B2F7501D8002EDF68 /* Spacer+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBA2F7501D8002EDF68 /* Spacer+Tools.swift */; };
 		7AA7ED3C2F7501D8002EDF68 /* FileManager+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECAC2F7501D8002EDF68 /* FileManager+Tools.swift */; };
+		7B7E58000000000000000002 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
+		7B7E58000000000000000003 /* AESCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7E58000000000000000001 /* AESCrypto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +184,7 @@
 
 /* Begin PBXFileReference section */
 		7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BinaryFloatingPoint+Tools.swift"; sourceTree = "<group>"; };
+		7A25AC983032FABE00B1C25C /* CharacterSet+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Tools.swift"; sourceTree = "<group>"; };
 		7A2B11222F7FA63500019012 /* UIInterfaceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIInterfaceOrientation.swift; sourceTree = "<group>"; };
 		7A4B514B2F7E3655002FC607 /* Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7EC8C2F7500DA002EDF68 /* SwiftCodeBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCodeBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,7 +235,6 @@
 		7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialTaskExecutor.swift; sourceTree = "<group>"; };
 		7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
 		7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLNodeParser.swift; sourceTree = "<group>"; };
-		7B7E58000000000000000001 /* AESCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCrypto.swift; sourceTree = "<group>"; };
 		7AA7ECD32F7501D8002EDF68 /* CADisplayLinkAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkAnimator.swift; sourceTree = "<group>"; };
 		7AA7ECD42F7501D8002EDF68 /* CADisplayLinkTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkTimer.swift; sourceTree = "<group>"; };
 		7AA7ECD52F7501D8002EDF68 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -261,6 +264,7 @@
 		7AA7ECF12F7501D8002EDF68 /* WarningSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningSwitch.swift; sourceTree = "<group>"; };
 		7AA7ECF22F7501D8002EDF68 /* WillDidMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillDidMove.swift; sourceTree = "<group>"; };
 		7B7E57000000000000000009 /* SwiftCodeBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCodeBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7E58000000000000000001 /* AESCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCrypto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -351,6 +355,7 @@
 				7A0AE9B62F8228AC009ACCB2 /* BinaryFloatingPoint+Tools.swift */,
 				7AA7ECA42F7501D8002EDF68 /* CGSize+Tools.swift */,
 				7AA7ECA52F7501D8002EDF68 /* Character+Tools.swift */,
+				7A25AC983032FABE00B1C25C /* CharacterSet+Tools.swift */,
 				7AA7ECA62F7501D8002EDF68 /* Data+Tools.swift */,
 				7AA7ECA72F7501D8002EDF68 /* Date+Tools.swift */,
 				7AA7ECA82F7501D8002EDF68 /* DateFormatter+Tools.swift */,
@@ -654,6 +659,7 @@
 				7A4B51922F7E3D3C002FC607 /* UIImage+Tools.swift in Sources */,
 				7A2B11242F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */,
 				7A4B516B2F7E3C86002FC607 /* ConvertNSAttributedString.swift in Sources */,
+				7A25AC993032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */,
 				7A4B51902F7E3D35002FC607 /* UIColor+Tools.swift in Sources */,
 				7A4B51792F7E3CDB002FC607 /* Character+Tools.swift in Sources */,
 				7A4B516D2F7E3C8D002FC607 /* HitTest.swift in Sources */,
@@ -736,6 +742,7 @@
 				7AA7ED082F7501D8002EDF68 /* Task+Tools.swift in Sources */,
 				7A2B11232F7FA63500019012 /* UIInterfaceOrientation.swift in Sources */,
 				7AA7ED092F7501D8002EDF68 /* LyricHighlightingLabel.swift in Sources */,
+				7A25AC9A3032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */,
 				7AA7ED0A2F7501D8002EDF68 /* XMLNodeParser.swift in Sources */,
 				7AA7ED0B2F7501D8002EDF68 /* Character+Tools.swift in Sources */,
 				7AA7ED0C2F7501D8002EDF68 /* UIViewController+Tools.swift in Sources */,
@@ -792,6 +799,7 @@
 		7B7E57000000000000000005 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				7A25AC9B3032FABE00B1C25C /* CharacterSet+Tools.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
