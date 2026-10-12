@@ -94,7 +94,6 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
         context.withLockUnchecked { context in
             if let token = context.token { return token }
             let token = AnyCancellable { [weak self] in self?.cancel() }
-            // Retain the token so discarding addTask's return value does not cancel work.
             context.token = token
             return token
         }
