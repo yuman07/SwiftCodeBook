@@ -19,11 +19,7 @@ public final class SerialTaskExecutor: Sendable {
         let thisTasks = tasks
         worker = Task(priority: priority) {
             for await task in thisStream {
-                // Admission and cancelAll's queue snapshot share the same lock.
-                let shouldRun = thisTasks.withLock { tasks in
-                    tasks.contains { $0 === task }
-                }
-                guard shouldRun else {
+                guard thisTasks.withLock({ tasks in tasks.contains { $0 === task } }) else {
                     task.cancel()
                     continue
                 }
@@ -116,7 +112,6 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
             defer { context.operation = nil }
             return (context.task, context.operation)
         }
-        // Releasing captures can run user code, so keep them alive past unlocking.
         withExtendedLifetime(operation) {
             if let task {
                 task.cancel()
