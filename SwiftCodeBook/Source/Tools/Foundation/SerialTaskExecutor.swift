@@ -105,10 +105,11 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
     
     func cancel() {
-        let (task, operation) = context.withLock { context in
+        guard let (task, operation) = context.withLock({ context -> (Task<Success, Error>?, Operation?)? in
+            guard context.result == nil else { return nil }
             defer { context.operation = nil }
             return (context.task, context.operation)
-        }
+        }) else { return }
         defer { withExtendedLifetime(operation) {} }
         if let task {
             task.cancel()
