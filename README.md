@@ -97,7 +97,7 @@ The project is organized into three parts:
 | `HashHandler` | Multi-algorithm hashing (MD5, SHA1, SHA256, SHA384, SHA512) with 64 KB streaming |
 | `MemoryCache` | Type-safe `NSCache` wrapper with automatic cleanup on memory warnings |
 | `SendablePassthroughSubject` | Thread-safe Combine `PassthroughSubject` using `NSRecursiveLock` |
-| `SerialTaskExecutor` | `AsyncStream`-based serial task queue with guaranteed execution order |
+| `SerialTaskExecutor` | `AsyncStream`-based serial task queue with configurable priority and guaranteed execution order |
 | `WeakObject` | Generic weak reference wrapper for `AnyObject` types |
 | `XMLNodeParser` | Recursive XML node parsing with dictionary output |
 

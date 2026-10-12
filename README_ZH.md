@@ -97,7 +97,7 @@ SwiftCodeBook 是一个面向 Apple 平台开发的 Swift 工具库与教学参�
 | `HashHandler` | 多算法哈希（MD5、SHA1、SHA256、SHA384、SHA512），64 KB 流式处理 |
 | `MemoryCache` | 类型安全的 `NSCache` 封装，内存警告时自动清理 |
 | `SendablePassthroughSubject` | 基于 `NSRecursiveLock` 的线程安全 Combine `PassthroughSubject` |
-| `SerialTaskExecutor` | 基于 `AsyncStream` 的串行任务队列，保证执行顺序 |
+| `SerialTaskExecutor` | 基于 `AsyncStream` 的串行任务队列，支持配置任务优先级并保证执行顺序 |
 | `WeakObject` | 泛型弱引用包装器 |
 | `XMLNodeParser` | 递归 XML 节点解析，输出字典 |
 

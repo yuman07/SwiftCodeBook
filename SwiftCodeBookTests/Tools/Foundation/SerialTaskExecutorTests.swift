@@ -172,16 +172,15 @@ import Testing
 
     // MARK: - Initialization
 
-    @Test func initializesWithDefaultPriorityAndRunsAtask() async {
+    @Test func inheritsPriorityWhenInitializedWithoutPriority() async {
+        let expectedPriority = Task.currentPriority
         let executor = SerialTaskExecutor()
-        let ran = Flag()
-        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+        let actualPriority = await withCheckedContinuation { (cont: CheckedContinuation<TaskPriority, Never>) in
             executor.addTask {
-                ran.set()
-                cont.resume()
+                cont.resume(returning: Task.currentPriority)
             }
         }
-        #expect(ran.isSet)
+        #expect(actualPriority == expectedPriority)
     }
 
     @Test(arguments: [
@@ -192,28 +191,25 @@ import Testing
         TaskPriority.utility,
         TaskPriority.userInitiated
     ])
-    func initializesWithExplicitPriorityAndRunsAtask(_ priority: TaskPriority) async {
+    func runsTasksAtExplicitPriority(_ priority: TaskPriority) async {
         let executor = SerialTaskExecutor(priority: priority)
-        let ran = Flag()
-        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+        let actualPriority = await withCheckedContinuation { (cont: CheckedContinuation<TaskPriority, Never>) in
             executor.addTask {
-                ran.set()
-                cont.resume()
+                cont.resume(returning: Task.currentPriority)
             }
         }
-        #expect(ran.isSet)
+        #expect(actualPriority == priority)
     }
 
-    @Test func initializesWithNilPriorityExplicitlyAndRunsAtask() async {
+    @Test func inheritsPriorityWhenInitializedWithNilPriority() async {
+        let expectedPriority = Task.currentPriority
         let executor = SerialTaskExecutor(priority: nil)
-        let ran = Flag()
-        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+        let actualPriority = await withCheckedContinuation { (cont: CheckedContinuation<TaskPriority, Never>) in
             executor.addTask {
-                ran.set()
-                cont.resume()
+                cont.resume(returning: Task.currentPriority)
             }
         }
-        #expect(ran.isSet)
+        #expect(actualPriority == expectedPriority)
     }
 
     // MARK: - addTask return value

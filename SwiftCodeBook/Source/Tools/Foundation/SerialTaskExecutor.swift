@@ -17,7 +17,7 @@ public final class SerialTaskExecutor: Sendable {
     public init(priority: TaskPriority? = nil) {
         let thisStream = stream
         let thisTokensMap = tokensMap
-        worker = Task {
+        worker = Task(priority: priority) {
             for await task in thisStream {
                 await task.start()?.value
                 thisTokensMap.withLockUnchecked { $0[task] = nil }
