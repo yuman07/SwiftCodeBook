@@ -940,7 +940,7 @@ import Testing
 
         // Queue the second task and immediately cancel it. Since the worker is
         // busy with the first task, the second has not been started yet, so its
-        // LazyTask.start() should observe isCancelled==true with task==nil and
+        // LazyTask.start() should observe operation==nil with task==nil and
         // return nil -> operation never invoked.
         let token = executor.addTask {
             secondRan.set()
