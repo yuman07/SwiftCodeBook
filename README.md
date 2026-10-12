@@ -97,9 +97,25 @@ The project is organized into three parts:
 | `HashHandler` | Multi-algorithm hashing (MD5, SHA1, SHA256, SHA384, SHA512) with 64 KB streaming |
 | `MemoryCache` | Type-safe `NSCache` wrapper with automatic cleanup on memory warnings |
 | `SendablePassthroughSubject` | Thread-safe Combine `PassthroughSubject` using `NSRecursiveLock` |
-| `SerialTaskExecutor` | `AsyncStream`-based serial task queue with configurable priority and guaranteed execution order |
+| `SerialTaskExecutor` | `AsyncStream`-based serial task queue with configurable priority, guaranteed execution order, and awaitable `runTask` |
 | `WeakObject` | Generic weak reference wrapper for `AnyObject` types |
 | `XMLNodeParser` | Recursive XML node parsing with dictionary output |
+
+Use `try await executor.runTask { ... }` to enqueue async work in the same FIFO
+queue as `addTask` and receive its `Sendable` result. Operation errors propagate
+to the caller.
+
+```swift
+let value: String = try await executor.runTask {
+    "Hello"
+}
+```
+
+Cancelling the caller or calling `cancelAll()` before execution skips the
+operation and throws `CancellationError`. Running work is cancelled
+cooperatively; `runTask` waits for it to finish and returns its value or throws
+its error, just like awaiting `Task.value`.
+Do not await `runTask` from an operation on the same executor: that would deadlock.
 
 </details>
 

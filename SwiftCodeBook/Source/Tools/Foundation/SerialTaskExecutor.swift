@@ -10,17 +10,17 @@ import Foundation
 import os
 
 public final class SerialTaskExecutor: Sendable {
-    private let (stream, continuation) = AsyncStream<LazyTask>.makeStream()
+    private let (stream, continuation) = AsyncStream<any QueuedTask>.makeStream()
     private let worker: Task<Void, Never>
-    private let tokensMap = OSAllocatedUnfairLock(uncheckedState: [LazyTask: AnyCancellable]())
+    private let tokensMap = OSAllocatedUnfairLock(uncheckedState: [ObjectIdentifier: AnyCancellable]())
 
     public init(priority: TaskPriority? = nil) {
         let thisStream = stream
         let thisTokensMap = tokensMap
         worker = Task(priority: priority) {
             for await task in thisStream {
-                await task.start()?.value
-                thisTokensMap.withLockUnchecked { $0[task] = nil }
+                await task.run()
+                thisTokensMap.withLockUnchecked { $0[ObjectIdentifier(task)] = nil }
             }
         }
     }
@@ -33,11 +33,17 @@ public final class SerialTaskExecutor: Sendable {
 
     @discardableResult
     public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
+        enqueue(LazyTask(operation))
+    }
+
+    public func runTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) async throws -> Success {
         let task = LazyTask(operation)
-        let token = task.toAnyCancellable
-        tokensMap.withLockUnchecked { $0[task] = token }
-        continuation.yield(task)
-        return token
+        return try await withTaskCancellationHandler {
+            enqueue(task)
+            return try await task.waitForCompletion()
+        } onCancel: {
+            task.cancel()
+        }
     }
 
     public func cancelAll() {
@@ -47,13 +53,33 @@ public final class SerialTaskExecutor: Sendable {
         }
         for token in allTokens { token.cancel() }
     }
+
+    @discardableResult
+    private func enqueue(_ task: any QueuedTask) -> AnyCancellable {
+        let token = AnyCancellable { [weak task] in task?.cancel() }
+        tokensMap.withLockUnchecked { $0[ObjectIdentifier(task)] = token }
+        continuation.yield(task)
+        return token
+    }
 }
 
-private final class LazyTask: Sendable, Hashable {
-    private let operation: @Sendable () async -> Void
-    private let context = OSAllocatedUnfairLock<(task: Task<Void, Never>?, isCancelled: Bool)>(initialState: (nil, false))
+private protocol QueuedTask: AnyObject, Sendable {
+    func run() async
+    func cancel()
+}
 
-    init(_ operation: @Sendable @escaping () async -> Void) {
+private final class LazyTask<Success: Sendable>: QueuedTask {
+    private let operation: @Sendable () async throws -> Success
+    private let context = OSAllocatedUnfairLock(initialState: Context())
+
+    private struct Context {
+        var task: Task<Success, Error>?
+        var isCancelled = false
+        var result: Result<Success, Error>?
+        var continuation: CheckedContinuation<Success, Error>?
+    }
+
+    init(_ operation: @Sendable @escaping () async throws -> Success) {
         self.operation = operation
     }
     
@@ -61,34 +87,53 @@ private final class LazyTask: Sendable, Hashable {
         cancel()
     }
     
-    private func cancel() {
-        context.withLock { context in
+    func cancel() {
+        let task = context.withLock { context in
             context.isCancelled = true
-            context.task?.cancel()
+            return context.task
+        }
+        if let task {
+            task.cancel()
+        } else {
+            finish(.failure(CancellationError()))
         }
     }
-    
-    func start() -> Task<Void, Never>? {
+
+    func run() async {
+        guard let task = start() else { return }
+        finish(await task.result)
+    }
+
+    private func start() -> Task<Success, Error>? {
         context.withLock { context in
             if context.task == nil && context.isCancelled {
                 return nil
             }
-            let task = context.task ?? Task { await operation() }
+            let task = context.task ?? Task { try await operation() }
             context.task = task
-            if context.isCancelled { task.cancel() }
             return task
         }
     }
-    
-    var toAnyCancellable: AnyCancellable {
-        AnyCancellable { [weak self] in self?.cancel() }
+
+    func waitForCompletion() async throws -> Success {
+        try await withCheckedThrowingContinuation { continuation in
+            let result = context.withLock { context in
+                if context.result == nil {
+                    context.continuation = continuation
+                }
+                return context.result
+            }
+            if let result { continuation.resume(with: result) }
+        }
     }
 
-    static func == (lhs: LazyTask, rhs: LazyTask) -> Bool {
-        lhs === rhs
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self)) 
+    private func finish(_ result: Result<Success, Error>) {
+        let continuation = context.withLock { context -> CheckedContinuation<Success, Error>? in
+            guard context.result == nil else { return nil }
+            context.result = result
+            defer { context.continuation = nil }
+            return context.continuation
+        }
+        continuation?.resume(with: result)
     }
 }

@@ -97,9 +97,23 @@ SwiftCodeBook 是一个面向 Apple 平台开发的 Swift 工具库与教学参�
 | `HashHandler` | 多算法哈希（MD5、SHA1、SHA256、SHA384、SHA512），64 KB 流式处理 |
 | `MemoryCache` | 类型安全的 `NSCache` 封装，内存警告时自动清理 |
 | `SendablePassthroughSubject` | 基于 `NSRecursiveLock` 的线程安全 Combine `PassthroughSubject` |
-| `SerialTaskExecutor` | 基于 `AsyncStream` 的串行任务队列，支持配置任务优先级并保证执行顺序 |
+| `SerialTaskExecutor` | 基于 `AsyncStream` 的串行任务队列，支持配置任务优先级、保证执行顺序及可等待的 `runTask` |
 | `WeakObject` | 泛型弱引用包装器 |
 | `XMLNodeParser` | 递归 XML 节点解析，输出字典 |
+
+使用 `try await executor.runTask { ... }`，将异步操作加入与 `addTask` 共用的 FIFO
+队列，等待并获取其 `Sendable` 返回值。操作抛出的错误会原样传递给调用方。
+
+```swift
+let value: String = try await executor.runTask {
+    "Hello"
+}
+```
+
+调用方取消或调用 `cancelAll()` 时，尚未开始的任务会被跳过，并抛出 `CancellationError`；
+已经开始的任务会收到协作式取消信号，`runTask` 等它结束后返回其结果或抛出其错误，
+与等待 `Task.value` 一致。
+不要在同一 executor 正在执行的操作中再次 `await runTask`，否则会死锁。
 
 </details>
 

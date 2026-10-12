@@ -7,6 +7,7 @@
 //  Public surface under test:
 //    - SerialTaskExecutor.init(priority:)
 //    - SerialTaskExecutor.addTask(_:) -> AnyCancellable   (@discardableResult)
+//    - SerialTaskExecutor.runTask<Success: Sendable>(_:) async throws -> Success
 //    - SerialTaskExecutor.cancelAll()
 //    - deinit behavior (indirect)
 //
@@ -19,9 +20,13 @@ import Foundation
 import Testing
 @testable import SwiftCodeBook
 
-@Suite struct SerialTaskExecutorTests {
+@Suite(.timeLimit(.minutes(1))) struct SerialTaskExecutorTests {
 
     // MARK: - Test helpers (private, nested to avoid module-wide name collisions)
+
+    private enum OperationError: Error, Equatable {
+        case failed(Int)
+    }
 
     /// A thread-safe ordered recorder for observing task side effects.
     private final class Recorder: @unchecked Sendable {
@@ -235,6 +240,362 @@ import Testing
             }
         }
         #expect(ran.isSet)
+    }
+
+    // MARK: - runTask
+
+    @Test func runTaskWaitsForOperationToFinish() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let finished = Flag()
+        let returned = Flag()
+        defer { release.open() }
+
+        let caller = Task {
+            let result = try await executor.runTask {
+                started.open()
+                await release.wait()
+                finished.set()
+                return "completed"
+            }
+            returned.set()
+            return result
+        }
+
+        await started.wait()
+        await Self.drainCooperatively()
+        #expect(returned.isSet == false)
+        #expect(finished.isSet == false)
+
+        release.open()
+        let result = try await caller.value
+        #expect(result == "completed")
+        #expect(finished.isSet)
+        #expect(returned.isSet)
+    }
+
+    @Test(arguments: [nil, "value"])
+    func runTaskPreservesOptionalResult(_ expected: String?) async throws {
+        let executor = SerialTaskExecutor()
+        let result: String? = try await executor.runTask { expected }
+        #expect(result == expected)
+    }
+
+    @Test func runTaskPropagatesOperationErrorAndKeepsQueueUsable() async throws {
+        let executor = SerialTaskExecutor()
+
+        await #expect(throws: OperationError.failed(42)) {
+            _ = try await executor.runTask { () async throws -> String in
+                await Task.yield()
+                throw OperationError.failed(42)
+            }
+        }
+
+        let result = try await executor.runTask { "next" }
+        #expect(result == "next")
+    }
+
+    @Test func runTaskDoesNotWaitForLaterOperations() async throws {
+        let executor = SerialTaskExecutor()
+        let laterStarted = Gate()
+        let release = Gate()
+        let laterFinished = Flag()
+        defer { release.open() }
+
+        let result = try await executor.runTask {
+            executor.addTask {
+                laterStarted.open()
+                await release.wait()
+                laterFinished.set()
+            }
+            return "current"
+        }
+
+        #expect(result == "current")
+        await laterStarted.wait()
+        #expect(laterFinished.isSet == false)
+        release.open()
+        try await executor.runTask {}
+        #expect(laterFinished.isSet)
+    }
+
+    @Test func runTaskSharesFIFOQueueWithAddTask() async throws {
+        let executor = SerialTaskExecutor()
+        let recorder = Recorder()
+        let firstStarted = Gate()
+        let release = Gate()
+        defer { release.open() }
+
+        executor.addTask {
+            recorder.append(1)
+            firstStarted.open()
+            await release.wait()
+            recorder.append(2)
+        }
+        await firstStarted.wait()
+
+        // Start inline so runTask enqueues before the next addTask call.
+        let caller = Task.immediate {
+            try await executor.runTask {
+                recorder.append(3)
+                await Task.yield()
+                recorder.append(4)
+                return "first"
+            }
+        }
+        executor.addTask { recorder.append(5) }
+
+        release.open()
+        let firstResult = try await caller.value
+        let lastResult = try await executor.runTask {
+            recorder.append(6)
+            return 6
+        }
+        #expect(firstResult == "first")
+        #expect(lastResult == 6)
+        #expect(recorder.values == [1, 2, 3, 4, 5, 6])
+    }
+
+    @Test(arguments: [
+        nil,
+        TaskPriority.high,
+        TaskPriority.medium,
+        TaskPriority.low,
+        TaskPriority.background,
+        TaskPriority.utility,
+        TaskPriority.userInitiated
+    ])
+    func runTaskUsesConfiguredPriority(_ priority: TaskPriority?) async throws {
+        let expectedPriority = priority ?? Task.currentPriority
+        let executor = SerialTaskExecutor(priority: priority)
+
+        let actualPriority = try await executor.runTask { Task.currentPriority }
+        #expect(actualPriority == expectedPriority)
+    }
+
+    @Test func runTaskSkipsOperationWhenCallerIsAlreadyCancelled() async throws {
+        let executor = SerialTaskExecutor()
+        let release = Gate()
+        let ran = Flag()
+
+        let caller = Task {
+            await release.wait()
+            return try await executor.runTask {
+                ran.set()
+                return "unexpected"
+            }
+        }
+        caller.cancel()
+        release.open()
+        await #expect(throws: CancellationError.self) {
+            _ = try await caller.value
+        }
+        try await executor.runTask {}
+
+        #expect(ran.isSet == false)
+    }
+
+    @Test(arguments: [false, true])
+    func cancellingPendingRunTaskResumesCallerWithoutRunningOperation(cancelAll: Bool) async throws {
+        let executor = SerialTaskExecutor()
+        let firstStarted = Gate()
+        let release = Gate()
+        let ran = Flag()
+        defer { release.open() }
+
+        executor.addTask {
+            firstStarted.open()
+            await release.wait()
+            #expect(Task.isCancelled == cancelAll)
+        }
+        await firstStarted.wait()
+
+        // Start inline so cancellation happens after runTask has enqueued.
+        let caller = Task.immediate {
+            try await executor.runTask {
+                ran.set()
+                return "unexpected"
+            }
+        }
+
+        if cancelAll {
+            executor.cancelAll()
+        } else {
+            caller.cancel()
+        }
+        await #expect(throws: CancellationError.self) {
+            _ = try await caller.value
+        }
+        #expect(ran.isSet == false)
+
+        release.open()
+        try await executor.runTask {}
+        #expect(ran.isSet == false)
+    }
+
+    @Test(arguments: [false, true])
+    func cancellingRunningRunTaskWaitsForOperationToFinish(cancelAll: Bool) async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let cancelled = Gate()
+        let release = Gate()
+        let finished = Flag()
+        let returned = Flag()
+        defer { release.open() }
+
+        let caller = Task {
+            let result = try await executor.runTask {
+                await withTaskCancellationHandler {
+                    started.open()
+                    await release.wait()
+                    #expect(Task.isCancelled)
+                    finished.set()
+                    return "completed"
+                } onCancel: {
+                    cancelled.open()
+                }
+            }
+            returned.set()
+            return result
+        }
+
+        await started.wait()
+        if cancelAll {
+            executor.cancelAll()
+        } else {
+            caller.cancel()
+        }
+        await cancelled.wait()
+        await Self.drainCooperatively()
+        #expect(returned.isSet == false)
+        #expect(finished.isSet == false)
+
+        release.open()
+        let result = try await caller.value
+        #expect(result == "completed")
+        #expect(finished.isSet)
+        #expect(returned.isSet)
+    }
+
+    @Test(arguments: [false, true])
+    func cancellingRunningThrowingRunTaskPropagatesError(cancelAll: Bool) async {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        defer { release.open() }
+
+        let caller = Task {
+            try await executor.runTask {
+                started.open()
+                await release.wait()
+                try Task.checkCancellation()
+                return "unexpected"
+            }
+        }
+
+        await started.wait()
+        if cancelAll {
+            executor.cancelAll()
+        } else {
+            caller.cancel()
+        }
+        release.open()
+        await #expect(throws: CancellationError.self) {
+            _ = try await caller.value
+        }
+    }
+
+    @Test func runTaskCancellationHandlerCanCancelAll() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let cancelled = Gate()
+
+        let caller = Task {
+            try await executor.runTask {
+                await withTaskCancellationHandler {
+                    started.open()
+                    await cancelled.wait()
+                } onCancel: {
+                    executor.cancelAll()
+                    cancelled.open()
+                }
+            }
+        }
+
+        await started.wait()
+        caller.cancel()
+        try await caller.value
+    }
+
+    @Test func concurrentRunTaskCallsExecuteSeriallyAndExactlyOnce() async throws {
+        let executor = SerialTaskExecutor()
+        let total = 100
+        let recorder = Recorder()
+        let detector = OverlapDetector()
+
+        let results = try await withThrowingTaskGroup(of: Int.self) { group in
+            for i in 0..<total {
+                group.addTask {
+                    try await executor.runTask {
+                        detector.enter()
+                        await Task.yield()
+                        recorder.append(i)
+                        detector.leave()
+                        return i
+                    }
+                }
+            }
+            var results = Set<Int>()
+            for try await result in group {
+                results.insert(result)
+            }
+            return results
+        }
+
+        #expect(detector.peak == 1)
+        #expect(recorder.count == total)
+        #expect(Set(recorder.values) == Set(0..<total))
+        #expect(results == Set(0..<total))
+    }
+
+    @Test func runTaskHandlesRacingCancellationAndCompletion() async throws {
+        let executor = SerialTaskExecutor()
+        let total = 200
+        let counters = (0..<total).map { _ in Counter() }
+        let returned = Counter()
+
+        await withTaskGroup(of: Void.self) { group in
+            for i in 0..<total {
+                group.addTask {
+                    let caller = Task {
+                        try await executor.runTask {
+                            counters[i].increment()
+                            await Task.yield()
+                            return i
+                        }
+                    }
+                    await Task.yield()
+                    caller.cancel()
+                    executor.cancelAll()
+                    caller.cancel()
+                    switch await caller.result {
+                    case let .success(value):
+                        #expect(value == i)
+                    case let .failure(error):
+                        #expect(error is CancellationError)
+                    }
+                    returned.increment()
+                }
+            }
+        }
+
+        #expect(returned.value == total)
+        for counter in counters {
+            #expect(counter.value <= 1)
+        }
+        let result = try await executor.runTask { "still usable" }
+        #expect(result == "still usable")
     }
 
     // MARK: - Happy path: a single task runs
