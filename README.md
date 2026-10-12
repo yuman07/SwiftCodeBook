@@ -121,6 +121,11 @@ Cancellation is managed by each task, which also retains any token returned by
 `addTask`. The executor tracks unfinished tasks in an array and cancels them directly in
 `cancelAll()`. Discarding a returned token does not cancel the work.
 
+Batch cancellation and task admission share the same lock: work still queued
+when the batch is captured cannot start, while work enqueued afterward is
+unaffected by that batch. Cancelling pending work releases its captured values
+without waiting for the worker to reach it; releases happen outside the locks.
+
 </details>
 
 <details>

@@ -19,10 +19,20 @@ public final class SerialTaskExecutor: Sendable {
         let thisTasks = tasks
         worker = Task(priority: priority) {
             for await task in thisStream {
-                await task.run()
-                thisTasks.withLock { tasks in
-                    tasks.removeAll { $0 === task }
+                // Admission and cancelAll's queue snapshot share the same lock.
+                let shouldRun = thisTasks.withLock { tasks in
+                    tasks.contains { $0 === task }
                 }
+                guard shouldRun else {
+                    task.cancel()
+                    continue
+                }
+                await task.run()
+                let removedTask = thisTasks.withLock { tasks -> (any QueuedTask)? in
+                    guard let index = tasks.firstIndex(where: { $0 === task }) else { return nil }
+                    return tasks.remove(at: index)
+                }
+                withExtendedLifetime(removedTask) {}
             }
         }
     }
@@ -71,10 +81,11 @@ private protocol QueuedTask: AnyObject, Sendable {
 }
 
 private final class LazyTask<Success: Sendable>: QueuedTask {
-    private let operation: @Sendable () async throws -> Success
-    private let context = OSAllocatedUnfairLock(uncheckedState: Context())
+    private typealias Operation = @Sendable () async throws -> Success
+    private let context: OSAllocatedUnfairLock<Context>
 
     private struct Context {
+        var operation: Operation?
         var task: Task<Success, Error>?
         var isCancelled = false
         var result: Result<Success, Error>?
@@ -83,7 +94,7 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
 
     init(_ operation: @Sendable @escaping () async throws -> Success) {
-        self.operation = operation
+        context = OSAllocatedUnfairLock(uncheckedState: Context(operation: operation))
     }
     
     deinit {
@@ -100,14 +111,18 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
     
     func cancel() {
-        let task = context.withLock { context in
+        let (task, operation) = context.withLock { context in
             context.isCancelled = true
-            return context.task
+            defer { context.operation = nil }
+            return (context.task, context.operation)
         }
-        if let task {
-            task.cancel()
-        } else {
-            finish(.failure(CancellationError()))
+        // Releasing captures can run user code, so keep them alive past unlocking.
+        withExtendedLifetime(operation) {
+            if let task {
+                task.cancel()
+            } else {
+                finish(.failure(CancellationError()))
+            }
         }
     }
 
@@ -117,14 +132,16 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
 
     private func start() -> Task<Success, Error>? {
-        context.withLock { context in
-            if context.task == nil && context.isCancelled {
-                return nil
+        let (task, operation) = context.withLock { context -> (Task<Success, Error>?, Operation?) in
+            guard !context.isCancelled, let operation = context.operation else {
+                return (context.task, nil)
             }
-            let task = context.task ?? Task { try await operation() }
+            let task = Task { try await operation() }
             context.task = task
-            return task
+            context.operation = nil
+            return (task, operation)
         }
+        return withExtendedLifetime(operation) { task }
     }
 
     func waitForCompletion() async throws -> Success {

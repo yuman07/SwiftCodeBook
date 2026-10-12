@@ -16,6 +16,7 @@
 //
 
 import Combine
+import Dispatch
 import Foundation
 import Testing
 @testable import SwiftCodeBook
@@ -26,6 +27,18 @@ import Testing
 
     private enum OperationError: Error, Equatable {
         case failed(Int)
+    }
+
+    private final class ReleaseObserver: Sendable {
+        private let onDeinit: @Sendable () -> Void
+
+        init(_ onDeinit: @Sendable @escaping () -> Void) {
+            self.onDeinit = onDeinit
+        }
+
+        deinit {
+            onDeinit()
+        }
     }
 
     /// A thread-safe ordered recorder for observing task side effects.
@@ -295,6 +308,100 @@ import Testing
             #expect(capturedFlag == nil)
             token.cancel()
         }
+    }
+
+    @Test(arguments: [false, true])
+    func cancellingPendingTaskReleasesOperationCaptures(cancelAll: Bool) async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let ran = Flag()
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        weak var capturedFlag: Flag?
+        let token: AnyCancellable
+        do {
+            let flag = Flag()
+            capturedFlag = flag
+            token = executor.addTask {
+                flag.set()
+                ran.set()
+            }
+        }
+
+        if cancelAll {
+            executor.cancelAll()
+        } else {
+            token.cancel()
+        }
+        #expect(capturedFlag == nil)
+        #expect(ran.isSet == false)
+
+        release.open()
+        try await executor.runTask {}
+        #expect(ran.isSet == false)
+    }
+
+    @Test(arguments: [false, true])
+    func cancellingPendingRunTaskReleasesOperationCaptures(cancelAll: Bool) async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        weak var capturedFlag: Flag?
+        let caller: Task<String, Error>
+        do {
+            let flag = Flag()
+            capturedFlag = flag
+            caller = Task.immediate {
+                try await executor.runTask {
+                    flag.set()
+                    return "unexpected"
+                }
+            }
+        }
+
+        if cancelAll {
+            executor.cancelAll()
+        } else {
+            caller.cancel()
+        }
+        await #expect(throws: CancellationError.self) {
+            _ = try await caller.value
+        }
+        #expect(capturedFlag == nil)
+
+        release.open()
+        try await executor.runTask {}
+    }
+
+    @Test func finishedOperationReleasesCapturesOutsideLocks() async throws {
+        let executor = SerialTaskExecutor()
+        let released = Gate()
+        do {
+            let observer = ReleaseObserver {
+                executor.cancelAll()
+                executor.addTask { released.open() }
+            }
+            executor.addTask { withExtendedLifetime(observer) {} }
+        }
+        executor.addTask {}
+
+        await released.wait()
+        try await executor.runTask {}
     }
 
     // MARK: - runTask
@@ -886,6 +993,79 @@ import Testing
 
         // None of the cancelled batch should have recorded anything.
         #expect(recorder.count == 0)
+    }
+
+    @Test func cancelAllPreventsStartsWhileReleasingCancelledCaptures() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let capturedObjectReleased = Flag()
+        let cancellationReturned = Flag()
+        let newTaskReached = Flag()
+        let pendingTaskRan = Flag()
+        let barrier = DispatchSemaphore(value: 0)
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        do {
+            let observer = ReleaseObserver {
+                capturedObjectReleased.set()
+                guard !cancellationReturned.isSet else { return }
+                release.open()
+                executor.addTask { barrier.signal() }
+                // Keep cancelAll in progress while the worker drains the old batch.
+                if barrier.wait(timeout: .now() + 5) == .success {
+                    newTaskReached.set()
+                }
+            }
+            executor.addTask { withExtendedLifetime(observer) {} }
+        }
+        executor.addTask { pendingTaskRan.set() }
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            DispatchQueue.global(qos: .utility).async {
+                executor.cancelAll()
+                cancellationReturned.set()
+                continuation.resume()
+            }
+        }
+        #expect(capturedObjectReleased.isSet)
+        #expect(newTaskReached.isSet)
+        #expect(pendingTaskRan.isSet == false)
+
+        release.open()
+        try await executor.runTask {}
+        #expect(pendingTaskRan.isSet == false)
+    }
+
+    @Test func cancelAllPreventsQueuedWorkWhenRunningTaskFinishesOnCancellation() async throws {
+        let unexpectedRuns = Counter()
+        for _ in 0..<2_000 {
+            let executor = SerialTaskExecutor(priority: .high)
+            let started = Gate()
+            executor.addTask {
+                started.open()
+                while !Task.isCancelled { await Task.yield() }
+            }
+            await started.wait()
+            for _ in 0..<16 {
+                executor.addTask { unexpectedRuns.increment() }
+            }
+
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                DispatchQueue.global(qos: .background).async {
+                    executor.cancelAll()
+                    continuation.resume()
+                }
+            }
+            try await executor.runTask {}
+        }
+        #expect(unexpectedRuns.value == 0)
     }
 
     @Test func cancelAllOnEmptyExecutorIsSafeAndStillAllowsLaterTasks() async {

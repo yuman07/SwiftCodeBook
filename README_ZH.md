@@ -118,6 +118,10 @@ let value: String = try await executor.runTask {
 取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用 Array 记录未完成的任务，
 `cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。
 
+批量取消与任务获准执行共用同一把锁：取得取消快照时仍在排队的任务不会再启动，
+之后加入的任务不受该批取消影响。取消排队任务会及时释放其捕获的数据，无需等待 worker
+消费到该任务；释放操作在锁外执行。
+
 </details>
 
 <details>
