@@ -78,7 +78,7 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
         var task: Task<Success, Error>?
         var isCancelled = false
         var result: Result<Success, Error>?
-        var continuation: CheckedContinuation<Success, Error>?
+        var continuation: UnsafeContinuation<Success, Error>?
         var token: AnyCancellable?
     }
 
@@ -129,7 +129,7 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
 
     func waitForCompletion() async throws -> Success {
-        try await withCheckedThrowingContinuation { continuation in
+        try await withUnsafeThrowingContinuation { continuation in
             let result = context.withLock { context in
                 if context.result == nil {
                     context.continuation = continuation
@@ -141,7 +141,7 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     }
 
     private func finish(_ result: Result<Success, Error>) {
-        let continuation = context.withLock { context -> CheckedContinuation<Success, Error>? in
+        let continuation = context.withLock { context -> UnsafeContinuation<Success, Error>? in
             guard context.result == nil else { return nil }
             context.result = result
             defer { context.continuation = nil }
