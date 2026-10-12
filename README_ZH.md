@@ -115,6 +115,9 @@ let value: String = try await executor.runTask {
 与等待 `Task.value` 一致。
 不要在同一 executor 正在执行的操作中再次 `await runTask`，否则会死锁。
 
+取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用 Array 记录未完成的任务，
+`cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。
+
 </details>
 
 <details>

@@ -12,15 +12,17 @@ import os
 public final class SerialTaskExecutor: Sendable {
     private let (stream, continuation) = AsyncStream<any QueuedTask>.makeStream()
     private let worker: Task<Void, Never>
-    private let tokensMap = OSAllocatedUnfairLock(uncheckedState: [ObjectIdentifier: AnyCancellable]())
+    private let tasks = OSAllocatedUnfairLock(initialState: [any QueuedTask]())
 
     public init(priority: TaskPriority? = nil) {
         let thisStream = stream
-        let thisTokensMap = tokensMap
+        let thisTasks = tasks
         worker = Task(priority: priority) {
             for await task in thisStream {
                 await task.run()
-                thisTokensMap.withLockUnchecked { $0[ObjectIdentifier(task)] = nil }
+                thisTasks.withLock { tasks in
+                    tasks.removeAll { $0 === task }
+                }
             }
         }
     }
@@ -33,7 +35,10 @@ public final class SerialTaskExecutor: Sendable {
 
     @discardableResult
     public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
-        enqueue(LazyTask(operation))
+        let task = LazyTask(operation)
+        let token = task.toAnyCancellable
+        enqueue(task)
+        return token
     }
 
     public func runTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) async throws -> Success {
@@ -47,19 +52,16 @@ public final class SerialTaskExecutor: Sendable {
     }
 
     public func cancelAll() {
-        let allTokens = tokensMap.withLockUnchecked { dict in
-            defer { dict.removeAll() }
-            return Array(dict.values)
+        let allTasks = tasks.withLock { tasks in
+            defer { tasks.removeAll() }
+            return tasks
         }
-        for token in allTokens { token.cancel() }
+        for task in allTasks { task.cancel() }
     }
 
-    @discardableResult
-    private func enqueue(_ task: any QueuedTask) -> AnyCancellable {
-        let token = AnyCancellable { [weak task] in task?.cancel() }
-        tokensMap.withLockUnchecked { $0[ObjectIdentifier(task)] = token }
+    private func enqueue(_ task: any QueuedTask) {
+        tasks.withLock { $0.append(task) }
         continuation.yield(task)
-        return token
     }
 }
 
@@ -70,13 +72,14 @@ private protocol QueuedTask: AnyObject, Sendable {
 
 private final class LazyTask<Success: Sendable>: QueuedTask {
     private let operation: @Sendable () async throws -> Success
-    private let context = OSAllocatedUnfairLock(initialState: Context())
+    private let context = OSAllocatedUnfairLock(uncheckedState: Context())
 
     private struct Context {
         var task: Task<Success, Error>?
         var isCancelled = false
         var result: Result<Success, Error>?
         var continuation: CheckedContinuation<Success, Error>?
+        var token: AnyCancellable?
     }
 
     init(_ operation: @Sendable @escaping () async throws -> Success) {
@@ -85,6 +88,16 @@ private final class LazyTask<Success: Sendable>: QueuedTask {
     
     deinit {
         cancel()
+    }
+
+    var toAnyCancellable: AnyCancellable {
+        context.withLockUnchecked { context in
+            if let token = context.token { return token }
+            let token = AnyCancellable { [weak self] in self?.cancel() }
+            // Retain the token so discarding addTask's return value does not cancel work.
+            context.token = token
+            return token
+        }
     }
     
     func cancel() {

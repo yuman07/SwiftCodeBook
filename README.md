@@ -117,6 +117,10 @@ cooperatively; `runTask` waits for it to finish and returns its value or throws
 its error, just like awaiting `Task.value`.
 Do not await `runTask` from an operation on the same executor: that would deadlock.
 
+Cancellation is managed by each task, which also retains any token returned by
+`addTask`. The executor tracks unfinished tasks in an array and cancels them directly in
+`cancelAll()`. Discarding a returned token does not cancel the work.
+
 </details>
 
 <details>

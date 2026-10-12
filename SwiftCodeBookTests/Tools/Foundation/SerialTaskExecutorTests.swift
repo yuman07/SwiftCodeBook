@@ -242,6 +242,61 @@ import Testing
         #expect(ran.isSet)
     }
 
+    @Test func taskRetainsDiscardedCancellableUntilCompletion() async throws {
+        let executor = SerialTaskExecutor()
+        let firstStarted = Gate()
+        let releaseFirst = Gate()
+        let secondStarted = Gate()
+        let releaseSecond = Gate()
+        defer {
+            releaseFirst.open()
+            releaseSecond.open()
+        }
+
+        executor.addTask {
+            firstStarted.open()
+            await releaseFirst.wait()
+        }
+        await firstStarted.wait()
+
+        weak var retainedToken: AnyCancellable?
+        do {
+            let token = executor.addTask {
+                #expect(Task.isCancelled == false)
+                secondStarted.open()
+                await releaseSecond.wait()
+                #expect(Task.isCancelled == false)
+            }
+            retainedToken = token
+        }
+
+        #expect(retainedToken != nil)
+        releaseFirst.open()
+        await secondStarted.wait()
+        #expect(retainedToken != nil)
+
+        releaseSecond.open()
+        try await executor.runTask {}
+        #expect(retainedToken == nil)
+    }
+
+    @Test func retainedCancellableDoesNotRetainCompletedOperation() async throws {
+        let executor = SerialTaskExecutor()
+        weak var capturedFlag: Flag?
+        let token: AnyCancellable
+        do {
+            let flag = Flag()
+            capturedFlag = flag
+            token = executor.addTask { flag.set() }
+        }
+
+        try await executor.runTask {}
+        withExtendedLifetime(token) {
+            #expect(capturedFlag == nil)
+            token.cancel()
+        }
+    }
+
     // MARK: - runTask
 
     @Test func runTaskWaitsForOperationToFinish() async throws {
@@ -855,8 +910,7 @@ import Testing
         await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
             executor.addTask { cont.resume() }
         }
-        // Let the worker fully finish the iteration (clearing the tokens map)
-        // before cancelAll, exercising cancelAll over an already-drained map.
+        // Let the worker remove completed tasks before cancelling the empty queue.
         await Self.drainCooperatively(iterations: 200)
         executor.cancelAll()
 
