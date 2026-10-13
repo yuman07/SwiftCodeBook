@@ -52,7 +52,6 @@ public final class TaskQueue: Sendable {
                         return nil
                     }
                 }
-                // Leaving the group drains earlier work; later entries stay in the stream.
                 guard let barrier else { break }
                 await run(barrier)
             }
