@@ -105,24 +105,58 @@ import Darwin
         }
     }
 
+    private final class TaskCallers: @unchecked Sendable {
+        private let lock = NSLock()
+        private var _values: [(Int, Task<Int, Error>)] = []
+
+        func append(_ id: Int, task: Task<Int, Error>) {
+            lock.lock()
+            _values.append((id, task))
+            lock.unlock()
+        }
+
+        var values: [(Int, Task<Int, Error>)] {
+            lock.lock()
+            defer { lock.unlock() }
+            return _values
+        }
+    }
+
     /// Tracks how many operations are simultaneously "active" and remembers the
     /// peak, which must never exceed the configured concurrency limit.
     private final class OverlapDetector: @unchecked Sendable {
         private let lock = NSLock()
         private var active = 0
         private var maxActive = 0
+        private var activeBarriers = 0
+        private var overlaps = 0
 
-        func enter() {
+        func enter(isBarrier: Bool = false) {
             lock.lock()
+            if activeBarriers > 0 || (isBarrier && active > 0) { overlaps += 1 }
+            if isBarrier { activeBarriers += 1 }
             active += 1
             maxActive = max(maxActive, active)
             lock.unlock()
         }
 
-        func leave() {
+        func leave(isBarrier: Bool = false) {
             lock.lock()
             active -= 1
+            if isBarrier { activeBarriers -= 1 }
             lock.unlock()
+        }
+
+        var activeCount: Int {
+            lock.lock()
+            defer { lock.unlock() }
+            return active
+        }
+
+        var barrierOverlaps: Int {
+            lock.lock()
+            defer { lock.unlock() }
+            return overlaps
         }
 
         var peak: Int {
@@ -184,12 +218,34 @@ import Darwin
         }
     }
 
-    // A bounded cooperative quiescence barrier: yields a fixed number of times so
-    // any already-scheduled cooperative work has a chance to run. Used only for
-    // negative assertions ("X must NOT have happened"); it never gates a positive
-    // result, so it cannot introduce a hang or a false pass.
+    // Give pending work opportunities to expose ordering violations. Positive
+    // completion and ordering assertions must still use explicit gates or barriers.
     private static func drainCooperatively(iterations: Int = 2_000) async {
         for _ in 0..<iterations { await Task.yield() }
+    }
+
+    // Each producer gets a distinct OS thread, and all producers are ready before
+    // submissions begin. No cooperative-executor thread blocks on the start gate.
+    private static func runOnThreads(count: Int, _ body: @Sendable @escaping (Int) -> Void) async {
+        await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
+            let ready = DispatchGroup()
+            let finished = DispatchGroup()
+            let start = DispatchSemaphore(value: 0)
+            for producer in 0..<count {
+                ready.enter()
+                finished.enter()
+                Thread.detachNewThread {
+                    defer { finished.leave() }
+                    ready.leave()
+                    start.wait()
+                    body(producer)
+                }
+            }
+            ready.notify(queue: .global(qos: .userInitiated)) {
+                for _ in 0..<count { start.signal() }
+            }
+            finished.notify(queue: .global(qos: .userInitiated)) { completed.resume() }
+        }
     }
 
     // MARK: - Initialization
@@ -428,7 +484,9 @@ import Darwin
     @Test(arguments: [0, 1, 3], [false, true])
     func barrierWaitsForEarlierTasksAndBlocksLaterTasks(_ maxConcurrentTasks: Int, useRunTask: Bool) async throws {
         let queue = TaskQueue(maxConcurrentTasks: maxConcurrentTasks)
-        let batchSize = 6
+        let producerCount = 4
+        let tasksPerProducer = 16
+        let batchSize = producerCount * tasksPerProducer
         let expectedConcurrency = maxConcurrentTasks > 0 ? min(maxConcurrentTasks, batchSize) : batchSize
         let earlierStarted = Counter()
         let earlierReady = Gate()
@@ -448,12 +506,14 @@ import Darwin
             releaseLater.open()
         }
 
-        for _ in 0..<batchSize {
-            queue.addTask {
-                earlierStarted.increment()
-                if earlierStarted.value >= expectedConcurrency { earlierReady.open() }
-                await releaseEarlier.wait()
-                earlierFinished.increment()
+        await Self.runOnThreads(count: producerCount) { _ in
+            for _ in 0..<tasksPerProducer {
+                queue.addTask {
+                    earlierStarted.increment()
+                    if earlierStarted.value >= expectedConcurrency { earlierReady.open() }
+                    await releaseEarlier.wait()
+                    earlierFinished.increment()
+                }
             }
         }
         await earlierReady.wait()
@@ -472,13 +532,16 @@ import Darwin
             caller = nil
             queue.addTask(isBarrier: true) { _ = await operation() }
         }
-        for id in 0..<batchSize {
-            queue.addTask {
-                #expect(barrierFinished.isSet)
-                laterStarted.increment()
-                if laterStarted.value >= expectedConcurrency { laterReady.open() }
-                await releaseLater.wait()
-                laterFinished[id].open()
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                queue.addTask {
+                    #expect(barrierFinished.isSet)
+                    laterStarted.increment()
+                    if laterStarted.value >= expectedConcurrency { laterReady.open() }
+                    await releaseLater.wait()
+                    laterFinished[id].open()
+                }
             }
         }
 
@@ -1819,6 +1882,121 @@ import Darwin
 
     // MARK: - Concurrency stress: many concurrent producers
 
+    @Test(arguments: [0, 1, 4])
+    func multithreadedMixedSubmissionsRespectConcurrencyLimit(_ maxConcurrentTasks: Int) async throws {
+        let queue = TaskQueue(maxConcurrentTasks: maxConcurrentTasks)
+        let producerCount = 4
+        let tasksPerProducer = 64
+        let total = producerCount * tasksPerProducer
+        let expectedConcurrency = maxConcurrentTasks > 0 ? min(maxConcurrentTasks, total) : total
+        let started = Counter()
+        let saturated = Gate()
+        let release = Gate()
+        let recorder = Recorder()
+        let detector = OverlapDetector()
+        let callers = TaskCallers()
+        defer { release.open() }
+
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                let operation: @Sendable () async -> Int = {
+                    detector.enter()
+                    defer { detector.leave() }
+                    started.increment()
+                    if started.value >= expectedConcurrency { saturated.open() }
+                    await release.wait()
+                    await Task.yield()
+                    recorder.append(id)
+                    return id
+                }
+                if id.isMultiple(of: 2) {
+                    queue.addTask { _ = await operation() }
+                } else {
+                    let caller = Task.immediate { try await queue.runTask(operation) }
+                    callers.append(id, task: caller)
+                }
+            }
+        }
+
+        await saturated.wait()
+        await Self.drainCooperatively()
+        #expect(started.value == expectedConcurrency)
+        #expect(detector.peak == expectedConcurrency)
+        release.open()
+        try await queue.runTask(isBarrier: true) {}
+
+        let submittedCallers = callers.values
+        #expect(submittedCallers.count == total / 2)
+        #expect(Set(submittedCallers.map(\.0)) == Set(stride(from: 1, to: total, by: 2)))
+        for (id, caller) in submittedCallers {
+            let result = try await caller.value
+            #expect(result == id)
+        }
+        #expect(recorder.count == total)
+        #expect(Set(recorder.values) == Set(0..<total))
+        #expect(detector.peak == expectedConcurrency)
+        #expect(detector.activeCount == 0)
+    }
+
+    @Test(arguments: [0, 1, 4])
+    func multithreadedBarriersRemainExclusiveAndOrdered(_ maxConcurrentTasks: Int) async throws {
+        let queue = TaskQueue(maxConcurrentTasks: maxConcurrentTasks)
+        let producerCount = 4
+        let tasksPerProducer = 64
+        let total = producerCount * tasksPerProducer
+        let completed = (0..<producerCount).map { _ in Counter() }
+        let completedBarriers = (0..<producerCount).map { _ in Counter() }
+        let recorder = Recorder()
+        let detector = OverlapDetector()
+        let callers = TaskCallers()
+
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                let isBarrier = index % 8 == 7
+                let operation: @Sendable () async -> Int = {
+                    detector.enter(isBarrier: isBarrier)
+                    defer { detector.leave(isBarrier: isBarrier) }
+                    #expect(completedBarriers[producer].value == index / 8)
+                    if isBarrier { #expect(completed[producer].value == index) }
+                    await Task.yield()
+                    recorder.append(id)
+                    completed[producer].increment()
+                    if isBarrier { completedBarriers[producer].increment() }
+                    return id
+                }
+                if id.isMultiple(of: 3) {
+                    let caller = Task.immediate {
+                        try await queue.runTask(isBarrier: isBarrier, operation)
+                    }
+                    callers.append(id, task: caller)
+                } else {
+                    queue.addTask(isBarrier: isBarrier) { _ = await operation() }
+                }
+            }
+        }
+        try await queue.runTask(isBarrier: true) {}
+
+        let submittedCallers = callers.values
+        let expectedIDs = Set((0..<total).filter { $0.isMultiple(of: 3) })
+        #expect(submittedCallers.count == expectedIDs.count)
+        #expect(Set(submittedCallers.map(\.0)) == expectedIDs)
+        for (id, caller) in submittedCallers {
+            let result = try await caller.value
+            #expect(result == id)
+        }
+        #expect(recorder.count == total)
+        #expect(Set(recorder.values) == Set(0..<total))
+        #expect(detector.barrierOverlaps == 0)
+        #expect(detector.activeCount == 0)
+        if maxConcurrentTasks > 0 { #expect(detector.peak <= maxConcurrentTasks) }
+        for producer in 0..<producerCount {
+            #expect(completed[producer].value == tasksPerProducer)
+            #expect(completedBarriers[producer].value == tasksPerProducer / 8)
+        }
+    }
+
     @Test func multithreadedProducersPreserveOrderWithoutOverlappingOperations() async throws {
         let executor = TaskQueue()
         let producerCount = 8
@@ -1826,19 +2004,14 @@ import Darwin
         let recorder = Recorder()
         let detector = OverlapDetector()
 
-        await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
-            DispatchQueue.global(qos: .userInitiated).async {
-                DispatchQueue.concurrentPerform(iterations: producerCount) { producer in
-                    for index in 0..<tasksPerProducer {
-                        executor.addTask {
-                            detector.enter()
-                            defer { detector.leave() }
-                            await Task.yield()
-                            recorder.append(producer * tasksPerProducer + index)
-                        }
-                    }
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                executor.addTask {
+                    detector.enter()
+                    defer { detector.leave() }
+                    await Task.yield()
+                    recorder.append(producer * tasksPerProducer + index)
                 }
-                completed.resume()
             }
         }
         try await executor.runTask {}
@@ -1855,46 +2028,100 @@ import Darwin
         }
     }
 
-    @Test func multithreadedCancellationDoesNotAffectLaterSubmissions() async throws {
-        let executor = TaskQueue()
+    @Test(arguments: [0, 1, 4])
+    func multithreadedCancellationDoesNotAffectLaterSubmissions(_ maxConcurrentTasks: Int) async throws {
+        let executor = TaskQueue(maxConcurrentTasks: maxConcurrentTasks)
+        let producerCount = 8
+        let tasksPerProducer = 128
+        let total = producerCount * tasksPerProducer
         let started = Gate()
         let release = Gate()
+        let firstFinished = Flag()
         let cancelledRuns = Counter()
         let recorder = Recorder()
+        let cancelledCallers = TaskCallers()
+        let freshCallers = TaskCallers()
         defer { release.open() }
 
-        executor.addTask {
+        executor.addTask(isBarrier: true) {
             started.open()
             await release.wait()
+            #expect(Task.isCancelled)
+            firstFinished.set()
         }
         await started.wait()
 
-        await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
-            DispatchQueue.global(qos: .userInitiated).async {
-                DispatchQueue.concurrentPerform(iterations: 8) { producer in
-                    for index in 0..<250 {
-                        let token = executor.addTask { cancelledRuns.increment() }
-                        if index.isMultiple(of: 2) { token.cancel() }
-                        if (producer + index).isMultiple(of: 5) { executor.cancelAll() }
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                let isBarrier = index.isMultiple(of: 7)
+                if id.isMultiple(of: 2) {
+                    let token = executor.addTask(isBarrier: isBarrier) { cancelledRuns.increment() }
+                    if index.isMultiple(of: 4) { token.cancel() }
+                } else {
+                    let caller = Task.immediate {
+                        try await executor.runTask(isBarrier: isBarrier) {
+                            cancelledRuns.increment()
+                            return id
+                        }
                     }
+                    cancelledCallers.append(id, task: caller)
+                    if index.isMultiple(of: 3) { caller.cancel() }
                 }
-                completed.resume()
+                if (producer + index).isMultiple(of: 5) { executor.cancelAll() }
             }
         }
         executor.cancelAll()
+        #expect(cancelledCallers.values.count == total / 2)
+        for (_, caller) in cancelledCallers.values {
+            await #expect(throws: CancellationError.self) { try await caller.value }
+        }
 
-        for index in 0..<250 {
-            executor.addTask {
-                #expect(Task.isCancelled == false)
-                recorder.append(index)
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                let isBarrier = index.isMultiple(of: 11)
+                let operation: @Sendable () async -> Int = {
+                    #expect(firstFinished.isSet)
+                    #expect(Task.isCancelled == false)
+                    await Task.yield()
+                    recorder.append(id)
+                    return id
+                }
+                if id.isMultiple(of: 2) {
+                    executor.addTask(isBarrier: isBarrier) { _ = await operation() }
+                } else {
+                    let caller = Task.immediate {
+                        try await executor.runTask(isBarrier: isBarrier, operation)
+                    }
+                    freshCallers.append(id, task: caller)
+                }
             }
         }
+        await Self.drainCooperatively()
+        #expect(recorder.count == 0)
         release.open()
-        let result = try await executor.runTask { "completed" }
+        let result = try await executor.runTask(isBarrier: true) { "completed" }
 
         #expect(result == "completed")
         #expect(cancelledRuns.value == 0)
-        #expect(recorder.values == Array(0..<250))
+        #expect(recorder.count == total)
+        #expect(Set(recorder.values) == Set(0..<total))
+        let submittedCallers = freshCallers.values
+        #expect(submittedCallers.count == total / 2)
+        #expect(Set(submittedCallers.map(\.0)) == Set(stride(from: 1, to: total, by: 2)))
+        for (id, caller) in submittedCallers {
+            let value = try await caller.value
+            #expect(value == id)
+        }
+        if maxConcurrentTasks == 1 {
+            for producer in 0..<producerCount {
+                let indices = recorder.values
+                    .filter { $0 / tasksPerProducer == producer }
+                    .map { $0 % tasksPerProducer }
+                #expect(indices == Array(0..<tasksPerProducer))
+            }
+        }
     }
 
     @Test(arguments: [0, 1, 4])
@@ -1905,40 +2132,40 @@ import Darwin
         let total = producerCount * tasksPerProducer
         let counters = (0..<total).map { _ in Counter() }
         let detector = OverlapDetector()
-        let (outcomes, continuation) = AsyncStream<(Int, Result<Int, Error>)>.makeStream()
-        let completed = DispatchGroup()
+        let callers = TaskCallers()
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            DispatchQueue.concurrentPerform(iterations: producerCount) { producer in
-                for index in 0..<tasksPerProducer {
-                    let id = producer * tasksPerProducer + index
-                    completed.enter()
-                    let caller = Task {
-                        try await executor.runTask {
-                            detector.enter()
-                            defer { detector.leave() }
+        await Self.runOnThreads(count: producerCount) { producer in
+            for index in 0..<tasksPerProducer {
+                let id = producer * tasksPerProducer + index
+                let isBarrier = id.isMultiple(of: 11)
+                let caller = Task.immediate {
+                    try await executor.runTask(isBarrier: isBarrier) {
+                        detector.enter(isBarrier: isBarrier)
+                        defer { detector.leave(isBarrier: isBarrier) }
+                        return try await withTaskCancellationHandler {
                             counters[id].increment()
                             await Task.yield()
+                            try Task.checkCancellation()
                             if id.isMultiple(of: 7) { throw OperationError.failed(id) }
                             return id
+                        } onCancel: {
+                            if id.isMultiple(of: 13) { executor.cancelAll() }
                         }
                     }
-                    if id.isMultiple(of: 3) { caller.cancel() }
-                    if id.isMultiple(of: 5) { executor.cancelAll() }
-                    Task {
-                        continuation.yield((id, await caller.result))
-                        completed.leave()
-                    }
                 }
+                callers.append(id, task: caller)
+                if id.isMultiple(of: 3) { caller.cancel() }
+                if id.isMultiple(of: 5) { executor.cancelAll() }
             }
-            completed.notify(queue: .global()) { continuation.finish() }
         }
 
+        let submittedCallers = callers.values
+        #expect(submittedCallers.count == total)
         var received = Set<Int>()
-        for await (id, result) in outcomes {
+        for (id, caller) in submittedCallers {
             let inserted = received.insert(id).inserted
             #expect(inserted)
-            switch result {
+            switch await caller.result {
             case let .success(value):
                 #expect(value == id)
                 #expect(counters[id].value == 1)
@@ -1951,12 +2178,14 @@ import Darwin
             #expect(counter.value <= 1)
         }
 
-        let result = try await executor.runTask {
+        let result = try await executor.runTask(isBarrier: true) {
             detector.enter()
             defer { detector.leave() }
             return "still usable"
         }
         #expect(result == "still usable")
+        #expect(detector.barrierOverlaps == 0)
+        #expect(detector.activeCount == 0)
         #expect(detector.peak >= 1)
         if maxConcurrentTasks > 0 {
             #expect(detector.peak <= maxConcurrentTasks)
@@ -2065,23 +2294,22 @@ import Darwin
         let b = TaskQueue()
         let ra = Recorder()
         let rb = Recorder()
+        let firstFinished = Gate()
+        let secondFinished = Gate()
 
         await confirmation(expectedCount: 2) { confirm in
-            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
-                let done = Recorder()
-                a.addTask {
-                    ra.append(1)
-                    confirm()
-                    done.append(1)
-                    if done.count == 2 { cont.resume() }
-                }
-                b.addTask {
-                    rb.append(2)
-                    confirm()
-                    done.append(2)
-                    if done.count == 2 { cont.resume() }
-                }
+            a.addTask {
+                ra.append(1)
+                confirm()
+                firstFinished.open()
             }
+            b.addTask {
+                rb.append(2)
+                confirm()
+                secondFinished.open()
+            }
+            await firstFinished.wait()
+            await secondFinished.wait()
         }
 
         #expect(ra.values == [1])
