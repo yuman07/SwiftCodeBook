@@ -113,7 +113,10 @@ let value: String = try await executor.runTask {
 调用方取消或调用 `cancelAll()` 时，尚未开始的任务会被跳过，并抛出 `CancellationError`；
 已经开始的任务会收到协作式取消信号，`runTask` 等它结束后返回其结果或抛出其错误，
 与等待 `Task.value` 一致。
-不要在同一 executor 正在执行的操作中再次 `await runTask`，否则会死锁。
+在同一 executor 正在执行的操作中直接再次 `await runTask` 属于编程错误，会触发
+precondition failure，与串行 `DispatchQueue` 的同步重入处理方向一致。检测按当前
+Swift Task 的身份进行，跨挂起和 actor 切换仍有效；不会检测经由其他 Task 或 executor
+形成的间接循环等待。嵌套调用 `addTask` 仍可正常排队。
 
 取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用按对象身份比较的 Set
 记录未完成的任务，`cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。

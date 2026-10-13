@@ -115,7 +115,11 @@ Cancelling the caller or calling `cancelAll()` before execution skips the
 operation and throws `CancellationError`. Running work is cancelled
 cooperatively; `runTask` waits for it to finish and returns its value or throws
 its error, just like awaiting `Task.value`.
-Do not await `runTask` from an operation on the same executor: that would deadlock.
+Awaiting `runTask` directly from the same executor's running operation is a
+programming error and triggers a precondition failure, like synchronous reentry
+into a serial `DispatchQueue`. The check follows the running Swift Task across
+suspension and actor hops; it does not detect indirect wait cycles through other
+Tasks or executors. Nested `addTask` calls still enqueue work normally.
 
 Cancellation is managed by each task, which also retains any token returned by
 `addTask`. The executor tracks unfinished tasks in an identity-based `Set` and

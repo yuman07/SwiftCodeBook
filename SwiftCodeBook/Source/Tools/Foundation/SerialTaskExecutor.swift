@@ -13,6 +13,7 @@ public final class SerialTaskExecutor: Sendable {
     private let (stream, continuation) = AsyncStream<TaskEntry>.makeStream()
     private let worker: Task<Void, Never>
     private let tasks = OSAllocatedUnfairLock(initialState: Set<TaskEntry>())
+    private let runningTask = OSAllocatedUnfairLock(uncheckedState: UnsafeCurrentTask?.none)
 
     public init(priority: TaskPriority? = nil) {
         worker = Task(priority: priority) { [stream, tasks] in
@@ -36,14 +37,19 @@ public final class SerialTaskExecutor: Sendable {
 
     @discardableResult
     public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
-        let task = LazyTask(operation)
+        let task = makeTask(operation)
         let token = task.toAnyCancellable
         enqueue(task)
         return token
     }
 
     public func runTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) async throws -> Success {
-        let task = LazyTask(operation)
+        try Task.checkCancellation()
+        let isReentrant = withUnsafeCurrentTask { current in
+            runningTask.withLockUnchecked { $0 != nil && $0 == current }
+        }
+        precondition(!isReentrant, "SerialTaskExecutor.runTask cannot be awaited from an operation running on the same executor.")
+        let task = makeTask(operation)
         return try await withTaskCancellationHandler {
             enqueue(task)
             return try await task.waitForCompletion()
@@ -64,6 +70,16 @@ public final class SerialTaskExecutor: Sendable {
         let entry = TaskEntry(task: task)
         tasks.withLock { _ = $0.insert(entry) }
         continuation.yield(entry)
+    }
+
+    private func makeTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) -> LazyTask<Success> {
+        LazyTask { [runningTask] in
+            try await withUnsafeCurrentTask { task in
+                runningTask.withLockUnchecked { $0 = task }
+                defer { runningTask.withLockUnchecked { $0 = nil } }
+                return try await operation()
+            }
+        }
     }
 }
 

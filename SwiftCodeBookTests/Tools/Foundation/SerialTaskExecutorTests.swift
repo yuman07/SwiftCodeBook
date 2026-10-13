@@ -21,6 +21,10 @@ import Foundation
 import Testing
 @testable import SwiftCodeBook
 
+#if os(macOS)
+import Darwin
+#endif
+
 @Suite(.timeLimit(.minutes(1))) struct SerialTaskExecutorTests {
 
     // MARK: - Test helpers (private, nested to avoid module-wide name collisions)
@@ -405,6 +409,85 @@ import Testing
     }
 
     // MARK: - runTask
+
+    #if os(macOS)
+    @Test func reentrantRunTaskFromAddTaskFailsFast() async {
+        let result = await #expect(processExitsWith: .failure, observing: [\.standardErrorContent]) {
+            // A deadlock must fail this test instead of hanging the test host.
+            DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+                Darwin._exit(EXIT_SUCCESS)
+            }
+            let executor = SerialTaskExecutor()
+            await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
+                executor.addTask {
+                    do {
+                        _ = try await executor.runTask { "unexpected" }
+                    } catch {
+                        Issue.record(error)
+                        Darwin._exit(EXIT_SUCCESS)
+                    }
+                    completed.resume()
+                }
+            }
+        }
+        #expect(result != nil)
+        #if DEBUG
+        if let result {
+            let message = String(decoding: result.standardErrorContent, as: UTF8.self)
+            #expect(message.contains("SerialTaskExecutor.runTask cannot be awaited from an operation running on the same executor."))
+        }
+        #endif
+    }
+
+    @Test func reentrantRunTaskFromRunTaskFailsFastAfterActorHop() async {
+        let result = await #expect(processExitsWith: .failure, observing: [\.standardErrorContent]) {
+            DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+                Darwin._exit(EXIT_SUCCESS)
+            }
+            let executor = SerialTaskExecutor()
+            let reenter: @MainActor @Sendable () async throws -> String = {
+                try await executor.runTask { "unexpected" }
+            }
+            do {
+                _ = try await executor.runTask {
+                    await Task.yield()
+                    return try await reenter()
+                }
+            } catch {
+                Issue.record(error)
+                Darwin._exit(EXIT_SUCCESS)
+            }
+        }
+        #expect(result != nil)
+        #if DEBUG
+        if let result {
+            let message = String(decoding: result.standardErrorContent, as: UTF8.self)
+            #expect(message.contains("SerialTaskExecutor.runTask cannot be awaited from an operation running on the same executor."))
+        }
+        #endif
+    }
+    #endif
+
+    @Test func runTaskCanAwaitAnotherExecutor() async throws {
+        let first = SerialTaskExecutor()
+        let second = SerialTaskExecutor()
+        let result = try await first.runTask {
+            await Task.yield()
+            return try await second.runTask { "completed" }
+        }
+        #expect(result == "completed")
+    }
+
+    @Test func independentTaskCanQueueRunTaskFromRunningOperation() async throws {
+        let executor = SerialTaskExecutor()
+        let caller = try await executor.runTask {
+            Task.immediate {
+                try await executor.runTask { "completed" }
+            }
+        }
+        let result = try await caller.value
+        #expect(result == "completed")
+    }
 
     @Test func runTaskWaitsForOperationToFinish() async throws {
         let executor = SerialTaskExecutor()
