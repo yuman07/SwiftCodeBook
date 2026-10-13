@@ -126,6 +126,11 @@ Cancellation is managed by each task, which also retains any token returned by
 cancels them directly in `cancelAll()`. Discarding a returned token does not
 cancel the work. FIFO execution is still controlled by `AsyncStream`, not the set.
 
+The executor supports concurrent submissions and cancellation from multiple
+threads. Sequential submissions by one caller retain their order; simultaneous
+submissions by different callers have no predefined order. Submitted operations
+run one at a time, including across their suspension points.
+
 Batch cancellation and task admission share the same lock: work still queued
 when the batch is captured cannot start, while work enqueued afterward is
 unaffected by that batch. Cancelling pending work releases its captured values

@@ -1306,6 +1306,146 @@ import Darwin
 
     // MARK: - Concurrency stress: many concurrent producers
 
+    @Test func multithreadedProducersPreserveOrderWithoutOverlappingOperations() async throws {
+        let executor = SerialTaskExecutor()
+        let producerCount = 8
+        let tasksPerProducer = 250
+        let recorder = Recorder()
+        let detector = OverlapDetector()
+
+        await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.concurrentPerform(iterations: producerCount) { producer in
+                    for index in 0..<tasksPerProducer {
+                        executor.addTask {
+                            detector.enter()
+                            defer { detector.leave() }
+                            await Task.yield()
+                            recorder.append(producer * tasksPerProducer + index)
+                        }
+                    }
+                }
+                completed.resume()
+            }
+        }
+        try await executor.runTask {}
+
+        let values = recorder.values
+        #expect(values.count == producerCount * tasksPerProducer)
+        #expect(Set(values) == Set(0..<(producerCount * tasksPerProducer)))
+        #expect(detector.peak == 1)
+        for producer in 0..<producerCount {
+            let indices = values
+                .filter { $0 / tasksPerProducer == producer }
+                .map { $0 % tasksPerProducer }
+            #expect(indices == Array(0..<tasksPerProducer))
+        }
+    }
+
+    @Test func multithreadedCancellationDoesNotAffectLaterSubmissions() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let cancelledRuns = Counter()
+        let recorder = Recorder()
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        await withCheckedContinuation { (completed: CheckedContinuation<Void, Never>) in
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.concurrentPerform(iterations: 8) { producer in
+                    for index in 0..<250 {
+                        let token = executor.addTask { cancelledRuns.increment() }
+                        if index.isMultiple(of: 2) { token.cancel() }
+                        if (producer + index).isMultiple(of: 5) { executor.cancelAll() }
+                    }
+                }
+                completed.resume()
+            }
+        }
+        executor.cancelAll()
+
+        for index in 0..<250 {
+            executor.addTask {
+                #expect(Task.isCancelled == false)
+                recorder.append(index)
+            }
+        }
+        release.open()
+        let result = try await executor.runTask { "completed" }
+
+        #expect(result == "completed")
+        #expect(cancelledRuns.value == 0)
+        #expect(recorder.values == Array(0..<250))
+    }
+
+    @Test func multithreadedRunTaskCallsCompleteWithTheirOwnResults() async throws {
+        let executor = SerialTaskExecutor()
+        let producerCount = 8
+        let tasksPerProducer = 64
+        let total = producerCount * tasksPerProducer
+        let counters = (0..<total).map { _ in Counter() }
+        let detector = OverlapDetector()
+        let (outcomes, continuation) = AsyncStream<(Int, Result<Int, Error>)>.makeStream()
+        let completed = DispatchGroup()
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.concurrentPerform(iterations: producerCount) { producer in
+                for index in 0..<tasksPerProducer {
+                    let id = producer * tasksPerProducer + index
+                    completed.enter()
+                    let caller = Task {
+                        try await executor.runTask {
+                            detector.enter()
+                            defer { detector.leave() }
+                            counters[id].increment()
+                            await Task.yield()
+                            if id.isMultiple(of: 7) { throw OperationError.failed(id) }
+                            return id
+                        }
+                    }
+                    if id.isMultiple(of: 3) { caller.cancel() }
+                    if id.isMultiple(of: 5) { executor.cancelAll() }
+                    Task {
+                        continuation.yield((id, await caller.result))
+                        completed.leave()
+                    }
+                }
+            }
+            completed.notify(queue: .global()) { continuation.finish() }
+        }
+
+        var received = Set<Int>()
+        for await (id, result) in outcomes {
+            let inserted = received.insert(id).inserted
+            #expect(inserted)
+            switch result {
+            case let .success(value):
+                #expect(value == id)
+                #expect(counters[id].value == 1)
+            case let .failure(error):
+                #expect(error is CancellationError || (error as? OperationError) == .failed(id))
+            }
+        }
+        #expect(received == Set(0..<total))
+        for counter in counters {
+            #expect(counter.value <= 1)
+        }
+
+        let result = try await executor.runTask {
+            detector.enter()
+            defer { detector.leave() }
+            return "still usable"
+        }
+        #expect(result == "still usable")
+        #expect(detector.peak == 1)
+    }
+
     /// Add tasks concurrently from many child tasks; the executor must run all
     /// of them exactly once with no lost updates and no crash.
     @Test func concurrentAddTaskRunsEveryTaskExactlyOnce() async {
