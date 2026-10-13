@@ -118,8 +118,9 @@ its error, just like awaiting `Task.value`.
 Do not await `runTask` from an operation on the same executor: that would deadlock.
 
 Cancellation is managed by each task, which also retains any token returned by
-`addTask`. The executor tracks unfinished tasks in an array and cancels them directly in
-`cancelAll()`. Discarding a returned token does not cancel the work.
+`addTask`. The executor tracks unfinished tasks in an identity-based `Set` and
+cancels them directly in `cancelAll()`. Discarding a returned token does not
+cancel the work. FIFO execution is still controlled by `AsyncStream`, not the set.
 
 Batch cancellation and task admission share the same lock: work still queued
 when the batch is captured cannot start, while work enqueued afterward is

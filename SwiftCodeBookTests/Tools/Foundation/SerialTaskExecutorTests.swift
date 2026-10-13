@@ -995,6 +995,60 @@ import Testing
         #expect(recorder.count == 0)
     }
 
+    @Test func cancellingOneOfIdenticalOperationsDoesNotAffectOthers() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let runs = Counter()
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        let operation: @Sendable () async -> Void = { runs.increment() }
+        executor.addTask(operation)
+        let cancelled = executor.addTask(operation)
+        executor.addTask(operation)
+        cancelled.cancel()
+
+        release.open()
+        try await executor.runTask {}
+        #expect(runs.value == 2)
+    }
+
+    @Test func newTasksPreserveFIFOAfterCancellingLargeBacklog() async throws {
+        let executor = SerialTaskExecutor()
+        let started = Gate()
+        let release = Gate()
+        let cancelledRuns = Counter()
+        let recorder = Recorder()
+        let total = 2_000
+        defer { release.open() }
+
+        executor.addTask {
+            started.open()
+            await release.wait()
+        }
+        await started.wait()
+
+        for _ in 0..<total {
+            executor.addTask { cancelledRuns.increment() }
+        }
+        executor.cancelAll()
+        for i in 0..<total {
+            executor.addTask { recorder.append(i) }
+        }
+
+        release.open()
+        let result = try await executor.runTask { "completed" }
+        #expect(result == "completed")
+        #expect(cancelledRuns.value == 0)
+        #expect(recorder.values == Array(0..<total))
+    }
+
     @Test func cancelAllPreventsStartsWhileReleasingCancelledCaptures() async throws {
         let executor = SerialTaskExecutor()
         let started = Gate()

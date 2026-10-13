@@ -10,24 +10,20 @@ import Foundation
 import os
 
 public final class SerialTaskExecutor: Sendable {
-    private let (stream, continuation) = AsyncStream<any QueuedTask>.makeStream()
+    private let (stream, continuation) = AsyncStream<TaskEntry>.makeStream()
     private let worker: Task<Void, Never>
-    private let tasks = OSAllocatedUnfairLock(initialState: [any QueuedTask]())
+    private let tasks = OSAllocatedUnfairLock(initialState: Set<TaskEntry>())
 
     public init(priority: TaskPriority? = nil) {
         worker = Task(priority: priority) { [stream, tasks] in
-            for await task in stream {
-                defer { withExtendedLifetime(task) {} }
-                guard tasks.withLock({ tasks in tasks.contains { $0 === task } }) else {
-                    task.cancel()
+            for await entry in stream {
+                defer { withExtendedLifetime(entry) {} }
+                guard tasks.withLock({ $0.contains(entry) }) else {
+                    entry.task.cancel()
                     continue
                 }
-                await task.run()
-                tasks.withLock { tasks in
-                    if let index = tasks.firstIndex(where: { $0 === task }) {
-                        tasks.remove(at: index)
-                    }
-                }
+                await entry.task.run()
+                tasks.withLock { _ = $0.remove(entry) }
             }
         }
     }
@@ -61,18 +57,31 @@ public final class SerialTaskExecutor: Sendable {
             defer { tasks.removeAll() }
             return tasks
         }
-        for task in allTasks { task.cancel() }
+        for entry in allTasks { entry.task.cancel() }
     }
 
     private func enqueue(_ task: any QueuedTask) {
-        tasks.withLock { $0.append(task) }
-        continuation.yield(task)
+        let entry = TaskEntry(task: task)
+        tasks.withLock { _ = $0.insert(entry) }
+        continuation.yield(entry)
     }
 }
 
 private protocol QueuedTask: AnyObject, Sendable {
     func run() async
     func cancel()
+}
+
+private struct TaskEntry: Hashable, Sendable {
+    let task: any QueuedTask
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.task === rhs.task
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(task))
+    }
 }
 
 private final class LazyTask<Success: Sendable>: QueuedTask {

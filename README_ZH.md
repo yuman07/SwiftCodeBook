@@ -115,8 +115,9 @@ let value: String = try await executor.runTask {
 与等待 `Task.value` 一致。
 不要在同一 executor 正在执行的操作中再次 `await runTask`，否则会死锁。
 
-取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用 Array 记录未完成的任务，
-`cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。
+取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用按对象身份比较的 Set
+记录未完成的任务，`cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。
+FIFO 执行顺序仍由 `AsyncStream` 保证，不依赖 Set 的遍历顺序。
 
 批量取消与任务获准执行共用同一把锁：取得取消快照时仍在排队的任务不会再启动，
 之后加入的任务不受该批取消影响。取消排队任务会及时释放其捕获的数据，无需等待 worker
