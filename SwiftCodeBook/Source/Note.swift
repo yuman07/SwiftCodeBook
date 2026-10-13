@@ -213,6 +213,12 @@
  使用await MainActor.run {} 来执行代码时，如果当前已经处于main actor则不会切换actor，即会先执行{}里的代码然后继续往下执行
  
  
+ 在Lock里需要特别小心class/actor的副作用
+ 比如你在lock里释放了一个class，则会导致在lock里调用deinit。如果deinit耗时则会导致线程卡住，甚至如果在deinit里又访问了lock会导致死锁
+ 这时可以通过withExtendedLifetime来规避，比如：
+ let objs = array.withLock { array.removeAll() }
+ withExtendedLifetime(objs) {}
+ 
  */
 
 

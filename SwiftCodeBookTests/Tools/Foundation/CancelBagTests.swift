@@ -341,7 +341,7 @@ import Testing
         }
 
         // Many racing cancelAll calls; the unfair lock + atomic drain
-        // (`defer { tokens.removeAll() }; return Array(tokens)`) guarantee exactly one
+        // (`defer { tokens.removeAll() }; return tokens`) guarantee exactly one
         // racer obtains the non-empty snapshot, so each token is cancelled exactly once
         // with no crash / double-cancel.
         await withTaskGroup(of: Void.self) { group in
