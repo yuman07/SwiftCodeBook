@@ -97,39 +97,72 @@ The project is organized into three parts:
 | `HashHandler` | Multi-algorithm hashing (MD5, SHA1, SHA256, SHA384, SHA512) with 64 KB streaming |
 | `MemoryCache` | Type-safe `NSCache` wrapper with automatic cleanup on memory warnings |
 | `SendablePassthroughSubject` | Thread-safe Combine `PassthroughSubject` using `NSRecursiveLock` |
-| `SerialTaskExecutor` | `AsyncStream`-based serial task queue with configurable priority, guaranteed execution order, and awaitable `runTask` |
+| `TaskQueue` | `AsyncStream`-based task queue with configurable concurrency and priority, serial FIFO execution by default, awaitable results, and GCD-style barriers |
 | `WeakObject` | Generic weak reference wrapper for `AnyObject` types |
 | `XMLNodeParser` | Recursive XML node parsing with dictionary output |
 
-Use `try await executor.runTask { ... }` to enqueue async work in the same FIFO
+Set `maxConcurrentTasks` at initialization to limit the number of in-flight
+operations shared by `addTask` and `runTask`. It defaults to `1`, preserving serial
+FIFO execution. Positive values set an upper bound; zero and negative values
+allow unlimited concurrency.
+
+Use `addTask` to submit work synchronously and receive an `AnyCancellable`.
+Use `try await queue.runTask { ... }` to enqueue async work in the same FIFO
 queue as `addTask` and receive its `Sendable` result. Operation errors propagate
 to the caller.
 
 ```swift
-let value: String = try await executor.runTask {
+let queue = TaskQueue(maxConcurrentTasks: 3, priority: .utility)
+let value: String = try await queue.runTask {
     "Hello"
 }
 ```
 
-Cancelling the caller or calling `cancelAll()` before execution skips the
+Use `TaskQueue(maxConcurrentTasks: 0)` for unlimited concurrency.
+To overlap `runTask` calls, invoke them from concurrent Tasks; awaiting each call
+in a loop still submits work sequentially. In concurrent or unlimited mode,
+`runTask` waits only for its own operation, not for all earlier operations.
+
+Both submission methods accept `isBarrier: Bool = false`. Use
+`addTask(isBarrier: true) { ... }` or `runTask(isBarrier: true) { ... }` for GCD-style
+barrier semantics: all earlier submissions finish first, the barrier runs
+exclusively, and later submissions cannot start until it finishes. This applies
+in serial, bounded-concurrent, and unlimited modes, including work submitted
+from inside the barrier itself.
+
+To wait for earlier submissions without doing additional work, enqueue an empty
+barrier. Submissions after this checkpoint are not part of the wait:
+
+```swift
+try await queue.runTask(isBarrier: true) {}
+```
+
+For `runTask`, cancelling the caller or calling `cancelAll()` before execution skips the
 operation and throws `CancellationError`. Running work is cancelled
 cooperatively; `runTask` waits for it to finish and returns its value or throws
-its error, just like awaiting `Task.value`.
-Awaiting `runTask` directly from the same executor's running operation is a
+its error, just like awaiting `Task.value`. In bounded mode, cancelled running
+operations keep their concurrency slots until they actually finish.
+Cancelled pending barriers skip their operations but preserve the ordering
+boundary, as with a cancelled GCD barrier work item. Cancelled running barriers
+continue blocking later work until their operations actually finish.
+Awaiting `runTask` directly from the same queue's running operation is a
 programming error and triggers a precondition failure, like synchronous reentry
-into a serial `DispatchQueue`. The check follows the running Swift Task across
-suspension and actor hops; it does not detect indirect wait cycles through other
-Tasks or executors. Nested `addTask` calls still enqueue work normally.
+into a serial `DispatchQueue`. This restriction applies in every concurrency mode.
+The check follows each running Swift Task across suspension and actor hops;
+it does not detect indirect wait cycles through other Tasks or queues.
+Nested `addTask` calls still enqueue work normally.
 
 Cancellation is managed by each task, which also retains any token returned by
-`addTask`. The executor tracks unfinished tasks in an identity-based `Set` and
+`addTask`. The queue tracks unfinished tasks in an identity-based `Set` and
 cancels them directly in `cancelAll()`. Discarding a returned token does not
-cancel the work. FIFO execution is still controlled by `AsyncStream`, not the set.
+cancel the work. FIFO dequeue order is controlled by `AsyncStream`, not the set.
 
-The executor supports concurrent submissions and cancellation from multiple
-threads. Sequential submissions by one caller retain their order; simultaneous
-submissions by different callers have no predefined order. Submitted operations
-run one at a time, including across their suspension points.
+The queue supports concurrent submissions and cancellation from multiple
+threads. Sequential submissions by one caller enter the queue in order;
+simultaneous submissions by different callers have no predefined order.
+Operations count toward a configured limit across suspension points. A limit of
+`1` guarantees FIFO execution; other values allow non-barrier operations to start
+and finish out of order. Barriers preserve batch boundaries in every mode.
 
 Batch cancellation and task admission share the same lock: work still queued
 when the batch is captured cannot start, while work enqueued afterward is
@@ -225,7 +258,7 @@ The concurrency model is a key design highlight. Rather than a one-size-fits-all
 - **Actors** power `AsyncSemaphore` — leveraging Swift's built-in isolation for clean async coordination
 - **`OSAllocatedUnfairLock`** protects `CancelBag` and `AssociatedObject` — minimal-overhead locking for simple mutable state
 - **`NSRecursiveLock`** wraps `SendablePassthroughSubject` — reentrant safety when bridging Combine subjects to Sendable
-- **`AsyncStream`** drives `SerialTaskExecutor` — guaranteeing serial execution order through stream-based task queuing
+- **`AsyncStream`** drives `TaskQueue` — FIFO task queuing with bounded concurrency, preserving serial execution order at the default limit of `1`
 
 `HashHandler` uses CryptoKit with a streaming API that processes data in 64 KB chunks, keeping memory constant regardless of file size. `MemoryCache` wraps `NSCache` with type safety and subscribes to memory warning publishers from `CurrentApplication` for automatic cleanup. `CADisplayLinkAnimator` implements a full animation system with cubic Bezier timing functions parsed from `CAMediaTimingFunction` control points.
 
@@ -250,7 +283,7 @@ graph TD
         FndExt["Foundation Extensions<br/>Array · String · URL · Date ..."]
         UIKExt["UIKit Extensions<br/>UIColor · UIImage · UIView ..."]
         SUIExt["SwiftUI Extensions<br/>View · Spacer"]
-        FndUtil["Foundation Utilities<br/>AsyncSemaphore · HashHandler<br/>SerialTaskExecutor · MemoryCache ..."]
+        FndUtil["Foundation Utilities<br/>AsyncSemaphore · HashHandler<br/>TaskQueue · MemoryCache ..."]
         UIUtil["UIKit Utilities<br/>CADisplayLinkAnimator<br/>GradientView · LyricLabel"]
     end
 
@@ -281,7 +314,7 @@ graph TD
 ```
 
 - **Tools to Frameworks (solid arrows)** — Extensions directly extend types from Apple frameworks; Foundation Utilities use Actor isolation and AsyncStream from the Swift runtime, while HashHandler streams through CryptoKit; UIKit Utilities leverage CADisplayLink for frame-synchronized animation
-- **UseCase to Tools (dashed arrows)** — Educational examples demonstrate patterns found in the Tools layer; Foundation use cases cover both utility classes (e.g., SerialTaskExecutor concurrency patterns) and extension techniques (e.g., pointer and memory operations)
+- **UseCase to Tools (dashed arrows)** — Educational examples demonstrate patterns found in the Tools layer; Foundation use cases cover both utility classes (e.g., TaskQueue concurrency patterns) and extension techniques (e.g., pointer and memory operations)
 - **Zero External Dependencies** — Every arrow terminates at an Apple framework, confirming the project relies entirely on the native platform SDK
 
 ### Project Structure

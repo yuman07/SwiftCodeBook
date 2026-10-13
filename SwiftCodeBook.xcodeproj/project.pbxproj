@@ -80,7 +80,7 @@
 		7A4B519A2F7E3D65002FC607 /* HashHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCC2F7501D8002EDF68 /* HashHandler.swift */; };
 		7A4B519B2F7E3D69002FC607 /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCD2F7501D8002EDF68 /* MemoryCache.swift */; };
 		7A4B519C2F7E3D6D002FC607 /* SendablePassthroughSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCE2F7501D8002EDF68 /* SendablePassthroughSubject.swift */; };
-		7A4B519D2F7E3D70002FC607 /* SerialTaskExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */; };
+		7A4B519D2F7E3D70002FC607 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCF2F7501D8002EDF68 /* TaskQueue.swift */; };
 		7A4B519E2F7E3D74002FC607 /* WeakObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */; };
 		7A4B519F2F7E3D79002FC607 /* XMLNodeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */; };
 		7A4B51A02F7E3D7D002FC607 /* CADisplayLinkAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECD32F7501D8002EDF68 /* CADisplayLinkAnimator.swift */; };
@@ -155,7 +155,7 @@
 		7AA7ED342F7501D8002EDF68 /* NSNumber+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB12F7501D8002EDF68 /* NSNumber+Tools.swift */; };
 		7AA7ED352F7501D8002EDF68 /* UIColor+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECBE2F7501D8002EDF68 /* UIColor+Tools.swift */; };
 		7AA7ED362F7501D8002EDF68 /* NSString+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB32F7501D8002EDF68 /* NSString+Tools.swift */; };
-		7AA7ED372F7501D8002EDF68 /* SerialTaskExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */; };
+		7AA7ED372F7501D8002EDF68 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECCF2F7501D8002EDF68 /* TaskQueue.swift */; };
 		7AA7ED382F7501D8002EDF68 /* UseOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECE52F7501D8002EDF68 /* UseOptionSet.swift */; };
 		7AA7ED392F7501D8002EDF68 /* NSRange+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECB22F7501D8002EDF68 /* NSRange+Tools.swift */; };
 		7AA7ED3A2F7501D8002EDF68 /* UIImageView.contentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA7ECEE2F7501D8002EDF68 /* UIImageView.contentMode.swift */; };
@@ -232,7 +232,7 @@
 		7AA7ECCC2F7501D8002EDF68 /* HashHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashHandler.swift; sourceTree = "<group>"; };
 		7AA7ECCD2F7501D8002EDF68 /* MemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCache.swift; sourceTree = "<group>"; };
 		7AA7ECCE2F7501D8002EDF68 /* SendablePassthroughSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendablePassthroughSubject.swift; sourceTree = "<group>"; };
-		7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialTaskExecutor.swift; sourceTree = "<group>"; };
+		7AA7ECCF2F7501D8002EDF68 /* TaskQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueue.swift; sourceTree = "<group>"; };
 		7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakObject.swift; sourceTree = "<group>"; };
 		7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLNodeParser.swift; sourceTree = "<group>"; };
 		7AA7ECD32F7501D8002EDF68 /* CADisplayLinkAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CADisplayLinkAnimator.swift; sourceTree = "<group>"; };
@@ -425,7 +425,7 @@
 				7AA7ECCC2F7501D8002EDF68 /* HashHandler.swift */,
 				7AA7ECCD2F7501D8002EDF68 /* MemoryCache.swift */,
 				7AA7ECCE2F7501D8002EDF68 /* SendablePassthroughSubject.swift */,
-				7AA7ECCF2F7501D8002EDF68 /* SerialTaskExecutor.swift */,
+				7AA7ECCF2F7501D8002EDF68 /* TaskQueue.swift */,
 				7AA7ECD02F7501D8002EDF68 /* WeakObject.swift */,
 				7AA7ECD12F7501D8002EDF68 /* XMLNodeParser.swift */,
 			);
@@ -638,7 +638,7 @@
 				7B7E58000000000000000003 /* AESCrypto.swift in Sources */,
 				7A4B51862F7E3D10002FC607 /* NSRange+Tools.swift in Sources */,
 				7A4B51672F7E3C6D002FC607 /* SwitchType.swift in Sources */,
-				7A4B519D2F7E3D70002FC607 /* SerialTaskExecutor.swift in Sources */,
+				7A4B519D2F7E3D70002FC607 /* TaskQueue.swift in Sources */,
 				7A4B51942F7E3D46002FC607 /* UIView+Tools.swift in Sources */,
 				7A4B51692F7E3C7C002FC607 /* TaskNote.swift in Sources */,
 				7A4B51852F7E3D0C002FC607 /* NSNumber+Tools.swift in Sources */,
@@ -788,7 +788,7 @@
 				7AA7ED342F7501D8002EDF68 /* NSNumber+Tools.swift in Sources */,
 				7AA7ED352F7501D8002EDF68 /* UIColor+Tools.swift in Sources */,
 				7AA7ED362F7501D8002EDF68 /* NSString+Tools.swift in Sources */,
-				7AA7ED372F7501D8002EDF68 /* SerialTaskExecutor.swift in Sources */,
+				7AA7ED372F7501D8002EDF68 /* TaskQueue.swift in Sources */,
 				7AA7ED382F7501D8002EDF68 /* UseOptionSet.swift in Sources */,
 				7AA7ED392F7501D8002EDF68 /* NSRange+Tools.swift in Sources */,
 				7AA7ED3A2F7501D8002EDF68 /* UIImageView.contentMode.swift in Sources */,

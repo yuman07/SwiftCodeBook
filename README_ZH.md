@@ -97,33 +97,57 @@ SwiftCodeBook 是一个面向 Apple 平台开发的 Swift 工具库与教学参�
 | `HashHandler` | 多算法哈希（MD5、SHA1、SHA256、SHA384、SHA512），64 KB 流式处理 |
 | `MemoryCache` | 类型安全的 `NSCache` 封装，内存警告时自动清理 |
 | `SendablePassthroughSubject` | 基于 `NSRecursiveLock` 的线程安全 Combine `PassthroughSubject` |
-| `SerialTaskExecutor` | 基于 `AsyncStream` 的串行任务队列，支持配置任务优先级、保证执行顺序及可等待的 `runTask` |
+| `TaskQueue` | 基于 `AsyncStream` 的任务队列，支持配置并发上限和优先级，默认串行 FIFO 执行，提供异步结果及 GCD 风格的 barrier |
 | `WeakObject` | 泛型弱引用包装器 |
 | `XMLNodeParser` | 递归 XML 节点解析，输出字典 |
 
-使用 `try await executor.runTask { ... }`，将异步操作加入与 `addTask` 共用的 FIFO
+初始化时通过 `maxConcurrentTasks` 设置 `addTask` 和 `runTask` 共用的并发上限。
+该值默认为 `1`，保持原有串行 FIFO 执行行为；正数表示并发上限，零和负数表示无限制并发。
+
+`addTask` 支持同步调用来提交任务，并返回 `AnyCancellable`。
+使用 `try await queue.runTask { ... }`，将异步操作加入与 `addTask` 共用的 FIFO
 队列，等待并获取其 `Sendable` 返回值。操作抛出的错误会原样传递给调用方。
 
 ```swift
-let value: String = try await executor.runTask {
+let queue = TaskQueue(maxConcurrentTasks: 3, priority: .utility)
+let value: String = try await queue.runTask {
     "Hello"
 }
 ```
 
-调用方取消或调用 `cancelAll()` 时，尚未开始的任务会被跳过，并抛出 `CancellationError`；
+使用 `TaskQueue(maxConcurrentTasks: 0)` 可启用无限制并发。
+要让多个 `runTask` 重叠执行，需要从并发的 Task 中调用；在循环里逐次 `await` 仍会依次提交。
+在并发或无限制模式下，`runTask` 只等待自己的操作，不会等待所有先前提交的操作完成。
+
+两个提交方法都接受 `isBarrier: Bool = false`。使用 `addTask(isBarrier: true) { ... }`
+或 `runTask(isBarrier: true) { ... }` 可获得与 GCD 对齐的屏障语义：先等前序任务全部完成，
+再独占执行屏障任务，结束后才允许后续任务启动。串行、有界并发和无限制模式均遵循此规则，
+在屏障操作内部提交的新任务也排在屏障之后。
+
+如果只需要等待前序任务完成，可以提交一个空屏障；屏障之后提交的任务不纳入这次等待：
+
+```swift
+try await queue.runTask(isBarrier: true) {}
+```
+
+对于 `runTask`，调用方取消或调用 `cancelAll()` 时，尚未开始的任务会被跳过，并抛出 `CancellationError`；
 已经开始的任务会收到协作式取消信号，`runTask` 等它结束后返回其结果或抛出其错误，
-与等待 `Task.value` 一致。
-在同一 executor 正在执行的操作中直接再次 `await runTask` 属于编程错误，会触发
-precondition failure，与串行 `DispatchQueue` 的同步重入处理方向一致。检测按当前
-Swift Task 的身份进行，跨挂起和 actor 切换仍有效；不会检测经由其他 Task 或 executor
-形成的间接循环等待。嵌套调用 `addTask` 仍可正常排队。
+与等待 `Task.value` 一致。设置上限时，已取消但尚未结束的运行中操作仍占用并发名额。
+与取消 GCD barrier work item 一致，取消尚未启动的屏障会跳过其操作，但保留前后任务的顺序边界。
+已取消的运行中屏障须实际退出后，才会放行后续任务。
+在同一队列正在执行的操作中直接 `await runTask` 属于编程错误，会触发 precondition failure，
+与串行 `DispatchQueue` 的同步重入处理方向一致。
+所有并发模式均有此限制。
+检测按各个运行中 Swift Task 的身份进行，跨挂起和 actor 切换仍有效；
+不会检测经由其他 Task 或队列形成的间接循环等待。嵌套调用 `addTask` 仍可正常排队。
 
-取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。executor 用按对象身份比较的 Set
+取消逻辑由任务自行管理，`addTask` 的 token 也由对应任务持有。队列用按对象身份比较的 Set
 记录未完成的任务，`cancelAll()` 直接取消这些任务；丢弃返回的 token 不会取消任务。
-FIFO 执行顺序仍由 `AsyncStream` 保证，不依赖 Set 的遍历顺序。
+FIFO 出队顺序仍由 `AsyncStream` 保证，不依赖 Set 的遍历顺序。
 
-支持多个线程同时提交和取消任务。同一调用方依次提交的任务保持顺序；不同调用方同时提交时，
-彼此之间没有预先约定的顺序。已提交的操作始终逐个执行，即使中间发生异步挂起也不会重叠。
+支持多个线程同时提交和取消任务。同一调用方依次提交的任务按顺序入队；不同调用方同时提交时，
+彼此之间没有预先约定的顺序。操作在异步挂起期间仍计入并发上限。上限为 `1` 时保证串行 FIFO
+执行；其他取值允许普通任务并发执行，开始和完成顺序不作保证。所有模式下，屏障都保持前后批次的边界。
 
 批量取消与任务获准执行共用同一把锁：取得取消快照时仍在排队的任务不会再启动，
 之后加入的任务不受该批取消影响。取消排队任务会及时释放其捕获的数据，无需等待 worker
@@ -218,7 +242,7 @@ SwiftCodeBook 采用双层架构，将**可复用工具**与**教学示例**分�
 - **Actor** 驱动 `AsyncSemaphore` — 利用 Swift 内置的隔离机制实现简洁的异步协调
 - **`OSAllocatedUnfairLock`** 保护 `CancelBag` 和 `AssociatedObject` — 为简单可变状态提供最小开销的锁
 - **`NSRecursiveLock`** 包装 `SendablePassthroughSubject` — 将 Combine Subject 桥接到 Sendable 时提供可重入安全
-- **`AsyncStream`** 驱动 `SerialTaskExecutor` — 通过基于流的任务队列保证串行执行顺序
+- **`AsyncStream`** 驱动 `TaskQueue` — FIFO 任务队列结合有界并发，默认上限为 `1` 时保证串行执行顺序
 
 `HashHandler` 使用 CryptoKit 的流式 API，以 64 KB 为单位分块处理数据，无论文件多大内存使用始终恒定。`MemoryCache` 对 `NSCache` 进行类型安全封装，并订阅 `CurrentApplication` 的内存警告 Publisher 实现自动清理。`CADisplayLinkAnimator` 实现了完整的动画系统，从 `CAMediaTimingFunction` 的控制点解析三次贝塞尔时间函数。
 
@@ -243,7 +267,7 @@ graph TD
         FndExt["Foundation 扩展<br/>Array · String · URL · Date ..."]
         UIKExt["UIKit 扩展<br/>UIColor · UIImage · UIView ..."]
         SUIExt["SwiftUI 扩展<br/>View · Spacer"]
-        FndUtil["Foundation 工具类<br/>AsyncSemaphore · HashHandler<br/>SerialTaskExecutor · MemoryCache ..."]
+        FndUtil["Foundation 工具类<br/>AsyncSemaphore · HashHandler<br/>TaskQueue · MemoryCache ..."]
         UIUtil["UIKit 工具类<br/>CADisplayLinkAnimator<br/>GradientView · LyricLabel"]
     end
 
@@ -274,7 +298,7 @@ graph TD
 ```
 
 - **Tools 到框架（实线箭头）** — 扩展直接扩展 Apple 框架类型；Foundation 工具类使用 Swift 运行时的 Actor 隔离和 AsyncStream，HashHandler 通过 CryptoKit 进行流式哈希；UIKit 工具类利用 CADisplayLink 实现帧同步动画
-- **UseCase 到 Tools（虚线箭头）** — 教学示例展示 Tools 层的模式；Foundation 用例同时涵盖工具类（如 SerialTaskExecutor 的并发模式）和扩展技巧（如指针与内存操作）
+- **UseCase 到 Tools（虚线箭头）** — 教学示例展示 Tools 层的模式；Foundation 用例同时涵盖工具类（如 TaskQueue 的并发模式）和扩展技巧（如指针与内存操作）
 - **零外部依赖** — 所有箭头都终止于 Apple 框架，表明项目完全依赖原生平台 SDK
 
 ### 项目结构

@@ -1,5 +1,5 @@
 //
-//  SerialTaskExecutor.swift
+//  TaskQueue.swift
 //  SwiftCodeBook
 //
 //  Created by yuman on 2026/2/15.
@@ -9,22 +9,52 @@ import Combine
 import Foundation
 import os
 
-public final class SerialTaskExecutor: Sendable {
+public final class TaskQueue: Sendable {
     private let (stream, continuation) = AsyncStream<TaskEntry>.makeStream()
     private let worker: Task<Void, Never>
     private let tasks = OSAllocatedUnfairLock(initialState: Set<TaskEntry>())
-    private let runningTask = OSAllocatedUnfairLock(uncheckedState: UnsafeCurrentTask?.none)
+    private let runningTasks = OSAllocatedUnfairLock(uncheckedState: Set<UnsafeCurrentTask>())
 
-    public init(priority: TaskPriority? = nil) {
+    public init(maxConcurrentTasks: Int = 1, priority: TaskPriority? = nil) {
         worker = Task(priority: priority) { [stream, tasks] in
-            for await entry in stream {
+            let run: @Sendable (TaskEntry) async -> Void = { entry in
                 defer { withExtendedLifetime(entry) {} }
                 guard tasks.withLock({ $0.contains(entry) }) else {
                     entry.task.cancel()
-                    continue
+                    return
                 }
                 await entry.task.run()
                 tasks.withLock { _ = $0.remove(entry) }
+            }
+            var iterator = stream.makeAsyncIterator()
+            while true {
+                let barrier: TaskEntry?
+                if maxConcurrentTasks <= 0 {
+                    barrier = await withDiscardingTaskGroup { group -> TaskEntry? in
+                        while let entry = await iterator.next() {
+                            if entry.isBarrier { return entry }
+                            group.addTask { await run(entry) }
+                        }
+                        return nil
+                    }
+                } else {
+                    barrier = await withTaskGroup(of: Void.self) { group -> TaskEntry? in
+                        var inFlight = 0
+                        while let entry = await iterator.next() {
+                            if entry.isBarrier { return entry }
+                            if inFlight == maxConcurrentTasks {
+                                await group.next()
+                                inFlight -= 1
+                            }
+                            group.addTask { await run(entry) }
+                            inFlight += 1
+                        }
+                        return nil
+                    }
+                }
+                // Leaving the group drains earlier work; later entries stay in the stream.
+                guard let barrier else { break }
+                await run(barrier)
             }
         }
     }
@@ -36,22 +66,23 @@ public final class SerialTaskExecutor: Sendable {
     }
 
     @discardableResult
-    public func addTask(_ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
+    public func addTask(isBarrier: Bool = false, _ operation: @Sendable @escaping () async -> Void) -> AnyCancellable {
         let task = makeTask(operation)
         let token = task.toAnyCancellable
-        enqueue(task)
+        enqueue(task, isBarrier: isBarrier)
         return token
     }
 
-    public func runTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) async throws -> Success {
+    public func runTask<Success: Sendable>(isBarrier: Bool = false, _ operation: @Sendable @escaping () async throws -> Success) async throws -> Success {
         try Task.checkCancellation()
         let isReentrant = withUnsafeCurrentTask { current in
-            runningTask.withLockUnchecked { $0 != nil && $0 == current }
+            guard let current else { return false }
+            return runningTasks.withLockUnchecked { $0.contains(current) }
         }
-        precondition(!isReentrant, "SerialTaskExecutor.runTask cannot be awaited from an operation running on the same executor.")
+        precondition(!isReentrant, "TaskQueue.runTask cannot be awaited from an operation running on the same queue.")
         let task = makeTask(operation)
         return try await withTaskCancellationHandler {
-            enqueue(task)
+            enqueue(task, isBarrier: isBarrier)
             return try await task.waitForCompletion()
         } onCancel: {
             task.cancel()
@@ -66,17 +97,19 @@ public final class SerialTaskExecutor: Sendable {
         for entry in allTasks { entry.task.cancel() }
     }
 
-    private func enqueue(_ task: any QueuedTask) {
-        let entry = TaskEntry(task: task)
+    private func enqueue(_ task: any QueuedTask, isBarrier: Bool) {
+        let entry = TaskEntry(task: task, isBarrier: isBarrier)
         tasks.withLock { _ = $0.insert(entry) }
         continuation.yield(entry)
     }
 
     private func makeTask<Success: Sendable>(_ operation: @Sendable @escaping () async throws -> Success) -> LazyTask<Success> {
-        LazyTask { [runningTask] in
+        LazyTask { [runningTasks] in
             try await withUnsafeCurrentTask { task in
-                runningTask.withLockUnchecked { $0 = task }
-                defer { runningTask.withLockUnchecked { $0 = nil } }
+                if let task { runningTasks.withLockUnchecked { _ = $0.insert(task) } }
+                defer {
+                    if let task { runningTasks.withLockUnchecked { _ = $0.remove(task) } }
+                }
                 return try await operation()
             }
         }
@@ -90,6 +123,7 @@ private protocol QueuedTask: AnyObject, Sendable {
 
 private struct TaskEntry: Hashable, Sendable {
     let task: any QueuedTask
+    let isBarrier: Bool
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.task === rhs.task
